@@ -55,7 +55,7 @@ imf:FunctionAspectObject rdf:type owl:Class ;
                                                                   ]
                                              ] ;
                          rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                           owl:onProperty imf:hasChild ;
+                                           owl:onProperty imf:intraAspectRelation ;
                                            owl:allValuesFrom imf:FunctionAspectObject
                                          ] .
 
@@ -70,7 +70,7 @@ imf:InstalledAspectObject rdf:type owl:Class ;
                                                                    ]
                                               ] ;
                           rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                            owl:onProperty imf:hasChild ;
+                                            owl:onProperty imf:intraAspectRelation ;
                                             owl:allValuesFrom imf:InstalledAspectObject
                                           ] .
 
@@ -85,7 +85,7 @@ imf:LocationAspectObject rdf:type owl:Class ;
                                                                   ]
                                              ] ;
                          rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                           owl:onProperty imf:hasParent ;
+                                           owl:onProperty imf:intraAspectRelation ;
                                            owl:allValuesFrom imf:LocationAspectObject
                                          ] .
 
@@ -112,7 +112,7 @@ imf:ProductAspectObject rdf:type owl:Class ;
                                                                  ]
                                             ] ;
                         rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                          owl:onProperty imf:hasChild ;
+                                          owl:onProperty imf:intraAspectRelation ;
                                           owl:allValuesFrom imf:ProductAspectObject
                                         ] .
 
