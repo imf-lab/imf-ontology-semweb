@@ -1,0 +1,408 @@
+@prefix : <http://example.com/imf-core#> .
+@prefix imf: <http://example.com/imf#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://example.com/imf-core> a owl:Ontology ;
+	owl:versionIRI <http://example.com/imf-core/20211130> ;
+	owl:imports <http://www.w3.org/2004/02/skos/core> .
+# 
+# 
+# #################################################################
+# #
+# #    Object Properties
+# #
+# #################################################################
+# 
+# 
+# http://example.com/imf#hasActivity
+
+imf:hasActivity a owl:ObjectProperty .
+# 
+# http://example.com/imf#hasAspect
+
+imf:hasAspect a owl:ObjectProperty ;
+	rdfs:domain imf:AspectObject ;
+	rdfs:range imf:Aspect .
+# 
+# http://example.com/imf#hasChild
+
+imf:hasChild a owl:ObjectProperty ;
+	rdfs:subPropertyOf imf:intraAspectRelation , <http://www.w3.org/2004/02/skos/core#narrower> ;
+	owl:inverseOf imf:hasParent ;
+	a owl:IrreflexiveProperty .
+# 
+# http://example.com/imf#hasParent
+
+imf:hasParent a owl:ObjectProperty ;
+	rdfs:subPropertyOf imf:intraAspectRelation , <http://www.w3.org/2004/02/skos/core#broader> ;
+	a owl:FunctionalProperty , owl:IrreflexiveProperty ;
+	rdfs:domain imf:AspectObject ;
+	rdfs:range imf:AspectObject .
+# 
+# http://example.com/imf#hasTerminal
+
+imf:hasTerminal a owl:ObjectProperty ;
+	rdfs:subPropertyOf imf:interAspectRelation ;
+	a owl:InverseFunctionalProperty ;
+	rdfs:domain _:genid1 .
+
+_:genid1 a owl:Class ;
+	owl:unionOf _:genid4 .
+
+_:genid4 a rdf:List ;
+	rdf:first imf:Interface ;
+	rdf:rest _:genid3 .
+
+_:genid3 a rdf:List ;
+	rdf:first imf:SystemBlock ;
+	rdf:rest _:genid2 .
+
+_:genid2 a rdf:List ;
+	rdf:first imf:Transport ;
+	rdf:rest rdf:nil .
+
+imf:hasTerminal rdfs:range imf:Terminal .
+# 
+# http://example.com/imf#interAspectRelation
+
+imf:interAspectRelation a owl:ObjectProperty ;
+	rdfs:subPropertyOf <http://www.w3.org/2004/02/skos/core#related> .
+# 
+# http://example.com/imf#intraAspectRelation
+
+imf:intraAspectRelation a owl:ObjectProperty ;
+	rdfs:subPropertyOf <http://www.w3.org/2004/02/skos/core#semanticRelation> ;
+	rdfs:domain imf:AspectObject ;
+	rdfs:range imf:AspectObject .
+# 
+# http://example.com/imf#isAspectOf
+
+imf:isAspectOf a owl:ObjectProperty ;
+	rdfs:domain imf:AspectObject ;
+	rdfs:range imf:IntegratedObject .
+# 
+# http://example.com/imf#isConnectedTo
+
+imf:isConnectedTo a owl:ObjectProperty ;
+	rdfs:subPropertyOf imf:interAspectRelation ;
+	a owl:FunctionalProperty , owl:InverseFunctionalProperty ;
+	rdfs:domain imf:Terminal ;
+	rdfs:range imf:Terminal .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Data properties
+# #
+# #################################################################
+# 
+# 
+# http://example.com/imf#RDSCode
+
+imf:RDSCode a owl:DatatypeProperty ;
+	rdfs:subPropertyOf <http://www.w3.org/2004/02/skos/core#notation> ;
+	rdfs:domain imf:AspectObject .
+# 
+# http://example.com/imf#RDSCodeIndex
+
+imf:RDSCodeIndex a owl:DatatypeProperty ;
+	rdfs:domain imf:AspectObject ;
+	rdfs:range xsd:integer .
+# 
+# http://example.com/imf#RDSCodeSuffix
+
+imf:RDSCodeSuffix a owl:DatatypeProperty ;
+	rdfs:domain imf:Aspect ;
+	rdfs:range xsd:string .
+# 
+# http://example.com/imf#context
+
+imf:context a owl:DatatypeProperty ;
+	rdfs:domain imf:IntegratedObject .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Classes
+# #
+# #################################################################
+# 
+# 
+# http://example.com/imf#Aspect
+
+imf:Aspect a owl:Class ;
+	rdfs:subClassOf _:genid5 .
+
+_:genid5 a owl:Restriction ;
+	owl:onProperty imf:RDSCodeSuffix ;
+	owl:cardinality "1"^^xsd:nonNegativeInteger .
+# 
+# http://example.com/imf#AspectObject
+
+imf:AspectObject a owl:Class ;
+	owl:equivalentClass _:genid6 .
+
+_:genid6 a owl:Class ;
+	owl:unionOf _:genid10 .
+
+_:genid10 a rdf:List ;
+	rdf:first imf:Interface ;
+	rdf:rest _:genid9 .
+
+_:genid9 a rdf:List ;
+	rdf:first imf:SystemBlock ;
+	rdf:rest _:genid8 .
+
+_:genid8 a rdf:List ;
+	rdf:first imf:Terminal ;
+	rdf:rest _:genid7 .
+
+_:genid7 a rdf:List ;
+	rdf:first imf:Transport ;
+	rdf:rest rdf:nil .
+
+imf:AspectObject rdfs:subClassOf _:genid11 .
+
+_:genid11 a owl:Restriction ;
+	owl:onProperty imf:hasAspect ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass imf:Aspect .
+
+imf:AspectObject rdfs:subClassOf _:genid12 .
+
+_:genid12 a owl:Restriction ;
+	owl:onProperty imf:isAspectOf ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass imf:IntegratedObject .
+# 
+# http://example.com/imf#BiTerminal
+
+imf:BiTerminal a owl:Class ;
+	rdfs:subClassOf imf:Terminal , _:genid13 .
+
+_:genid13 a owl:Restriction ;
+	owl:onProperty imf:isConnectedTo ;
+	owl:allValuesFrom imf:BiTerminal .
+# 
+# http://example.com/imf#InTerminal
+
+imf:InTerminal a owl:Class ;
+	rdfs:subClassOf imf:Terminal , _:genid14 .
+
+_:genid14 a owl:Restriction ;
+	owl:onProperty imf:isConnectedTo ;
+	owl:allValuesFrom imf:OutTerminal .
+# 
+# http://example.com/imf#IntegratedObject
+
+imf:IntegratedObject a owl:Class .
+# 
+# http://example.com/imf#Interface
+
+imf:Interface a owl:Class ;
+	rdfs:subClassOf imf:AspectObject , _:genid15 .
+
+_:genid15 a owl:Class ;
+	owl:complementOf _:genid16 .
+
+_:genid16 a owl:Restriction ;
+	owl:onProperty imf:hasActivity ;
+	owl:someValuesFrom owl:Thing .
+
+imf:Interface rdfs:subClassOf _:genid17 .
+
+_:genid17 a owl:Restriction ;
+	owl:onProperty imf:hasChild ;
+	owl:allValuesFrom imf:Interface .
+
+imf:Interface rdfs:subClassOf _:genid18 .
+
+_:genid18 a owl:Restriction ;
+	owl:onProperty imf:hasTerminal ;
+	owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+	owl:onClass imf:Terminal .
+# 
+# http://example.com/imf#OutTerminal
+
+imf:OutTerminal a owl:Class ;
+	rdfs:subClassOf imf:Terminal , _:genid19 .
+
+_:genid19 a owl:Restriction ;
+	owl:onProperty imf:isConnectedTo ;
+	owl:allValuesFrom imf:InTerminal .
+# 
+# http://example.com/imf#StreamTerminal
+
+imf:StreamTerminal a owl:Class ;
+	owl:equivalentClass _:genid20 .
+
+_:genid20 owl:intersectionOf _:genid27 .
+
+_:genid27 a rdf:List ;
+	rdf:first imf:Terminal ;
+	rdf:rest _:genid21 .
+
+_:genid21 a rdf:List ;
+	rdf:first _:genid22 .
+
+_:genid22 a owl:Restriction ;
+	owl:onProperty _:genid23 .
+
+_:genid23 owl:inverseOf imf:hasTerminal .
+
+_:genid22 owl:someValuesFrom _:genid24 .
+
+_:genid24 a owl:Class ;
+	owl:unionOf _:genid26 .
+
+_:genid26 a rdf:List ;
+	rdf:first imf:Interface ;
+	rdf:rest _:genid25 .
+
+_:genid25 a rdf:List ;
+	rdf:first imf:Transport ;
+	rdf:rest rdf:nil .
+
+_:genid21 rdf:rest rdf:nil .
+
+_:genid20 a owl:Class .
+# 
+# http://example.com/imf#SystemBlock
+
+imf:SystemBlock a owl:Class ;
+	rdfs:subClassOf imf:AspectObject , _:genid28 .
+
+_:genid28 a owl:Restriction ;
+	owl:onProperty imf:hasChild ;
+	owl:allValuesFrom imf:SystemBlock .
+# 
+# http://example.com/imf#SystemBlockTerminal
+
+imf:SystemBlockTerminal a owl:Class ;
+	owl:equivalentClass _:genid29 .
+
+_:genid29 owl:intersectionOf _:genid33 .
+
+_:genid33 a rdf:List ;
+	rdf:first imf:Terminal ;
+	rdf:rest _:genid30 .
+
+_:genid30 a rdf:List ;
+	rdf:first _:genid31 .
+
+_:genid31 a owl:Restriction ;
+	owl:onProperty _:genid32 .
+
+_:genid32 owl:inverseOf imf:hasTerminal .
+
+_:genid31 owl:someValuesFrom imf:SystemBlock .
+
+_:genid30 rdf:rest rdf:nil .
+
+_:genid29 a owl:Class .
+
+imf:SystemBlockTerminal rdfs:subClassOf _:genid34 .
+
+_:genid34 a owl:Restriction ;
+	owl:onProperty imf:isConnectedTo ;
+	owl:allValuesFrom imf:StreamTerminal .
+# 
+# http://example.com/imf#Terminal
+
+imf:Terminal a owl:Class ;
+	rdfs:subClassOf imf:AspectObject , _:genid35 .
+
+_:genid35 a owl:Restriction ;
+	owl:onProperty imf:hasChild ;
+	owl:allValuesFrom imf:Terminal .
+# 
+# http://example.com/imf#Transport
+
+imf:Transport a owl:Class ;
+	rdfs:subClassOf imf:AspectObject , _:genid36 .
+
+_:genid36 a owl:Restriction ;
+	owl:onProperty imf:hasActivity ;
+	owl:someValuesFrom owl:Thing .
+
+imf:Transport rdfs:subClassOf _:genid37 .
+
+_:genid37 a owl:Restriction ;
+	owl:onProperty imf:hasChild ;
+	owl:allValuesFrom imf:Transport .
+
+imf:Transport rdfs:subClassOf _:genid38 .
+
+_:genid38 a owl:Restriction ;
+	owl:onProperty imf:hasTerminal ;
+	owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+	owl:onClass imf:Terminal .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    General axioms
+# #
+# #################################################################
+# 
+# 
+
+_:genid39 a owl:AllDisjointClasses ;
+	owl:members _:genid42 .
+
+_:genid42 a rdf:List ;
+	rdf:first imf:Aspect ;
+	rdf:rest _:genid41 .
+
+_:genid41 a rdf:List ;
+	rdf:first imf:AspectObject ;
+	rdf:rest _:genid40 .
+
+_:genid40 a rdf:List ;
+	rdf:first imf:IntegratedObject ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid43 a owl:AllDisjointClasses ;
+	owl:members _:genid46 .
+
+_:genid46 a rdf:List ;
+	rdf:first imf:BiTerminal ;
+	rdf:rest _:genid45 .
+
+_:genid45 a rdf:List ;
+	rdf:first imf:InTerminal ;
+	rdf:rest _:genid44 .
+
+_:genid44 a rdf:List ;
+	rdf:first imf:OutTerminal ;
+	rdf:rest rdf:nil .
+# 
+
+_:genid47 a owl:AllDisjointClasses ;
+	owl:members _:genid51 .
+
+_:genid51 a rdf:List ;
+	rdf:first imf:Interface ;
+	rdf:rest _:genid50 .
+
+_:genid50 a rdf:List ;
+	rdf:first imf:SystemBlock ;
+	rdf:rest _:genid49 .
+
+_:genid49 a rdf:List ;
+	rdf:first imf:Terminal ;
+	rdf:rest _:genid48 .
+
+_:genid48 a rdf:List ;
+	rdf:first imf:Transport ;
+	rdf:rest rdf:nil .
+# 
+# Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
