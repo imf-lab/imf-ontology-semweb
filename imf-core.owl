@@ -46,7 +46,7 @@ imf:hasParent a owl:ObjectProperty ;
 # http://example.com/imf#hasTerminal
 
 imf:hasTerminal a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:interAspectRelation ;
+	rdfs:subPropertyOf imf:intraAspectRelation ;
 	a owl:InverseFunctionalProperty ;
 	rdfs:domain _:genid1 .
 
@@ -70,7 +70,8 @@ imf:hasTerminal rdfs:range imf:Terminal .
 # http://example.com/imf#interAspectRelation
 
 imf:interAspectRelation a owl:ObjectProperty ;
-	rdfs:subPropertyOf <http://www.w3.org/2004/02/skos/core#related> .
+	rdfs:subPropertyOf <http://www.w3.org/2004/02/skos/core#related> ;
+	owl:propertyDisjointWith imf:intraAspectRelation .
 # 
 # http://example.com/imf#intraAspectRelation
 
@@ -88,7 +89,7 @@ imf:isAspectOf a owl:ObjectProperty ;
 # http://example.com/imf#isConnectedTo
 
 imf:isConnectedTo a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:interAspectRelation ;
+	rdfs:subPropertyOf imf:intraAspectRelation ;
 	a owl:FunctionalProperty , owl:InverseFunctionalProperty ;
 	rdfs:domain imf:Terminal ;
 	rdfs:range imf:Terminal .

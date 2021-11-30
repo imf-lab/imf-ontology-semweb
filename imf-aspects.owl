@@ -17,6 +17,7 @@
 
 ###  http://example.com/imf#hasLocation
 imf:hasLocation rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf imf:interAspectRelation ;
                 rdfs:domain [ rdf:type owl:Class ;
                               owl:unionOf ( imf:FunctionAspectObject
                                             imf:ProductAspectObject
@@ -27,12 +28,14 @@ imf:hasLocation rdf:type owl:ObjectProperty ;
 
 ###  http://example.com/imf#isFulfilledBy
 imf:isFulfilledBy rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf imf:interAspectRelation ;
                   rdfs:domain imf:FunctionAspectObject ;
                   rdfs:range imf:ProductAspectObject .
 
 
 ###  http://example.com/imf#isInstalledAs
 imf:isInstalledAs rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf imf:interAspectRelation ;
                   rdfs:domain imf:ProductAspectObject ;
                   rdfs:range imf:InstalledAspectObject .
 
