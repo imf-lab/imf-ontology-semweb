@@ -107,7 +107,8 @@ imf:isConnectedTo a owl:ObjectProperty ;
 
 imf:RDSCode a owl:DatatypeProperty ;
 	rdfs:subPropertyOf <http://www.w3.org/2004/02/skos/core#notation> ;
-	rdfs:domain imf:AspectObject .
+	rdfs:domain imf:AspectObject ;
+	<http://www.w3.org/2004/02/skos/core#editorialNote> "rename to RDSTag?" .
 # 
 # http://example.com/imf#RDSCodeIndex
 
@@ -115,9 +116,9 @@ imf:RDSCodeIndex a owl:DatatypeProperty ;
 	rdfs:domain imf:AspectObject ;
 	rdfs:range xsd:integer .
 # 
-# http://example.com/imf#RDSCodeSuffix
+# http://example.com/imf#RDSCodePrefix
 
-imf:RDSCodeSuffix a owl:DatatypeProperty ;
+imf:RDSCodePrefix a owl:DatatypeProperty ;
 	rdfs:domain imf:Aspect ;
 	rdfs:range xsd:string .
 # 
@@ -141,7 +142,7 @@ imf:Aspect a owl:Class ;
 	rdfs:subClassOf _:genid5 .
 
 _:genid5 a owl:Restriction ;
-	owl:onProperty imf:RDSCodeSuffix ;
+	owl:onProperty imf:RDSCodePrefix ;
 	owl:cardinality "1"^^xsd:nonNegativeInteger .
 # 
 # http://example.com/imf#AspectObject

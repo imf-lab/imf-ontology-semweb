@@ -30,7 +30,8 @@ imf:hasLocation rdf:type owl:ObjectProperty ;
 imf:isFulfilledBy rdf:type owl:ObjectProperty ;
                   rdfs:subPropertyOf imf:interAspectRelation ;
                   rdfs:domain imf:FunctionAspectObject ;
-                  rdfs:range imf:ProductAspectObject .
+                  rdfs:range imf:ProductAspectObject ;
+                  <http://www.w3.org/2004/02/skos/core#editorialNote> "Erlend: should this be functional and inverse functional?" .
 
 
 ###  http://example.com/imf#isInstalledAs
@@ -126,7 +127,8 @@ imf:SecondaryAspect rdf:type owl:Class ;
 #################################################################
 
 ###  http://example.com/imf#Function
-imf:Function rdf:type owl:NamedIndividual .
+imf:Function rdf:type owl:NamedIndividual ;
+             imf:RDSCodePrefix "=" .
 
 
 ###  http://example.com/imf#Installed
@@ -135,11 +137,13 @@ imf:Installed rdf:type owl:NamedIndividual ,
 
 
 ###  http://example.com/imf#Location
-imf:Location rdf:type owl:NamedIndividual .
+imf:Location rdf:type owl:NamedIndividual ;
+             imf:RDSCodePrefix "+" .
 
 
 ###  http://example.com/imf#Product
-imf:Product rdf:type owl:NamedIndividual .
+imf:Product rdf:type owl:NamedIndividual ;
+            imf:RDSCodePrefix "-" .
 
 
 #################################################################
