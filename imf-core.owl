@@ -71,6 +71,8 @@ imf:hasTerminal rdfs:range imf:Terminal .
 
 imf:interAspectRelation a owl:ObjectProperty ;
 	rdfs:subPropertyOf <http://www.w3.org/2004/02/skos/core#related> ;
+	rdfs:domain imf:AspectObject ;
+	rdfs:range imf:AspectObject ;
 	owl:propertyDisjointWith imf:intraAspectRelation .
 # 
 # http://example.com/imf#intraAspectRelation
