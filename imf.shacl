@@ -2,12 +2,13 @@
 @prefix imf: <http://example.com/imf#>.
 @prefix rdfs: 	<http://www.w3.org/2000/01/rdf-schema#>.
 @prefix lis: <http://standards.iso.org/iso/15926/part14/>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
 imf:AspectObjectTree
     a sh:NodeShape ;
     sh:targetClass imf:AspectObject ;
     sh:property [
-        sh:path rdfs:label;
+        sh:path skos:prefLabel;
         sh:minCount 1;
         sh:name "Object Name";
         sh:message "An aspect object must have exactly one name";
@@ -213,7 +214,7 @@ imf:TerminalConnected
         sh:message "A terminal can have at most one aspect";
     ] ;
     sh:property [
-        sh:path rdfs:label ;
+        sh:path skos:prefLabel ;
         sh:minCount 1;
         sh:name "terminalLabel";
         sh:message "A terminal must have at least one label";
@@ -239,7 +240,7 @@ imf:ProjectNode
     a sh:NodeShape ;
     sh:targetClass imf:IntegratedObject;
     sh:property [ 
-        sh:path rdfs:label ;
+        sh:path skos:prefLabel ;
         sh:name "project name";
         sh:message "A project must have exactly one name" ;
         sh:minCount 1 ;
@@ -266,7 +267,7 @@ imf:physicalQuantity
         sh:message "Physical Qualities can be related to at least one datums";
     ];
     sh:closed false;
-    sh:ignoredProperties (rdf:type rdfs:label owl:saneAs).
+    sh:ignoredProperties (rdf:type skos:prefLabel owl:saneAs).
 
 
 imf:physicalQuantityDatum
@@ -294,7 +295,7 @@ imf:physicalQuantityDatum
         sh:message "A datum has exactly one unit";
     ];
     sh:property [
-        sh:path rdfs:label;
+        sh:path skos:prefLabel;
         sh:name "datumlabel";
         sh:message "A datum can have label(s)";
     ];
