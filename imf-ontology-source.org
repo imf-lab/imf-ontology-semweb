@@ -1,0 +1,376 @@
+
+* TODOs
+
+ - separate into core, structure,  
+
+
+* Prefixes
+
+#+NAME: prefixes
+#+BEGIN_SRC ttl
+@prefix xsd:        <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:       <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix skos:       <http://www.w3.org/2004/02/skos/core#> .
+
+@prefix imf:        <http://ns.imfid.org/imf#>.
+
+
+
+#@prefix p14:        <http://standards.iso.org/iso/15926/part14/> .
+
+#@prefix rdf-og2:    <http://example.com/rds/og2#>.
+#@prefix rdf-og3:    <http://example.com/rds/og3#>.
+
+#@prefix mimir:      <http://example.com/mimir#> .
+#@prefix mimir-sor:  <https://rdf.equinor.com/sor/mimir/> .
+#+END_SRC
+
+* Objects and their aspects
+
+
+* Overview
+
+** Objects and Aspect objects
+
+In IMF, the entities to be specified (called integrated objects) are
+not described directly, but through their aspects (called aspect
+objects).
+
+An integrated object is typically specified through multiple aspect
+objects, however only one aspect object per aspect. An aspect object
+is associated with only one inter-grated object.
+
+@TODO: is it the case that an integrated object can only have one
+aspect of the same aspect?
+
+** Aspect object partitioning
+
+Aspect objects are partitioned along two orthogonal axes of
+non-overlapping categories:
+
+ 1. the aspects they are of, e.g., function, location or product, and
+ 2. aspect objects type, e.g., system block, terminal, transport or
+    interface.
+
+** Aspect object types and their relations
+
+The main types of aspect objects are system blocks, terminals and
+steams.  
+
+A system block is ...  
+
+A stream is ...  
+
+An interface is a stream without 
+
+A transport is a stream
+
+System blocks and streams are not directly connected, but (indirectly)
+connected through their terminals. Only terminals are directly
+connected to other terminals.
+
+System blocks may only be connected to streams, while streams may also
+be connected to other streams. 
+
+A terminal may have a direction which may either be in, out or
+bi-directional. In-terminals may only be connected to out-terminals
+(and vise versa), while bi-terminals may only be connected to
+bi-terminals.
+
+The relationships that form this structure between the different
+aspect objects are all intra-aspect relationships, meaning they relate
+aspect objects of the same aspect.
+
+** Aspect object breakdown structure
+
+An aspect object is placed in a tree-shaped breakdown structure where
+an aspect object may have a single parent (the root object has no
+parent) and possibly multiple children. The breakdown structure always
+relate aspect objects of the same aspect and aspect object type, i.e.,
+the parent and children of an aspect object are all of the same aspect
+and of the same aspect object type. Hence, a set of aspect object is
+represented by a set of such non-overlapping breakdown trees.
+
+@TODO say something about the root?
+
+** Inter-aspect relationships
+
+Aspect objects of different aspects are related by inter aspect
+relationships. The following relationships are permissible:
+
+ | Relation      | Domain              | Range     |
+ |---------------+---------------------+-----------|
+ | hasLocation   | Function or Product | Location  |
+ | isFulfilledBy | Function            | Product   |
+ | isInstalledAs | Product             | Installed |
+ | ...           |                     |           |
+
+Inter-aspect relationship always relate aspect objects of the same
+type.
+
+
+* OWL formalisation
+
+** Aspect objects and Integrated Objects
+
+@TODO: use OTTR templates for this. Create a class and property
+template for adding useful annotation properties. See wOTTR spec for
+tips.
+
+#+NAME: owl-top-integratedobject
+#+BEGIN_SRC ttl
+imf:IntegratedObject a owl:Class .
+
+imf:isAspectOf a owl:ObjectProperty ;
+  rdfs:domain imf:AspectObject ;
+  rdfs:range imf:IntegratedObject .
+
+imf:AspectObject
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onClass imf:IntegratedObject ;
+        owl:onProperty imf:isAspectOf ;
+        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+imf:Aspect
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onProperty imf:RDSCodePrefix
+    ] .
+
+#+END_SRC
+
+** Aspects
+
+Each aspect object has exactly one aspect (called ~imf:Aspect~).
+
+We anticipate that the set of aspects are relatively stable, however,
+new aspects may be added to the model; therefore aspects are
+represented as individuals in the ontology.
+
+#+NAME: owl-core-aspects
+#+BEGIN_SRC ttl
+imf:hasAspect a owl:ObjectProperty ;
+  rdfs:domain imf:AspectObject ;
+  rdfs:range imf:Aspect .
+
+imf:AspectObject rdfs:subClassOf [
+  a owl:Restriction ;
+  owl:onProperty imf:hasAspect ;
+  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+  owl:onClass imf:Aspect 
+] .
+#+END_SRC
+
+We partition aspects into primary and secondary aspects.
+
+The primary set of aspects (~imf:PrimaryAspect~) are exactly those
+defined in 81346: Function, Location, Product.
+
+Other aspects are called secondary aspects (~imf:SecondaryAspect~).
+
+@TODO: make a template for this table. Make a Gbox that makes all
+aspects different.
+
+ | Aspect    | Prefix | Color   |
+ |-----------+--------+---------|
+ | Function  | =      | #FFFF00 |
+ | Location  | +, ++  | #FF00FF |
+ | Product   | -      | #00FFFF |
+ |-----------+--------+---------|
+ | Installed | ::     | #3232BD |
+
+#+NAME: owl-aspects-primary-secondary
+#+BEGIN_SRC ttl
+imf:PrimaryAspect rdf:type owl:Class ;
+  rdfs:subClassOf imf:Aspect ;
+  owl:equivalentClass [ 
+    rdf:type owl:Class ;
+    owl:oneOf ( imf:Function imf:Location imf:Product )
+  ] .
+
+imf:SecondaryAspect rdf:type owl:Class ;
+  rdfs:subClassOf imf:Aspect .
+
+imf:PrimaryAspect owl:disjointWith imf:SecondaryAspect .
+#+END_SRC
+
+#+BEGIN_SRC ttl
+[ ] rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( imf:Function imf:Location imf:Product ) .
+#+END_SRC
+
+
+For convenience, we define for each aspect a class of the aspect
+objects that have that aspect, e.g,. a ~imf:FunctionAspectObject~ is
+the class of aspect objects with the aspect Function. These classes
+will later be used to restrict relationships between aspect objects
+with different aspects.
+
+@TODO: create a template that generates this.  
+
+@TODO Limit the relation from integrated object to each of these?
+
+#+BEGIN_SRC ttl
+###  http://example.com/imf#FunctionAspectObject
+imf:FunctionAspectObject rdf:type owl:Class ;
+                         owl:equivalentClass [ rdf:type owl:Restriction ;
+                                               owl:onProperty imf:hasAspect ;
+                                               owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                    owl:oneOf ( imf:Function
+                                                                              )
+                                                                  ]
+                                             ] ;
+                         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                           owl:onProperty imf:intraAspectRelation ;
+                                           owl:allValuesFrom imf:FunctionAspectObject
+                                         ] .
+#+END_SRC
+
+* Types of Aspect Objects
+
+Aspect objects 
+
+#+BEGIN_SRC ttl
+imf:AspectObject a owl:Class ;
+  owl:equivalentClass  [
+    a owl:Class ;
+    owl:unionOf ( imf:Interface imf:SystemBlock imf:Terminal imf:Transport ) 
+  ].
+#+END_SRC
+
+* Breakdowns
+
+#+BEGIN_SRC ttl
+
+imf:hasChild a owl:ObjectProperty ;
+	rdfs:subPropertyOf imf:isConnectedTo , skos:narrower ;
+	owl:inverseOf imf:hasParent ;
+	a owl:IrreflexiveProperty .
+
+imf:hasParent a owl:ObjectProperty ;
+	rdfs:subPropertyOf imf:isConnectedTo , skos:broader ;
+	a owl:FunctionalProperty , owl:IrreflexiveProperty ;
+	rdfs:domain imf:AspectObject ;
+	rdfs:range imf:AspectObject .
+#+END_SRC
+
+* Intro aspect relation
+
+#+BEGIN_SRC ttl
+
+imf:intraAspectRelation a owl:ObjectProperty ;
+	rdfs:subPropertyOf skos:semanticRelation ;
+	rdfs:domain imf:AspectObject ;
+	rdfs:range imf:AspectObject .
+
+
+imf:isConnectedTo a owl:ObjectProperty ;
+	rdfs:subPropertyOf imf:intraAspectRelation ;
+	a owl:TransitiveProperty .
+# 
+# http://example.com/imf#isDirectlyConnectedTo
+
+imf:isDirectlyConnectedTo a owl:ObjectProperty ;
+	rdfs:subPropertyOf imf:isConnectedTo , skos:related ;
+	a owl:FunctionalProperty , owl:InverseFunctionalProperty ;
+	rdfs:domain imf:Terminal ;
+	rdfs:range imf:Terminal .
+# 
+
+#+END_SRC
+
+* Cross aspect relations
+
+#+BEGIN_SRC ttl
+imf:interAspectRelation a owl:ObjectProperty ;
+	rdfs:subPropertyOf skos:related ;
+	rdfs:domain imf:AspectObject ;
+	rdfs:range imf:AspectObject ;
+	owl:propertyDisjointWith imf:intraAspectRelation .
+
+
+###  http://example.com/imf#hasLocation
+imf:hasLocation rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf imf:interAspectRelation ;
+                rdfs:domain [ rdf:type owl:Class ;
+                              owl:unionOf ( imf:FunctionAspectObject
+                                            imf:ProductAspectObject
+                                          )
+                            ] ;
+                rdfs:range imf:LocationAspectObject .
+
+
+###  http://example.com/imf#isFulfilledBy
+imf:isFulfilledBy rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf imf:interAspectRelation ;
+                  rdfs:domain imf:FunctionAspectObject ;
+                  rdfs:range imf:ProductAspectObject ;
+                  skos:editorialNote "Erlend: should this be functional and inverse functional?" .
+
+
+###  http://example.com/imf#isInstalledAs
+imf:isInstalledAs rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf imf:interAspectRelation ;
+                  rdfs:domain imf:ProductAspectObject ;
+                  rdfs:range imf:InstalledAspectObject .
+
+#+END_SRC
+
+* Legal use of relations
+
+* Visualisering
+
+#+BEGIN_SRC ttl
+
+###  http://example.com/imf#color
+imf:color rdf:type owl:AnnotationProperty ;
+          rdfs:subPropertyOf imf:graphic .
+
+
+###  http://example.com/imf#graphic
+imf:graphic rdf:type owl:AnnotationProperty .
+
+
+###  http://example.com/imf#icon
+imf:icon rdf:type owl:AnnotationProperty ;
+         rdfs:subPropertyOf imf:graphic .
+
+
+###  http://example.com/imf#shape
+imf:shape rdf:type owl:AnnotationProperty ;
+          rdfs:subPropertyOf imf:graphic .
+#+END_SRC
+
+* Ontologies
+
+
+** top
+
+#+BEGIN_SRC ttl :noweb yes :tangle imf.owl.ttl
+<<prefixes>>
+
+<http://example.com/imf> a owl:Ontology 
+    ; owl:versionIRI <http://example.com/imf/20211130>
+    #; owl:imports ....
+    .
+
+<<owl-top-integratedobject>>
+#+END_SRC
+
+
+** aspects
+
+#+BEGIN_SRC ttl
+
+<http://example.com/imf-aspects> rdf:type owl:Ontology ;
+                                  owl:versionIRI <http://example.com/imf-aspects/20211130> ;
+                                  owl:imports <http://example.com/imf-core/20211130> .
+
+#+END_SRC
