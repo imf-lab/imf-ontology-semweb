@@ -1,0 +1,118 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:AspectObject
+    a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:unionOf (imf:SystemBlock
+            imf:Terminal
+            imf:Transport
+        )
+    ] ;
+    skos:scopeNote """
+
+    Each aspect object is either a ....""" .
+
+imf:BiTerminal
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:BiTerminal ;
+        owl:onProperty imf:isConnectedTo
+    ] .
+
+imf:InTerminal
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:OutTerminal ;
+        owl:onProperty imf:isConnectedTo
+    ] .
+
+imf:OutTerminal
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:InTerminal ;
+        owl:onProperty imf:isConnectedTo
+    ] .
+
+imf:SystemBlock
+    a owl:Class .
+
+imf:Terminal
+    a owl:Class ;
+    skos:definition """
+
+    A terminal represents a point/port/boundry of
+    connection/communication for exactly one system block or a
+    stream. System blocks and streams may only be connected to other
+    system blocks and streams via their terminals.
+
+  """ ;
+    skos:prefLabel "Terminal" ;
+    skos:scopeNote """
+
+    System blocks and streams are not directly connected, but
+    (indirectly) connected through their terminals. Direct connections
+    between aspect objects are only permissible between terminals and
+    system blocks, terminals and streams, and between
+    terminals. Direct connections between terminals form indirect
+    connections between the aspect objects to which terminal acts as
+    terminal for.
+
+    Furthermore, such indirect connections are only permissible
+    between system block and streams, and between streams.
+
+    A terminal may have a direction which may either be in, out or
+    bi-directional. In-terminals may only be connected to
+    out-terminals (and vise versa), while bi-terminals may only be
+    connected to bi-terminals.
+  """ .
+
+imf:Transport
+    a owl:Class .
+
+imf:isConnectedTo
+    a owl:ObjectProperty .
+
+<http://ns.imfid.org/imf-metamodel>
+    a owl:Ontology ;
+    owl:imports <http://ns.imfid.org/ontology/2022-01-31/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf-metamodel> ;
+    skos:altLabel "IMF metamodel ontology" ;
+    skos:prefLabel "Information Modelling Framework Ontology: Metamodel Ontology " ;
+    skos:scopeNote """
+
+      This ontology defines IMF's meta model which defines how
+      IMF models are represented.
+
+    """ .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:BiTerminal
+        imf:InTerminal
+        imf:OutTerminal
+    ) .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:SystemBlock
+        imf:Terminal
+        imf:Transport
+    ) .
+
