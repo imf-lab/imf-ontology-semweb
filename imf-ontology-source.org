@@ -10,7 +10,7 @@
 #+OPTIONS: timestamp:t title:t toc:t todo:t |:t
 #+LANGUAGE: en
 #+SELECT_TAGS: export
-#+EXCLUDE_TAGS: noexport
+#+EXCLUDE_TAGS: noexport QA
 
 * TODOs                                                            :noexport:
 
@@ -57,9 +57,14 @@ aspect of the same aspect?
 @prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
 @prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix imf:	<http://ns.imfid.org/imf#> .
+@prefix pav:	<http://purl.org/pav/> .
 @prefix sh: 	<http://www.w3.org/ns/shacl#> . 
 @prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+#+END_SRC
+
+#+NAME: prefixes-imf
+#+BEGIN_SRC ttl
+@prefix imf:	<http://ns.imfid.org/imf#> .
 #+END_SRC
 
 #+NAME: prefixes-ottr
@@ -76,7 +81,7 @@ aspect of the same aspect?
 #+NAME: prefixes
 #+BEGIN_SRC ttl :noweb yes
 <<prefixes-std>>
-
+<<prefixes-imf>>
 <<prefixes-ottr>>
 #+END_SRC
 
@@ -153,9 +158,9 @@ The identifier schema for IMF ontology versions are:
 #+CALL: sh_jena_validate_rdf(files="imf.owl.ttl")
 
 #+RESULTS:
-: imf.owl.ttl     : 0.20 sec : 8 Triples : 40.40 per second
+: imf.owl.ttl     : 0.20 sec : 8 Triples : 40.00 per second
 
-#+CALL: sh_jena_shacl_validate_std-vocabulary(files="imf.owl.ttl")
+#+CALL: sh_jena_shacl_validate(data="imf.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -213,7 +218,7 @@ org-mode tangled files.
 
 *** RDF validate tangled file
 
-#+CALL: sh_jena_validate_rdf(files=".imf-top.wottr")
+#+CALL: sh_jena_validate_rdf(files=".imf-top.wottr.ttl")
 
 #+RESULTS:
 : 15:40:04 INFO  riot            :: File: .imf-top.wottr
@@ -223,7 +228,7 @@ org-mode tangled files.
 : Total           : 0.25 sec : 168 Triples : 677.42 per second
 
 *** Expand OTTR instances
-#+CALL: lutra-expand(in=".imf-top.wottr", out="imf-top.owl.ttl")
+#+CALL: lutra-expand(in=".imf-top.wottr.ttl", out="imf-top.owl.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -299,7 +304,7 @@ rapper: Parsing returned 82 triples
 #+RESULTS:
 : imf-top.owl.ttl : 0.21 sec : 78 Triples : 369.67 per second
 
-#+CALL: sh_jena_shacl_validate_std-vocabulary(files="imf-top.owl.ttl")
+#+CALL: sh_jena_shacl_validate(data="imf-top.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -316,7 +321,7 @@ rapper: Parsing returned 82 triples
 ** Ontology header
 
 #+NAME: owl-top-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle .imf-top.wottr
+#+BEGIN_SRC ttl :noweb strip-export :tangle .imf-top.wottr.ttl
 <<prefixes>>
 
 <http://ns.imfid.org/imf-top> a owl:Ontology ;
@@ -339,12 +344,11 @@ rapper: Parsing returned 82 triples
 <<owl-top-aspect>>
 <<owl-top-integratedobject>>
 <<owl-top-genericrelations>>
-<<owl-top-hierarchicalrelations>>
 #+END_SRC
 
 *** QA                                                             :noexport:
 
-#+CALL: py_parse-ttl-block[:wrap "SRC ttl :tangle .owl-top-ontology.wottr"](block=owl-top-ontology)
+#+CALL: py_parse-ttl-block[:wrap "SRC ttl :tangle .owl-top-ontology.wottr.ttl"](block=owl-top-ontology)
 
 #+CALL: py_parse-ttl-file[:wrap SRC ttl](file="imf-top.owl.ttl")
 
@@ -408,7 +412,7 @@ imf:isAspectOf a owl:ObjectProperty ;
   skos:prefLabel "is aspect of" ;
   skos:definition """
 
-    Relates an aspect object with the integrated object the aspect
+    Relates an aspect object to the integrated object the aspect
     object provides a specification for/description of.""";
 
   rdfs:domain imf:AspectObject ;
@@ -416,7 +420,7 @@ imf:isAspectOf a owl:ObjectProperty ;
 
 imf:hasAspect a owl:ObjectProperty ;
   skos:prefLabel "has aspect" ;
-  skos:definition "Relates an aspect object with its aspect.";
+  skos:definition "Relates an aspect object to its aspect.";
   rdfs:domain imf:AspectObject ;
   rdfs:range imf:Aspect .
 
@@ -503,8 +507,7 @@ imf:IntegratedObject a owl:Class ;
    ottr:values( ( imf:Aspect imf:AspectObject imf:IntegratedObject ) ) .
 #+END_SRC
 
-** Relations between aspect objects
-*** High-level structural relations
+*** Structural relations
 
 The following scope note is put on all following top-level relations:
 #+NAME: owl-top-toprelation-scope-note
@@ -548,23 +551,152 @@ imf:associativeRelation a owl:ObjectProperty ;
     .
 #+END_SRC
 
-*** Hierarchical relations
 
-#+NAME: owl-top-hierarchicalrelations
-#+BEGIN_SRC ttl
-imf:hasChild a owl:ObjectProperty ;
-    rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject .
+** OTTR templates
 
-imf:hasParent a owl:ObjectProperty;
-    a owl:FunctionalProperty ;
-    rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
-    owl:inverseOf imf:hasChild .
+ - [ ] ID
+ - [ ] RDS
+ - [ ] SemanticID
+ - [ ] Service Description
+ - [ ] Description
+ - [ ] Status
+
+ - [ ] DateCreated
+ - [ ] CreatedBy
+ - [ ] LastUpdated
+ - [ ] UpdatedBy
+ - [ ] Version
+
+
+#+BEGIN_SRC ttl :noweb yes :tangle tpl/aspectobjects.stottr
+<<prefixes>>
+
+## extract SKOS metadata in own template?
+
+o-imf:AspectObject [
+  owl:NamedIndividual ?id, 
+  owl:NamedIndividual ?aspect, 
+  owl:NamedIndividual ?parentID,
+  xsd:string ?label, 
+  ? xsd:string ?description,
+  xsd:dateTime ?createdDate,
+  ottr:IRI ?createdBy,
+  ? xsd:dateTime ?updatedDate,
+  ? ottr:IRI ?updatedBy,
+  xsd:string ?version,
+  ottr:IRI ?status
+] :: {
+  o-rdf:Type(?id, imf:AspectObject),
+  ottr:Triple(?id, imf:hasAspect, ?aspect), 
+  ottr:Triple(?id, imf:hasParent, ?parentID),
+  o-imf:Description(?id, ?label, ?description),
+  o-imf:Versioning(?id, ?createdDate, ?createdBy, ?updatedDate, ?updatedBy, ?version, ?status)
+} .
+
+o-imf:Description [
+  ottr:IRI ?id,
+  xsd:string ?label,
+  ? xsd:string ?note
+] :: {
+  ottr:Triple(?id, skos:prefLabel, ?label),
+  ottr:Triple(?id, skos:note, ?note)
+} .
+
+o-imf:Versioning [
+  ottr:IRI ?id,
+  ? xsd:dateTime ?createdDate,
+  ? ottr:IRI ?createdBy,
+  ? xsd:dateTime ?updatedDate,
+  ? ottr:IRI ?updatedBy,
+  xsd:string ?version,
+  ? ottr:IRI ?status
+] :: {
+  ottr:Triple(?id, pav:createdBy, ?createdBy),
+  ottr:Triple(?id, pav:createdOn, ?createdDate),
+
+  ottr:Triple(?id, pav:contributedBy, ?updatedBy),
+  ottr:Triple(?id, pav:lastUpdateOn, ?updatedDate),
+
+  ottr:Triple(?id, pav:version, ?version),
+
+  ottr:Triple(?id, imf:status, ?status)
+
+} .
+ 
+
 #+END_SRC
 
 * TODO IMF Metamodel Ontology
+** Overview
+
+#+BEGIN_SRC dot :file imf-metamodel-overview.png
+
+digraph G {
+
+rankdir = LR;
+
+#A [label="Aspect Object", shape=box];
+#S,T,C -> A [arrowhead=empty]
+
+#T [label="Terminal", shape=box];
+#inT, outT -> T [arrowhead=empty]
+
+S [label="System Block", shape=box];
+
+C [label="Connection", shape=octagon];
+
+outT [label="OutTerminal", shape=rarrow];
+inT [label="InTerminal", shape=larrow];
+
+inT -> C [label="hasOutput", arrowhead=none, arrowtail=normal, dir=back]
+outT -> C  [label="hasInput", arrowhead=none, arrowtail=normal, dir=back]
+
+S -> inT  [label="hasInTerminal"]
+S -> outT [label="hasOutTerminal"]
+
+#S -> S [label=hasParent]
+#T -> T [label=hasParent]
+
+}
+
+#+END_SRC
+
+#+RESULTS:
+[[file:imf-metamodel-overview.png]]
+
 ** TODO Preliminary definitions
+*** Notater [2022-02-10 Thu]
+
+ MGS' suggestions
+
+ - System
+ - Port
+   - InPort
+   - OutPort
+ - Bus
+   - in
+   - out
+
+*** Notater [2022-02-03 Thu]
+
+ - Flow: continuerly, nominal direction (positive/negative)
+
+ - Typer for port og flow:
+   - material
+   - information
+   - energy
+   - structural
+
+ - Transformation: unit operation, activity, purpose
+   - hasInput + hasOutput, 1 til mange
+
+ - System: function 
+
+ - Port/Terminal: nominal inlet eller outlet -> inlet, (sink + source)
+   - hasTerminal
+  
+ - Flow : 1-1 Terminal
+
 *** System
 
 A system is a processing (black) box. It processes streams by
@@ -605,7 +737,7 @@ Question:
    imagine that a system can be broken down, but that the terminal
    does not need to be.
 
-*** Connection
+*** Connection/Interface
 
 A connection connects two terminals. A connection is used for
 representing data about the connection, e.g., the force with which the
@@ -617,7 +749,24 @@ Questions:
   - Can a connection have a parent? Maybe not? It is necessary to
     have a parent?
 
-*** Stream
+#+BEGIN_QUOTE
+1.1               Junctions
+
+A junction is an object that connects two ports. The ports connected
+must have consistent interfaces and direction.
+
+Consistency of interfaces is required to ensure that the type of
+material, energy or information shared between the ports is correct.
+
+The junction, in effect, merges the two ports. The junction itself has
+no function or spatial significance.
+
+This is different to NASA MBSE practice, which sees a junction
+expanding into a transport or mechanical connection at some higher
+level of detail. We do not permit this.
+#+END_QUOTE
+
+*** Flow
 
 Continuous
 
@@ -653,16 +802,31 @@ TODO: copy from other ontologies once this ontology has settled.
 This is placed here so that it is easier to syncronise filenames with
 org-mode tangled files.
 
-#+CALL: sh_jena_validate_rdf(files=".imf-metamodel.wottr imf-metamodel.owl.ttl")
+#+CALL: sh_jena_validate_rdf(files=".imf-metamodel.wottr.ttl imf-metamodel.owl.ttl")
 
 #+RESULTS:
-: 15:37:20 INFO  riot            :: File: .imf-metamodel.wottr
-: .imf-metamodel.wottr : 0.24 sec : 60 Triples : 247.93 per second
-: 15:37:20 INFO  riot            :: File: imf-metamodel.owl
-: imf-metamodel.owl : 0.01 sec : 55 Triples : 5,500.00 per second
-: Total           : 0.25 sec : 115 Triples : 456.35 per second
+: 15:47:25 INFO  riot            :: File: .imf-metamodel.wottr.ttl
+: .imf-metamodel.wottr.ttl : 0.25 sec : 127 Triples : 500.00 per second
+: 15:47:25 INFO  riot            :: File: imf-metamodel.owl.ttl
+: imf-metamodel.owl.ttl : 0.02 sec : 117 Triples : 5,850.00 per second
+: Total           : 0.27 sec : 244 Triples : 890.51 per second
 
-#+CALL: lutra-expand(in=".imf-metamodel.wottr", out="imf-metamodel.owl.ttl")
+#+CALL: sh_jena_shacl_validate(data=".imf-metamodel.wottr.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+
+#+CALL: lutra-expand(in=".imf-metamodel.wottr.ttl", out="imf-metamodel.owl.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -702,32 +866,43 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 
 [INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
 
+[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectSomeValuesFrom
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectSomeValuesFrom
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectSomeValuesFrom
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/SomeValuesFrom
+
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB<rdfs:Resource>, owl:onProperty :  ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB<rdfs:Resource>, owl:someValuesFro ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#hasConnectionOutput : LU ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#InputTerminal : LUB<ottr ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Connection : LUB<ottr:IR ...
+
 [INFO] Fetch missing template: http://tpl.ottr.xyz/owl/macro/0.1/ClassPartition
 [INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/ClassPartition
 [INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectUnionOf
 [INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
 
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank505 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank505 : LUB<rdfs:Resource>, owl:members : LUB ...
  >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB<rdfs:Resource>, owl:unionOf : LUB ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#AspectObject : LUB<ottr: ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#AspectObject : LUB<ottr: ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB<rdfs:Resource>, owl:members : LUB ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank507 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank507 : LUB<rdfs:Resource>, owl:unionOf : LUB ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank507 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Terminal : LUB<ottr:IRI> ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Terminal : LUB<ottr:IRI> ...
 
 [WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
 [WARNING] Failed fetch for template http://ns.ottr.xyz/0.4/NullableTriple
 
  >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#SystemBlock : LU ...
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-metamodel.wottr.temp with parser turtle
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-metamodel.wottr.ttl.temp with parser turtle
 rapper: Serializing with serializer turtle
-rapper: Parsing returned 59 triples
+rapper: Parsing returned 128 triples
 #+end_example
-
 
 ** Ontology header
 #+NAME: owl-top-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle .imf-metamodel.wottr
+#+BEGIN_SRC ttl :noweb strip-export :tangle .imf-metamodel.wottr.ttl
 <<prefixes>>
 
 <http://ns.imfid.org/imf-metamodel> a owl:Ontology ;
@@ -746,12 +921,13 @@ rapper: Parsing returned 59 triples
     .
 
 <<owl-metamodel-aspectobject>>
+<<owl-metamodel-relations-partof>>
 <<owl-metamodel-terminal>>
 <<owl-metamodel-system>>
-<<owl-metamodel-transport>>
+<<owl-metamodel-connection>>
 #+END_SRC
 
-** Aspect object subtypes and their relations
+** Aspect object subtypes and relations
 
 #+NAME: owl-metamodel-aspectobject
 #+BEGIN_SRC ttl
@@ -762,7 +938,74 @@ imf:AspectObject a owl:Class ;
     Each aspect object is either a ....""".
 
 [] ottr:of o-owl-ma:ClassPartition ;
-   ottr:values ( imf:AspectObject ( imf:SystemBlock imf:Terminal imf:Transport )) .
+   ottr:values ( imf:AspectObject ( imf:SystemBlock imf:Terminal imf:Connection ) ) .
+#+END_SRC
+
+*** Relations
+**** hasChild/hasParent
+
+#+NAME: owl-metamodel-relations-partof
+#+BEGIN_SRC ttl
+imf:hasParent a owl:ObjectProperty;
+    a owl:FunctionalProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
+    rdfs:domain imf:AspectObject ;
+    rdfs:range imf:AspectObject .
+
+imf:hasChild a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
+    owl:inverseOf imf:hasParent .
+#+END_SRC
+
+
+**** TODO other relations                                          :noexport:
+
+#+BEGIN_SRC ttl
+imf:isDirectlyConnectedTo a owl:ObjectProperty ;
+	rdfs:subPropertyOf imf:isConnectedTo , skos:related ;
+	a owl:FunctionalProperty , owl:InverseFunctionalProperty ;
+	rdfs:domain imf:Terminal ;
+	rdfs:range imf:Terminal .
+
+imf:isConnectedTo
+    a owl:FunctionalProperty, owl:InverseFunctionalProperty, owl:ObjectProperty ;
+    rdfs:domain imf:Terminal ;
+    rdfs:range imf:Terminal ;
+    rdfs:subPropertyOf imf:intraAspectRelation .
+#+END_SRC
+
+
+*** System block
+
+#+NAME: owl-metamodel-system
+#+BEGIN_SRC ttl
+imf:SystemBlock a owl:Class ;
+
+  ### annotations
+
+  skos:prefLabel "System Block";
+  
+  #skos:altLabel "" ;
+
+  #skos:definition """
+  #""";
+
+  #skos:scopeNote """
+  #""";
+
+  #skos:example """
+  #""";
+
+  #skos:editorialNote """
+  #""";
+
+  .
+
+  ### axioms
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:SystemBlock imf:hasParent imf:SystemBlock ) .
+
 #+END_SRC
 
 *** Terminal
@@ -775,74 +1018,14 @@ imf:Terminal a owl:Class ;
 
   skos:prefLabel "Terminal";
   
-  #skos:altLabel "";
+  skos:altLabel "Port" ;
 
   skos:definition """
 
-    A terminal represents a point/port/boundry of
-    connection/communication for exactly one system block or a
-    stream. System blocks and streams may only be connected to other
-    system blocks and streams via their terminals.
+    A terminal represents a port/boundry point for a system block
+    through which the system block and take input and give output.
 
   """;
-
-  skos:scopeNote """
-
-    System blocks and streams are not directly connected, but
-    (indirectly) connected through their terminals. Direct connections
-    between aspect objects are only permissible between terminals and
-    system blocks, terminals and streams, and between
-    terminals. Direct connections between terminals form indirect
-    connections between the aspect objects to which terminal acts as
-    terminal for.
-
-    Furthermore, such indirect connections are only permissible
-    between system block and streams, and between streams.
-
-    A terminal may have a direction which may either be in, out or
-    bi-directional. In-terminals may only be connected to
-    out-terminals (and vise versa), while bi-terminals may only be
-    connected to bi-terminals.
-  """;
-
-  #skos:example """
-  #""";
-
-  #skos:editorialNote """
-  #""";
-
-  .
-
-  ### axioms
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:BiTerminal imf:isConnectedTo imf:BiTerminal ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:InTerminal imf:isConnectedTo imf:OutTerminal ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:OutTerminal imf:isConnectedTo imf:InTerminal ) .
-
-[] ottr:of o-owl-ax:DisjointClasses ;
-   ottr:values ( ( imf:BiTerminal imf:InTerminal imf:OutTerminal ) ) .
-
-#+END_SRC
-
-*** System block
-
-#+NAME: owl-metamodel-system
-#+BEGIN_SRC ttl
-imf:SystemBlock a owl:Class ;
-
-  ### annotations
-
-  #skos:prefLabel "";
-  
-  #skos:altLabel "";
-
-  #skos:definition """
-  #""";
 
   #skos:scopeNote """
   #""";
@@ -856,166 +1039,90 @@ imf:SystemBlock a owl:Class ;
   .
 
   ### axioms
-#+END_SRC
 
-*** Transport
+[] ottr:of o-owl-ma:ClassPartition ;
+   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
 
-#+NAME: owl-metamodel-transport
-#+BEGIN_SRC ttl
-imf:Transport a owl:Class ;
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:InputTerminal imf:hasParent imf:InputTerminal ) .
 
-  ### annotations
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:OutputTerminal imf:hasParent imf:OutputTerminal ) .
 
-  #skos:prefLabel "";
-  
-  #skos:altLabel "";
 
-  #skos:definition """
-  #""";
-
-  #skos:scopeNote """
-  #""";
-
-  #skos:example """
-  #""";
-
-  #skos:editorialNote """
-  #""";
-
-  .
-
-  ### axioms
-#+END_SRC
-
-*** TODO left-overs
-
-The relationships that form the structure between the different aspect
-objects are all intra-aspect relationships, meaning they relate aspect
-objects of the same aspect.
-
-#+BEGIN_SRC ttl
-imf:SystemBlock
-    a owl:Class ;
-    , [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:SystemBlock ;
-        owl:onProperty imf:hasChild
-    ] .
-
-imf:Terminal
-    a owl:Class ;
-    rdfs:subClassOf imf:AspectObject, [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:Terminal ;
-        owl:onProperty imf:hasChild
-    ] .
-
-imf:Transport
-    a owl:Class ;
-    rdfs:subClassOf imf:AspectObject, [
-        a owl:Restriction ;
-        owl:onProperty imf:hasActivity ;
-        owl:someValuesFrom owl:Thing
-    ], [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:Transport ;
-        owl:onProperty imf:hasChild
-    ], [
-        a owl:Restriction ;
-        owl:onClass imf:Terminal ;
-        owl:onProperty imf:hasTerminal ;
-        owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
-    ] .
-
-imf:Interface
-    a owl:Class ;
-    rdfs:subClassOf imf:AspectObject, [
-        a owl:Class ;
-        owl:complementOf [
-            a owl:Restriction ;
-            owl:onProperty imf:hasActivity ;
-            owl:someValuesFrom owl:Thing
-        ]
-    ], [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:Interface ;
-        owl:onProperty imf:hasChild
-    ], [
-        a owl:Restriction ;
-        owl:onClass imf:Terminal ;
-        owl:onProperty imf:hasTerminal ;
-        owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
-    ] .
-#+END_SRC
-
-#+BEGIN_SRC ttl
-imf:hasTerminal
-    a owl:InverseFunctionalProperty, owl:ObjectProperty; 
-    rdfs:domain [
-        a owl:Class ;
-        owl:unionOf (imf:Interface
-            imf:SystemBlock
-            imf:Transport
-        )
-    ] ;
+imf:hasTerminal a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+    rdfs:domain imf:SystemBlock ;
     rdfs:range imf:Terminal ;
-    rdfs:subPropertyOf imf:intraAspectRelation .
+    .
 
+imf:hasInputTerminal a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    rdfs:range imf:InputTerminal ;
+    .
 
-imf:isDirectlyConnectedTo a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:isConnectedTo , skos:related ;
-	a owl:FunctionalProperty , owl:InverseFunctionalProperty ;
-	rdfs:domain imf:Terminal ;
-	rdfs:range imf:Terminal .
+imf:hasOutputTerminal a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    rdfs:range imf:OutputTerminal ;
+    .
 
-
-imf:isConnectedTo
-    a owl:FunctionalProperty, owl:InverseFunctionalProperty, owl:ObjectProperty ;
+imf:precedes a owl:ObjectProperty ;
+    a owl:IrreflexiveProperty , owl:TransitiveProperty ;
+    rdfs:subPropertyOf imf:associativeRelation , imf:intraAspectRelation ;
     rdfs:domain imf:Terminal ;
     rdfs:range imf:Terminal ;
-    rdfs:subPropertyOf imf:intraAspectRelation .
+    #owl:propertyChainAxiom ( [ owl:inverseOf imf:hasConnectionInput ] imf:hasConnectionOutput ) ;
+    .
+
 #+END_SRC
 
-#+BEGIN_SRC ttl
-imf:StreamTerminal
-    a owl:Class ;
-    owl:equivalentClass [
-        a owl:Class ;
-        owl:intersectionOf (imf:Terminal
-            [
-                a owl:Restriction ;
-                owl:onProperty [
-                    owl:inverseOf imf:hasTerminal
-                ] ;
-                owl:someValuesFrom [
-                    a owl:Class ;
-                    owl:unionOf (imf:Interface
-                        imf:Transport
-                    )
-                ]
-            ]
-        )
-    ] .
+*** Connection
 
-imf:SystemBlockTerminal
-    a owl:Class ;
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:StreamTerminal ;
-        owl:onProperty imf:isConnectedTo
-    ] ;
-    owl:equivalentClass [
-        a owl:Class ;
-        owl:intersectionOf (imf:Terminal
-            [
-                a owl:Restriction ;
-                owl:onProperty [
-                    owl:inverseOf imf:hasTerminal
-                ] ;
-                owl:someValuesFrom imf:SystemBlock
-            ]
-        )
-    ] .
+#+NAME: owl-metamodel-connection
+#+BEGIN_SRC ttl
+imf:Connection a owl:Class ;
+
+  ### annotations
+
+  skos:prefLabel "Connection" ;
+  
+  skos:altLabel "Junction" ;
+
+  #skos:definition """
+  #""";
+
+  #skos:scopeNote """
+  #""";
+
+  #skos:example """
+  #""";
+
+  #skos:editorialNote """
+  #""";
+
+  .
+
+  ### axioms
+
+[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
+   ottr:values ( imf:Connection imf:hasConnectionInput imf:OutputTerminal ) .
+
+[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
+   ottr:values ( imf:Connection  imf:hasConnectionOutput imf:InputTerminal ) .
+
+imf:hasConnectionInput a owl:ObjectProperty ;
+    a owl:FunctionalProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation  ;
+    rdfs:domain imf:Connection ;
+    rdfs:range imf:OutputTerminal ;
+    .
+
+imf:hasConnectionOutput a owl:ObjectProperty ;
+    a owl:FunctionalProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+    rdfs:domain imf:Connection ;
+    rdfs:range imf:InputTerminal ;
+    .
 #+END_SRC
 
 * IMF Aspects Ontology
@@ -1026,7 +1133,7 @@ org-mode tangled files.
 
 *** RDF validate tangled file
 
-#+CALL: sh_jena_validate_rdf(files=".imf-aspects.wottr")
+#+CALL: sh_jena_validate_rdf(files=".imf-aspects.wottr.ttl")
 
 #+RESULTS:
 : 15:38:57 INFO  riot            :: File: .imf-aspects.wottr
@@ -1038,7 +1145,7 @@ org-mode tangled files.
 
 *** Expand OTTR instances
 
-#+CALL: lutra-expand(in=".imf-aspects.wottr", out="imf-aspects.owl.ttl")
+#+CALL: lutra-expand(in=".imf-aspects.wottr.ttl", out="imf-aspects.owl.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -1119,7 +1226,7 @@ rapper: Parsing returned 166 triples
 *** RDF validate final file
 
 #+CALL: sh_jena_validate_rdf(files="imf-aspects.owl.ttl")
-#+CALL: sh_jena_shacl_validate_std-vocabulary(files="imf-aspects.owl.ttl")
+#+CALL: sh_jena_shacl_validate(data="imf-aspects.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -1136,7 +1243,7 @@ rapper: Parsing returned 166 triples
 ** Ontology header
 
 #+NAME: owl-aspect-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle .imf-aspects.wottr
+#+BEGIN_SRC ttl :noweb strip-export :tangle .imf-aspects.wottr.ttl
 <<prefixes>>
 
 <http://ns.imfid.org/imf-aspects> a owl:Ontology ;
@@ -1394,6 +1501,21 @@ return output
    ottr:values( imf:isInstalledAs (imf:ProductAspectObject) (imf:InstalledAspectObject) ) . 
 #+END_src
 
+** OTTR templates
+** Example instances
+
+#+BEGIN_SRC ttl
+ex:f-1 a imf:AspectObject ;
+  imf:hasAspect imf:FunctionAspect ;
+  imf:hasChild ex:f-1-1, ex:f-1-2, ex:f-1-3 .
+
+ex:f-1-1 
+  imf:hasChild ex:f-1-1-1, ex:f-1-1-2 .
+
+ex:f-1-1-2 
+  imf:hasChild ex:f-1-1-2-1, ex:f-1-1-2-2 .
+#+END_SRC
+
 * Summary of IMF ontologies
 ** Classes
 
@@ -1617,12 +1739,12 @@ shacl_validate [--target URI] --shapes shapesFile --data dataFile
 #+end_example
 
 
-#+NAME: sh_jena_shacl_validate_std-vocabulary
-#+BEGIN_SRC sh :results output raw :var files="imf-top.owl.ttl" :wrap src ttl
-apache-jena/bin/shacl v --shapes http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl --data $files
+#+NAME: sh_jena_shacl_validate
+#+BEGIN_SRC sh :results output raw :var data="imf-top.owl.ttl" :wrap src ttl
+apache-jena/bin/shacl v --shapes http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl --shapes https://spec.ottr.xyz/wOTTR/0.4.3/core-grammar.shacl.ttl --data $data
 #+END_SRC
 
-#+RESULTS: sh_jena_shacl_validate_std-vocabulary
+#+RESULTS: sh_jena_shacl_validate
 #+BEGIN_src ttl
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -1691,13 +1813,192 @@ apache-jena/bin/sparql --results=text --data=$files --query .temp-sh_jena_sparql
 
 * Lutra calls                                                      :noexport:
 
+#+NAME: lutra-help
+#+BEGIN_SRC sh :results output verbatim
+java -jar lutra.jar --help
+#+END_SRC
+
+#+RESULTS: lutra-help
+#+begin_example
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Usage: lutra [-fhV] [--debugFullTrace] [--debugStackTrace] [--quiet] [--stdout]
+             [-F=<fetchFormat>] [--haltOn=<haltOn>] [-I=<inputFormat>]
+             [-L=<libraryFormat>] [-m=<mode>] [-o=<out>] [-O=<outputFormat>]
+             [-p=<prefixes>] [-e=<extensions>[,<extensions>...]]...
+             [-E=<ignoreExtensions>[,<ignoreExtensions>...]]...
+             [-l=<library>]... [<inputs>...]
+
+DESCRIPTION:
+Tool for working with OTTR Templates, for expanding instances and template
+definition, translating between different formats and for checking the
+integrity of a template library.
+
+PARAMETERS:
+      [<inputs>...]         Files of instances to which operations are to be
+                              applied.
+
+OPTIONS:
+      --debugFullTrace      This enables tracing such that printed messages get
+                              a stack trace giving more information on the
+                              location of the concerned objects. NB! Enabling
+                              this flag will deteriorate performance.
+                            default: false)
+      --debugStackTrace     This enables printing a regular java stack trace
+                              for error messages.Enabling this flag will not
+                              deteriorate performance.
+                            default: false)
+  -e, --extension=<extensions>[,<extensions>...]
+                            File extension of files to use as input to template
+                              library.
+                            (default: [])
+  -E, --ignoreExtension=<ignoreExtensions>[,<ignoreExtensions>...]
+                            File extensions of files to ignore as input to
+                              template library.
+                            (default: [])
+  -f, --fetchMissing        Fetch missing template dependencies. It is here
+                              assumed that templates' definitions are
+                              accessible via their IRI, that is, the IRI is
+                              either a path to a file, a URL, or similar.
+                            (default: false)
+  -F, --fetchFormat=<fetchFormat>
+                            The input format of the templates fetched via the
+                              -f flag.
+  -h, --help                Show this help message and exit.
+      --haltOn=<haltOn>     Halt execution upon receiving messages with a
+                              severity equal to or greater than this value.
+                            (legal values: INFO, WARNING, ERROR, FATAL;
+                              default: ERROR)
+  -I, --inputFormat=<inputFormat>
+                            Input format of instances.
+                            (legal values: wottr, stottr, tabottr, bottr
+                              default: wottr)
+  -l, --library=<library>   Folder containing templates to use as library. Can
+                              be used multiple times for multiple libraries.
+  -L, --libraryFormat=<libraryFormat>
+                            The input format of the libraries. If omitted, all
+                              available formats are attempted.
+                            (legal values: wottr, stottr)
+  -m, --mode=<mode>         The mode of operation to be applied to input.
+                            (legal values: expand, expandLibrary, format,
+                              formatLibrary, lint, checkSyntax, docttrLibrary;
+                              default: expand)
+  -o, --output=<out>        Path for writing output.
+  -O, --outputFormat=<outputFormat>
+                            Output format of output of operation defined by the
+                              mode.
+                            (legal values: wottr, stottr; default: wottr)
+  -p, --prefixes=<prefixes> Path to RDF file containing prefix declarations to
+                              be used when rendering output.    Any other data
+                              in the file is read, but ignored.
+      --quiet               Suppress all messages, including errors and
+                              warnings.
+                            (default: false)
+      --stdout              Print system of operations to standard out.
+                            (default: false)
+  -V, --version             Print version information and exit.
+
+EXAMPLES:
+The following command reads all .ttl and .owl-files in ./lib as a template
+library and checks its intergrity:
+
+    lutra -L wottr -m lint -l ./lib -e "ttl,owl"
+
+The following translates all template files (with .ttl-extension) in ./lib from
+the legacy format to wottr, and writes them to ./wottr:
+
+    lutra -L legacy -O wottr -m formatLibrary -l ./lib -o ./wottr
+
+The following expands all instances in ins1.xlsx and ins2.xlsx in tabOTTR using
+the templates in ./baselib and ./domain and writes the expanded instances to
+exp.ttl in the wOTTR format:
+
+    lutra -I tabottr -O wottr -m expand -l ./baselib -l ./domain -o exp.ttl
+ins1.xlsx ins2.xlsx
+
+DISCUSSION:
+Note that with -O wottr all triple-instances outside of template definitions
+are written as normal RDF triples, thus to expand a set of instances into an
+RDF graph this is what should be used.
+
+When a set of template definitions are written with -o <fpath>, each template
+will be writen to a folder path of the form <fpath>/<tpath>/<name>.ttl, where
+<tpath> is the path-part of the template's IRI, and <name> is the fragment of
+the IRI. E.g. with -o ./templates, the template with IRI
+    http://example.org/draft/owl/SubclassOf
+will be written to the path
+    ./templates/draft/owl/SubclassOf.ttl.
+
+Note that one can omit giving a format for libraries. In this case all possible
+formats are attempted, and the first to succeed for each library is used for
+that library. However, all files within one library needs to be of the same
+format, but different libraries can have files of different formats.
+
+FURTHER INFORMATION:
+Website: https://ottr.xyz
+Source:  https://gitlab.com/ottr/lutra/lutra
+
+REPORTING BUGS:
+Please report any bugs as issues to our Git repository at
+    https://gitlab.com/ottr/lutra/lutra/issues.
+#+end_example
+
 #+NAME: lutra-expand
-#+BEGIN_SRC sh :results output verbatim :var in=".imf-aspects.wottr" :var out="imf-aspects.owl.ttl"
-java -jar lutra.jar -l tpl -L stottr -f -p .prefixes.ttl $in -o $in.temp
+#+BEGIN_SRC sh :results output verbatim :var in=".imf-aspects.wottr.ttl" :var out="imf-aspects.owl.ttl"
+java -jar lutra.jar -l tpl -L stottr -f -p .prefixes.ttl -o $in.temp $in 
 rapper -i turtle -o turtle $in.temp > $out
 #+END_SRC
 
 #+RESULTS: lutra-expand
+#+begin_example
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+
+[ERROR] Parsing stOTTR
+[ERROR] Syntax error at line 44 col 0: no viable alternative at input 'o-imf:Description[ottr:IRI?id,xsd:string?label,?xsd:string?note,]'
+[ERROR] Syntax error at line 45 col 42: mismatched input ',' expecting '.'
+[ERROR] Syntax error at line 47 col 0: extraneous input '}' expecting '.'
+
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectAllValuesFrom
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
+
+[WARNING] Failed fetch for template http://ns.imfid.org/templates/Description
+
+[INFO] Fetched template http://tpl.ottr.xyz/rdf/0.1/Type
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectHasValue
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectUnionOf
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectAllValuesFrom
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/TypedListRelation
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivalentClass
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubPropertyOf
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectHasValue
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/AllValuesFrom
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/HasValue
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ListRelation
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-aspects.wottr.temp with parser turtle
+rapper: Serializing with serializer turtle
+rapper: Parsing returned 166 triples
+#+end_example
 * RDFVizler rules and calls                                        :noexport:
 ** Prefixes
 
@@ -2049,4 +2350,6 @@ return output
 : @prefix imf:	<http://ns.imfid.org/imf#> .
 
 #+CALL: py_prefixlist2ttl[:wrap src ttl](list=prefixlist)
+
+* Notes
 

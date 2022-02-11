@@ -1,5 +1,6 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
 @prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
 @prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -209,16 +210,16 @@ imf:isInstalledAs
     """ .
 
 []
+    a owl:AllDisjointClasses ;
+    owl:members (imf:PrimaryAspect
+        imf:SecondaryAspect
+    ) .
+
+[]
     a owl:AllDifferent ;
     owl:members (imf:FunctionAspect
         imf:LocationAspect
         imf:ProductAspect
         imf:InstalledAspect
-    ) .
-
-[]
-    a owl:AllDisjointClasses ;
-    owl:members (imf:PrimaryAspect
-        imf:SecondaryAspect
     ) .
 

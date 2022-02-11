@@ -1,5 +1,6 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
 @prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
 @prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -22,13 +23,13 @@ imf:AspectObject
     a owl:Class ;
     rdfs:subClassOf [
         a owl:Restriction ;
-        owl:onClass imf:IntegratedObject ;
-        owl:onProperty imf:isAspectOf ;
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ], [
         a owl:Restriction ;
-        owl:onClass imf:Aspect ;
-        owl:onProperty imf:hasAspect ;
+        owl:onClass imf:IntegratedObject ;
+        owl:onProperty imf:isAspectOf ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     skos:definition """
@@ -106,19 +107,8 @@ imf:hasAspect
     a owl:ObjectProperty ;
     rdfs:domain imf:AspectObject ;
     rdfs:range imf:Aspect ;
-    skos:definition "Relates an aspect object with its aspect." ;
+    skos:definition "Relates an aspect object to its aspect." ;
     skos:prefLabel "has aspect" .
-
-imf:hasChild
-    a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:narrower .
-
-imf:hasParent
-    a owl:FunctionalProperty, owl:ObjectProperty ;
-    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:broader ;
-    owl:inverseOf imf:hasChild .
 
 imf:hierarchicalRelation
     a owl:IrreflexiveProperty, owl:ObjectProperty ;
@@ -156,7 +146,7 @@ imf:isAspectOf
     rdfs:range imf:IntegratedObject ;
     skos:definition """
 
-    Relates an aspect object with the integrated object the aspect
+    Relates an aspect object to the integrated object the aspect
     object provides a specification for/description of.""" ;
     skos:prefLabel "is aspect of" .
 

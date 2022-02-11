@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-02-02 Wed 12:05 -->
+<!-- 2022-02-11 Fri 15:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>IMF Ontology</title>
@@ -234,124 +234,108 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org575addd">1. Preliminaries</a>
+<li><a href="#orgf81c427">1. Preliminaries</a>
 <ul>
-<li><a href="#org0a55373">1.1. Prefixes</a></li>
-<li><a href="#org8cd087a">1.2. SKOS</a></li>
+<li><a href="#orge2a7ed2">1.1. Prefixes</a></li>
+<li><a href="#org2307628">1.2. SKOS</a></li>
 </ul>
 </li>
-<li><a href="#orgd8a48ce">2. Namespace and Identifiers</a></li>
-<li><a href="#org6216822">3. IMF Ontology</a>
+<li><a href="#org427185c">2. Namespace and Identifiers</a></li>
+<li><a href="#org951d29a">3. IMF Ontology</a>
 <ul>
-<li><a href="#orgb6542f1">3.1. QA tests&#xa0;&#xa0;&#xa0;<span class="tag"><span class="QA">QA</span></span></a></li>
-<li><a href="#org895f414">3.2. Ontology header</a></li>
+<li><a href="#org6ebaf88">3.1. Ontology header</a></li>
 </ul>
 </li>
-<li><a href="#org94f48b0">4. IMF Top Ontology</a>
+<li><a href="#orgf5a4fe9">4. IMF Top Ontology</a>
 <ul>
-<li><a href="#orgcd73c85">4.1. Processing and QA&#xa0;&#xa0;&#xa0;<span class="tag"><span class="QA">QA</span></span></a>
+<li><a href="#org8d9d27d">4.1. Ontology header</a></li>
+<li><a href="#orgdb57a46">4.2. Aspects, Aspect objects and Integrated objects</a>
 <ul>
-<li><a href="#orgb98cdea">4.1.1. RDF validate tangled file</a></li>
-<li><a href="#orgaaeb3e1">4.1.2. Expand OTTR instances</a></li>
-<li><a href="#org5f4f50d">4.1.3. RDF validate final file</a></li>
+<li><a href="#org045c94a">4.2.1. Aspect Object</a></li>
+<li><a href="#org3b4f50d">4.2.2. Aspect</a></li>
+<li><a href="#org2ba2113">4.2.3. Integrated Object</a></li>
+<li><a href="#org4cbf014">4.2.4. Structural relations</a></li>
 </ul>
 </li>
-<li><a href="#org6e40f25">4.2. Ontology header</a></li>
-<li><a href="#orgdb168da">4.3. Aspects, Aspect objects and Integrated objects</a>
-<ul>
-<li><a href="#org7a3b589">4.3.1. Aspect Object</a></li>
-<li><a href="#org1d961cb">4.3.2. Aspect</a></li>
-<li><a href="#orge7fc3b4">4.3.3. Integrated Object</a></li>
+<li><a href="#orgdc79f82">4.3. OTTR templates</a></li>
 </ul>
 </li>
-<li><a href="#org2e05294">4.4. Relations between aspect objects</a>
+<li><a href="#orgef257ec">5. <span class="todo TODO">TODO</span> IMF Metamodel Ontology</a>
 <ul>
-<li><a href="#org6d9d4dc">4.4.1. High-level structural relations</a></li>
-<li><a href="#orgfdc00d9">4.4.2. Hierarchical relations</a></li>
+<li><a href="#orgf2d8dd3">5.1. Overview</a></li>
+<li><a href="#org471c8d3">5.2. <span class="todo TODO">TODO</span> Preliminary definitions</a>
+<ul>
+<li><a href="#org506a94f">5.2.1. Notater <span class="timestamp-wrapper"><span class="timestamp">[2022-02-10 Thu]</span></span></a></li>
+<li><a href="#org5c3fd01">5.2.2. Notater <span class="timestamp-wrapper"><span class="timestamp">[2022-02-03 Thu]</span></span></a></li>
+<li><a href="#org4507207">5.2.3. System</a></li>
+<li><a href="#org895f2a6">5.2.4. Transport</a></li>
+<li><a href="#org3db810d">5.2.5. Terminal/Port</a></li>
+<li><a href="#org37e9aa1">5.2.6. Connection/Interface</a></li>
+<li><a href="#org09b7610">5.2.7. Flow</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#orge5ae2dd">5. <span class="todo TODO">TODO</span> IMF Metamodel Ontology</a>
+<li><a href="#org9b3a36a">5.3. Ontology header</a></li>
+<li><a href="#org554c13b">5.4. Aspect object subtypes and relations</a>
 <ul>
-<li><a href="#orgec43f7a">5.1. <span class="todo TODO">TODO</span> Preliminary definitions</a>
-<ul>
-<li><a href="#org9c68336">5.1.1. System</a></li>
-<li><a href="#org54b6a2a">5.1.2. Transport</a></li>
-<li><a href="#orgcdc7ce0">5.1.3. Terminal/Port</a></li>
-<li><a href="#org526503f">5.1.4. Connection</a></li>
-<li><a href="#org2c9b540">5.1.5. Stream</a></li>
-</ul>
-</li>
-<li><a href="#orgd7f6a54">5.2. <span class="todo TODO">TODO</span> Processing and QA&#xa0;&#xa0;&#xa0;<span class="tag"><span class="QA">QA</span></span></a></li>
-<li><a href="#org9a4b0f0">5.3. Ontology header</a></li>
-<li><a href="#orgc4d18ec">5.4. Aspect object subtypes and their relations</a>
-<ul>
-<li><a href="#org38b3b72">5.4.1. Terminal</a></li>
-<li><a href="#orgeb2aacd">5.4.2. System block</a></li>
-<li><a href="#org2074f00">5.4.3. Transport</a></li>
-<li><a href="#org9ad0889">5.4.4. <span class="todo TODO">TODO</span> left-overs</a></li>
+<li><a href="#org33d34c2">5.4.1. Relations</a></li>
+<li><a href="#orgf61ec93">5.4.2. System block</a></li>
+<li><a href="#orgb71c686">5.4.3. Terminal</a></li>
+<li><a href="#orge5cf552">5.4.4. Connection</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org1bc86eb">6. IMF Aspects Ontology</a>
+<li><a href="#org565bf19">6. IMF Aspects Ontology</a>
 <ul>
-<li><a href="#org9d4a86d">6.1. Processing and QA&#xa0;&#xa0;&#xa0;<span class="tag"><span class="QA">QA</span></span></a>
+<li><a href="#orgc28ca6e">6.1. Ontology header</a></li>
+<li><a href="#org5205bea">6.2. Aspect classes</a>
 <ul>
-<li><a href="#org6893d2e">6.1.1. RDF validate tangled file</a></li>
-<li><a href="#org1597980">6.1.2. Expand OTTR instances</a></li>
-<li><a href="#org94f10b9">6.1.3. RDF validate final file</a></li>
+<li><a href="#org89816ef">6.2.1. Aspect</a></li>
+<li><a href="#org0805e5b">6.2.2. Primary Aspect</a></li>
+<li><a href="#org771488b">6.2.3. Secondary Aspect</a></li>
 </ul>
 </li>
-<li><a href="#orga50693b">6.2. Ontology header</a></li>
-<li><a href="#orge1c73b7">6.3. Aspect classes</a>
+<li><a href="#orgc715be2">6.3. Aspects</a></li>
+<li><a href="#org2282215">6.4. Inter-aspect relationships</a></li>
+<li><a href="#orgd01cd79">6.5. OTTR templates</a></li>
+<li><a href="#orgb1d878b">6.6. Example instances</a></li>
+</ul>
+</li>
+<li><a href="#orgd840ce1">7. Summary of IMF ontologies</a>
 <ul>
-<li><a href="#org75aae70">6.3.1. Aspect</a></li>
-<li><a href="#orgcff5c36">6.3.2. Primary Aspect</a></li>
-<li><a href="#org1ca69c7">6.3.3. Secondary Aspect</a></li>
+<li><a href="#orgbbf9dab">7.1. Classes</a></li>
+<li><a href="#orgbc60015">7.2. Properties</a></li>
+<li><a href="#orgb14872c">7.3. Ontologies combined to one file</a></li>
 </ul>
 </li>
-<li><a href="#orgb4c05b8">6.4. Aspects</a></li>
-<li><a href="#orge022002">6.5. Inter-aspect relationships</a></li>
-</ul>
-</li>
-<li><a href="#org74e8161">7. Summary of IMF ontologies</a>
-<ul>
-<li><a href="#org2164168">7.1. Classes</a></li>
-<li><a href="#org09aaf89">7.2. Properties</a></li>
-<li><a href="#orga3dcc78">7.3. Ontologies combined to one file</a></li>
-</ul>
-</li>
-<li><a href="#orge8b772c">8. Visualisation Ontology</a></li>
-<li><a href="#org3a1b8c9">9. Jena calls</a>
-<ul>
-<li><a href="#org89b1f09">9.1. RIOT</a></li>
-<li><a href="#org9a12d7f">9.2. shacl</a></li>
-<li><a href="#org80f1c15">9.3. sparql</a></li>
-</ul>
-</li>
+<li><a href="#org8d48a07">8. <span class="todo TODO">TODO</span> Visualisation Ontology</a></li>
+<li><a href="#org4942989">9. Notes</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org575addd" class="outline-2">
-<h2 id="org575addd"><span class="section-number-2">1</span> Preliminaries</h2>
+<div id="outline-container-orgf81c427" class="outline-2">
+<h2 id="orgf81c427"><span class="section-number-2">1</span> Preliminaries</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org0a55373" class="outline-3">
-<h3 id="org0a55373"><span class="section-number-3">1.1</span> Prefixes</h3>
+<div id="outline-container-orge2a7ed2" class="outline-3">
+<h3 id="orge2a7ed2"><span class="section-number-3">1.1</span> Prefixes</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org9b6aa18">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
+<pre class="src src-ttl" id="orgf923753">@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-ttl" id="org5f229a2">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs:	&lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix owl:    &lt;http://www.w3.org/2002/07/owl#&gt; .
 @prefix skos:	&lt;http://www.w3.org/2004/02/skos/core#&gt; .
-@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
+@prefix pav:	&lt;http://purl.org/pav/&gt; .
 @prefix sh: 	&lt;http://www.w3.org/ns/shacl#&gt; . 
 @prefix shsh:   &lt;http://www.w3.org/ns/shacl-shacl#&gt; .
-
+@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
 @prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
 @prefix o-rdf:       &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
 @prefix o-owl-ax:    &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
@@ -364,8 +348,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org8cd087a" class="outline-3">
-<h3 id="org8cd087a"><span class="section-number-3">1.2</span> SKOS</h3>
+<div id="outline-container-org2307628" class="outline-3">
+<h3 id="org2307628"><span class="section-number-3">1.2</span> SKOS</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 The ontology is defined using the SKOS vocabulary. For convenience,
@@ -405,8 +389,8 @@ the purposes of administration and maintenance.</dd>
 </div>
 </div>
 
-<div id="outline-container-orgd8a48ce" class="outline-2">
-<h2 id="orgd8a48ce"><span class="section-number-2">2</span> Namespace and Identifiers</h2>
+<div id="outline-container-org427185c" class="outline-2">
+<h2 id="org427185c"><span class="section-number-2">2</span> Namespace and Identifiers</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The namespace for resources used by the IMF ontology and other
@@ -429,37 +413,15 @@ http://ns.imfid.org/ontology/[yyyy-mm-dd]/[ontology-name]
 </div>
 </div>
 
-<div id="outline-container-org6216822" class="outline-2">
-<h2 id="org6216822"><span class="section-number-2">3</span> IMF Ontology</h2>
+<div id="outline-container-org951d29a" class="outline-2">
+<h2 id="org951d29a"><span class="section-number-2">3</span> IMF Ontology</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgb6542f1" class="outline-3">
-<h3 id="orgb6542f1"><span class="section-number-3">3.1</span> QA tests&#xa0;&#xa0;&#xa0;<span class="tag"><span class="QA">QA</span></span></h3>
+<div id="outline-container-org6ebaf88" class="outline-3">
+<h3 id="org6ebaf88"><span class="section-number-3">3.1</span> Ontology header</h3>
 <div class="outline-text-3" id="text-3-1">
-<pre class="example">
-imf.owl.ttl     : 0.20 sec : 8 Triples : 39.60 per second
-
-</pre>
-
 <div class="org-src-container">
-<pre class="src src-ttl">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix sh:   &lt;http://www.w3.org/ns/shacl#&gt; .
-@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
-
-[ rdf:type     sh:ValidationReport ;
-  sh:conforms  true
-] .
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org895f414" class="outline-3">
-<h3 id="org895f414"><span class="section-number-3">3.2</span> Ontology header</h3>
-<div class="outline-text-3" id="text-3-2">
-<div class="org-src-container">
-<pre class="src src-ttl" id="orgb811b90">
+<pre class="src src-ttl" id="org6f0b75d">
 
 &lt;http://ns.imfid.org/imf&gt; a owl:Ontology ;
     owl:versionIRI &lt;http://ns.imfid.org/ontology/2022-01-31/imf&gt; ;
@@ -495,128 +457,15 @@ imf.owl.ttl     : 0.20 sec : 8 Triples : 39.60 per second
 </div>
 </div>
 
-<div id="outline-container-org94f48b0" class="outline-2">
-<h2 id="org94f48b0"><span class="section-number-2">4</span> IMF Top Ontology</h2>
+<div id="outline-container-orgf5a4fe9" class="outline-2">
+<h2 id="orgf5a4fe9"><span class="section-number-2">4</span> IMF Top Ontology</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgcd73c85" class="outline-3">
-<h3 id="orgcd73c85"><span class="section-number-3">4.1</span> Processing and QA&#xa0;&#xa0;&#xa0;<span class="tag"><span class="QA">QA</span></span></h3>
+<div id="outline-container-org8d9d27d" class="outline-3">
+<h3 id="org8d9d27d"><span class="section-number-3">4.1</span> Ontology header</h3>
 <div class="outline-text-3" id="text-4-1">
-<p>
-This is placed here so that it is easier to syncronise filenames with
-org-mode tangled files.
-</p>
-</div>
-
-<div id="outline-container-orgb98cdea" class="outline-4">
-<h4 id="orgb98cdea"><span class="section-number-4">4.1.1</span> RDF validate tangled file</h4>
-<div class="outline-text-4" id="text-4-1-1">
-<pre class="example">
-.imf-top.wottr  : 0.22 sec : 90 Triples : 401.79 per second
-
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgaaeb3e1" class="outline-4">
-<h4 id="orgaaeb3e1"><span class="section-number-4">4.1.2</span> Expand OTTR instances</h4>
-<div class="outline-text-4" id="text-4-1-2">
-<pre class="example">
-SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectAllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
-
-[INFO] Fetched template http://tpl.ottr.xyz/rdf/0.1/Type
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectHasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectUnionOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectAllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/TypedListRelation
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivalentClass
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubPropertyOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectHasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/AllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/HasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ListRelation
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
-
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectExactCardinality
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectExactCardinality
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectExactCardinality
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ObjectCardinality
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/Cardinality
-
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB&lt;rdfs:Resource&gt;, owl:onClass : LUB ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB&lt;rdfs:Resource&gt;, owl:qualifiedCard ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB&lt;rdfs:Resource&gt;, owl:onProperty :  ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#isAspectOf : LUB&lt;ottr:IR ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#IntegratedObject : LUB&lt;o ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#AspectObject : LUB&lt;ottr: ...
-
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
-
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB&lt;rdfs:Resource&gt;, owl:members : LUB ...
-
-[WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
-[WARNING] Failed fetch for template http://ns.ottr.xyz/0.4/NullableTriple
-
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#AspectObject : L ...
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-top.wottr.temp with parser turtle
-rapper: Serializing with serializer turtle
-rapper: Parsing returned 82 triples
-</pre>
-</div>
-</div>
-
-<div id="outline-container-org5f4f50d" class="outline-4">
-<h4 id="org5f4f50d"><span class="section-number-4">4.1.3</span> RDF validate final file</h4>
-<div class="outline-text-4" id="text-4-1-3">
-<pre class="example">
-imf-top.owl.ttl : 0.22 sec : 78 Triples : 351.35 per second
-
-</pre>
-
 <div class="org-src-container">
-<pre class="src src-ttl">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix sh:   &lt;http://www.w3.org/ns/shacl#&gt; .
-@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
-
-[ rdf:type     sh:ValidationReport ;
-  sh:conforms  true
-] .
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org6e40f25" class="outline-3">
-<h3 id="org6e40f25"><span class="section-number-3">4.2</span> Ontology header</h3>
-<div class="outline-text-3" id="text-4-2">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org71c98cd">
+<pre class="src src-ttl" id="org91046c0">
 
 &lt;http://ns.imfid.org/imf-top&gt; a owl:Ontology ;
     owl:versionIRI &lt;http://ns.imfid.org/ontology/2022-01-31/imf-top&gt; ;
@@ -638,21 +487,20 @@ imf-top.owl.ttl : 0.22 sec : 78 Triples : 351.35 per second
 
 
 
-
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgdb168da" class="outline-3">
-<h3 id="orgdb168da"><span class="section-number-3">4.3</span> Aspects, Aspect objects and Integrated objects</h3>
-<div class="outline-text-3" id="text-4-3">
+<div id="outline-container-orgdb57a46" class="outline-3">
+<h3 id="orgdb57a46"><span class="section-number-3">4.2</span> Aspects, Aspect objects and Integrated objects</h3>
+<div class="outline-text-3" id="text-4-2">
 </div>
-<div id="outline-container-org7a3b589" class="outline-4">
-<h4 id="org7a3b589"><span class="section-number-4">4.3.1</span> Aspect Object</h4>
-<div class="outline-text-4" id="text-4-3-1">
+<div id="outline-container-org045c94a" class="outline-4">
+<h4 id="org045c94a"><span class="section-number-4">4.2.1</span> Aspect Object</h4>
+<div class="outline-text-4" id="text-4-2-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orge8e113d">imf:AspectObject a owl:Class ;
+<pre class="src src-ttl" id="orgfb45834">imf:AspectObject a owl:Class ;
 
   ### annotations
 
@@ -707,7 +555,7 @@ imf:isAspectOf a owl:ObjectProperty ;
   skos:prefLabel "is aspect of" ;
   skos:definition """
 
-    Relates an aspect object with the integrated object the aspect
+    Relates an aspect object to the integrated object the aspect
     object provides a specification for/description of.""";
 
   rdfs:domain imf:AspectObject ;
@@ -715,7 +563,7 @@ imf:isAspectOf a owl:ObjectProperty ;
 
 imf:hasAspect a owl:ObjectProperty ;
   skos:prefLabel "has aspect" ;
-  skos:definition "Relates an aspect object with its aspect.";
+  skos:definition "Relates an aspect object to its aspect.";
   rdfs:domain imf:AspectObject ;
   rdfs:range imf:Aspect .
 
@@ -735,11 +583,11 @@ imf:hasAspect a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org1d961cb" class="outline-4">
-<h4 id="org1d961cb"><span class="section-number-4">4.3.2</span> Aspect</h4>
-<div class="outline-text-4" id="text-4-3-2">
+<div id="outline-container-org3b4f50d" class="outline-4">
+<h4 id="org3b4f50d"><span class="section-number-4">4.2.2</span> Aspect</h4>
+<div class="outline-text-4" id="text-4-2-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org2a747e0">imf:Aspect a owl:Class ;
+<pre class="src src-ttl" id="orgafb6fb4">imf:Aspect a owl:Class ;
 
   ### annotations
 
@@ -766,11 +614,11 @@ imf:hasAspect a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orge7fc3b4" class="outline-4">
-<h4 id="orge7fc3b4"><span class="section-number-4">4.3.3</span> Integrated Object</h4>
-<div class="outline-text-4" id="text-4-3-3">
+<div id="outline-container-org2ba2113" class="outline-4">
+<h4 id="org2ba2113"><span class="section-number-4">4.2.3</span> Integrated Object</h4>
+<div class="outline-text-4" id="text-4-2-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org394d972">imf:IntegratedObject a owl:Class ;
+<pre class="src src-ttl" id="org8b39108">imf:IntegratedObject a owl:Class ;
 
   ### annotations
 
@@ -810,20 +658,15 @@ imf:hasAspect a owl:ObjectProperty ;
 </div>
 </div>
 </div>
-</div>
 
-<div id="outline-container-org2e05294" class="outline-3">
-<h3 id="org2e05294"><span class="section-number-3">4.4</span> Relations between aspect objects</h3>
-<div class="outline-text-3" id="text-4-4">
-</div>
-<div id="outline-container-org6d9d4dc" class="outline-4">
-<h4 id="org6d9d4dc"><span class="section-number-4">4.4.1</span> High-level structural relations</h4>
-<div class="outline-text-4" id="text-4-4-1">
+<div id="outline-container-org4cbf014" class="outline-4">
+<h4 id="org4cbf014"><span class="section-number-4">4.2.4</span> Structural relations</h4>
+<div class="outline-text-4" id="text-4-2-4">
 <p>
 The following scope note is put on all following top-level relations:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgb98b348">skos:scopeNote """
+<pre class="src src-ttl" id="org412d7b6">skos:scopeNote """
 
   This relation is used to enforce that subproperties respect this
   relation's definition. This must be enforced by introducing
@@ -835,7 +678,7 @@ The following scope note is put on all following top-level relations:
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="org8cd76bc">imf:intraAspectRelation a owl:ObjectProperty ;
+<pre class="src src-ttl" id="org265e06f">imf:intraAspectRelation a owl:ObjectProperty ;
     rdfs:subPropertyOf skos:semanticRelation ;
     rdfs:domain imf:AspectObject ;
     rdfs:range imf:AspectObject ;
@@ -864,38 +707,181 @@ imf:associativeRelation a owl:ObjectProperty ;
 </div>
 </div>
 </div>
+</div>
 
-<div id="outline-container-orgfdc00d9" class="outline-4">
-<h4 id="orgfdc00d9"><span class="section-number-4">4.4.2</span> Hierarchical relations</h4>
-<div class="outline-text-4" id="text-4-4-2">
+
+<div id="outline-container-orgdc79f82" class="outline-3">
+<h3 id="orgdc79f82"><span class="section-number-3">4.3</span> OTTR templates</h3>
+<div class="outline-text-3" id="text-4-3">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> ID</li>
+<li class="off"><code>[&#xa0;]</code> RDS</li>
+<li class="off"><code>[&#xa0;]</code> SemanticID</li>
+<li class="off"><code>[&#xa0;]</code> Service Description</li>
+<li class="off"><code>[&#xa0;]</code> Description</li>
+<li class="off"><code>[&#xa0;]</code> Status</li>
+
+<li class="off"><code>[&#xa0;]</code> DateCreated</li>
+<li class="off"><code>[&#xa0;]</code> CreatedBy</li>
+<li class="off"><code>[&#xa0;]</code> LastUpdated</li>
+<li class="off"><code>[&#xa0;]</code> UpdatedBy</li>
+<li class="off"><code>[&#xa0;]</code> Version</li>
+</ul>
+
+
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgd2abf34">imf:hasChild a owl:ObjectProperty ;
-    rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject .
+<pre class="src src-ttl">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs:	&lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix owl:    &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix skos:	&lt;http://www.w3.org/2004/02/skos/core#&gt; .
+@prefix pav:	&lt;http://purl.org/pav/&gt; .
+@prefix sh: 	&lt;http://www.w3.org/ns/shacl#&gt; . 
+@prefix shsh:   &lt;http://www.w3.org/ns/shacl-shacl#&gt; .
+@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
+@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
+@prefix o-rdf:       &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
+@prefix o-owl-ax:    &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
+@prefix o-owl-ma:    &lt;http://tpl.ottr.xyz/owl/macro/0.1/&gt; .
+@prefix o-owl-rstr:  &lt;http://tpl.ottr.xyz/owl/restriction/0.1/&gt; .
 
-imf:hasParent a owl:ObjectProperty;
-    a owl:FunctionalProperty ;
-    rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
-    owl:inverseOf imf:hasChild .
+@prefix o-imf:	     &lt;http://ns.imfid.org/templates/&gt; .
+
+## extract SKOS metadata in own template?
+
+o-imf:AspectObject [
+  owl:NamedIndividual ?id, 
+  owl:NamedIndividual ?aspect, 
+  owl:NamedIndividual ?parentID,
+  xsd:string ?label, 
+  ? xsd:string ?description,
+  xsd:dateTime ?createdDate,
+  ottr:IRI ?createdBy,
+  ? xsd:dateTime ?updatedDate,
+  ? ottr:IRI ?updatedBy,
+  xsd:string ?version,
+  ottr:IRI ?status
+] :: {
+  o-rdf:Type(?id, imf:AspectObject),
+  ottr:Triple(?id, imf:hasAspect, ?aspect), 
+  ottr:Triple(?id, imf:hasParent, ?parentID),
+  o-imf:Description(?id, ?label, ?description),
+  o-imf:Versioning(?id, ?createdDate, ?createdBy, ?updatedDate, ?updatedBy, ?version, ?status)
+} .
+
+o-imf:Description [
+  ottr:IRI ?id,
+  xsd:string ?label,
+  ? xsd:string ?note
+] :: {
+  ottr:Triple(?id, skos:prefLabel, ?label),
+  ottr:Triple(?id, skos:note, ?note)
+} .
+
+o-imf:Versioning [
+  ottr:IRI ?id,
+  ? xsd:dateTime ?createdDate,
+  ? ottr:IRI ?createdBy,
+  ? xsd:dateTime ?updatedDate,
+  ? ottr:IRI ?updatedBy,
+  xsd:string ?version,
+  ? ottr:IRI ?status
+] :: {
+  ottr:Triple(?id, pav:createdBy, ?createdBy),
+  ottr:Triple(?id, pav:createdOn, ?createdDate),
+
+  ottr:Triple(?id, pav:contributedBy, ?updatedBy),
+  ottr:Triple(?id, pav:lastUpdateOn, ?updatedDate),
+
+  ottr:Triple(?id, pav:version, ?version),
+
+  ottr:Triple(?id, imf:status, ?status)
+
+} .
+ 
+
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div>
 
-<div id="outline-container-orge5ae2dd" class="outline-2">
-<h2 id="orge5ae2dd"><span class="section-number-2">5</span> <span class="todo TODO">TODO</span> IMF Metamodel Ontology</h2>
+<div id="outline-container-orgef257ec" class="outline-2">
+<h2 id="orgef257ec"><span class="section-number-2">5</span> <span class="todo TODO">TODO</span> IMF Metamodel Ontology</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-orgec43f7a" class="outline-3">
-<h3 id="orgec43f7a"><span class="section-number-3">5.1</span> <span class="todo TODO">TODO</span> Preliminary definitions</h3>
+<div id="outline-container-orgf2d8dd3" class="outline-3">
+<h3 id="orgf2d8dd3"><span class="section-number-3">5.1</span> Overview</h3>
 <div class="outline-text-3" id="text-5-1">
+
+<div class="figure">
+<p><img src="imf-metamodel-overview.png" alt="imf-metamodel-overview.png" />
+</p>
 </div>
-<div id="outline-container-org9c68336" class="outline-4">
-<h4 id="org9c68336"><span class="section-number-4">5.1.1</span> System</h4>
-<div class="outline-text-4" id="text-5-1-1">
+</div>
+</div>
+
+<div id="outline-container-org471c8d3" class="outline-3">
+<h3 id="org471c8d3"><span class="section-number-3">5.2</span> <span class="todo TODO">TODO</span> Preliminary definitions</h3>
+<div class="outline-text-3" id="text-5-2">
+</div>
+<div id="outline-container-org506a94f" class="outline-4">
+<h4 id="org506a94f"><span class="section-number-4">5.2.1</span> Notater <span class="timestamp-wrapper"><span class="timestamp">[2022-02-10 Thu]</span></span></h4>
+<div class="outline-text-4" id="text-5-2-1">
+<p>
+MGS' suggestions
+</p>
+
+<ul class="org-ul">
+<li>System</li>
+<li>Port
+<ul class="org-ul">
+<li>InPort</li>
+<li>OutPort</li>
+</ul></li>
+<li>Bus
+<ul class="org-ul">
+<li>in</li>
+<li>out</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5c3fd01" class="outline-4">
+<h4 id="org5c3fd01"><span class="section-number-4">5.2.2</span> Notater <span class="timestamp-wrapper"><span class="timestamp">[2022-02-03 Thu]</span></span></h4>
+<div class="outline-text-4" id="text-5-2-2">
+<ul class="org-ul">
+<li>Flow: continuerly, nominal direction (positive/negative)</li>
+
+<li>Typer for port og flow:
+<ul class="org-ul">
+<li>material</li>
+<li>information</li>
+<li>energy</li>
+<li>structural</li>
+</ul></li>
+
+<li>Transformation: unit operation, activity, purpose
+<ul class="org-ul">
+<li>hasInput + hasOutput, 1 til mange</li>
+</ul></li>
+
+<li>System: function</li>
+
+<li>Port/Terminal: nominal inlet eller outlet -&gt; inlet, (sink + source)
+<ul class="org-ul">
+<li>hasTerminal</li>
+</ul></li>
+
+<li>Flow : 1-1 Terminal</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org4507207" class="outline-4">
+<h4 id="org4507207"><span class="section-number-4">5.2.3</span> System</h4>
+<div class="outline-text-4" id="text-5-2-3">
 <p>
 A system is a processing (black) box. It processes streams by
 performing some operation(s) on the input streams to produce the
@@ -923,9 +909,9 @@ Questions:
 </div>
 </div>
 
-<div id="outline-container-org54b6a2a" class="outline-4">
-<h4 id="org54b6a2a"><span class="section-number-4">5.1.2</span> Transport</h4>
-<div class="outline-text-4" id="text-5-1-2">
+<div id="outline-container-org895f2a6" class="outline-4">
+<h4 id="org895f2a6"><span class="section-number-4">5.2.4</span> Transport</h4>
+<div class="outline-text-4" id="text-5-2-4">
 <p>
 A transport is a system with exactly two terminals which are of the
 same "type", meaning that the processing a transport does is to
@@ -944,9 +930,9 @@ Transports?
 </div>
 </div>
 
-<div id="outline-container-orgcdc7ce0" class="outline-4">
-<h4 id="orgcdc7ce0"><span class="section-number-4">5.1.3</span> Terminal/Port</h4>
-<div class="outline-text-4" id="text-5-1-3">
+<div id="outline-container-org3db810d" class="outline-4">
+<h4 id="org3db810d"><span class="section-number-4">5.2.5</span> Terminal/Port</h4>
+<div class="outline-text-4" id="text-5-2-5">
 <p>
 A terminal is a port/boundary point with which a system or a transport
 is connected to other systems or transports.
@@ -968,9 +954,9 @@ does not need to be.</li>
 </div>
 </div>
 
-<div id="outline-container-org526503f" class="outline-4">
-<h4 id="org526503f"><span class="section-number-4">5.1.4</span> Connection</h4>
-<div class="outline-text-4" id="text-5-1-4">
+<div id="outline-container-org37e9aa1" class="outline-4">
+<h4 id="org37e9aa1"><span class="section-number-4">5.2.6</span> Connection/Interface</h4>
+<div class="outline-text-4" id="text-5-2-6">
 <p>
 A connection connects two terminals. A connection is used for
 representing data about the connection, e.g., the force with which the
@@ -988,12 +974,39 @@ Questions:
 <li>Can a connection have a parent? Maybe not? It is necessary to
 have a parent?</li>
 </ul>
+
+<blockquote>
+<p>
+1.1               Junctions
+</p>
+
+<p>
+A junction is an object that connects two ports. The ports connected
+must have consistent interfaces and direction.
+</p>
+
+<p>
+Consistency of interfaces is required to ensure that the type of
+material, energy or information shared between the ports is correct.
+</p>
+
+<p>
+The junction, in effect, merges the two ports. The junction itself has
+no function or spatial significance.
+</p>
+
+<p>
+This is different to NASA MBSE practice, which sees a junction
+expanding into a transport or mechanical connection at some higher
+level of detail. We do not permit this.
+</p>
+</blockquote>
 </div>
 </div>
 
-<div id="outline-container-org2c9b540" class="outline-4">
-<h4 id="org2c9b540"><span class="section-number-4">5.1.5</span> Stream</h4>
-<div class="outline-text-4" id="text-5-1-5">
+<div id="outline-container-org09b7610" class="outline-4">
+<h4 id="org09b7610"><span class="section-number-4">5.2.7</span> Flow</h4>
+<div class="outline-text-4" id="text-5-2-7">
 <p>
 Continuous
 </p>
@@ -1040,94 +1053,11 @@ split into multiple streams to represent this?</li>
 </div>
 </div>
 
-<div id="outline-container-orgd7f6a54" class="outline-3">
-<h3 id="orgd7f6a54"><span class="section-number-3">5.2</span> <span class="todo TODO">TODO</span> Processing and QA&#xa0;&#xa0;&#xa0;<span class="tag"><span class="QA">QA</span></span></h3>
-<div class="outline-text-3" id="text-5-2">
-<p>
-TODO: copy from other ontologies once this ontology has settled.
-</p>
-
-<p>
-This is placed here so that it is easier to syncronise filenames with
-org-mode tangled files.
-</p>
-
-<pre class="example">
-12:04:57 INFO  riot            :: File: .imf-metamodel.wottr
-.imf-metamodel.wottr : 0.21 sec : 60 Triples : 288.46 per second
-12:04:58 INFO  riot            :: File: imf-metamodel.owl.ttl
-imf-metamodel.owl.ttl : 0.01 sec : 55 Triples : 6,111.11 per second
-Total           : 0.22 sec : 115 Triples : 529.95 per second
-
-</pre>
-
-<pre class="example">
-SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectAllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
-
-[INFO] Fetched template http://tpl.ottr.xyz/rdf/0.1/Type
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectHasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectUnionOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectAllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/TypedListRelation
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivalentClass
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubPropertyOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectHasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/AllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/HasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ListRelation
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
-
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/macro/0.1/ClassPartition
-[INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/ClassPartition
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectUnionOf
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
-
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank505 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank505 : LUB&lt;rdfs:Resource&gt;, owl:members : LUB ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB&lt;rdfs:Resource&gt;, owl:unionOf : LUB ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#AspectObject : LUB&lt;ottr: ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#AspectObject : LUB&lt;ottr: ...
-
-[WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
-[WARNING] Failed fetch for template http://ns.ottr.xyz/0.4/NullableTriple
-
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#SystemBlock : LU ...
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-metamodel.wottr.temp with parser turtle
-rapper: Serializing with serializer turtle
-rapper: Parsing returned 59 triples
-</pre>
-</div>
-</div>
-
-
-<div id="outline-container-org9a4b0f0" class="outline-3">
-<h3 id="org9a4b0f0"><span class="section-number-3">5.3</span> Ontology header</h3>
+<div id="outline-container-org9b3a36a" class="outline-3">
+<h3 id="org9b3a36a"><span class="section-number-3">5.3</span> Ontology header</h3>
 <div class="outline-text-3" id="text-5-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orge5de57d">
+<pre class="src src-ttl" id="org71753d6">
 
 &lt;http://ns.imfid.org/imf-metamodel&gt; a owl:Ontology ;
     owl:versionIRI &lt;http://ns.imfid.org/ontology/2022-01-31/imf-metamodel&gt; ;
@@ -1148,108 +1078,107 @@ rapper: Parsing returned 59 triples
 
 
 
+
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgc4d18ec" class="outline-3">
-<h3 id="orgc4d18ec"><span class="section-number-3">5.4</span> Aspect object subtypes and their relations</h3>
+<div id="outline-container-org554c13b" class="outline-3">
+<h3 id="org554c13b"><span class="section-number-3">5.4</span> Aspect object subtypes and relations</h3>
 <div class="outline-text-3" id="text-5-4">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org9768c9d">imf:AspectObject a owl:Class ;
+<pre class="src src-ttl" id="orge1c0523">imf:AspectObject a owl:Class ;
 
   skos:scopeNote """
 
     Each aspect object is either a ....""".
 
 [] ottr:of o-owl-ma:ClassPartition ;
-   ottr:values ( imf:AspectObject ( imf:SystemBlock imf:Terminal imf:Transport )) .
+   ottr:values ( imf:AspectObject ( imf:SystemBlock imf:Terminal imf:Connection ) ) .
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org38b3b72" class="outline-4">
-<h4 id="org38b3b72"><span class="section-number-4">5.4.1</span> Terminal</h4>
+<div id="outline-container-org33d34c2" class="outline-4">
+<h4 id="org33d34c2"><span class="section-number-4">5.4.1</span> Relations</h4>
 <div class="outline-text-4" id="text-5-4-1">
+</div>
+<ol class="org-ol">
+<li><a id="orgf04d9da"></a>hasChild/hasParent<br />
+<div class="outline-text-5" id="text-5-4-1-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org2cde169">imf:Terminal a owl:Class ;
+<pre class="src src-ttl" id="orgc49564f">imf:hasParent a owl:ObjectProperty;
+    a owl:FunctionalProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
+    rdfs:domain imf:AspectObject ;
+    rdfs:range imf:AspectObject .
+
+imf:hasChild a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
+    owl:inverseOf imf:hasParent .
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+
+
+<div id="outline-container-orgf61ec93" class="outline-4">
+<h4 id="orgf61ec93"><span class="section-number-4">5.4.2</span> System block</h4>
+<div class="outline-text-4" id="text-5-4-2">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org89546c2">imf:SystemBlock a owl:Class ;
+
+  ### annotations
+
+  skos:prefLabel "System Block";
+  
+  #skos:altLabel "" ;
+
+  #skos:definition """
+  #""";
+
+  #skos:scopeNote """
+  #""";
+
+  #skos:example """
+  #""";
+
+  #skos:editorialNote """
+  #""";
+
+  .
+
+  ### axioms
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:SystemBlock imf:hasParent imf:SystemBlock ) .
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb71c686" class="outline-4">
+<h4 id="orgb71c686"><span class="section-number-4">5.4.3</span> Terminal</h4>
+<div class="outline-text-4" id="text-5-4-3">
+<div class="org-src-container">
+<pre class="src src-ttl" id="orgea0402f">imf:Terminal a owl:Class ;
 
   ### annotations
 
   skos:prefLabel "Terminal";
   
-  #skos:altLabel "";
+  skos:altLabel "Port" ;
 
   skos:definition """
 
-    A terminal represents a point/port/boundry of
-    connection/communication for exactly one system block or a
-    stream. System blocks and streams may only be connected to other
-    system blocks and streams via their terminals.
+    A terminal represents a port/boundry point for a system block
+    through which the system block and take input and give output.
 
   """;
-
-  skos:scopeNote """
-
-    System blocks and streams are not directly connected, but
-    (indirectly) connected through their terminals. Direct connections
-    between aspect objects are only permissible between terminals and
-    system blocks, terminals and streams, and between
-    terminals. Direct connections between terminals form indirect
-    connections between the aspect objects to which terminal acts as
-    terminal for.
-
-    Furthermore, such indirect connections are only permissible
-    between system block and streams, and between streams.
-
-    A terminal may have a direction which may either be in, out or
-    bi-directional. In-terminals may only be connected to
-    out-terminals (and vise versa), while bi-terminals may only be
-    connected to bi-terminals.
-  """;
-
-  #skos:example """
-  #""";
-
-  #skos:editorialNote """
-  #""";
-
-  .
-
-  ### axioms
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:BiTerminal imf:isConnectedTo imf:BiTerminal ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:InTerminal imf:isConnectedTo imf:OutTerminal ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:OutTerminal imf:isConnectedTo imf:InTerminal ) .
-
-[] ottr:of o-owl-ax:DisjointClasses ;
-   ottr:values ( ( imf:BiTerminal imf:InTerminal imf:OutTerminal ) ) .
-
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgeb2aacd" class="outline-4">
-<h4 id="orgeb2aacd"><span class="section-number-4">5.4.2</span> System block</h4>
-<div class="outline-text-4" id="text-5-4-2">
-<div class="org-src-container">
-<pre class="src src-ttl" id="orgdcba86c">imf:SystemBlock a owl:Class ;
-
-  ### annotations
-
-  #skos:prefLabel "";
-  
-  #skos:altLabel "";
-
-  #skos:definition """
-  #""";
 
   #skos:scopeNote """
   #""";
@@ -1263,177 +1192,93 @@ rapper: Parsing returned 59 triples
   .
 
   ### axioms
-</pre>
-</div>
-</div>
-</div>
 
-<div id="outline-container-org2074f00" class="outline-4">
-<h4 id="org2074f00"><span class="section-number-4">5.4.3</span> Transport</h4>
-<div class="outline-text-4" id="text-5-4-3">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org7341d22">imf:Transport a owl:Class ;
+[] ottr:of o-owl-ma:ClassPartition ;
+   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
 
-  ### annotations
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:InputTerminal imf:hasParent imf:InputTerminal ) .
 
-  #skos:prefLabel "";
-  
-  #skos:altLabel "";
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:OutputTerminal imf:hasParent imf:OutputTerminal ) .
 
-  #skos:definition """
-  #""";
 
-  #skos:scopeNote """
-  #""";
-
-  #skos:example """
-  #""";
-
-  #skos:editorialNote """
-  #""";
-
-  .
-
-  ### axioms
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org9ad0889" class="outline-4">
-<h4 id="org9ad0889"><span class="section-number-4">5.4.4</span> <span class="todo TODO">TODO</span> left-overs</h4>
-<div class="outline-text-4" id="text-5-4-4">
-<p>
-The relationships that form the structure between the different aspect
-objects are all intra-aspect relationships, meaning they relate aspect
-objects of the same aspect.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-ttl">imf:SystemBlock
-    a owl:Class ;
-    , [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:SystemBlock ;
-        owl:onProperty imf:hasChild
-    ] .
-
-imf:Terminal
-    a owl:Class ;
-    rdfs:subClassOf imf:AspectObject, [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:Terminal ;
-        owl:onProperty imf:hasChild
-    ] .
-
-imf:Transport
-    a owl:Class ;
-    rdfs:subClassOf imf:AspectObject, [
-        a owl:Restriction ;
-        owl:onProperty imf:hasActivity ;
-        owl:someValuesFrom owl:Thing
-    ], [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:Transport ;
-        owl:onProperty imf:hasChild
-    ], [
-        a owl:Restriction ;
-        owl:onClass imf:Terminal ;
-        owl:onProperty imf:hasTerminal ;
-        owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
-    ] .
-
-imf:Interface
-    a owl:Class ;
-    rdfs:subClassOf imf:AspectObject, [
-        a owl:Class ;
-        owl:complementOf [
-            a owl:Restriction ;
-            owl:onProperty imf:hasActivity ;
-            owl:someValuesFrom owl:Thing
-        ]
-    ], [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:Interface ;
-        owl:onProperty imf:hasChild
-    ], [
-        a owl:Restriction ;
-        owl:onClass imf:Terminal ;
-        owl:onProperty imf:hasTerminal ;
-        owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
-    ] .
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-ttl">imf:hasTerminal
-    a owl:InverseFunctionalProperty, owl:ObjectProperty; 
-    rdfs:domain [
-        a owl:Class ;
-        owl:unionOf (imf:Interface
-            imf:SystemBlock
-            imf:Transport
-        )
-    ] ;
+imf:hasTerminal a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+    rdfs:domain imf:SystemBlock ;
     rdfs:range imf:Terminal ;
-    rdfs:subPropertyOf imf:intraAspectRelation .
+    .
 
+imf:hasInputTerminal a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    rdfs:range imf:InputTerminal ;
+    .
 
-imf:isDirectlyConnectedTo a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:isConnectedTo , skos:related ;
-	a owl:FunctionalProperty , owl:InverseFunctionalProperty ;
-	rdfs:domain imf:Terminal ;
-	rdfs:range imf:Terminal .
+imf:hasOutputTerminal a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    rdfs:range imf:OutputTerminal ;
+    .
 
-
-imf:isConnectedTo
-    a owl:FunctionalProperty, owl:InverseFunctionalProperty, owl:ObjectProperty ;
+imf:precedes a owl:ObjectProperty ;
+    a owl:IrreflexiveProperty , owl:TransitiveProperty ;
+    rdfs:subPropertyOf imf:associativeRelation , imf:intraAspectRelation ;
     rdfs:domain imf:Terminal ;
     rdfs:range imf:Terminal ;
-    rdfs:subPropertyOf imf:intraAspectRelation .
+    #owl:propertyChainAxiom ( [ owl:inverseOf imf:hasConnectionInput ] imf:hasConnectionOutput ) ;
+    .
+
 </pre>
 </div>
+</div>
+</div>
 
+<div id="outline-container-orge5cf552" class="outline-4">
+<h4 id="orge5cf552"><span class="section-number-4">5.4.4</span> Connection</h4>
+<div class="outline-text-4" id="text-5-4-4">
 <div class="org-src-container">
-<pre class="src src-ttl">imf:StreamTerminal
-    a owl:Class ;
-    owl:equivalentClass [
-        a owl:Class ;
-        owl:intersectionOf (imf:Terminal
-            [
-                a owl:Restriction ;
-                owl:onProperty [
-                    owl:inverseOf imf:hasTerminal
-                ] ;
-                owl:someValuesFrom [
-                    a owl:Class ;
-                    owl:unionOf (imf:Interface
-                        imf:Transport
-                    )
-                ]
-            ]
-        )
-    ] .
+<pre class="src src-ttl" id="org2905f48">imf:Connection a owl:Class ;
 
-imf:SystemBlockTerminal
-    a owl:Class ;
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:StreamTerminal ;
-        owl:onProperty imf:isConnectedTo
-    ] ;
-    owl:equivalentClass [
-        a owl:Class ;
-        owl:intersectionOf (imf:Terminal
-            [
-                a owl:Restriction ;
-                owl:onProperty [
-                    owl:inverseOf imf:hasTerminal
-                ] ;
-                owl:someValuesFrom imf:SystemBlock
-            ]
-        )
-    ] .
+  ### annotations
+
+  skos:prefLabel "Connection" ;
+  
+  skos:altLabel "Junction" ;
+
+  #skos:definition """
+  #""";
+
+  #skos:scopeNote """
+  #""";
+
+  #skos:example """
+  #""";
+
+  #skos:editorialNote """
+  #""";
+
+  .
+
+  ### axioms
+
+[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
+   ottr:values ( imf:Connection imf:hasConnectionInput imf:OutputTerminal ) .
+
+[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
+   ottr:values ( imf:Connection  imf:hasConnectionOutput imf:InputTerminal ) .
+
+imf:hasConnectionInput a owl:ObjectProperty ;
+    a owl:FunctionalProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation  ;
+    rdfs:domain imf:Connection ;
+    rdfs:range imf:OutputTerminal ;
+    .
+
+imf:hasConnectionOutput a owl:ObjectProperty ;
+    a owl:FunctionalProperty ;
+    rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+    rdfs:domain imf:Connection ;
+    rdfs:range imf:InputTerminal ;
+    .
 </pre>
 </div>
 </div>
@@ -1441,138 +1286,15 @@ imf:SystemBlockTerminal
 </div>
 </div>
 
-<div id="outline-container-org1bc86eb" class="outline-2">
-<h2 id="org1bc86eb"><span class="section-number-2">6</span> IMF Aspects Ontology</h2>
+<div id="outline-container-org565bf19" class="outline-2">
+<h2 id="org565bf19"><span class="section-number-2">6</span> IMF Aspects Ontology</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-org9d4a86d" class="outline-3">
-<h3 id="org9d4a86d"><span class="section-number-3">6.1</span> Processing and QA&#xa0;&#xa0;&#xa0;<span class="tag"><span class="QA">QA</span></span></h3>
+<div id="outline-container-orgc28ca6e" class="outline-3">
+<h3 id="orgc28ca6e"><span class="section-number-3">6.1</span> Ontology header</h3>
 <div class="outline-text-3" id="text-6-1">
-<p>
-This is placed here so that it is easier to syncronise filenames with
-org-mode tangled files.
-</p>
-</div>
-
-<div id="outline-container-org6893d2e" class="outline-4">
-<h4 id="org6893d2e"><span class="section-number-4">6.1.1</span> RDF validate tangled file</h4>
-<div class="outline-text-4" id="text-6-1-1">
-<pre class="example">
-.imf-aspects.wottr : 0.23 sec : 162 Triples : 710.53 per second
-
-</pre>
-</div>
-</div>
-
-
-<div id="outline-container-org1597980" class="outline-4">
-<h4 id="org1597980"><span class="section-number-4">6.1.2</span> Expand OTTR instances</h4>
-<div class="outline-text-4" id="text-6-1-2">
-<pre class="example">
-SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectAllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
-
-[INFO] Fetched template http://tpl.ottr.xyz/rdf/0.1/Type
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectHasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectUnionOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectAllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/TypedListRelation
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivalentClass
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubPropertyOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectHasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/AllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/HasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ListRelation
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
-
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/DifferentIndividuals
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DifferentIndividuals
-
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank513 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank513 : LUB&lt;rdfs:Resource&gt;, owl:members : LUB ...
-
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/macro/0.1/ClassPartition
-[INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/ClassPartition
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectUnionOf
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
-
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank514 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank514 : LUB&lt;rdfs:Resource&gt;, owl:members : LUB ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank515 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank515 : LUB&lt;rdfs:Resource&gt;, owl:unionOf : LUB ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank515 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Aspect : LUB&lt;ottr:IRI&gt;,  ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Aspect : LUB&lt;ottr:IRI&gt;,  ...
-
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectOneOf
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectOneOf
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectOneOf
-
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank520 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank520 : LUB&lt;rdfs:Resource&gt;, owl:oneOf : LUB&lt;o ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank520 : LUB&lt;rdfs:Resource&gt;, rdf:type : LUB&lt;ot ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#PrimaryAspect : LUB&lt;ottr ...
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#PrimaryAspect : LUB&lt;ottr ...
-
-[WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
-[WARNING] Failed fetch for template http://ns.ottr.xyz/0.4/NullableTriple
-
- &gt;&gt;&gt; at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#interAspectRelat ...
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-aspects.wottr.temp with parser turtle
-rapper: Serializing with serializer turtle
-rapper: Parsing returned 166 triples
-</pre>
-</div>
-</div>
-
-<div id="outline-container-org94f10b9" class="outline-4">
-<h4 id="org94f10b9"><span class="section-number-4">6.1.3</span> RDF validate final file</h4>
-<div class="outline-text-4" id="text-6-1-3">
-<pre class="example">
-imf-aspects.owl.ttl : 0.23 sec : 149 Triples : 653.51 per second
-
-</pre>
-
 <div class="org-src-container">
-<pre class="src src-ttl">@prefix rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix sh:   &lt;http://www.w3.org/ns/shacl#&gt; .
-@prefix xsd:  &lt;http://www.w3.org/2001/XMLSchema#&gt; .
-
-[ rdf:type     sh:ValidationReport ;
-  sh:conforms  true
-] .
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orga50693b" class="outline-3">
-<h3 id="orga50693b"><span class="section-number-3">6.2</span> Ontology header</h3>
-<div class="outline-text-3" id="text-6-2">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org26f3cb4">
+<pre class="src src-ttl" id="org545d12f">
 
 &lt;http://ns.imfid.org/imf-aspects&gt; a owl:Ontology ;
     owl:versionIRI &lt;http://ns.imfid.org/ontology/2022-01-31/imf-aspects&gt; ;
@@ -1599,15 +1321,15 @@ imf-aspects.owl.ttl : 0.23 sec : 149 Triples : 653.51 per second
 </div>
 </div>
 
-<div id="outline-container-orge1c73b7" class="outline-3">
-<h3 id="orge1c73b7"><span class="section-number-3">6.3</span> Aspect classes</h3>
-<div class="outline-text-3" id="text-6-3">
+<div id="outline-container-org5205bea" class="outline-3">
+<h3 id="org5205bea"><span class="section-number-3">6.2</span> Aspect classes</h3>
+<div class="outline-text-3" id="text-6-2">
 </div>
-<div id="outline-container-org75aae70" class="outline-4">
-<h4 id="org75aae70"><span class="section-number-4">6.3.1</span> Aspect</h4>
-<div class="outline-text-4" id="text-6-3-1">
+<div id="outline-container-org89816ef" class="outline-4">
+<h4 id="org89816ef"><span class="section-number-4">6.2.1</span> Aspect</h4>
+<div class="outline-text-4" id="text-6-2-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org57097c1">imf:Aspect a owl:Class ;
+<pre class="src src-ttl" id="org16d967f">imf:Aspect a owl:Class ;
 
   skos:scopeNote """
 
@@ -1639,11 +1361,11 @@ imf-aspects.owl.ttl : 0.23 sec : 149 Triples : 653.51 per second
 </div>
 </div>
 
-<div id="outline-container-orgcff5c36" class="outline-4">
-<h4 id="orgcff5c36"><span class="section-number-4">6.3.2</span> Primary Aspect</h4>
-<div class="outline-text-4" id="text-6-3-2">
+<div id="outline-container-org0805e5b" class="outline-4">
+<h4 id="org0805e5b"><span class="section-number-4">6.2.2</span> Primary Aspect</h4>
+<div class="outline-text-4" id="text-6-2-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgce04cd7">imf:PrimaryAspect rdf:type owl:Class ;
+<pre class="src src-ttl" id="org87e482e">imf:PrimaryAspect rdf:type owl:Class ;
   rdfs:subClassOf imf:Aspect ;
 
   ### annotations
@@ -1677,11 +1399,11 @@ imf-aspects.owl.ttl : 0.23 sec : 149 Triples : 653.51 per second
 </div>
 </div>
 
-<div id="outline-container-org1ca69c7" class="outline-4">
-<h4 id="org1ca69c7"><span class="section-number-4">6.3.3</span> Secondary Aspect</h4>
-<div class="outline-text-4" id="text-6-3-3">
+<div id="outline-container-org771488b" class="outline-4">
+<h4 id="org771488b"><span class="section-number-4">6.2.3</span> Secondary Aspect</h4>
+<div class="outline-text-4" id="text-6-2-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org7219c45">imf:SecondaryAspect rdf:type owl:Class ;
+<pre class="src src-ttl" id="orgdcd6bda">imf:SecondaryAspect rdf:type owl:Class ;
   rdfs:subClassOf imf:Aspect ;
 
   skos:prefLabel "Secondary Aspect";
@@ -1711,10 +1433,10 @@ imf-aspects.owl.ttl : 0.23 sec : 149 Triples : 653.51 per second
 </div>
 </div>
 
-<div id="outline-container-orgb4c05b8" class="outline-3">
-<h3 id="orgb4c05b8"><span class="section-number-3">6.4</span> Aspects</h3>
-<div class="outline-text-3" id="text-6-4">
-<table id="org465286f" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<div id="outline-container-orgc715be2" class="outline-3">
+<h3 id="orgc715be2"><span class="section-number-3">6.3</span> Aspects</h3>
+<div class="outline-text-3" id="text-6-3">
+<table id="org25c0c22" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1776,11 +1498,11 @@ o-imf:AspectObjectClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
 </div>
 </div>
 
-<div id="outline-container-orge022002" class="outline-3">
-<h3 id="orge022002"><span class="section-number-3">6.5</span> Inter-aspect relationships</h3>
-<div class="outline-text-3" id="text-6-5">
+<div id="outline-container-org2282215" class="outline-3">
+<h3 id="org2282215"><span class="section-number-3">6.4</span> Inter-aspect relationships</h3>
+<div class="outline-text-3" id="text-6-4">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgd7c9311">imf:interAspectRelation a owl:ObjectProperty ;
+<pre class="src src-ttl" id="org6f1186d">imf:interAspectRelation a owl:ObjectProperty ;
     rdfs:domain imf:AspectObject ;
     rdfs:range imf:AspectObject ;
     rdfs:subPropertyOf skos:related ;
@@ -1797,7 +1519,7 @@ Aspect objects of different aspects are related by inter aspect
 relationships. The following relationships are permissible:
 </p>
 
-<table id="org605b19e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org128db80" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1848,17 +1570,38 @@ o-imf:InterAspectRelation[owl:ObjectProperty ?relation, List&lt;owl:Class&gt; ?d
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgd01cd79" class="outline-3">
+<h3 id="orgd01cd79"><span class="section-number-3">6.5</span> OTTR templates</h3>
+</div>
+<div id="outline-container-orgb1d878b" class="outline-3">
+<h3 id="orgb1d878b"><span class="section-number-3">6.6</span> Example instances</h3>
+<div class="outline-text-3" id="text-6-6">
+<div class="org-src-container">
+<pre class="src src-ttl">ex:f-1 a imf:AspectObject ;
+  imf:hasAspect imf:FunctionAspect ;
+  imf:hasChild ex:f-1-1, ex:f-1-2, ex:f-1-3 .
+
+ex:f-1-1 
+  imf:hasChild ex:f-1-1-1, ex:f-1-1-2 .
+
+ex:f-1-1-2 
+  imf:hasChild ex:f-1-1-2-1, ex:f-1-1-2-2 .
+</pre>
+</div>
+</div>
+</div>
 </div>
 
-<div id="outline-container-org74e8161" class="outline-2">
-<h2 id="org74e8161"><span class="section-number-2">7</span> Summary of IMF ontologies</h2>
+<div id="outline-container-orgd840ce1" class="outline-2">
+<h2 id="orgd840ce1"><span class="section-number-2">7</span> Summary of IMF ontologies</h2>
 <div class="outline-text-2" id="text-7">
 </div>
-<div id="outline-container-org2164168" class="outline-3">
-<h3 id="org2164168"><span class="section-number-3">7.1</span> Classes</h3>
+<div id="outline-container-orgbbf9dab" class="outline-3">
+<h3 id="orgbbf9dab"><span class="section-number-3">7.1</span> Classes</h3>
 <div class="outline-text-3" id="text-7-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org5c61170">SELECT ?class ?prefLabel ?altLabels ?definition ?superclasses
+<pre class="src src-ttl" id="orgf8f21f7">SELECT ?class ?prefLabel ?altLabels ?definition ?superclasses
 {
   ?class a owl:Class.
   FILTER (!isBlank(?class))
@@ -1918,15 +1661,15 @@ ORDER BY ?class
 <td class="org-left"><code>Aspect Object</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left"><code>An aspect object describes a specific type of feature (or aspect) of one (and exactly one) integrated object.</code></td>
-<td class="org-left"><code>ub1bL342C9, ub1bL338C21</code></td>
+<td class="org-left"><code>ub1bL367C9, ub1bL363C21</code></td>
 </tr>
 
 <tr>
-<td class="org-left"><code>imf:BiTerminal</code></td>
+<td class="org-left"><code>imf:Connection</code></td>
+<td class="org-left"><code>Connection</code></td>
+<td class="org-left"><code>Junction, Junction</code></td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL126C21</code></td>
+<td class="org-left"><code>ub1bL255C9, ub1bL252C21</code></td>
 </tr>
 
 <tr>
@@ -1934,15 +1677,15 @@ ORDER BY ?class
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL225C21</code></td>
+<td class="org-left"><code>ub1bL191C21</code></td>
 </tr>
 
 <tr>
-<td class="org-left"><code>imf:InTerminal</code></td>
+<td class="org-left"><code>imf:InputTerminal</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL131C21</code></td>
+<td class="org-left"><code>ub1bL318C21</code></td>
 </tr>
 
 <tr>
@@ -1950,7 +1693,7 @@ ORDER BY ?class
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL140C21</code></td>
+<td class="org-left"><code>ub1bL124C21</code></td>
 </tr>
 
 <tr>
@@ -1966,15 +1709,15 @@ ORDER BY ?class
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL149C21</code></td>
+<td class="org-left"><code>ub1bL133C21</code></td>
 </tr>
 
 <tr>
-<td class="org-left"><code>imf:OutTerminal</code></td>
+<td class="org-left"><code>imf:OutputTerminal</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL158C21</code></td>
+<td class="org-left"><code>ub1bL323C21</code></td>
 </tr>
 
 <tr>
@@ -1990,7 +1733,7 @@ ORDER BY ?class
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL288C21</code></td>
+<td class="org-left"><code>ub1bL262C21</code></td>
 </tr>
 
 <tr>
@@ -2003,25 +1746,17 @@ ORDER BY ?class
 
 <tr>
 <td class="org-left"><code>imf:SystemBlock</code></td>
+<td class="org-left"><code>System Block</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>ub1bL271C21</code></td>
 </tr>
 
 <tr>
 <td class="org-left"><code>imf:Terminal</code></td>
 <td class="org-left"><code>Terminal</code></td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left"><code>A terminal represents a point/port/boundry of connection/communication for exactly one system block or a stream. System blocks and streams may only be connected to other system blocks and streams via their terminals.</code></td>
-<td class="org-left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>imf:Transport</code></td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>Port</code></td>
+<td class="org-left"><code>A terminal represents a port/boundry point for a system block through which the system block and take input and give output.</code></td>
 <td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
@@ -2029,11 +1764,11 @@ ORDER BY ?class
 </div>
 </div>
 
-<div id="outline-container-org09aaf89" class="outline-3">
-<h3 id="org09aaf89"><span class="section-number-3">7.2</span> Properties</h3>
+<div id="outline-container-orgbc60015" class="outline-3">
+<h3 id="orgbc60015"><span class="section-number-3">7.2</span> Properties</h3>
 <div class="outline-text-3" id="text-7-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org6a84f25">SELECT ?type ?property ?prefLabel ?altLabels ?definition ?domain ?range ?characteristics ?superproperties
+<pre class="src src-ttl" id="org9d98494">SELECT ?type ?property ?prefLabel ?altLabels ?definition ?domain ?range ?characteristics ?superproperties
 {
   ?property a ?type.
   FILTER (?type = owl:ObjectProperty || ?type = owl:DatatypeProperty || ?type = owl:AnnotationProperty )
@@ -2056,7 +1791,7 @@ ORDER BY ?class
       OPTIONAL { ?property skos:altLabel ?altLabel }
     } GROUP BY ?property
   }
-
+  
 }
 ORDER BY ?type ?property
 </pre>
@@ -2115,7 +1850,7 @@ ORDER BY ?type ?property
 <td class="org-left"><code>imf:hasAspect</code></td>
 <td class="org-left"><code>has aspect</code></td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>Relates an aspect object with its aspect.</code></td>
+<td class="org-left"><code>Relates an aspect object to its aspect.</code></td>
 <td class="org-left"><code>imf:AspectObject</code></td>
 <td class="org-left"><code>imf:Aspect</code></td>
 <td class="org-left">&#xa0;</td>
@@ -2128,10 +1863,46 @@ ORDER BY ?type ?property
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>imf:AspectObject</code></td>
-<td class="org-left"><code>imf:AspectObject</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left"><code>imf:hierarchicalRelation, imf:intraAspectRelation, skos:narrower</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>owl:ObjectProperty</code></td>
+<td class="org-left"><code>imf:hasConnectionInput</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:Connection</code></td>
+<td class="org-left"><code>imf:OutputTerminal</code></td>
+<td class="org-left"><code>owl:FunctionalProperty, owl:FunctionalProperty</code></td>
+<td class="org-left"><code>imf:intraAspectRelation, imf:associativeRelation</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>owl:ObjectProperty</code></td>
+<td class="org-left"><code>imf:hasConnectionOutput</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:Connection</code></td>
+<td class="org-left"><code>imf:InputTerminal</code></td>
+<td class="org-left"><code>owl:FunctionalProperty, owl:FunctionalProperty</code></td>
+<td class="org-left"><code>imf:associativeRelation, imf:intraAspectRelation</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>owl:ObjectProperty</code></td>
+<td class="org-left"><code>imf:hasInputTerminal</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:InputTerminal</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:hasTerminal</code></td>
 </tr>
 
 <tr>
@@ -2140,10 +1911,22 @@ ORDER BY ?type ?property
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL46C17</code></td>
-<td class="org-left"><code>ub1bL48C16</code></td>
+<td class="org-left"><code>ub1bL41C17</code></td>
+<td class="org-left"><code>ub1bL43C16</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left"><code>imf:interAspectRelation</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>owl:ObjectProperty</code></td>
+<td class="org-left"><code>imf:hasOutputTerminal</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:OutputTerminal</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:hasTerminal</code></td>
 </tr>
 
 <tr>
@@ -2152,10 +1935,22 @@ ORDER BY ?type ?property
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:AspectObject</code></td>
+<td class="org-left"><code>imf:AspectObject</code></td>
 <td class="org-left"><code>owl:FunctionalProperty, owl:FunctionalProperty, owl:FunctionalProperty</code></td>
 <td class="org-left"><code>imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>owl:ObjectProperty</code></td>
+<td class="org-left"><code>imf:hasTerminal</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:SystemBlock</code></td>
+<td class="org-left"><code>imf:Terminal</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:intraAspectRelation, imf:associativeRelation</code></td>
 </tr>
 
 <tr>
@@ -2199,21 +1994,9 @@ ORDER BY ?type ?property
 <td class="org-left"><code>imf:isAspectOf</code></td>
 <td class="org-left"><code>is aspect of</code></td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>Relates an aspect object with the integrated object the aspect object provides a specification for/description of.</code></td>
+<td class="org-left"><code>Relates an aspect object to the integrated object the aspect object provides a specification for/description of.</code></td>
 <td class="org-left"><code>imf:AspectObject</code></td>
 <td class="org-left"><code>imf:IntegratedObject</code></td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="org-left"><code>owl:ObjectProperty</code></td>
-<td class="org-left"><code>imf:isConnectedTo</code></td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 </tr>
@@ -2224,8 +2007,8 @@ ORDER BY ?type ?property
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL60C17</code></td>
-<td class="org-left"><code>ub1bL62C16</code></td>
+<td class="org-left"><code>ub1bL52C17</code></td>
+<td class="org-left"><code>ub1bL54C16</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left"><code>imf:interAspectRelation</code></td>
 </tr>
@@ -2236,10 +2019,22 @@ ORDER BY ?type ?property
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
-<td class="org-left"><code>ub1bL67C17</code></td>
-<td class="org-left"><code>ub1bL69C16</code></td>
+<td class="org-left"><code>ub1bL59C17</code></td>
+<td class="org-left"><code>ub1bL61C16</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left"><code>imf:interAspectRelation</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>owl:ObjectProperty</code></td>
+<td class="org-left"><code>imf:precedes</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>imf:Terminal</code></td>
+<td class="org-left"><code>imf:Terminal</code></td>
+<td class="org-left"><code>owl:TransitiveProperty, owl:IrreflexiveProperty, owl:TransitiveProperty, owl:IrreflexiveProperty</code></td>
+<td class="org-left"><code>imf:associativeRelation, imf:associativeRelation, imf:intraAspectRelation, imf:intraAspectRelation</code></td>
 </tr>
 </tbody>
 </table>
@@ -2247,420 +2042,22 @@ ORDER BY ?type ?property
 </div>
 
 
-<div id="outline-container-orga3dcc78" class="outline-3">
-<h3 id="orga3dcc78"><span class="section-number-3">7.3</span> Ontologies combined to one file</h3>
+<div id="outline-container-orgb14872c" class="outline-3">
+<h3 id="orgb14872c"><span class="section-number-3">7.3</span> Ontologies combined to one file</h3>
 <div class="outline-text-3" id="text-7-3">
 <p>
 RDF Turtle serialisation of all IMF ontologies merged into one file
 </p>
 
-<div class="org-src-container">
-<pre class="src src-ttl">@prefix imf: &lt;http://ns.imfid.org/imf#&gt; .
-@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
-@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
-@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
-
-&lt;http://ns.imfid.org/imf&gt; a owl:Ontology ;
-    owl:imports &lt;http://ns.imfid.org/ontology/2022-01-31/imf-aspects&gt;,
-        &lt;http://ns.imfid.org/ontology/2022-01-31/imf-metamodel&gt;,
-        &lt;http://ns.imfid.org/ontology/2022-01-31/imf-top&gt; ;
-    owl:versionIRI &lt;http://ns.imfid.org/ontology/2022-01-31/imf&gt; ;
-    skos:altLabel "IMF ontology" ;
-    skos:prefLabel "Information Modelling Framework Ontology " ;
-    skos:scopeNote """
-
-      The IMF ontology is in its current version defined over
-      different ontology documents: 
-
-      1. IMF Top defines the very high-level classes and properties of
-      the IMF ontology, such as AspectObject.
-
-      2. IMF Metamodel defines the metamodel for aspect objects and
-      their permissible properties.
-
-      3. IMG Aspects defines the aspects that are available to aspect
-      objects.
-
-    """ .
-
-imf:associativeRelation a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    rdfs:subPropertyOf skos:related ;
-    owl:propertyDisjointWith imf:hierachicalRelation ;
-    skos:definition "A generic associative relation." ;
-    skos:scopeNote """
-    
-      This relation is used to enforce that subproperties respect this
-      relation's definition. This must be enforced by introducing
-      class axioms that locally further restrict the domain and range
-      of the relation.
-      
-    """ .
-
-imf:hasLocation a owl:ObjectProperty ;
-    rdfs:domain [ a owl:Class ;
-            owl:unionOf ( imf:FunctionAspectObject imf:ProductAspectObject ) ] ;
-    rdfs:range [ a owl:Class ;
-            owl:unionOf ( imf:LocationAspectObject ) ] ;
-    rdfs:subPropertyOf imf:interAspectRelation .
-
-imf:hasParent a owl:FunctionalProperty,
-        owl:ObjectProperty ;
-    rdfs:subPropertyOf imf:hierarchicalRelation,
-        imf:intraAspectRelation,
-        skos:broader ;
-    owl:inverseOf imf:hasChild .
-
-imf:isFulfilledBy a owl:ObjectProperty ;
-    rdfs:domain [ a owl:Class ;
-            owl:unionOf ( imf:FunctionAspectObject ) ] ;
-    rdfs:range [ a owl:Class ;
-            owl:unionOf ( imf:ProductAspectObject ) ] ;
-    rdfs:subPropertyOf imf:interAspectRelation .
-
-imf:isInstalledAs a owl:ObjectProperty ;
-    rdfs:domain [ a owl:Class ;
-            owl:unionOf ( imf:ProductAspectObject ) ] ;
-    rdfs:range [ a owl:Class ;
-            owl:unionOf ( imf:InstalledAspectObject ) ] ;
-    rdfs:subPropertyOf imf:interAspectRelation .
-
-&lt;http://ns.imfid.org/imf-aspects&gt; a owl:Ontology ;
-    owl:imports &lt;http://ns.imfid.org/ontology/2022-01-31/imf-top&gt; ;
-    owl:versionIRI &lt;http://ns.imfid.org/ontology/2022-01-31/imf-aspects&gt; ;
-    skos:altLabel "IMF aspects ontology" ;
-    skos:prefLabel "Information Modelling Framework Ontology: Aspects Ontology " ;
-    skos:scopeNote """
-
-      This ontology defines IMF's central aspects.
-
-    """ .
-
-&lt;http://ns.imfid.org/imf-metamodel&gt; a owl:Ontology ;
-    owl:imports &lt;http://ns.imfid.org/ontology/2022-01-31/imf-top&gt; ;
-    owl:versionIRI &lt;http://ns.imfid.org/ontology/2022-01-31/imf-metamodel&gt; ;
-    skos:altLabel "IMF metamodel ontology" ;
-    skos:prefLabel "Information Modelling Framework Ontology: Metamodel Ontology " ;
-    skos:scopeNote """
-
-      This ontology defines IMF's meta model which defines how
-      IMF models are represented.
-
-    """ .
-
-&lt;http://ns.imfid.org/imf-top&gt; a owl:Ontology ;
-    owl:imports &lt;http://www.w3.org/2004/02/skos/core&gt; ;
-    owl:versionIRI &lt;http://ns.imfid.org/ontology/2022-01-31/imf-top&gt; ;
-    skos:altLabel "IMF top ontology" ;
-    skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
-    skos:scopeNote """
-
-      This ontology defines the very core classes and relations of the
-      Information Modelling Framework (IMF) that provide a structure
-      for ontologies that extend this ontology.
-
-    """ .
-
-imf:hasChild a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    rdfs:subPropertyOf imf:hierarchicalRelation,
-        imf:intraAspectRelation,
-        skos:narrower .
-
-imf:isAspectOf a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:IntegratedObject ;
-    skos:definition """
-
-    Relates an aspect object with the integrated object the aspect
-    object provides a specification for/description of.""" ;
-    skos:prefLabel "is aspect of" .
-
-imf:BiTerminal a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:BiTerminal ;
-            owl:onProperty imf:isConnectedTo ] .
-
-imf:InTerminal a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:OutTerminal ;
-            owl:onProperty imf:isConnectedTo ] .
-
-imf:InstalledAspect a imf:Aspect ;
-    imf:color "#3232BD" ;
-    imf:prefix "::" .
-
-imf:InstalledAspectObject a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:InstalledAspectObject ;
-            owl:onProperty imf:intraAspectRelation ] ;
-    owl:equivalentClass [ a owl:Class,
-                owl:Restriction ;
-            owl:hasValue imf:InstalledAspect ;
-            owl:onProperty imf:hasAspect ] .
-
-imf:LocationAspectObject a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:LocationAspectObject ;
-            owl:onProperty imf:intraAspectRelation ] ;
-    owl:equivalentClass [ a owl:Class,
-                owl:Restriction ;
-            owl:hasValue imf:LocationAspect ;
-            owl:onProperty imf:hasAspect ] .
-
-imf:OutTerminal a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:InTerminal ;
-            owl:onProperty imf:isConnectedTo ] .
-
-imf:SecondaryAspect a owl:Class ;
-    rdfs:subClassOf imf:Aspect ;
-    owl:disjointWith imf:PrimaryAspect ;
-    skos:definition """
-
-    Secondary aspects are those aspects that are not primary aspects.
-
-  """ ;
-    skos:prefLabel "Secondary Aspect" .
-
-imf:SystemBlock a owl:Class .
-
-imf:Terminal a owl:Class ;
-    skos:definition """
-
-    A terminal represents a point/port/boundry of
-    connection/communication for exactly one system block or a
-    stream. System blocks and streams may only be connected to other
-    system blocks and streams via their terminals.
-
-  """ ;
-    skos:prefLabel "Terminal" ;
-    skos:scopeNote """
-
-    System blocks and streams are not directly connected, but
-    (indirectly) connected through their terminals. Direct connections
-    between aspect objects are only permissible between terminals and
-    system blocks, terminals and streams, and between
-    terminals. Direct connections between terminals form indirect
-    connections between the aspect objects to which terminal acts as
-    terminal for.
-
-    Furthermore, such indirect connections are only permissible
-    between system block and streams, and between streams.
-
-    A terminal may have a direction which may either be in, out or
-    bi-directional. In-terminals may only be connected to
-    out-terminals (and vise versa), while bi-terminals may only be
-    connected to bi-terminals.
-  """ .
-
-imf:Transport a owl:Class .
-
-imf:hierarchicalRelation a owl:IrreflexiveProperty,
-        owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    rdfs:subPropertyOf skos:semanticRelation ;
-    skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
-    skos:scopeNote """
-    
-      This relation is used to enforce that subproperties respect this
-      relation's definition. This must be enforced by introducing
-      class axioms that locally further restrict the domain and range
-      of the relation.
-      
-    """ .
-
-imf:FunctionAspect a imf:Aspect ;
-    imf:color "#FFFF00" ;
-    imf:prefix "=" .
-
-imf:FunctionAspectObject a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:FunctionAspectObject ;
-            owl:onProperty imf:intraAspectRelation ] ;
-    owl:equivalentClass [ a owl:Class,
-                owl:Restriction ;
-            owl:hasValue imf:FunctionAspect ;
-            owl:onProperty imf:hasAspect ] .
-
-imf:IntegratedObject a owl:Class ;
-    skos:editorialNote """
-
-    [2022-01-24 Mon] TODO: Verify the description in the scopeNote.
-
-    [2022-01-19 Wed] Is it the case that an integrated object can only
-    have one aspect of the same aspect? """ ;
-    skos:prefLabel "Integrated Object" ;
-    skos:scopeNote """
-
-    The primary use of the IMF ontology is to specify requirements for
-    entities, where 'entity' is ment in a very generic sense; an
-    entity may be abstract or concrete, a high-level system, a product
-    class or an installed product. In the ontology these entities are
-    called integrated objects.
-
-    Following the IMF methodology, an intergrated object is not
-    described directly, but through typically multiple aspects
-    objects. see also [imf:AspectObject].""" .
-
-imf:LocationAspect a imf:Aspect ;
-    imf:color "#FF00FF" ;
-    imf:prefix "+",
-        "++" .
-
-imf:PrimaryAspect a owl:Class ;
-    rdfs:subClassOf imf:Aspect ;
-    owl:equivalentClass [ a owl:Class ;
-            owl:oneOf ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect ) ] ;
-    skos:definition """
-
-    The set of primary aspects are exactly those defined in ISO/IEC
-    81346: Function, Location, Product.
-
-  """ ;
-    skos:prefLabel "Primary Aspect" .
-
-imf:ProductAspect a imf:Aspect ;
-    imf:color "#00FFFF" ;
-    imf:prefix "-" .
-
-imf:interAspectRelation a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    rdfs:subPropertyOf skos:related ;
-    owl:propertyDisjointWith imf:intraAspectRelation ;
-    skos:editorialNote """
-
-      [2022-01-24 Mon] Do interAspectRelations always relate aspect
-      objects of the same type?""" .
-
-imf:isConnectedTo a owl:ObjectProperty .
-
-imf:ProductAspectObject a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:ProductAspectObject ;
-            owl:onProperty imf:intraAspectRelation ] ;
-    owl:equivalentClass [ a owl:Class,
-                owl:Restriction ;
-            owl:hasValue imf:ProductAspect ;
-            owl:onProperty imf:hasAspect ] .
-
-imf:hasAspect a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:Aspect ;
-    skos:definition "Relates an aspect object with its aspect." ;
-    skos:prefLabel "has aspect" .
-
-imf:intraAspectRelation a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    rdfs:subPropertyOf skos:semanticRelation ;
-    skos:definition "A generic relation between aspect objects of the same aspect" ;
-    skos:scopeNote """
-    
-      This relation is used to enforce that subproperties respect this
-      relation's definition. This must be enforced by introducing
-      class axioms that locally further restrict the domain and range
-      of the relation.
-      
-    """ .
-
-imf:Aspect a owl:Class ;
-    owl:equivalentClass [ a owl:Class ;
-            owl:unionOf ( imf:PrimaryAspect imf:SecondaryAspect ) ] ;
-    skos:example "Function, Location, Product are examples of aspects." ;
-    skos:prefLabel "Aspect" ;
-    skos:scopeNote """
-
-    Aspects are partitioned into primary and secondary aspects. The
-    primary aspects are Function, Location and Product. All other
-    aspects are secondary aspects.
-
-  """,
-        """
-
-    Each aspect is associated with a class of the aspect objects that
-    have that aspect, e.g,. imf:FunctionAspectObject is the class of
-    aspect objects with the aspect imf:FunctionAspect. These classes
-    are used to specify permissible relationships between aspect
-    objects according to their aspect.""" .
-
-imf:AspectObject a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:onClass imf:IntegratedObject ;
-            owl:onProperty imf:isAspectOf ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
-        [ a owl:Restriction ;
-            owl:onClass imf:Aspect ;
-            owl:onProperty imf:hasAspect ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] ;
-    owl:equivalentClass [ a owl:Class ;
-            owl:unionOf ( imf:SystemBlock imf:Terminal imf:Transport ) ] ;
-    skos:definition """
-
-    An aspect object describes a specific type of feature (or aspect)
-    of one (and exactly one) integrated object.""" ;
-    skos:editorialNote """
-
-  [2022-01-19 Wed] Is 'aspect object subtype' ok?
-
-  [2022-01-20 Thu]: Add (RDL) types/attributes to the overview scopeNote?
-  """ ;
-    skos:prefLabel "Aspect Object" ;
-    skos:scopeNote """
-
-    Each aspect object is either a ....""",
-        """
-
-    Overview:
-
-    Aspect object is the most central concept of the IMF ontology.
-
-    The following is used to define an aspect object:
-   
-    1. an aspect object must have a single aspect, we say that the
-    aspect object "is of" this aspect.  
-
-    2. an aspect object has a more specific subtype, being either a
-    system block, a stream or a terminal. These types determine how
-    the aspect object can be connected to other aspect objects.
-
-    3. an aspect object can be further described by breaking it down
-    into its parts or children. An aspect object is placed in a
-    tree-shaped breakdown structure where the aspect object may have a
-    single parent (the root object has no parent) and possibly
-    multiple children.
-
-  """ .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( imf:Aspect imf:AspectObject imf:IntegratedObject ) .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( imf:BiTerminal imf:InTerminal imf:OutTerminal ) .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( imf:SystemBlock imf:Terminal imf:Transport ) .
-
-[] a owl:AllDifferent ;
-    owl:members ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:InstalledAspect ) .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( imf:PrimaryAspect imf:SecondaryAspect ) .
-
-</pre>
-</div>
+<p>
+<a href="imf-all.owl.ttl">imf-all.owl.ttl</a>
+</p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge8b772c" class="outline-2">
-<h2 id="orge8b772c"><span class="section-number-2">8</span> Visualisation Ontology</h2>
+<div id="outline-container-org8d48a07" class="outline-2">
+<h2 id="org8d48a07"><span class="section-number-2">8</span> <span class="todo TODO">TODO</span> Visualisation Ontology</h2>
 <div class="outline-text-2" id="text-8">
 <div class="org-src-container">
 <pre class="src src-ttl">
@@ -2686,77 +2083,13 @@ imf:shape rdf:type owl:AnnotationProperty ;
 </div>
 </div>
 
-<div id="outline-container-org3a1b8c9" class="outline-2">
-<h2 id="org3a1b8c9"><span class="section-number-2">9</span> Jena calls</h2>
-<div class="outline-text-2" id="text-9">
-</div>
-
-<div id="outline-container-org89b1f09" class="outline-3">
-<h3 id="org89b1f09"><span class="section-number-3">9.1</span> RIOT</h3>
-<div class="outline-text-3" id="text-9-1">
-<div class="org-src-container">
-<pre class="src src-sh">apache-jena/bin/riot --help
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-sh" id="org67269ed">apache-jena/bin/riot --verbose --syntax=$syntax --validate --time $files 
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-sh" id="orga91aabd">apache-jena/bin/riot --verbose --syntax=$syntax --check --formatted=ttl --time $files &gt; $out
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org9a12d7f" class="outline-3">
-<h3 id="org9a12d7f"><span class="section-number-3">9.2</span> shacl</h3>
-<div class="outline-text-3" id="text-9-2">
-<div class="org-src-container">
-<pre class="src src-sh">apache-jena/bin/shacl v --help
-</pre>
-</div>
-
-
-<div class="org-src-container">
-<pre class="src src-sh" id="org6ecf06f">apache-jena/bin/shacl v --shapes http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl --data $files
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org80f1c15" class="outline-3">
-<h3 id="org80f1c15"><span class="section-number-3">9.3</span> sparql</h3>
-<div class="outline-text-3" id="text-9-3">
-<div class="org-src-container">
-<pre class="src src-sh">apache-jena/bin/sparql --help
-</pre>
-</div>
-
-
-<div class="org-src-container">
-<pre class="src src-sh" id="org88a2931">echo "$query" &gt; .temp-sh_jena_sparql
-apache-jena/bin/sparql --results=text --data=$files --query .temp-sh_jena_sparql
-</pre>
-</div>
-
-<pre class="example">
------------------------------------------------------------------------------------------------------------------
-| s    | p                                                 | o                                                  |
-=================================================================================================================
-| _:b0 | &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; | &lt;http://www.w3.org/2002/07/owl#AllDisjointClasses&gt; |
------------------------------------------------------------------------------------------------------------------
-
-</pre>
-</div>
-</div>
+<div id="outline-container-org4942989" class="outline-2">
+<h2 id="org4942989"><span class="section-number-2">9</span> Notes</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Martin G. Skjæveland</p>
-<p class="date">Created: 2022-02-02 Wed 12:05</p>
+<p class="date">Created: 2022-02-11 Fri 15:56</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
