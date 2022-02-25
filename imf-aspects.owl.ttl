@@ -14,21 +14,27 @@
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
+imf:ActivityAspect
+    imf:color "#000000" ;
+    imf:prefix "" ;
+    a imf:Aspect .
+
+imf:ActivityAspectObject
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectObject, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:ActivityAspectObject ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:ActivityAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
 imf:Aspect
     a owl:Class ;
-    owl:equivalentClass [
-        a owl:Class ;
-        owl:unionOf (imf:PrimaryAspect
-            imf:SecondaryAspect
-        )
-    ] ;
     skos:scopeNote """
-
-    Aspects are partitioned into primary and secondary aspects. The
-    primary aspects are Function, Location and Product. All other
-    aspects are secondary aspects.
-
-  """, """
 
     Each aspect is associated with a class of the aspect objects that
     have that aspect, e.g,. imf:FunctionAspectObject is the class of
@@ -43,7 +49,7 @@ imf:FunctionAspect
 
 imf:FunctionAspectObject
     a owl:Class ;
-    rdfs:subClassOf [
+    rdfs:subClassOf imf:AspectObject, [
         a owl:Restriction ;
         owl:allValuesFrom imf:FunctionAspectObject ;
         owl:onProperty imf:intraAspectRelation
@@ -61,7 +67,7 @@ imf:InstalledAspect
 
 imf:InstalledAspectObject
     a owl:Class ;
-    rdfs:subClassOf [
+    rdfs:subClassOf imf:AspectObject, [
         a owl:Restriction ;
         owl:allValuesFrom imf:InstalledAspectObject ;
         owl:onProperty imf:intraAspectRelation
@@ -79,7 +85,7 @@ imf:LocationAspect
 
 imf:LocationAspectObject
     a owl:Class ;
-    rdfs:subClassOf [
+    rdfs:subClassOf imf:AspectObject, [
         a owl:Restriction ;
         owl:allValuesFrom imf:LocationAspectObject ;
         owl:onProperty imf:intraAspectRelation
@@ -90,24 +96,6 @@ imf:LocationAspectObject
         owl:onProperty imf:hasAspect
     ] .
 
-imf:PrimaryAspect
-    a owl:Class ;
-    rdfs:subClassOf imf:Aspect ;
-    owl:equivalentClass [
-        a owl:Class ;
-        owl:oneOf (imf:FunctionAspect
-            imf:LocationAspect
-            imf:ProductAspect
-        )
-    ] ;
-    skos:definition """
-
-    The set of primary aspects are exactly those defined in ISO/IEC
-    81346: Function, Location, Product.
-
-  """ ;
-    skos:prefLabel "Primary Aspect" .
-
 imf:ProductAspect
     imf:color "#00FFFF" ;
     imf:prefix "-" ;
@@ -115,7 +103,7 @@ imf:ProductAspect
 
 imf:ProductAspectObject
     a owl:Class ;
-    rdfs:subClassOf [
+    rdfs:subClassOf imf:AspectObject, [
         a owl:Restriction ;
         owl:allValuesFrom imf:ProductAspectObject ;
         owl:onProperty imf:intraAspectRelation
@@ -125,17 +113,6 @@ imf:ProductAspectObject
         owl:hasValue imf:ProductAspect ;
         owl:onProperty imf:hasAspect
     ] .
-
-imf:SecondaryAspect
-    a owl:Class ;
-    rdfs:subClassOf imf:Aspect ;
-    owl:disjointWith imf:PrimaryAspect ;
-    skos:definition """
-
-    Secondary aspects are those aspects that are not primary aspects.
-
-  """ ;
-    skos:prefLabel "Secondary Aspect" .
 
 imf:hasAspect
     a owl:ObjectProperty .
@@ -160,7 +137,6 @@ imf:interAspectRelation
     rdfs:domain imf:AspectObject ;
     rdfs:range imf:AspectObject ;
     rdfs:subPropertyOf skos:related ;
-    owl:propertyDisjointWith imf:intraAspectRelation ;
     skos:editorialNote """
 
       [2022-01-24 Mon] Do interAspectRelations always relate aspect
@@ -210,16 +186,11 @@ imf:isInstalledAs
     """ .
 
 []
-    a owl:AllDisjointClasses ;
-    owl:members (imf:PrimaryAspect
-        imf:SecondaryAspect
-    ) .
-
-[]
     a owl:AllDifferent ;
     owl:members (imf:FunctionAspect
         imf:LocationAspect
         imf:ProductAspect
         imf:InstalledAspect
+        imf:ActivityAspect
     ) .
 

@@ -1,227 +1,192 @@
-@prefix : <http://ns.imfid.org/imf-metamodel#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix imf: <http://ns.imfid.org/imf#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix pav: <http://purl.org/pav/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix ottr: <http://ns.ottr.xyz/0.4/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
 @prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
-<http://ns.imfid.org/imf-metamodel> a owl:Ontology ;
-	owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf-metamodel> ;
-	owl:imports <http://ns.imfid.org/ontology/2022-01-31/imf-top> ;
-	skos:altLabel "IMF metamodel ontology" ;
-	skos:prefLabel "Information Modelling Framework Ontology: Metamodel Ontology " ;
-	skos:scopeNote """
+imf:AspectObject
+    a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:unionOf (imf:SystemBlock
+            imf:Terminal
+        )
+    ] ;
+    skos:scopeNote """
+
+    Each aspect object is either a ....""" .
+
+imf:Connection
+    a owl:Class ;
+    rdfs:subClassOf imf:SystemBlock, [
+        a owl:Restriction ;
+        owl:onClass imf:OutletTerminal ;
+        owl:onProperty imf:hasOutletTerminal ;
+        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+    ], [
+        a owl:Restriction ;
+        owl:onClass imf:InletTerminal ;
+        owl:onProperty imf:hasInletTerminal ;
+        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    skos:altLabel "Junction" ;
+    skos:definition """
+
+     special case of system block with has exactly one input and one
+     output and no transformation of the input is performed.
+
+
+  """ ;
+    skos:prefLabel "Connection" .
+
+imf:InletTerminal
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:InletTerminal ;
+        owl:onProperty imf:hasParent
+    ] .
+
+imf:OutletTerminal
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:OutletTerminal ;
+        owl:onProperty imf:hasParent
+    ] .
+
+imf:SystemBlock
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:SystemBlock ;
+        owl:onProperty imf:hasParent
+    ] ;
+    skos:definition """
+
+    transforms the input from its inlet terminals to the output to its
+    outlet terminals. The relation between the inlet and outlet
+    terminals may be complex and may be further described by
+    subsystems.
+
+  """ ;
+    skos:prefLabel "System Block" .
+
+imf:Terminal
+    a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:unionOf (imf:InletTerminal
+            imf:OutletTerminal
+        )
+    ] ;
+    skos:altLabel "Port" ;
+    skos:definition """
+
+    A port or boundry point through which a system block can interact
+    and communicate with the outside world, receiving input and giving
+    output.
+
+  """ ;
+    skos:prefLabel "Terminal" .
+
+imf:hasChild
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:narrower ;
+    owl:inverseOf imf:hasParent ;
+    skos:altLabel "has part" ;
+    skos:prefLabel "has child" .
+
+imf:hasInletTerminal
+    a owl:ObjectProperty ;
+    rdfs:range imf:InletTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a system and its inlet terminals." .
+
+imf:hasOutletTerminal
+    a owl:ObjectProperty ;
+    rdfs:range imf:OutletTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a system and its outlet terminals." .
+
+imf:hasParent
+    a owl:FunctionalProperty, owl:ObjectProperty ;
+    rdfs:domain imf:AspectObject ;
+    rdfs:range imf:AspectObject ;
+    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:broader ;
+    skos:altLabel "is part of" ;
+    skos:prefLabel "has parent" ;
+    skos:scopeNote "abstraction" .
+
+imf:hasTerminal
+    a owl:ObjectProperty ;
+    rdfs:domain imf:SystemBlock ;
+    rdfs:range imf:Terminal ;
+    rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation ;
+    skos:definition "The relation between a system and its terminals." ;
+    skos:prefLabel "hasTerminal" .
+
+imf:isConnected
+    a owl:ObjectProperty ;
+    rdfs:domain imf:OutletTerminal ;
+    rdfs:range imf:InletTerminal ;
+    rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation .
+
+imf:precedes
+    a owl:ObjectProperty, owl:TransitiveProperty ;
+    rdfs:domain imf:Terminal ;
+    rdfs:range imf:Terminal ;
+    rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation ;
+    skos:prefLabel "precedes" .
+
+imf:systemFlow
+    a owl:ObjectProperty ;
+    rdfs:domain imf:InletTerminal ;
+    rdfs:range imf:OutletTerminal ;
+    rdfs:subPropertyOf imf:precedes ;
+    skos:definition """
+
+    An immediate, i.e., non-transitive, precedes relation between
+    inlet terminals and outlet terminals *of the same system* such
+    that (parts of) the input to the inlet terminal is processed by
+    the system to produce (parts of) the output of the outlet
+    terminal.
+
+""" ;
+    skos:prefLabel "system flow" .
+
+<http://ns.imfid.org/imf-metamodel>
+    a owl:Ontology ;
+    owl:imports <http://ns.imfid.org/ontology/2022-01-31/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf-metamodel> ;
+    skos:altLabel "IMF metamodel ontology" ;
+    skos:prefLabel "Information Modelling Framework Ontology: Metamodel Ontology " ;
+    skos:scopeNote """
 
       This ontology defines IMF's meta model which defines how
       IMF models are represented.
 
     """ .
-# 
-# 
-# #################################################################
-# #
-# #    Object Properties
-# #
-# #################################################################
-# 
-# 
-# http://ns.imfid.org/imf#hasChild
 
-imf:hasChild a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:hierarchicalRelation , imf:intraAspectRelation , skos:narrower ;
-	owl:inverseOf imf:hasParent .
-# 
-# http://ns.imfid.org/imf#hasConnectionInput
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:InletTerminal
+        imf:OutletTerminal
+    ) .
 
-imf:hasConnectionInput a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:associativeRelation , imf:intraAspectRelation ;
-	a owl:FunctionalProperty ;
-	rdfs:domain imf:Connection ;
-	rdfs:range imf:OutputTerminal .
-# 
-# http://ns.imfid.org/imf#hasConnectionOutput
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:SystemBlock
+        imf:Terminal
+    ) .
 
-imf:hasConnectionOutput a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:associativeRelation , imf:intraAspectRelation ;
-	a owl:FunctionalProperty ;
-	rdfs:domain imf:Connection ;
-	rdfs:range imf:InputTerminal .
-# 
-# http://ns.imfid.org/imf#hasInputTerminal
-
-imf:hasInputTerminal a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:hasTerminal ;
-	rdfs:range imf:InputTerminal .
-# 
-# http://ns.imfid.org/imf#hasOutputTerminal
-
-imf:hasOutputTerminal a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:hasTerminal ;
-	rdfs:range imf:OutputTerminal .
-# 
-# http://ns.imfid.org/imf#hasParent
-
-imf:hasParent a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:hierarchicalRelation , imf:intraAspectRelation , skos:broader ;
-	a owl:FunctionalProperty ;
-	rdfs:domain imf:AspectObject ;
-	rdfs:range imf:AspectObject .
-# 
-# http://ns.imfid.org/imf#hasTerminal
-
-imf:hasTerminal a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:associativeRelation , imf:intraAspectRelation ;
-	rdfs:domain imf:SystemBlock ;
-	rdfs:range imf:Terminal .
-# 
-# http://ns.imfid.org/imf#precedes
-
-imf:precedes a owl:ObjectProperty ;
-	rdfs:subPropertyOf imf:associativeRelation , imf:intraAspectRelation ;
-	rdfs:domain imf:Terminal ;
-	rdfs:range imf:Terminal .
-# 
-# 
-# 
-# #################################################################
-# #
-# #    Classes
-# #
-# #################################################################
-# 
-# 
-# http://ns.imfid.org/imf#AspectObject
-
-imf:AspectObject a owl:Class ;
-	owl:equivalentClass _:genid1 .
-
-_:genid1 a owl:Class ;
-	owl:unionOf _:genid4 .
-
-_:genid4 a rdf:List ;
-	rdf:first imf:Connection ;
-	rdf:rest _:genid3 .
-
-_:genid3 a rdf:List ;
-	rdf:first imf:SystemBlock ;
-	rdf:rest _:genid2 .
-
-_:genid2 a rdf:List ;
-	rdf:first imf:Terminal ;
-	rdf:rest rdf:nil .
-
-imf:AspectObject skos:scopeNote """
-
-    Each aspect object is either a ....""" .
-# 
-# http://ns.imfid.org/imf#Connection
-
-imf:Connection a owl:Class ;
-	rdfs:subClassOf _:genid5 .
-
-_:genid5 a owl:Restriction ;
-	owl:onProperty imf:hasConnectionInput ;
-	owl:someValuesFrom imf:OutputTerminal .
-
-imf:Connection rdfs:subClassOf _:genid6 .
-
-_:genid6 a owl:Restriction ;
-	owl:onProperty imf:hasConnectionOutput ;
-	owl:someValuesFrom imf:InputTerminal .
-
-imf:Connection skos:altLabel "Junction" ;
-	skos:prefLabel "Connection" .
-# 
-# http://ns.imfid.org/imf#InputTerminal
-
-imf:InputTerminal a owl:Class ;
-	rdfs:subClassOf _:genid7 .
-
-_:genid7 a owl:Restriction ;
-	owl:onProperty imf:hasParent ;
-	owl:allValuesFrom imf:InputTerminal .
-
-imf:InputTerminal owl:disjointWith imf:OutputTerminal .
-# 
-# http://ns.imfid.org/imf#OutputTerminal
-
-imf:OutputTerminal a owl:Class ;
-	rdfs:subClassOf _:genid8 .
-
-_:genid8 a owl:Restriction ;
-	owl:onProperty imf:hasParent ;
-	owl:allValuesFrom imf:OutputTerminal .
-# 
-# http://ns.imfid.org/imf#SystemBlock
-
-imf:SystemBlock a owl:Class ;
-	rdfs:subClassOf _:genid9 .
-
-_:genid9 a owl:Restriction ;
-	owl:onProperty imf:hasParent ;
-	owl:allValuesFrom imf:SystemBlock .
-
-imf:SystemBlock skos:prefLabel "System Block" .
-# 
-# http://ns.imfid.org/imf#Terminal
-
-imf:Terminal a owl:Class ;
-	owl:equivalentClass _:genid10 .
-
-_:genid10 a owl:Class ;
-	owl:unionOf _:genid12 .
-
-_:genid12 a rdf:List ;
-	rdf:first imf:InputTerminal ;
-	rdf:rest _:genid11 .
-
-_:genid11 a rdf:List ;
-	rdf:first imf:OutputTerminal ;
-	rdf:rest rdf:nil .
-
-imf:Terminal skos:altLabel "Port" ;
-	skos:definition """
-
-    A terminal represents a port/boundry point for a system block
-    through which the system block and take input and give output.
-
-  """ ;
-	skos:prefLabel "Terminal" .
-# 
-# 
-# 
-# #################################################################
-# #
-# #    General axioms
-# #
-# #################################################################
-# 
-# 
-
-_:genid13 a owl:AllDisjointClasses ;
-	owl:members _:genid16 .
-
-_:genid16 a rdf:List ;
-	rdf:first imf:Connection ;
-	rdf:rest _:genid15 .
-
-_:genid15 a rdf:List ;
-	rdf:first imf:SystemBlock ;
-	rdf:rest _:genid14 .
-
-_:genid14 a rdf:List ;
-	rdf:first imf:Terminal ;
-	rdf:rest rdf:nil .
-# 
-# Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

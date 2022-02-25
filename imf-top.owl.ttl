@@ -85,7 +85,7 @@ imf:IntegratedObject
 
     Following the IMF methodology, an intergrated object is not
     described directly, but through typically multiple aspects
-    objects. see also [imf:AspectObject].""" .
+    objects, see also imf:AspectObject.""" .
 
 imf:associativeRelation
     a owl:ObjectProperty ;
