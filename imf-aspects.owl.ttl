@@ -16,7 +16,7 @@
 
 imf:ActivityAspect
     imf:color "#000000" ;
-    imf:prefix "" ;
+    imf:prefix ">" ;
     a imf:Aspect .
 
 imf:ActivityAspectObject
@@ -60,27 +60,9 @@ imf:FunctionAspectObject
         owl:onProperty imf:hasAspect
     ] .
 
-imf:InstalledAspect
-    imf:color "#3232BD" ;
-    imf:prefix "::" ;
-    a imf:Aspect .
-
-imf:InstalledAspectObject
-    a owl:Class ;
-    rdfs:subClassOf imf:AspectObject, [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:InstalledAspectObject ;
-        owl:onProperty imf:intraAspectRelation
-    ] ;
-    owl:equivalentClass [
-        a owl:Class, owl:Restriction ;
-        owl:hasValue imf:InstalledAspect ;
-        owl:onProperty imf:hasAspect
-    ] .
-
 imf:LocationAspect
     imf:color "#FF00FF" ;
-    imf:prefix "+", "++" ;
+    imf:prefix "+" ;
     a imf:Aspect .
 
 imf:LocationAspectObject
@@ -114,23 +96,14 @@ imf:ProductAspectObject
         owl:onProperty imf:hasAspect
     ] .
 
+imf:hasActivity
+    a owl:ObjectProperty ;
+    rdfs:domain imf:FunctionAspect ;
+    rdfs:range imf:ActivityAspect ;
+    rdfs:subPropertyOf imf:interAspectRelation .
+
 imf:hasAspect
     a owl:ObjectProperty .
-
-imf:hasLocation
-    a owl:ObjectProperty ;
-    rdfs:domain [
-        a owl:Class ;
-        owl:unionOf (imf:FunctionAspectObject
-            imf:ProductAspectObject
-        )
-    ] ;
-    rdfs:range [
-        a owl:Class ;
-        owl:unionOf (imf:LocationAspectObject
-        )
-    ] ;
-    rdfs:subPropertyOf imf:interAspectRelation .
 
 imf:interAspectRelation
     a owl:ObjectProperty ;
@@ -147,30 +120,8 @@ imf:intraAspectRelation
 
 imf:isFulfilledBy
     a owl:ObjectProperty ;
-    rdfs:domain [
-        a owl:Class ;
-        owl:unionOf (imf:FunctionAspectObject
-        )
-    ] ;
-    rdfs:range [
-        a owl:Class ;
-        owl:unionOf (imf:ProductAspectObject
-        )
-    ] ;
-    rdfs:subPropertyOf imf:interAspectRelation .
-
-imf:isInstalledAs
-    a owl:ObjectProperty ;
-    rdfs:domain [
-        a owl:Class ;
-        owl:unionOf (imf:ProductAspectObject
-        )
-    ] ;
-    rdfs:range [
-        a owl:Class ;
-        owl:unionOf (imf:InstalledAspectObject
-        )
-    ] ;
+    rdfs:domain imf:FunctionAspect ;
+    rdfs:range imf:ProductAspect ;
     rdfs:subPropertyOf imf:interAspectRelation .
 
 <http://ns.imfid.org/imf-aspects>
@@ -190,7 +141,6 @@ imf:isInstalledAs
     owl:members (imf:FunctionAspect
         imf:LocationAspect
         imf:ProductAspect
-        imf:InstalledAspect
         imf:ActivityAspect
     ) .
 

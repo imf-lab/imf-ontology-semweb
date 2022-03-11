@@ -23,57 +23,36 @@ imf:AspectObject
     a owl:Class ;
     rdfs:subClassOf [
         a owl:Restriction ;
-        owl:onClass imf:Aspect ;
-        owl:onProperty imf:hasAspect ;
+        owl:onClass imf:IntegratedObject ;
+        owl:onProperty imf:isAspectOf ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ], [
         a owl:Restriction ;
-        owl:onClass imf:IntegratedObject ;
-        owl:onProperty imf:isAspectOf ;
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     skos:definition """
 
-    An aspect object describes a specific type of feature (or aspect)
-    of one (and exactly one) integrated object.""" ;
-    skos:editorialNote """
-
-  [2022-01-19 Wed] Is 'aspect object subtype' ok?
-
-  [2022-01-20 Thu]: Add (RDL) types/attributes to the overview scopeNote?
-  """ ;
-    skos:prefLabel "Aspect Object" ;
-    skos:scopeNote """
-
-    Overview:
-
     Aspect object is the most central concept of the IMF ontology.
 
-    The following is used to define an aspect object:
-   
-    1. an aspect object must have a single aspect, we say that the
+    An aspect object describes a specific type of feature (or aspect)
+    of one (and exactly one) integrated object.
+
+    An aspect object must have a single aspect, we say that the
     aspect object \"is of\" this aspect.  
 
-    2. an aspect object has a more specific subtype, being either a
-    system block, a stream or a terminal. These types determine how
-    the aspect object can be connected to other aspect objects.
-
-    3. an aspect object can be further described by breaking it down
-    into its parts or children. An aspect object is placed in a
-    tree-shaped breakdown structure where the aspect object may have a
-    single parent (the root object has no parent) and possibly
-    multiple children.
-
-  """ .
+    """ ;
+    skos:prefLabel "Aspect Object" .
 
 imf:IntegratedObject
     a owl:Class ;
     skos:editorialNote """
 
-    [2022-01-24 Mon] TODO: Verify the description in the scopeNote.
-
     [2022-01-19 Wed] Is it the case that an integrated object can only
-    have one aspect of the same aspect? """ ;
+    have one aspect of the same aspect? 
+
+    """ ;
     skos:prefLabel "Integrated Object" ;
     skos:scopeNote """
 
@@ -94,6 +73,7 @@ imf:associativeRelation
     rdfs:subPropertyOf skos:related ;
     owl:propertyDisjointWith imf:hierachicalRelation ;
     skos:definition "A generic associative relation." ;
+    skos:prefLabel "associative relation" ;
     skos:scopeNote """
     
       This relation is used to enforce that subproperties respect this
@@ -116,6 +96,7 @@ imf:hierarchicalRelation
     rdfs:range imf:AspectObject ;
     rdfs:subPropertyOf skos:semanticRelation ;
     skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
+    skos:prefLabel "hierarchical relation" ;
     skos:scopeNote """
     
       This relation is used to enforce that subproperties respect this
@@ -131,6 +112,7 @@ imf:intraAspectRelation
     rdfs:range imf:AspectObject ;
     rdfs:subPropertyOf skos:semanticRelation ;
     skos:definition "A generic relation between aspect objects of the same aspect" ;
+    skos:prefLabel "intra-aspect relation" ;
     skos:scopeNote """
     
       This relation is used to enforce that subproperties respect this

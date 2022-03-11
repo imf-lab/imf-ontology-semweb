@@ -24,7 +24,7 @@ imf:AspectObject
     ] ;
     skos:scopeNote """
 
-    Each aspect object is either a ....""" .
+    Each aspect object is either a system block or a terminal.""" .
 
 imf:Connection
     a owl:Class ;
@@ -39,51 +39,75 @@ imf:Connection
         owl:onProperty imf:hasInletTerminal ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    skos:altLabel "Junction" ;
+    skos:altLabel "Junction", "Transport" ;
     skos:definition """
 
-     special case of system block with has exactly one input and one
-     output and no transformation of the input is performed.
+     A simple type of system block that has exactly one input and one
+     output. No transformation of the input is performed.
 
+     The connection, in effect, merges the two connected
+     terminals. The connection itself has no function or spatial
+     significance.
 
   """ ;
     skos:prefLabel "Connection" .
 
 imf:InletTerminal
     a owl:Class ;
-    rdfs:subClassOf [
+    rdfs:subClassOf imf:Terminal, [
         a owl:Restriction ;
         owl:allValuesFrom imf:InletTerminal ;
         owl:onProperty imf:hasParent
-    ] .
+    ] ;
+    skos:definition """
+
+    A terminal whose default function is to recieve input for its
+    system.
+
+  """ ;
+    skos:prefLabel "Inlet Terminal" .
 
 imf:OutletTerminal
     a owl:Class ;
-    rdfs:subClassOf [
+    rdfs:subClassOf imf:Terminal, [
         a owl:Restriction ;
         owl:allValuesFrom imf:OutletTerminal ;
         owl:onProperty imf:hasParent
-    ] .
+    ] ;
+    skos:definition """
+
+    A terminal whose default function is to give output for its
+    system.
+
+  """ ;
+    skos:prefLabel "Outlet Terminal" .
 
 imf:SystemBlock
     a owl:Class ;
-    rdfs:subClassOf [
+    rdfs:subClassOf imf:AspectObject, [
         a owl:Restriction ;
         owl:allValuesFrom imf:SystemBlock ;
         owl:onProperty imf:hasParent
     ] ;
     skos:definition """
 
-    transforms the input from its inlet terminals to the output to its
+    A system is a processing (black) box. It processes the input to
+    output, possibly changing the state of what is processed.
+
+    Transforms the input from its inlet terminals to the output to its
     outlet terminals. The relation between the inlet and outlet
     terminals may be complex and may be further described by
-    subsystems.
+    subsystems which are related by hasChild.
+
+    A system may have multiple inlet and outlet terminals. A system
+    with zero terminals is uncommon.
 
   """ ;
     skos:prefLabel "System Block" .
 
 imf:Terminal
     a owl:Class ;
+    rdfs:subClassOf imf:AspectObject ;
     owl:equivalentClass [
         a owl:Class ;
         owl:unionOf (imf:InletTerminal
@@ -94,11 +118,33 @@ imf:Terminal
     skos:definition """
 
     A port or boundry point through which a system block can interact
-    and communicate with the outside world, receiving input and giving
-    output.
+    and communicate with the world outside the system, receiving input
+    and giving output.
 
   """ ;
+    skos:editorialNote """
+
+     [2022-03-11 Fri] Need to represent the type of a terminal, and
+     constraints on connections between typed terminals: material,
+     information, energy, structural.
+
+   """ ;
     skos:prefLabel "Terminal" .
+
+imf:directlyPrecedes
+    a owl:ObjectProperty ;
+    rdfs:domain imf:InletTerminal ;
+    rdfs:range imf:OutletTerminal ;
+    rdfs:subPropertyOf imf:precedes ;
+    skos:definition """
+
+    An immediate, non-transitive, precedes relation between inlet
+    terminals and outlet terminals *of the same system* such that
+    (parts of) the input to the inlet terminal is processed by the
+    system to produce (parts of) the output of the outlet terminal.
+
+  """ ;
+    skos:prefLabel "directly precedes" .
 
 imf:hasChild
     a owl:ObjectProperty ;
@@ -111,13 +157,15 @@ imf:hasInletTerminal
     a owl:ObjectProperty ;
     rdfs:range imf:InletTerminal ;
     rdfs:subPropertyOf imf:hasTerminal ;
-    skos:definition "The relation between a system and its inlet terminals." .
+    skos:definition "The relation between a system and its inlet terminals." ;
+    skos:prefLabel "has inlet terminal" .
 
 imf:hasOutletTerminal
     a owl:ObjectProperty ;
     rdfs:range imf:OutletTerminal ;
     rdfs:subPropertyOf imf:hasTerminal ;
-    skos:definition "The relation between a system and its outlet terminals." .
+    skos:definition "The relation between a system and its outlet terminals." ;
+    skos:prefLabel "has outlet terminal" .
 
 imf:hasParent
     a owl:FunctionalProperty, owl:ObjectProperty ;
@@ -125,8 +173,17 @@ imf:hasParent
     rdfs:range imf:AspectObject ;
     rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:broader ;
     skos:altLabel "is part of" ;
-    skos:prefLabel "has parent" ;
-    skos:scopeNote "abstraction" .
+    skos:definition """
+
+    An aspect object is placed in a tree-shaped breakdown structure
+    using hasParent/hasChild relationships. An aspect object may have
+    a single parent (the root object has no parent) and possibly
+    multiple children. This is an abstraction mechanism. The children
+    of an aspect object provide a more detailed description of (parts
+    of) its parent.
+
+  """ ;
+    skos:prefLabel "has parent" .
 
 imf:hasTerminal
     a owl:ObjectProperty ;
@@ -134,36 +191,36 @@ imf:hasTerminal
     rdfs:range imf:Terminal ;
     rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation ;
     skos:definition "The relation between a system and its terminals." ;
-    skos:prefLabel "hasTerminal" .
+    skos:prefLabel "has terminal" .
 
-imf:isConnected
+imf:isConnectedTo
     a owl:ObjectProperty ;
     rdfs:domain imf:OutletTerminal ;
     rdfs:range imf:InletTerminal ;
-    rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation .
+    rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation, imf:precedes ;
+    skos:definition """
+
+    The relation between to terminals that are connected. The output
+    of the outlet terminal is given as input to the inlet terminal.
+
+  """ ;
+    skos:prefLabel "is connected to" .
 
 imf:precedes
     a owl:ObjectProperty, owl:TransitiveProperty ;
     rdfs:domain imf:Terminal ;
     rdfs:range imf:Terminal ;
     rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation ;
-    skos:prefLabel "precedes" .
-
-imf:systemFlow
-    a owl:ObjectProperty ;
-    rdfs:domain imf:InletTerminal ;
-    rdfs:range imf:OutletTerminal ;
-    rdfs:subPropertyOf imf:precedes ;
     skos:definition """
 
-    An immediate, i.e., non-transitive, precedes relation between
-    inlet terminals and outlet terminals *of the same system* such
-    that (parts of) the input to the inlet terminal is processed by
-    the system to produce (parts of) the output of the outlet
-    terminal.
+    A relation between terminals that represents the \"flow\" of
+    input/output between teminals, both terminals of the same system
+    block (represented by the subproperty directlyPrecedes) and of
+    different system blocks (represented by the subproperty
+    isConnectedTo).
 
-""" ;
-    skos:prefLabel "system flow" .
+  """ ;
+    skos:prefLabel "precedes" .
 
 <http://ns.imfid.org/imf-metamodel>
     a owl:Ontology ;

@@ -42,11 +42,6 @@
  - [ ] OTTR Templates for attribute data? with shortcut properties?
  - [ ] Create examples and visualise them
 
- - [ ] InformationObjecst?
-   - [ ] AspectObjects are information objects --- or are they?
-   - [ ] IntegratedObjects are information objects (call them contexts?)
-   - [ ] adjust naming of inter-relations to better fit this change,
-     e.g., not connectedTo, but ... "interfaces" ?
 
  - [-] SKOS:
    - https://www.w3.org/TR/skos-reference/
@@ -72,635 +67,6 @@
  InformationInterface
    #+END_QUOTE
  - [ ] RDSCode -> RDSTag
-
-
-
-
-* Preliminaries
-** Prefixes
-
-Standard vocabulary prefixes:
-
-#+NAME: prefixes-std
-#+BEGIN_SRC ttl :tangle .prefixes.ttl :exports none
-@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
-@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
-@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
-@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-#+END_SRC
-
-IMF prefixes:
-
-#+NAME: prefixes-imf
-#+BEGIN_SRC ttl
-@prefix imf:	<http://ns.imfid.org/imf#> .
-#+END_SRC
-
-OTTR template prefixes:
-
-#+NAME: prefixes-ottr
-#+BEGIN_SRC ttl :exports none
-@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
-@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
-@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
-
-@prefix o-imf:	     <http://ns.imfid.org/templates/> .
-#+END_SRC
-
-All prefixes combined:
-
-#+NAME: prefixes
-#+BEGIN_SRC ttl :noweb yes
-<<prefixes-std>>
-<<prefixes-imf>>
-<<prefixes-ottr>>
-#+END_SRC
-
-** SKOS
-
-The ontology is defined using the SKOS vocabulary. For convenience,
-both for the reader and writer of this document, the definition of the
-most used annotation properties are copied in from
-https://www.w3.org/TR/skos-primer/#secdocumentation:
-
-General documentation purposes:
-
- - skos:scopeNote :: supplies some, possibly partial, information
-                     about the intended meaning of a concept,
-                     especially as an indication of how the use of a
-                     concept is limited in indexing practice.
- - skos:definition :: supplies a complete explanation of the intended
-      meaning of a concept.
- - skos:example :: supplies an example of the use of a concept.
- - skos:historyNote :: describes significant changes to the meaning or
-      the form of a concept.
-
-Editorial purposes:
-
- - skos:editorialNote :: supplies information that is an aid to
-      administrative housekeeping, such as reminders of editorial work
-      still to be done, or warnings in the event that future editorial
-      changes might be made.
- - skos:changeNote :: documents fine-grained changes to a concept, for
-      the purposes of administration and maintenance.
-
-
-** RDF templates of OWL constructs                                 :noexport:
-
-Copy-paste this block for definition of OWL constructs:
-
-#+BEGIN_SRC ttl
-
-# a owl:Class ;
-
-  ### annotations
-
-  #skos:prefLabel "";
-  #skos:altLabel "";
-  #skos:definition """ """;
-  #skos:scopeNote """ """;
-  #skos:example """ """;
-  #skos:editorialNote """ """;
-
-  ### axioms
-
-#+END_SRC
-
-* Namespace and Identifiers
-
-The namespace for resources used by the IMF ontology and other
-publicly available online resources is:
-
- : http://ns.imfid.org/imf#
-
-The identifier schema for IMF ontology versions are:
-
- : http://ns.imfid.org/ontology/[yyyy-mm-dd]/[ontology-name]
-
-* Published files
-
-The ontology will be published at their address. The resources
-(classes, properties, individuals) are made resolvable by publishing a
-merged ontology of all ontology files at the ~imf~ namespace address.
-
-* IMF Ontology
-
-** QA tests                                                              :QA:
-
-Tests are put here at the start to make it easy to update file names.
-
-#+CALL: sh_jena_validate_rdf(files="imf.owl.ttl")
-
-#+RESULTS:
-: imf.owl.ttl     : 0.20 sec : 8 Triples : 40.00 per second
-
-#+CALL: sh_jena_shacl_validate(data="imf.owl.ttl")
-
-#+RESULTS:
-#+BEGIN_src ttl
-@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh:   <http://www.w3.org/ns/shacl#> .
-@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
-
-[ rdf:type     sh:ValidationReport ;
-  sh:conforms  true
-] .
-#+END_src
-
-** Import hierarchy
-
-#+CALL: rdfvizler[:results value file :file ontology-import-hierarchy.svg](rules="rdfvizler/import-hierarchy.rule", output="ontology-import-hierarchy.svg")
-
-#+RESULTS:
-[[file:ontology-import-hierarchy.svg]]
-
-** Ontology header
-
-#+NAME: owl-imf-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle imf.owl.ttl
-<<prefixes>>
-
-<http://ns.imfid.org/imf> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf> ;
-    owl:imports 
-      <http://ns.imfid.org/ontology/2022-01-31/imf-top> ,
-      <http://ns.imfid.org/ontology/2022-01-31/imf-metamodel> ,
-      <http://ns.imfid.org/ontology/2022-01-31/imf-aspects> ;
-    skos:prefLabel "Information Modelling Framework Ontology " ;
-    skos:altLabel "IMF ontology" ;
-    skos:scopeNote """
-
-      The IMF ontology is in its current version defined over
-      different ontology documents: 
-
-      1. IMF Top defines the very high-level classes and properties of
-      the IMF ontology, such as AspectObject.
-
-      2. IMF Metamodel defines the metamodel for aspect objects and
-      their permissible properties.
-
-      3. IMG Aspects defines the aspects that are available to aspect
-      objects.
-
-    """;
-
-    #skos:editorialNote """
-    #""";
-
-    .
-#+END_SRC
-
-* IMF Top Ontology
-** Processing and QA                                                     :QA:
-
-This is placed here so that it is easier to syncronise filenames with
-org-mode tangled files.
-
-*** RDF validate tangled file
-
-#+CALL: sh_jena_validate_rdf(files=".imf-top.wottr.ttl")
-
-#+RESULTS:
-: 15:40:04 INFO  riot            :: File: .imf-top.wottr
-: .imf-top.wottr  : 0.23 sec : 90 Triples : 384.62 per second
-: 15:40:04 INFO  riot            :: File: imf-top.owl
-: imf-top.owl     : 0.01 sec : 78 Triples : 5,571.43 per second
-: Total           : 0.25 sec : 168 Triples : 677.42 per second
-
-*** Expand OTTR instances
-#+CALL: lutra-expand(in=".imf-top.wottr.ttl", out="imf-top.owl.ttl")
-
-#+RESULTS:
-#+begin_example
-SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectAllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
-
-[INFO] Fetched template http://tpl.ottr.xyz/rdf/0.1/Type
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectHasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectUnionOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectAllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/TypedListRelation
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivalentClass
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubPropertyOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectHasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/AllValuesFrom
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/HasValue
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ListRelation
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
-
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectExactCardinality
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectExactCardinality
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectExactCardinality
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ObjectCardinality
-[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/Cardinality
-
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, owl:onClass : LUB ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, owl:qualifiedCard ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, owl:onProperty :  ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#isAspectOf : LUB<ottr:IR ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#IntegratedObject : LUB<o ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#AspectObject : LUB<ottr: ...
-
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
-
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB<rdfs:Resource>, owl:members : LUB ...
-
-[WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
-[WARNING] Failed fetch for template http://ns.ottr.xyz/0.4/NullableTriple
-
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#AspectObject : L ...
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-top.wottr.temp with parser turtle
-rapper: Serializing with serializer turtle
-rapper: Parsing returned 82 triples
-#+end_example
-
-*** RDF validate final file
-
-#+CALL: sh_jena_validate_rdf(files="imf-top.owl.ttl")
-
-#+RESULTS:
-: imf-top.owl.ttl : 0.21 sec : 78 Triples : 369.67 per second
-
-#+CALL: sh_jena_shacl_validate(data="imf-top.owl.ttl")
-
-#+RESULTS:
-#+BEGIN_src ttl
-@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh:   <http://www.w3.org/ns/shacl#> .
-@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
-
-[ rdf:type     sh:ValidationReport ;
-  sh:conforms  true
-] .
-#+END_src
-
-** Ontology header
-
-#+NAME: owl-top-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle .imf-top.wottr.ttl
-<<prefixes>>
-
-<http://ns.imfid.org/imf-top> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf-top> ;
-    owl:imports <http://www.w3.org/2004/02/skos/core> ;
-    skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
-    skos:altLabel "IMF top ontology" ;
-    skos:scopeNote """
-
-      This ontology defines the very core classes and relations of the
-      Information Modelling Framework (IMF) that provide a structure
-      for ontologies that extend this ontology.
-
-    """;
-    #skos:editorialNote """
-    #""";
-    .
-
-<<owl-top-aspectobject>>
-<<owl-top-aspect>>
-<<owl-top-integratedobject>>
-<<owl-top-genericrelations>>
-#+END_SRC
-
-*** QA                                                             :noexport:
-
-#+CALL: py_parse-ttl-block[:wrap "SRC ttl :tangle .owl-top-ontology.wottr.ttl"](block=owl-top-ontology)
-
-#+CALL: py_parse-ttl-file[:wrap SRC ttl](file="imf-top.owl.ttl")
-
-** Aspects, Aspect objects and Integrated objects
-*** Aspect Object
-
-#+NAME: owl-top-aspectobject
-#+BEGIN_SRC ttl
-imf:AspectObject a owl:Class ;
-
-  ### annotations
-
-  skos:prefLabel "Aspect Object";
-  
-  #skos:altLabel "";
-
-  skos:definition """
-
-    An aspect object describes a specific type of feature (or aspect)
-    of one (and exactly one) integrated object.""";
-
-  skos:scopeNote """
-
-    Overview:
-
-    Aspect object is the most central concept of the IMF ontology.
-
-    The following is used to define an aspect object:
-   
-    1. an aspect object must have a single aspect, we say that the
-    aspect object "is of" this aspect.  
-
-    2. an aspect object has a more specific subtype, being either a
-    system block, a stream or a terminal. These types determine how
-    the aspect object can be connected to other aspect objects.
-
-    3. an aspect object can be further described by breaking it down
-    into its parts or children. An aspect object is placed in a
-    tree-shaped breakdown structure where the aspect object may have a
-    single parent (the root object has no parent) and possibly
-    multiple children.
-
-  """;
-
-  #skos:example """ """;
-
-  skos:editorialNote """
-
-  [2022-01-19 Wed] Is 'aspect object subtype' ok?
-
-  [2022-01-20 Thu]: Add (RDL) types/attributes to the overview scopeNote?
-  """;
-
-  .
-
-
-### properties
-
-imf:isAspectOf a owl:ObjectProperty ;
-  skos:prefLabel "is aspect of" ;
-  skos:definition """
-
-    Relates an aspect object to the integrated object the aspect
-    object provides a specification for/description of.""";
-
-  rdfs:domain imf:AspectObject ;
-  rdfs:range imf:IntegratedObject .
-
-imf:hasAspect a owl:ObjectProperty ;
-  skos:prefLabel "has aspect" ;
-  skos:definition "Relates an aspect object to its aspect.";
-  rdfs:domain imf:AspectObject ;
-  rdfs:range imf:Aspect .
-
-
-### logical axioms
-
-# An aspect object has/is of exactly one aspect:
-[] ottr:of o-owl-ax:SubObjectExactCardinality ;
-   ottr:values ( imf:AspectObject "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
-
-# An aspect object is related to exactly one integrated object, i.e.,
-# one aspect object cannot be used for multiple integrated objects
-[] ottr:of o-owl-ax:SubObjectExactCardinality ; 
-   ottr:values ( imf:AspectObject "1"^^xsd:nonNegativeInteger imf:isAspectOf imf:IntegratedObject ) .
-#+END_SRC
-
-*** Aspect
-
-#+NAME: owl-top-aspect
-#+BEGIN_SRC ttl
-imf:Aspect a owl:Class ;
-
-  ### annotations
-
-  skos:prefLabel "Aspect";
-  
-  #skos:altLabel "";
-
-  #skos:definition """ """;
-
-  #skos:scopeNote """ """;
-
-  skos:example """Function, Location, Product are examples of aspects.""";
-
-  #skos:editorialNote """ """;
-
-  ### axioms
-
-  .
-#+END_SRC
-
-*** Integrated Object
-
-#+NAME: owl-top-integratedobject
-#+BEGIN_SRC ttl
-imf:IntegratedObject a owl:Class ;
-
-  ### annotations
-
-  skos:prefLabel "Integrated Object" ;
-  #skos:altLabel "";
-  #skos:definition """ """;
-
-  skos:scopeNote """
-
-    The primary use of the IMF ontology is to specify requirements for
-    entities, where 'entity' is ment in a very generic sense; an
-    entity may be abstract or concrete, a high-level system, a product
-    class or an installed product. In the ontology these entities are
-    called integrated objects.
-
-    Following the IMF methodology, an intergrated object is not
-    described directly, but through typically multiple aspects
-    objects, see also imf:AspectObject.""" ;
-
-  #skos:example """ """ ;
-
-  skos:editorialNote """
-
-    [2022-01-24 Mon] TODO: Verify the description in the scopeNote.
-
-    [2022-01-19 Wed] Is it the case that an integrated object can only
-    have one aspect of the same aspect? """ .
-
-# class level axioms
-[] ottr:of o-owl-ax:DisjointClasses ;
-   ottr:values( ( imf:Aspect imf:AspectObject imf:IntegratedObject ) ) .
-#+END_SRC
-
-*** Structural relations
-
-The following scope note is put on all following top-level relations:
-#+NAME: owl-top-toprelation-scope-note
-#+BEGIN_SRC ttl
-skos:scopeNote """
-
-  This relation is used to enforce that subproperties respect this
-  relation's definition. This must be enforced by introducing
-  class axioms that locally further restrict the domain and range
-  of the relation.
-  
-"""
-#+END_SRC
-
-#+NAME: owl-top-genericrelations
-#+BEGIN_SRC ttl :noweb strip-export
-imf:intraAspectRelation a owl:ObjectProperty ;
-    rdfs:subPropertyOf skos:semanticRelation ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    skos:definition "A generic relation between aspect objects of the same aspect" ;
-    <<owl-top-toprelation-scope-note>>
-    .
-
-imf:hierarchicalRelation a owl:ObjectProperty ;
-    a owl:IrreflexiveProperty ;
-    rdfs:subPropertyOf skos:semanticRelation ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
-    <<owl-top-toprelation-scope-note>>
-    .
-
-imf:associativeRelation a owl:ObjectProperty ;
-    rdfs:subPropertyOf skos:related ;
-    owl:propertyDisjointWith imf:hierachicalRelation ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    skos:definition "A generic associative relation." ;
-    <<owl-top-toprelation-scope-note>>
-    .
-#+END_SRC
-
-
-** OTTR templates
-
- - [ ] ID
- - [ ] RDS
- - [ ] SemanticID
- - [ ] Service Description
- - [ ] Description
- - [ ] Status
-
- - [ ] DateCreated
- - [ ] CreatedBy
- - [ ] LastUpdated
- - [ ] UpdatedBy
- - [ ] Version
-
-#+BEGIN_SRC ttl :noweb yes :tangle tpl/aspectobjects.stottr
-<<prefixes>>
-
-## extract SKOS metadata in own template?
-
-o-imf:AspectObject [
-  owl:NamedIndividual ?id, 
-  owl:NamedIndividual ?aspect, 
-  owl:NamedIndividual ?parentID,
-  xsd:string ?label, 
-  ? xsd:string ?description,
-  xsd:dateTime ?createdDate,
-  ottr:IRI ?createdBy,
-  ? xsd:dateTime ?updatedDate,
-  ? ottr:IRI ?updatedBy,
-  xsd:string ?version,
-  ottr:IRI ?status
-] :: {
-  o-rdf:Type(?id, imf:AspectObject),
-  ottr:Triple(?id, imf:hasAspect, ?aspect), 
-  ottr:Triple(?id, imf:hasParent, ?parentID),
-  o-imf:Description(?id, ?label, ?description),
-  o-imf:Versioning(?id, ?createdDate, ?createdBy, ?updatedDate, ?updatedBy, ?version, ?status)
-} .
-
-o-imf:Description [
-  ottr:IRI ?id,
-  xsd:string ?label,
-  ? xsd:string ?note
-] :: {
-  ottr:Triple(?id, skos:prefLabel, ?label),
-  ottr:Triple(?id, skos:note, ?note)
-} .
-
-o-imf:Versioning [
-  ottr:IRI ?id,
-  ? xsd:dateTime ?createdDate,
-  ? ottr:IRI ?createdBy,
-  ? xsd:dateTime ?updatedDate,
-  ? ottr:IRI ?updatedBy,
-  xsd:string ?version,
-  ? ottr:IRI ?status
-] :: {
-  ottr:Triple(?id, pav:createdBy, ?createdBy),
-  ottr:Triple(?id, pav:createdOn, ?createdDate),
-
-  ottr:Triple(?id, pav:contributedBy, ?updatedBy),
-  ottr:Triple(?id, pav:lastUpdateOn, ?updatedDate),
-
-  ottr:Triple(?id, pav:version, ?version),
-
-  ottr:Triple(?id, imf:status, ?status)
-
-} .
- 
-
-#+END_SRC
-
-* TODO IMF Metamodel Ontology
-** Overview
-
-#+BEGIN_SRC dot :file imf-metamodel-overview.png
-
-digraph G {
-
-rankdir = LR;
-
-#A [label="Aspect Object", shape=box];
-#S,T,C -> A [arrowhead=empty]
-
-#T [label="Terminal", shape=box];
-#inT, outT -> T [arrowhead=empty]
-
-S [label="System Block", shape=box];
-
-C [label="Connection", shape=octagon];
-
-outT [label="OutTerminal", shape=rarrow];
-inT [label="InTerminal", shape=larrow];
-
-inT -> C [label="hasOutput", arrowhead=none, arrowtail=normal, dir=back]
-outT -> C  [label="hasInput", arrowhead=none, arrowtail=normal, dir=back]
-
-S -> inT  [label="hasInTerminal"]
-S -> outT [label="hasOutTerminal"]
-
-#S -> S [label=hasParent]
-#T -> T [label=hasParent]
-
-}
-
-#+END_SRC
-
-#+RESULTS:
-[[file:imf-metamodel-overview.png]]
 
 ** TODO Preliminary definitions
 *** Notater [2022-02-10 Thu]
@@ -833,23 +199,140 @@ Questions:
    may flow in multiple paralell pipes, or must the stream then be
    split into multiple streams to represent this?
 
-** TODO Processing and QA                                                :QA:
 
-TODO: copy from other ontologies once this ontology has settled.
+* Preliminaries
+** Prefixes
 
-This is placed here so that it is easier to syncronise filenames with
-org-mode tangled files.
+This section contains the prefixes used throughout this document.
 
-#+CALL: sh_jena_validate_rdf(files=".imf-metamodel.wottr.ttl imf-metamodel.owl.ttl")
+*** Standard vocabulary prefixes
+
+#+NAME: prefixes-std
+#+BEGIN_SRC ttl :tangle .prefixes.ttl :exports none
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+#+END_SRC
+
+*** IMF prefixes
+
+#+NAME: prefixes-imf
+#+BEGIN_SRC ttl
+@prefix imf:	<http://ns.imfid.org/imf#> .
+#+END_SRC
+
+*** OTTR template prefixes
+
+#+NAME: prefixes-ottr
+#+BEGIN_SRC ttl :exports none
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+#+END_SRC
+
+*** All prefixes combined                                          :noexport:
+
+#+NAME: prefixes
+#+BEGIN_SRC ttl :noweb yes
+<<prefixes-std>>
+<<prefixes-imf>>
+<<prefixes-ottr>>
+#+END_SRC
+
+** SKOS
+
+The IMF ontology uses vocabulary elements from the SKOS
+vocabulary. For convenience, the definition of the most used
+annotation properties are copied in from
+https://www.w3.org/TR/skos-primer/#secdocumentation:
+
+*** General documentation properties
+
+ - skos:scopeNote :: supplies some, possibly partial, information
+                     about the intended meaning of a concept,
+                     especially as an indication of how the use of a
+                     concept is limited in indexing practice.
+ - skos:definition :: supplies a complete explanation of the intended
+      meaning of a concept.
+ - skos:example :: supplies an example of the use of a concept.
+ - skos:historyNote :: describes significant changes to the meaning or
+      the form of a concept.
+
+*** Editorial properties
+
+ - skos:editorialNote :: supplies information that is an aid to
+      administrative housekeeping, such as reminders of editorial work
+      still to be done, or warnings in the event that future editorial
+      changes might be made.
+ - skos:changeNote :: documents fine-grained changes to a concept, for
+      the purposes of administration and maintenance.
+      
+** RDF templates of OWL constructs                                 :noexport:
+
+Copy-paste this block for definition of OWL constructs:
+
+#+BEGIN_SRC ttl
+
+# a owl:Class ;
+
+  ### annotations
+
+  #skos:prefLabel "";
+  #skos:altLabel "";
+  #skos:definition """ """;
+  #skos:scopeNote """ """;
+  #skos:example """ """;
+  #skos:editorialNote """ """;
+
+  ### axioms
+
+#+END_SRC
+
+* Namespace and identifiers and filenames
+
+The namespace for resources used by the IMF ontology and other
+publicly available online resources should be:
+
+ : http://ns.imfid.org/imf#
+
+The identifier schema for different IMF ontology versions are:
+
+ : http://ns.imfid.org/ontology/[yyyy-mm-dd]/[ontology-name]
+
+The ontology will be published at their address. The resources
+(classes, properties, individuals) are made resolvable by publishing a
+merged ontology of all ontology files at the ~imf~ namespace address.
+
+* IMF Ontology
+
+The IMF ontology specified in this document using a series of code
+snippets which are compiled to different OWL files serialised in RDF
+turtle syntax.
+
+In order not to duplicate and to avoid synchronisation issues, the
+definition and description of the ontology and its contents are put
+directly in the ontology sources, please read these for more
+information.
+
+** QA tests                                                              :QA:
+
+Tests are put here at the start to make it easy to update file names.
+
+#+CALL: sh_jena_validate_rdf(files="imf.owl.ttl")
 
 #+RESULTS:
-: 22:33:45 INFO  riot            :: File: .imf-metamodel.wottr.ttl
-: .imf-metamodel.wottr.ttl : 0.21 sec : 134 Triples : 632.08 per second
-: 22:33:45 INFO  riot            :: File: imf-metamodel.owl.ttl
-: imf-metamodel.owl.ttl : 0.01 sec : 38 Triples : 4,750.00 per second
-: Total           : 0.22 sec : 172 Triples : 781.82 per second
+: imf.owl.ttl     : 0.20 sec : 8 Triples : 40.00 per second
 
-#+CALL: sh_jena_shacl_validate(data=".imf-metamodel.wottr.ttl")
+#+CALL: sh_jena_shacl_validate(data="imf.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -863,8 +346,71 @@ org-mode tangled files.
 ] .
 #+END_src
 
+** Ontology source
 
-#+CALL: lutra-expand(in=".imf-metamodel.wottr.ttl", out="imf-metamodel.owl.ttl")
+#+NAME: owl-imf-ontology
+#+BEGIN_SRC ttl :noweb strip-export :tangle imf.owl.ttl
+<<prefixes>>
+
+<http://ns.imfid.org/imf> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf> ;
+    owl:imports 
+      <http://ns.imfid.org/ontology/2022-01-31/imf-top> ,
+      <http://ns.imfid.org/ontology/2022-01-31/imf-metamodel> ,
+      <http://ns.imfid.org/ontology/2022-01-31/imf-aspects> ;
+    skos:prefLabel "Information Modelling Framework Ontology " ;
+    skos:altLabel "IMF ontology" ;
+    skos:scopeNote """
+
+      This is the main IMF ontology and its main point of entry.  This
+      ontology document imports all other IMF ontology documents, each
+      of which focus on one particular part of the ontology:
+
+      1. IMF Top defines the very high-level classes and properties of
+      the IMF ontology, such as AspectObject.
+
+      2. IMF Metamodel defines the metamodel for aspect objects and
+      their permissible properties.
+
+      3. IMG Aspects defines the aspects that are available to aspect
+      objects.
+
+    """;
+
+    .
+#+END_SRC
+
+** Import hierarchy
+
+The diagram displays the different ontology documents that the IMF
+ontology consists of and the import relations that exist between
+these.
+
+#+CALL: rdfvizler(rules="rdfvizler/import-hierarchy.rule", output="ontology-import-hierarchy.svg")
+
+#+RESULTS:
+
+[[./ontology-import-hierarchy.svg]]
+
+* IMF Top Ontology
+** Processing and QA                                                     :QA:
+
+This is placed here so that it is easier to syncronise filenames with
+org-mode tangled files.
+
+*** RDF validate tangled file
+
+#+CALL: sh_jena_validate_rdf(files=".imf-top.wottr.ttl")
+
+#+RESULTS:
+: 15:40:04 INFO  riot            :: File: .imf-top.wottr
+: .imf-top.wottr  : 0.23 sec : 90 Triples : 384.62 per second
+: 15:40:04 INFO  riot            :: File: imf-top.owl
+: imf-top.owl     : 0.01 sec : 78 Triples : 5,571.43 per second
+: Total           : 0.25 sec : 168 Triples : 677.42 per second
+
+*** Expand OTTR instances
+#+CALL: lutra-expand(in=".imf-top.wottr.ttl", out="imf-top.owl.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -904,16 +450,454 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 
 [INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
 
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectSomeValuesFrom
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectSomeValuesFrom
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectSomeValuesFrom
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/SomeValuesFrom
+[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectExactCardinality
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectExactCardinality
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectExactCardinality
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ObjectCardinality
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/Cardinality
+
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, owl:onClass : LUB ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, owl:qualifiedCard ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, owl:onProperty :  ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#isAspectOf : LUB<ottr:IR ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#IntegratedObject : LUB<o ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#AspectObject : LUB<ottr: ...
+
+[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
 
  >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB<rdfs:Resource>, owl:onProperty :  ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB<rdfs:Resource>, owl:someValuesFro ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#hasConnectionOutput : LU ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#InputTerminal : LUB<ottr ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank504 : LUB<rdfs:Resource>, owl:members : LUB ...
+
+[WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
+[WARNING] Failed fetch for template http://ns.ottr.xyz/0.4/NullableTriple
+
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#AspectObject : L ...
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-top.wottr.temp with parser turtle
+rapper: Serializing with serializer turtle
+rapper: Parsing returned 82 triples
+#+end_example
+
+*** RDF validate final file
+
+#+CALL: sh_jena_validate_rdf(files="imf-top.owl.ttl")
+
+#+RESULTS:
+: imf-top.owl.ttl : 0.21 sec : 78 Triples : 369.67 per second
+
+#+CALL: sh_jena_shacl_validate(data="imf-top.owl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+** Overview
+
+#+CALL: rdfvizler(rules="rdfvizler/classes-properties.rule", data=".imf-top.wottr.ttl", output="imf-top-overview.svg")
+
+#+RESULTS:
+
+[[./imf-top-overview.svg]]
+
+** Ontology source
+*** Header
+
+#+NAME: owl-top-ontology
+#+BEGIN_SRC ttl :noweb strip-export :tangle .imf-top.wottr.ttl
+<<prefixes>>
+
+<http://ns.imfid.org/imf-top> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf-top> ;
+    owl:imports <http://www.w3.org/2004/02/skos/core> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
+    skos:altLabel "IMF top ontology" ;
+    skos:scopeNote """
+
+      This ontology defines the very core classes and relations of the
+      Information Modelling Framework (IMF) that provide a structure
+      for ontologies that extend this ontology.
+
+    """;
+
+    .
+
+<<owl-top-aspectobject>> 
+<<owl-top-aspect>> 
+<<owl-top-integratedobject>> 
+<<owl-top-genericrelations>>
+#+END_SRC
+
+**** QA                                                            :noexport:
+
+#+CALL: py_parse-ttl-block[:wrap "SRC ttl :tangle .owl-top-ontology.wottr.ttl"](block=owl-top-ontology)
+
+#+CALL: py_parse-ttl-file[:wrap SRC ttl](file="imf-top.owl.ttl")
+
+*** ~AspectObject~
+
+#+NAME: owl-top-aspectobject
+#+BEGIN_SRC ttl
+imf:AspectObject a owl:Class ;
+
+  skos:prefLabel "Aspect Object";
+
+  skos:definition """
+
+    Aspect object is the most central concept of the IMF ontology.
+
+    An aspect object describes a specific type of feature (or aspect)
+    of one (and exactly one) integrated object.
+
+    An aspect object must have a single aspect, we say that the
+    aspect object "is of" this aspect.  
+
+    """;
+  .
+
+### properties
+
+imf:isAspectOf a owl:ObjectProperty ;
+  skos:prefLabel "is aspect of" ;
+  skos:definition """
+
+    Relates an aspect object to the integrated object the aspect
+    object provides a specification for/description of.""";
+
+  rdfs:domain imf:AspectObject ;
+  rdfs:range imf:IntegratedObject .
+
+# An aspect object is related to exactly one integrated object, i.e.,
+# one aspect object cannot be used for multiple integrated objects
+[] ottr:of o-owl-ax:SubObjectExactCardinality ; 
+   ottr:values ( imf:AspectObject "1"^^xsd:nonNegativeInteger imf:isAspectOf imf:IntegratedObject ) .
+
+
+imf:hasAspect a owl:ObjectProperty ;
+  skos:prefLabel "has aspect" ;
+  skos:definition "Relates an aspect object to its aspect.";
+  rdfs:domain imf:AspectObject ;
+  rdfs:range imf:Aspect .
+
+
+# An aspect object has/is of exactly one aspect:
+[] ottr:of o-owl-ax:SubObjectExactCardinality ;
+   ottr:values ( imf:AspectObject "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
+
+#+END_SRC
+
+*** ~Aspect~
+
+#+NAME: owl-top-aspect
+#+BEGIN_SRC ttl
+imf:Aspect a owl:Class ;
+  skos:prefLabel "Aspect";
+  #skos:definition """TODO""";
+  skos:example """Function, Location, Product are examples of aspects.""";
+
+  .
+#+END_SRC
+
+*** ~IntegratedObject~
+
+#+NAME: owl-top-integratedobject
+#+BEGIN_SRC ttl
+imf:IntegratedObject a owl:Class ;
+
+  skos:prefLabel "Integrated Object" ;
+  #skos:definition """TODO""";
+  skos:scopeNote """
+
+    The primary use of the IMF ontology is to specify requirements for
+    entities, where 'entity' is ment in a very generic sense; an
+    entity may be abstract or concrete, a high-level system, a product
+    class or an installed product. In the ontology these entities are
+    called integrated objects.
+
+    Following the IMF methodology, an intergrated object is not
+    described directly, but through typically multiple aspects
+    objects, see also imf:AspectObject.""" ;
+
+  skos:editorialNote """
+
+    [2022-01-19 Wed] Is it the case that an integrated object can only
+    have one aspect of the same aspect? 
+
+    """ .
+
+[] ottr:of o-owl-ax:DisjointClasses ;
+   ottr:values( ( imf:Aspect imf:AspectObject imf:IntegratedObject ) ) .
+#+END_SRC
+
+*** Structural relations
+
+The following scope note is put on all following top-level relations:
+#+NAME: owl-top-toprelation-scope-note
+#+BEGIN_SRC ttl
+skos:scopeNote """
+
+  This relation is used to enforce that subproperties respect this
+  relation's definition. This must be enforced by introducing
+  class axioms that locally further restrict the domain and range
+  of the relation.
+  
+"""
+#+END_SRC
+
+#+NAME: owl-top-genericrelations
+#+BEGIN_SRC ttl :noweb strip-export
+imf:intraAspectRelation a owl:ObjectProperty ;
+    skos:prefLabel "intra-aspect relation";
+    rdfs:subPropertyOf skos:semanticRelation ;
+    rdfs:domain imf:AspectObject ;
+    rdfs:range imf:AspectObject ;
+    skos:definition "A generic relation between aspect objects of the same aspect" ;
+    <<owl-top-toprelation-scope-note>>
+    .
+
+imf:hierarchicalRelation a owl:ObjectProperty ;
+    a owl:IrreflexiveProperty ;
+    skos:prefLabel "hierarchical relation";
+    rdfs:subPropertyOf skos:semanticRelation ;
+    rdfs:domain imf:AspectObject ;
+    rdfs:range imf:AspectObject ;
+    skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
+    <<owl-top-toprelation-scope-note>>
+    .
+
+imf:associativeRelation a owl:ObjectProperty ;
+    skos:prefLabel "associative relation";
+    rdfs:subPropertyOf skos:related ;
+    owl:propertyDisjointWith imf:hierachicalRelation ;
+    rdfs:domain imf:AspectObject ;
+    rdfs:range imf:AspectObject ;
+    skos:definition "A generic associative relation." ;
+    <<owl-top-toprelation-scope-note>>
+    .
+#+END_SRC
+
+** OTTR templates for Aspect Objects
+
+ TODOs:
+ - [ ] ID
+ - [ ] RDS
+ - [ ] SemanticID
+ - [ ] Service Description
+ - [ ] Description
+ - [ ] Status
+
+ - [ ] DateCreated
+ - [ ] CreatedBy
+ - [ ] LastUpdated
+ - [ ] UpdatedBy
+ - [ ] Version
+
+#+BEGIN_SRC ttl :noweb yes :tangle tpl/aspectobjects.stottr
+<<prefixes>>
+
+## extract SKOS metadata in own template?
+
+o-imf:AspectObject [
+  owl:NamedIndividual ?id, 
+  owl:NamedIndividual ?aspect, 
+  owl:NamedIndividual ?parentID,
+  xsd:string ?label, 
+  ? xsd:string ?description,
+  xsd:dateTime ?createdDate,
+  ottr:IRI ?createdBy,
+  ? xsd:dateTime ?updatedDate,
+  ? ottr:IRI ?updatedBy,
+  xsd:string ?version,
+  ottr:IRI ?status
+] :: {
+  o-rdf:Type(?id, imf:AspectObject),
+  ottr:Triple(?id, imf:hasAspect, ?aspect), 
+  ottr:Triple(?id, imf:hasParent, ?parentID),
+  o-imf:Description(?id, ?label, ?description),
+  o-imf:Versioning(?id, ?createdDate, ?createdBy, ?updatedDate, ?updatedBy, ?version, ?status)
+} .
+
+o-imf:Description [
+  ottr:IRI ?id,
+  xsd:string ?label,
+  ? xsd:string ?note
+] :: {
+  ottr:Triple(?id, skos:prefLabel, ?label),
+  ottr:Triple(?id, skos:note, ?note)
+} .
+
+o-imf:Versioning [
+  ottr:IRI ?id,
+  ? xsd:dateTime ?createdDate,
+  ? ottr:IRI ?createdBy,
+  ? xsd:dateTime ?updatedDate,
+  ? ottr:IRI ?updatedBy,
+  xsd:string ?version,
+  ? ottr:IRI ?status
+] :: {
+  ottr:Triple(?id, pav:createdBy, ?createdBy),
+  ottr:Triple(?id, pav:createdOn, ?createdDate),
+
+  ottr:Triple(?id, pav:contributedBy, ?updatedBy),
+  ottr:Triple(?id, pav:lastUpdateOn, ?updatedDate),
+
+  ottr:Triple(?id, pav:version, ?version),
+
+  ottr:Triple(?id, imf:status, ?status)
+
+} .
+ 
+
+#+END_SRC
+
+** SHACL shapes for Aspect Objects
+
+*** Starting point                                                 :noexport:
+
+#+BEGIN_SRC ttl
+imf:AspectObjectTree
+    a sh:NodeShape ;
+    sh:targetClass imf:AspectObject ;
+    sh:property [
+        sh:path skos:prefLabel;
+        sh:minCount 1;
+        sh:name "Object Name";
+        sh:message "An aspect object must have exactly one name";
+    ] ;
+    sh:property [
+        sh:path ( [ sh:zeroOrMorePath [ sh:alternativePath ( imf:hasParent [sh:inversePath imf:hasTerminal] ) ] ] imf:isAspectOf ) ;
+        sh:minCount 1;
+        sh:class imf:IntegratedObject ;
+        sh:name "nodeintree";
+        sh:message "Every aspect object must have a path to the project node" ;
+    ] ;
+    sh:property [
+        sh:path imf:hasChild ;
+        sh:class imf:AspectObject;
+    ] ;
+    sh:property [
+        sh:path imf:hasAspect ;
+        sh:maxCount 1;
+        sh:name "ObjectAspect";
+        sh:message "Each aspectobject has at most one aspect";
+    ] ;
+    sh:property [
+        sh:path ([sh:zeroOrMorePath [sh:alternativePath (imf:hasParent [sh:inversePath imf:hasTerminal])]] imf:hasAspect) ;
+        sh:minCount 1;
+        sh:name "ObjectAspect";
+        sh:message "Each aspectobject has at least one parent with defined aspect";
+    ].
+#+END_SRC
+
+*** Templates schemata                                             :noexport:
+
+ nodeshape
+ | id | targetClass | closed | ignoredPropertis |
+ |----+-------------+--------+------------------|
+ |    |             |        |                  |
+
+ properties:
+ | shape | path | mincount | maxcount | name | message | class |
+ |-------+------+----------+----------+------+---------+-------|
+ |       |      |          |          |      |         |       |
+
+* IMF Metamodel Ontology
+** Overview
+
+#+CALL: rdfvizler(rules="rdfvizler/classes-properties.rule", data=".imf-metamodel.wottr.ttl", output="imf-metamodel-overview.svg")
+
+#+RESULTS:
+
+[[./imf-metamodel-overview.svg]]
+
+** Processing and QA                                                :QA:
+*** RDF validate tangled file
+
+#+CALL: sh_jena_validate_rdf(files=".imf-metamodel.wottr.ttl imf-metamodel.owl.ttl")
+
+#+RESULTS:
+: 14:10:53 INFO  riot            :: File: .imf-metamodel.wottr.ttl
+: .imf-metamodel.wottr.ttl : 0.22 sec : 151 Triples : 674.11 per second
+: 14:10:53 INFO  riot            :: File: imf-metamodel.owl.ttl
+: imf-metamodel.owl.ttl : 0.01 sec : 135 Triples : 10,384.62 per second
+: Total           : 0.24 sec : 286 Triples : 1,206.75 per second
+
+#+CALL: sh_jena_shacl_validate(data=".imf-metamodel.wottr.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+*** Expand OTTR instances
+
+#+CALL: lutra-expand(in=".imf-metamodel.wottr.ttl", out="imf-metamodel.owl.ttl")
+
+#+RESULTS:
+#+begin_example
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectAllValuesFrom
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
+
+[INFO] Fetched template http://tpl.ottr.xyz/rdf/0.1/Type
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectHasValue
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectUnionOf
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectAllValuesFrom
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/TypedListRelation
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivalentClass
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubPropertyOf
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectHasValue
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/AllValuesFrom
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/HasValue
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ListRelation
+
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
+
+[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectExactCardinality
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectExactCardinality
+[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectExactCardinality
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ObjectCardinality
+[INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/Cardinality
+
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, owl:onClass : LUB ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, owl:qualifiedCard ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank503 : LUB<rdfs:Resource>, owl:onProperty :  ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#hasOutletTerminal : LUB< ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#OutletTerminal : LUB<ott ...
  >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Connection : LUB<ottr:IR ...
 
 [INFO] Fetch missing template: http://tpl.ottr.xyz/owl/macro/0.1/ClassPartition
@@ -921,24 +905,47 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 [INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectUnionOf
 [INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
 
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank505 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank505 : LUB<rdfs:Resource>, owl:members : LUB ...
  >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB<rdfs:Resource>, owl:members : LUB ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank507 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank507 : LUB<rdfs:Resource>, owl:unionOf : LUB ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank507 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB<rdfs:Resource>, owl:unionOf : LUB ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank506 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
  >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Terminal : LUB<ottr:IRI> ...
  >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Terminal : LUB<ottr:IRI> ...
 
 [WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
 [WARNING] Failed fetch for template http://ns.ottr.xyz/0.4/NullableTriple
 
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#SystemBlock : LU ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#isConnectedTo :  ...
 rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-metamodel.wottr.ttl.temp with parser turtle
 rapper: Serializing with serializer turtle
-rapper: Parsing returned 128 triples
+rapper: Parsing returned 149 triples
 #+end_example
 
-** Ontology header
+*** RDF validate final file
+
+#+CALL: sh_jena_validate_rdf(files="imf-metamodel.owl.ttl")
+
+#+RESULTS:
+: imf-metamodel.owl.ttl : 0.21 sec : 135 Triples : 645.93 per second
+
+#+CALL: sh_jena_shacl_validate(data="imf-metamodel.owl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+
+** Ontology source
+*** Header
 #+NAME: owl-top-ontology
 #+BEGIN_SRC ttl :noweb strip-export :tangle .imf-metamodel.wottr.ttl
 <<prefixes>>
@@ -965,7 +972,9 @@ rapper: Parsing returned 128 triples
 <<owl-metamodel-connection>>
 #+END_SRC
 
-** Object subtypes and relations
+*** ~AspectObject~
+
+AspectObject is defined in IMF Top, but is further described here.
 
 #+NAME: owl-metamodel-aspectobject
 #+BEGIN_SRC ttl
@@ -973,46 +982,47 @@ imf:AspectObject a owl:Class ;
 
   skos:scopeNote """
 
-    Each aspect object is either a ....""".
+    Each aspect object is either a system block or a terminal.""".
 
 [] ottr:of o-owl-ma:ClassPartition ;
    ottr:values ( imf:AspectObject ( imf:SystemBlock imf:Terminal ) ) .
 #+END_SRC
 
-
-*** hasChild/hasParent
+*** ~hasParent~ / ~hasChild~
 
 #+NAME: owl-metamodel-relations-partof
 #+BEGIN_SRC ttl
 imf:hasParent a owl:ObjectProperty;
   a owl:FunctionalProperty ;
   rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
+
   rdfs:domain imf:AspectObject ;
   rdfs:range imf:AspectObject ;
 
   skos:prefLabel "has parent" ;
   skos:altLabel "is part of" ;
-  #skos:definition """ """;
-  skos:scopeNote """abstraction""";
-  #skos:example """ """;
-  #skos:editorialNote """ """;
+  skos:definition """
+
+    An aspect object is placed in a tree-shaped breakdown structure
+    using hasParent/hasChild relationships. An aspect object may have
+    a single parent (the root object has no parent) and possibly
+    multiple children. This is an abstraction mechanism. The children
+    of an aspect object provide a more detailed description of (parts
+    of) its parent.
+
+  """;
   .
 
-  imf:hasChild a owl:ObjectProperty ;
+imf:hasChild a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
   owl:inverseOf imf:hasParent ;
 
   skos:prefLabel "has child";
   skos:altLabel "has part";
-  #skos:definition """ """;
-  #skos:scopeNote """ """;
-  #skos:example """ """;
-  #skos:editorialNote """ """;
   .
 #+END_SRC
 
-
-*** precedes
+*** ~precedes~
 
 #+NAME: owl-metamodel-relations-precedes
 #+BEGIN_SRC ttl
@@ -1023,93 +1033,112 @@ imf:precedes a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:associativeRelation , imf:intraAspectRelation ;
   rdfs:domain imf:Terminal ;
   rdfs:range imf:Terminal ;
-
   skos:prefLabel "precedes";
-  #skos:altLabel "";
-  #skos:definition """ """;
-  #skos:scopeNote """ """;
-  #skos:example """ """;
-  #skos:editorialNote """ """;
-  #owl:propertyChainAxiom ( [ owl:inverseOf imf:hasInput ] imf:hasOutput ) ;
-  .
+  skos:definition """
 
-imf:systemFlow a owl:ObjectProperty ;
+    A relation between terminals that represents the "flow" of
+    input/output between teminals, both terminals of the same system
+    block (represented by the subproperty directlyPrecedes) and of
+    different system blocks (represented by the subproperty
+    isConnectedTo).
+
+  """; .
+
+imf:directlyPrecedes a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:precedes ;
   rdfs:domain imf:InletTerminal ;
   rdfs:range imf:OutletTerminal ;
-  skos:prefLabel "system flow";
-  #skos:altLabel "";
+  skos:prefLabel "directly precedes";
   skos:definition """
 
-    An immediate, i.e., non-transitive, precedes relation between
-    inlet terminals and outlet terminals *of the same system* such
-    that (parts of) the input to the inlet terminal is processed by
-    the system to produce (parts of) the output of the outlet
-    terminal.
+    An immediate, non-transitive, precedes relation between inlet
+    terminals and outlet terminals *of the same system* such that
+    (parts of) the input to the inlet terminal is processed by the
+    system to produce (parts of) the output of the outlet terminal.
 
-""";
-  #skos:scopeNote """ """;
-  #skos:example """ """;
-  #skos:editorialNote """ """;
+  """;
   .
 
 #+END_SRC
 
-*** System block
+*** ~SystemBlock~
 
 #+NAME: owl-metamodel-system
 #+BEGIN_SRC ttl
 imf:SystemBlock a owl:Class ;
-
-  ### annotations
+  rdfs:subClassOf imf:AspectObject ;
 
   skos:prefLabel "System Block";
-  #skos:altLabel "" ;
   skos:definition """
 
-    transforms the input from its inlet terminals to the output to its
+    A system is a processing (black) box. It processes the input to
+    output, possibly changing the state of what is processed.
+
+    Transforms the input from its inlet terminals to the output to its
     outlet terminals. The relation between the inlet and outlet
     terminals may be complex and may be further described by
-    subsystems.
+    subsystems which are related by hasChild.
+
+    A system may have multiple inlet and outlet terminals. A system
+    with zero terminals is uncommon.
 
   """;
-  #skos:scopeNote """ """;
-  #skos:example """ """;
-  #skos:editorialNote """ """;
   .
-
-  ### axioms
 
 [] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
    ottr:values ( imf:SystemBlock imf:hasParent imf:SystemBlock ) .
-
 #+END_SRC
 
-*** Terminal and its relations
+*** ~Terminal~ and its subclasses and relations
 
 #+NAME: owl-metamodel-terminal
 #+BEGIN_SRC ttl
 imf:Terminal a owl:Class ;
-
-  ### annotations
+  rdfs:subClassOf imf:AspectObject ;
 
   skos:prefLabel "Terminal" ;
   skos:altLabel "Port" ;
   skos:definition """
 
     A port or boundry point through which a system block can interact
-    and communicate with the outside world, receiving input and giving
-    output.
+    and communicate with the world outside the system, receiving input
+    and giving output.
 
   """;
 
-  #skos:scopeNote """ """;
-  #skos:example """ """;
-  #skos:editorialNote """ """;
+   skos:editorialNote """
+
+     [2022-03-11 Fri] Need to represent the type of a terminal, and
+     constraints on connections between typed terminals: material,
+     information, energy, structural.
+
+   """ ;
 
   .
 
-  ### axioms
+imf:InletTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Inlet Terminal" ;
+  skos:definition """
+
+    A terminal whose default function is to recieve input for its
+    system.
+
+  """;
+
+  .
+
+imf:OutletTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Outlet Terminal" ;
+  skos:definition """
+
+    A terminal whose default function is to give output for its
+    system.
+
+  """;
+
+  .
 
 [] ottr:of o-owl-ma:ClassPartition ;
    ottr:values ( imf:Terminal ( imf:InletTerminal imf:OutletTerminal ) ) .
@@ -1124,81 +1153,83 @@ imf:hasTerminal a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
   rdfs:domain imf:SystemBlock ;
   rdfs:range imf:Terminal ;
-  skos:prefLabel "hasTerminal" ;
+  skos:prefLabel "has terminal" ;
   skos:definition "The relation between a system and its terminals.";
-  #skos:scopeNote """ """;
-  #skos:example """ """;
-  #skos:editorialNote """ """;
   .
 
 imf:hasInletTerminal a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has inlet terminal" ;
   rdfs:range imf:InletTerminal ;
   skos:definition "The relation between a system and its inlet terminals.";
   .
 
 imf:hasOutletTerminal a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has outlet terminal" ;
   rdfs:range imf:OutletTerminal ;
   skos:definition "The relation between a system and its outlet terminals.";
   .
 
-imf:isConnected a owl:ObjectProperty ;
+imf:isConnectedTo a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  rdfs:subPropertyOf imf:precedes ;
+  skos:prefLabel "is connected to" ;
+  skos:definition """
+
+    The relation between to terminals that are connected. The output
+    of the outlet terminal is given as input to the inlet terminal.
+
+  """;
   rdfs:domain imf:OutletTerminal ;
   rdfs:range imf:InletTerminal ;
   .
 #+END_SRC
 
-*** Connection and its relations
+*** ~Connection~ and its relations
 
 #+NAME: owl-metamodel-connection
 #+BEGIN_SRC ttl
 imf:Connection a owl:Class ;
-
   rdfs:subClassOf imf:SystemBlock ;
-
-  ### annotations
   skos:prefLabel "Connection" ;  
-  skos:altLabel "Junction" ;
+  skos:altLabel "Junction" , "Transport" ;
   skos:definition """
 
-     special case of system block with has exactly one input and one
-     output and no transformation of the input is performed.
+     A simple type of system block that has exactly one input and one
+     output. No transformation of the input is performed.
 
+     The connection, in effect, merges the two connected
+     terminals. The connection itself has no function or spatial
+     significance.
 
   """;
-  #skos:scopeNote """ """;
-  #skos:example """ """;
-  #skos:editorialNote """ """;
   .
-
-  ### axioms
 
 [] ottr:of o-owl-ax:SubObjectExactCardinality ;
    ottr:values ( imf:Connection "1"^^xsd:nonNegativeInteger imf:hasInletTerminal imf:InletTerminal ) .
 
 [] ottr:of o-owl-ax:SubObjectExactCardinality ;
    ottr:values ( imf:Connection "1"^^xsd:nonNegativeInteger imf:hasOutletTerminal imf:OutletTerminal ) .
-
 #+END_SRC
 
-* IMF Aspects Ontology
+* TODO IMF Aspects Ontology
+** Overview
+
+#+CALL: rdfvizler(rules="rdfvizler/classes-properties.rule", data="imf-aspects.owl.ttl", output="imf-aspects-overview.svg")
+
+#+RESULTS:
+
+[[./imf-aspects-overview.svg]]
+
+
 ** Processing and QA                                                     :QA:
-
-This is placed here so that it is easier to syncronise filenames with
-org-mode tangled files.
-
 *** RDF validate tangled file
 
 #+CALL: sh_jena_validate_rdf(files=".imf-aspects.wottr.ttl")
 
 #+RESULTS:
-: 15:38:57 INFO  riot            :: File: .imf-aspects.wottr
-: .imf-aspects.wottr : 0.25 sec : 162 Triples : 637.80 per second
-: 15:38:57 INFO  riot            :: File: imf-aspects.owl
-: imf-aspects.owl : 0.02 sec : 149 Triples : 8,277.78 per second
-: Total           : 0.27 sec : 311 Triples : 1,143.38 per second
+: .imf-aspects.wottr.ttl : 0.22 sec : 147 Triples : 683.72 per second
 
 
 *** Expand OTTR instances
@@ -1211,6 +1242,8 @@ SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
 SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 
+[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
+
 [INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectAllValuesFrom
 
 [INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
@@ -1222,8 +1255,6 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 [INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
 
 [INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectUnionOf
-
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
 
 [INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectAllValuesFrom
 
@@ -1243,47 +1274,28 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 
 [INFO] Fetched template http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
 
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/macro/0.1/ClassPartition
-[INFO] Fetched template http://tpl.ottr.xyz/owl/macro/0.1/ClassPartition
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectUnionOf
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DisjointClasses
-
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank507 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank507 : LUB<rdfs:Resource>, owl:members : LUB ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank508 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank508 : LUB<rdfs:Resource>, owl:unionOf : LUB ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank508 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Aspect : LUB<ottr:IRI>,  ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Aspect : LUB<ottr:IRI>,  ...
-
 [INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/DifferentIndividuals
 [INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/DifferentIndividuals
 
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank517 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank517 : LUB<rdfs:Resource>, owl:members : LUB ...
-
-[INFO] Fetch missing template: http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectOneOf
-[INFO] Fetched template http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectOneOf
-[INFO] Fetched template http://tpl.ottr.xyz/owl/restriction/0.1/ObjectOneOf
-
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank518 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank518 : LUB<rdfs:Resource>, owl:oneOf : LUB<o ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank518 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#PrimaryAspect : LUB<ottr ...
- >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#PrimaryAspect : LUB<ottr ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank513 : LUB<rdfs:Resource>, rdf:type : LUB<ot ...
+ >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank513 : LUB<rdfs:Resource>, owl:members : LUB ...
 
 [WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
 [WARNING] Failed fetch for template http://ns.ottr.xyz/0.4/NullableTriple
 
  >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#interAspectRelat ...
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-aspects.wottr.temp with parser turtle
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/.imf-aspects.wottr.ttl.temp with parser turtle
 rapper: Serializing with serializer turtle
-rapper: Parsing returned 166 triples
+rapper: Parsing returned 152 triples
 #+end_example
 
 *** RDF validate final file
 
 #+CALL: sh_jena_validate_rdf(files="imf-aspects.owl.ttl")
+
+#+RESULTS:
+: imf-aspects.owl.ttl : 0.23 sec : 136 Triples : 596.49 per second
+
 #+CALL: sh_jena_shacl_validate(data="imf-aspects.owl.ttl")
 
 #+RESULTS:
@@ -1298,7 +1310,8 @@ rapper: Parsing returned 166 triples
 ] .
 #+END_src
 
-** Ontology header
+** Ontology source
+*** Header
 
 #+NAME: owl-aspect-ontology
 #+BEGIN_SRC ttl :noweb strip-export :tangle .imf-aspects.wottr.ttl
@@ -1324,8 +1337,9 @@ rapper: Parsing returned 166 triples
 <<py_aspect_ottr_instances_interaspectrelations()>>
 #+END_SRC
 
-** Aspect classes
-*** Aspect
+*** ~Aspect~
+
+Aspect is defined in IMF Top, but is further described here.
 
 #+NAME: owl-aspects-aspect
 #+BEGIN_SRC ttl
@@ -1347,7 +1361,7 @@ imf:Aspect a owl:Class ;
 
 #+END_SRC
 
-*** CANCELLED Primary Aspect                                       :noexport:
+**** CANCELLED Primary Aspect                                      :noexport:
 
 
 #+NAME: owl-aspects-primary
@@ -1381,7 +1395,7 @@ imf:PrimaryAspect rdf:type owl:Class ;
    ottr:values ( imf:PrimaryAspect ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect ) ) .
 #+END_SRC
 
-*** CANCELLED Secondary Aspect                                     :noexport:
+**** CANCELLED Secondary Aspect                                    :noexport:
 
 #+NAME: owl-aspects-secondary
 #+BEGIN_SRC ttl
@@ -1406,26 +1420,25 @@ imf:SecondaryAspect rdf:type owl:Class ;
   owl:disjointWith imf:PrimaryAspect .
 #+END_SRC
 
-** TODO Aspects
+*** TODO Aspects
 
 TODOs: 
  - are the prefixes useful? is the RDF code useful?
 
 #+NAME: tbl-aspects
- | Aspect, IRIs        | Prefix, List of strings | Color, string |
- |---------------------+-------------------------+---------------|
- | imf:FunctionAspect  | ('=')                   | '#FFFF00'     |
- | imf:LocationAspect  | ('+' '++')              | '#FF00FF'     |
- | imf:ProductAspect   | ('-')                   | '#00FFFF'     |
- | imf:InstalledAspect | ('::')                  | '#3232BD'     |
- | imf:ActivityAspect  | ('')                    | '#000000'     |
+ | Aspect, IRIs       | Prefix | Color, string |
+ |--------------------+--------+---------------|
+ | imf:FunctionAspect | '='    | '#FFFF00'     |
+ | imf:LocationAspect | '+'    | '#FF00FF'     |
+ | imf:ProductAspect  | '-'    | '#00FFFF'     |
+ | imf:ActivityAspect | '>'    | '#000000'     |
 
 #+BEGIN_SRC ttl :noweb strip-export :tangle tpl/aspects.stottr :mkdirp yes
 <<prefixes>>
 
-o-imf:Aspect [owl:NamedIndividual ?aspect, List<xsd:string> ?symbol, xsd:string ?color] :: {
+o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?symbol, xsd:string ?color] :: {
   o-rdf:Type(?aspect, imf:Aspect) ,
-  cross | ottr:Triple(?aspect, imf:prefix, ++?symbol),
+  ottr:Triple(?aspect, imf:prefix, ?symbol),
   ottr:Triple(?aspect, imf:color, ?color)
 } .
 
@@ -1465,16 +1478,16 @@ return output
 #+RESULTS: py_aspect_ottr_instances_aspects
 #+BEGIN_src ttl
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:FunctionAspect ('=') '#FFFF00' ) . 
+   ottr:values( imf:FunctionAspect '=' '#FFFF00' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:LocationAspect ('+' '++') '#FF00FF' ) . 
+   ottr:values( imf:LocationAspect '+' '#FF00FF' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:ProductAspect ('-') '#00FFFF' ) . 
+   ottr:values( imf:ProductAspect '-' '#00FFFF' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:InstalledAspect ('::') '#3232BD' ) . 
+   ottr:values( imf:ActivityAspect '>' '#000000' ) . 
 
 [] ottr:of o-owl-ax:DifferentIndividuals ;
-   ottr:values( ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:InstalledAspect ) ) . 
+   ottr:values( ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:ActivityAspect ) ) . 
 
 [] ottr:of o-imf:AspectObjectClass ;
    ottr:values( imf:FunctionAspectObject imf:FunctionAspect ) . 
@@ -1483,10 +1496,10 @@ return output
 [] ottr:of o-imf:AspectObjectClass ;
    ottr:values( imf:ProductAspectObject imf:ProductAspect ) . 
 [] ottr:of o-imf:AspectObjectClass ;
-   ottr:values( imf:InstalledAspectObject imf:InstalledAspect ) . 
+   ottr:values( imf:ActivityAspectObject imf:ActivityAspect ) . 
 #+END_src
 
-** TODO Inter-aspect relationships
+*** TODO Inter-aspect relationships
 
 TODOs: 
 
@@ -1511,20 +1524,20 @@ Aspect objects of different aspects are related by inter aspect
 relationships. The following relationships are permissible:
 
 #+NAME: tbl_interaspectrelations
- | Relation          | Domain, comma seperated list = union  | Range, comma seperated list =  union |
- |-------------------+---------------------------------------+--------------------------------------|
- | imf:hasLocation   | imf:FunctionAspect, imf:ProductAspect | imf:LocationAspect                   |
- | imf:isFulfilledBy | imf:FunctionAspect                    | imf:ProductAspect                    |
- | imf:isInstalledAs | imf:ProductAspect                     | imf:InstalledAspect                  |
+ | Relation          | Domain             | Range              |
+ |-------------------+--------------------+--------------------|
+ | imf:hasLocation   | ottr:none          | imf:LocationAspect |
+ | imf:isFulfilledBy | imf:FunctionAspect | imf:ProductAspect  |
+ | imf:hasActivity   | imf:FunctionAspect | imf:ActivityAspect |
 
 #+BEGIN_SRC ttl :noweb strip-export :tangle tpl/interaspectrelations.stottr :mkdirp yes
 <<prefixes>>
 
-o-imf:InterAspectRelation[owl:ObjectProperty ?relation, List<owl:Class> ?domain, List<owl:Class> ?range] :: {
+o-imf:InterAspectRelation[owl:ObjectProperty ?relation, owl:Class ?domain, owl:Class ?range] :: {
   o-owl-ax:SubObjectPropertyOf(?relation, imf:interAspectRelation),
-  o-owl-rstr:ObjectUnionOf(_:domain, ?domain),  
-  o-owl-rstr:ObjectUnionOf(_:range, ?range),
-  o-owl-ma:DomainRange(?relation, _:domain, _:range)
+  #o-owl-rstr:ObjectUnionOf(_:domain, ?domain),  
+  #o-owl-rstr:ObjectUnionOf(_:range, ?range),
+  o-owl-ma:DomainRange(?relation, ?domain, ?range)
 } .
 #+END_SRC
 
@@ -1534,9 +1547,9 @@ output = ""
 instance = "[] ottr:of {} ;\n   ottr:values( {} ) . \n"
 
 for row in table:
-  output += instance.format("o-imf:InterAspectRelation", str(row[0]) 
-    + " (" + " ".join(map(lambda x : x + "Object", row[1].split(","))) + ")"
-    + " (" + " ".join(map(lambda x : x + "Object", row[2].split(","))) + ")")
+  output += instance.format("o-imf:InterAspectRelation", " ".join(row))
+    #+ " (" + " ".join(map(lambda x : x + "Object", row[1].split(","))) + ")"
+    #+ " (" + " ".join(map(lambda x : x + "Object", row[2].split(","))) + ")")
 
 return output
 #+END_SRC
@@ -1544,15 +1557,15 @@ return output
 #+RESULTS: py_aspect_ottr_instances_interaspectrelations
 #+BEGIN_src ttl
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:hasLocation (imf:FunctionAspectObject  imf:ProductAspectObject) (imf:LocationAspectObject) ) . 
+   ottr:values( imf:hasLocation ottr:none imf:LocationAspect ) . 
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:isFulfilledBy (imf:FunctionAspectObject) (imf:ProductAspectObject) ) . 
+   ottr:values( imf:isFulfilledBy imf:FunctionAspect imf:ProductAspect ) . 
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:isInstalledAs (imf:ProductAspectObject) (imf:InstalledAspectObject) ) . 
+   ottr:values( imf:hasActivity imf:FunctionAspect imf:ActivityAspect ) . 
 #+END_src
 
-** OTTR templates
-** Example instances
+** TODO OTTR templates
+** TODO Example instances
 
 #+BEGIN_SRC ttl
 ex:f-1 a imf:AspectObject ;
@@ -1565,7 +1578,8 @@ ex:f-1-1
 ex:f-1-1-2 
   imf:hasChild ex:f-1-1-2-1, ex:f-1-1-2-2 .
 #+END_SRC
-
+* TODO Attribute data aka. Quantities
+* TODO Types
 * Summary of IMF ontologies
 ** Classes
 
@@ -1660,7 +1674,7 @@ ORDER BY ?type ?property
 | ~owl:ObjectProperty~ | ~imf:interAspectRelation~  |                |             |                                                                                                                      | ~imf:AspectObject~ | ~imf:AspectObject~     |                                                                          | ~skos:related~                                                     |
 | ~owl:ObjectProperty~ | ~imf:intraAspectRelation~  |                |             | ~A generic relation between aspect objects of the same aspect~                                                       | ~imf:AspectObject~ | ~imf:AspectObject~     |                                                                          | ~skos:semanticRelation~                                            |
 | ~owl:ObjectProperty~ | ~imf:isAspectOf~           | ~is aspect of~ |             | ~Relates an aspect object with the integrated object the aspect object provides a specification for/description of.~ | ~imf:AspectObject~ | ~imf:IntegratedObject~ |                                                                          |                                                                    |
-| ~owl:ObjectProperty~ | ~imf:isConnectedTo~        |                |             |                                                                                                                      |                    |                        |                                                                          |                                                                    |
+| ~owl:ObjectProperty~ | ~imf:isConnectedTo~          |                |             |                                                                                                                      |                    |                        |                                                                          |                                                                    |
 | ~owl:ObjectProperty~ | ~imf:isFulfilledBy~        |                |             |                                                                                                                      | ~ub1bL60C17~       | ~ub1bL62C16~           |                                                                          | ~imf:interAspectRelation~                                          |
 | ~owl:ObjectProperty~ | ~imf:isInstalledAs~        |                |             |                                                                                                                      | ~ub1bL67C17~       | ~ub1bL69C16~           |                                                                          | ~imf:interAspectRelation~                                          |
 
@@ -2399,6 +2413,127 @@ java -jar rdfvizler.jar --rules=$rules $data > $output
 #+END_SRC
 
 #+CALL: rdfvizler(rules="rdfvizler/import-hierarchy.rule", output="ontology-import-hierarchy.svg")
+
+#+RESULTS:
+
+** Classes and Properties
+
+#+BEGIN_SRC ttl
+    [selection:
+        (?s ?p ?o)
+        equalssome(?p, rdfs:domain, rdfs:range, rdfs:subClassOf) 
+        makeSkolem(?edge, ?s, ?p, ?o)
+        ->
+        (:graph rvz:hasEdge ?edge)
+        (?edge :predicate ?p)
+        (:graph rvz:hasNode ?s)
+        (:graph rvz:hasNode ?o)
+        (?edge rvz:hasSource ?s)
+        (?edge rvz:hasTarget ?o)
+        ]
+#+END_SRC
+
+#+BEGIN_SRC ttl :noweb yes :tangle rdfvizler/classes-properties.rule :mkdirp yes
+<<prefixes-rdfvizler>>
+
+    [init-graph:
+        ->
+        (:graph rdf:type rvz:RootGraph)
+        (:graph rdf:type rvz:DiGraph)
+        (:graph rvz-a:rankdir "BT")
+        (:graph rvz-a:center "true")
+        // node defaults
+	(:graph rvz-n:shape "box")
+        (:graph rvz-n:fontname "Arial")
+        (:graph rvz-n:fontsize "8px")
+        // edge defaults
+        (:graph rvz-e:fontname "Arial")
+        (:graph rvz-e:fontsize "8px")
+        ]
+
+    [class:
+        (?s rdf:type owl:Class)
+        ->
+        (:graph rvz:hasNode ?s)
+        ]
+
+    [label-node:
+        (:graph rvz:hasNode ?node)
+        shortvalue(?node ?label)
+        ->
+	(?node rvz-a:label ?label)
+        ]
+
+    [subclass:
+        (?s rdfs:subClassOf ?o)
+        makeSkolem(?edge, ?s, rdfs:subClassOf, ?o)
+        ->
+        (:graph rvz:hasEdge ?edge)
+        (?edge :predicate ?p)
+        (?edge rvz-a:arrowhead "empty")
+        (?edge rvz-a:dir "forward")
+        (:graph rvz:hasNode ?s)
+        (:graph rvz:hasNode ?o)
+        (?edge rvz:hasSource ?s)
+        (?edge rvz:hasTarget ?o)
+        ]
+
+    [property:
+        (?p rdfs:domain ?domain)
+        (?p rdfs:range ?range)
+        shortvalue(?p ?label)
+        makeSkolem(?edge, ?domain, ?p, ?range)
+        ->
+        (:graph rvz:hasEdge ?edge)
+        (:graph rvz:hasNode ?domain)
+        (:graph rvz:hasNode ?range)
+        (?edge :predicate ?p)
+	(?edge rvz-a:label ?label)
+        (?edge rvz:hasSource ?domain)
+        (?edge rvz:hasTarget ?range)
+        ]
+
+    [SubObjectExactCardinality:
+        (?i ottr:of o-owl-ax:SubObjectExactCardinality)
+        (?i ottr:values ?arg1)
+	(?arg1 rdf:first ?domain)
+	(?arg1 rdf:rest ?arg2)
+	(?arg2 rdf:first ?card)
+	(?arg2 rdf:rest ?arg3)
+	(?arg3 rdf:first ?property)
+	(?arg3 rdf:rest ?arg4)
+	(?arg4 rdf:first ?range)
+	shortvalue(?property ?plabel)
+	strConcat(?plabel, " ", ?card, ?label)
+        makeSkolem(?edge, ?domain, ?card, ?property, ?range)
+	->
+        (:graph rvz:hasEdge ?edge)
+        (:graph rvz:hasNode ?domain)
+        (:graph rvz:hasNode ?range)
+        (?edge :predicate ?property)
+	(?edge rvz-a:label ?label)
+        (?edge rvz-a:constraint "false")
+        (?edge rvz-a:dir "forward")
+        (?edge rvz-a:arrowhead "teetee")
+        (?edge rvz:hasSource ?domain)
+        (?edge rvz:hasTarget ?range)
+        ]
+
+    [Blanks:
+	(:graph rvz:hasNode ?node)
+	isBNode(?node)
+	typedvalue(?node, ?label)
+	->
+	(?node rvz-a:label ?label)
+	(?node rvz-a:shape "box")
+	(?node rvz-a:style "filled,dashed")
+	(?node rvz-a:fillcolor "gray90")
+	(?node rvz-a:height ".3")
+	(?node rvz-a:width ".3")
+	]
+#+END_SRC
+
+#+CALL: rdfvizler(rules="rdfvizler/classes-properties.rule", output="ontology-overview.svg")
 
 #+RESULTS:
 

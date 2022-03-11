@@ -25,8 +25,9 @@
     skos:altLabel "IMF ontology" ;
     skos:scopeNote """
 
-      The IMF ontology is in its current version defined over
-      different ontology documents: 
+      This is the main IMF ontology and its main point of entry.  This
+      ontology document imports all other IMF ontology documents, each
+      of which focus on one particular part of the ontology:
 
       1. IMF Top defines the very high-level classes and properties of
       the IMF ontology, such as AspectObject.
@@ -38,8 +39,5 @@
       objects.
 
     """;
-
-    #skos:editorialNote """
-    #""";
 
     .
