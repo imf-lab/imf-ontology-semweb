@@ -1,0 +1,146 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:ActivityAspect
+    imf:color "#000000" ;
+    imf:prefix ">" ;
+    a imf:Aspect .
+
+imf:ActivityAspectObject
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectObject, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:ActivityAspectObject ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:ActivityAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
+imf:Aspect
+    a owl:Class ;
+    skos:scopeNote """
+
+    Each aspect is associated with a class of the aspect objects that
+    have that aspect, e.g,. imf:FunctionAspectObject is the class of
+    aspect objects with the aspect imf:FunctionAspect. These classes
+    are used to specify permissible relationships between aspect
+    objects according to their aspect.""" .
+
+imf:FunctionAspect
+    imf:color "#FFFF00" ;
+    imf:prefix "=" ;
+    a imf:Aspect .
+
+imf:FunctionAspectObject
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectObject, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:FunctionAspectObject ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:FunctionAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
+imf:LocationAspect
+    imf:color "#FF00FF" ;
+    imf:prefix "+" ;
+    a imf:Aspect .
+
+imf:LocationAspectObject
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectObject, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:LocationAspectObject ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:LocationAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
+imf:ProductAspect
+    imf:color "#00FFFF" ;
+    imf:prefix "-" ;
+    a imf:Aspect .
+
+imf:ProductAspectObject
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectObject, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:ProductAspectObject ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:ProductAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
+imf:hasActivity
+    a owl:ObjectProperty ;
+    rdfs:domain imf:FunctionAspectObject ;
+    rdfs:range imf:ActivityAspectObject ;
+    rdfs:subPropertyOf imf:interAspectRelation .
+
+imf:hasAspect
+    a owl:ObjectProperty .
+
+imf:interAspectRelation
+    a owl:ObjectProperty ;
+    rdfs:domain imf:AspectObject ;
+    rdfs:range imf:AspectObject ;
+    rdfs:subPropertyOf skos:related ;
+    skos:definition """
+
+      Relates aspects objects of different aspects.
+
+    """ .
+
+imf:intraAspectRelation
+    a owl:ObjectProperty .
+
+imf:isFulfilledBy
+    a owl:ObjectProperty ;
+    rdfs:domain imf:FunctionAspectObject ;
+    rdfs:range imf:ProductAspectObject ;
+    rdfs:subPropertyOf imf:interAspectRelation .
+
+<http://ns.imfid.org/imf-aspects>
+    a owl:Ontology ;
+    skos:altLabel "IMF aspects ontology" ;
+    skos:prefLabel "Information Modelling Framework Ontology: Aspects Ontology " ;
+    skos:scopeNote """
+
+      This ontology defines IMF's central aspects.
+
+    """ .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:FunctionAspect
+        imf:LocationAspect
+        imf:ProductAspect
+        imf:ActivityAspect
+    ) .
+

@@ -1,0 +1,91 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+ex:CoffeeInput
+    imf:directlyPrecedes ex:CupTray ;
+    a imf:InletTerminal .
+
+ex:CoffeeMachine
+    imf:hasAspect imf:Function ;
+    imf:hasInletTerminal ex:CoffeeInput, ex:MilkInput, ex:WaterInput, ex:WaterTankInput ;
+    imf:hasOutletTerminal ex:CupTray ;
+    a imf:SystemBlock ;
+    skos:note "Makes different variants of espresso based coffee possibly with milk" ;
+    skos:prefLabel "Coffee machine" .
+
+ex:CupTray
+    a imf:OutletTerminal ;
+    skos:note "Landing area for produced coffee" .
+
+ex:Grinder
+    imf:hasInletTerminal ex:GrinderInput ;
+    imf:hasOutletTerminal ex:GrinderOutput ;
+    imf:hasParent ex:CoffeeMachine ;
+    a imf:SystemBlock ;
+    skos:note "Grinds coffee beans" .
+
+ex:GrinderInput
+    imf:hasParent ex:CoffeeInput ;
+    a imf:InletTerminal .
+
+ex:GrinderOutput
+    a imf:OutletTerminal .
+
+ex:MilkInput
+    imf:directlyPrecedes ex:CupTray ;
+    a imf:InletTerminal .
+
+ex:Mixer
+    imf:hasParent ex:CoffeeMachine ;
+    a imf:SystemBlock ;
+    skos:note "Mixes coffee and milk to perfection" .
+
+ex:Steamer
+    imf:hasInletTerminal ex:SteamerInput ;
+    imf:hasParent ex:CoffeeMachine ;
+    a imf:SystemBlock ;
+    skos:note "Steams milk with water steam" .
+
+ex:SteamerInput
+    a imf:InletTerminal .
+
+ex:WaterHeater
+    imf:hasInletTerminal ex:WaterHeaterInput ;
+    imf:hasParent ex:CoffeeMachine ;
+    a imf:SystemBlock ;
+    skos:note "Heats water" .
+
+ex:WaterHeaterInput
+    a imf:InletTerminal .
+
+ex:WaterInput
+    imf:directlyPrecedes ex:CupTray ;
+    a imf:InletTerminal .
+
+ex:WaterTank
+    imf:hasOutletTerminal ex:WaterTankOutput ;
+    imf:hasParent ex:CoffeeMachine ;
+    a imf:SystemBlock ;
+    skos:note "Stores water" .
+
+ex:WaterTankInput
+    imf:hasParent ex:WaterInput ;
+    a imf:InletTerminal .
+
+ex:WaterTankOutput
+    a imf:OutletTerminal .
+
