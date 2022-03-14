@@ -1,1 +1,65 @@
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+imf:AspectObjectShape a sh:NodeShape ;
+    sh:property [ sh:class imf:AspectObject ;
+            sh:path imf:hasChild ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path skos:prefLabel ;
+            sh:severity sh:Warning ],
+        [ sh:class imf:AspectObject ;
+            sh:maxCount 1 ;
+            sh:path imf:hasParent ],
+        [ sh:class imf:IntegratedObject ;
+            sh:maxCount 1 ;
+            sh:path imf:isAspectOf ],
+        [ sh:class imf:Aspect ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path imf:hasAspect ] ;
+    sh:targetClass imf:AspectObject .
+
+imf:ConnectionShape a sh:NodeShape ;
+    sh:property [ sh:class imf:OutletTerminal ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path imf:hasOutletTerminal ],
+        [ sh:class imf:InletTerminal ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path imf:hasInletTerminal ] ;
+    sh:targetClass imf:Connection .
+
+imf:InletTerminalShape a sh:NodeShape ;
+    sh:property [ sh:class imf:OutletTerminal ;
+            sh:path imf:directlyPrecedes ],
+        [ sh:class imf:InletTerminal ;
+            sh:path imf:hasChild ],
+        [ sh:class imf:InletTerminal ;
+            sh:maxCount 1 ;
+            sh:path imf:hasParent ] ;
+    sh:targetClass imf:InletTerminal .
+
+imf:OutletTerminalShape a sh:NodeShape ;
+    sh:property [ sh:class imf:OutletTerminal ;
+            sh:path imf:hasChild ],
+        [ sh:class imf:InletTerminal ;
+            sh:maxCount 1 ;
+            sh:path imf:isConnectedTo ],
+        [ sh:class imf:OutletTerminal ;
+            sh:maxCount 1 ;
+            sh:path imf:hasParent ] ;
+    sh:targetClass imf:OutletTerminal .
+
+imf:SystemBlockShape a sh:NodeShape ;
+    sh:property [ sh:class imf:SystemBlock ;
+            sh:path imf:hasChild ],
+        [ sh:class imf:SystemBlock ;
+            sh:maxCount 1 ;
+            sh:path imf:hasParent ] ;
+    sh:targetClass imf:SystemBlock .
 
