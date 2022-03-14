@@ -7,6 +7,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex: <http://example.com#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix o-imf: <http://ns.imfid.org/templates/> .
 @prefix ottr: <http://ns.ottr.xyz/0.4/> .
@@ -98,8 +99,8 @@ imf:ProductAspectObject
 
 imf:hasActivity
     a owl:ObjectProperty ;
-    rdfs:domain imf:FunctionAspect ;
-    rdfs:range imf:ActivityAspect ;
+    rdfs:domain imf:FunctionAspectObject ;
+    rdfs:range imf:ActivityAspectObject ;
     rdfs:subPropertyOf imf:interAspectRelation .
 
 imf:hasAspect
@@ -110,24 +111,23 @@ imf:interAspectRelation
     rdfs:domain imf:AspectObject ;
     rdfs:range imf:AspectObject ;
     rdfs:subPropertyOf skos:related ;
-    skos:editorialNote """
+    skos:definition """
 
-      [2022-01-24 Mon] Do interAspectRelations always relate aspect
-      objects of the same type?""" .
+      Relates aspects objects of different aspects.
+
+    """ .
 
 imf:intraAspectRelation
     a owl:ObjectProperty .
 
 imf:isFulfilledBy
     a owl:ObjectProperty ;
-    rdfs:domain imf:FunctionAspect ;
-    rdfs:range imf:ProductAspect ;
+    rdfs:domain imf:FunctionAspectObject ;
+    rdfs:range imf:ProductAspectObject ;
     rdfs:subPropertyOf imf:interAspectRelation .
 
 <http://ns.imfid.org/imf-aspects>
     a owl:Ontology ;
-    owl:imports <http://ns.imfid.org/ontology/2022-01-31/imf-top> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf-aspects> ;
     skos:altLabel "IMF aspects ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology: Aspects Ontology " ;
     skos:scopeNote """

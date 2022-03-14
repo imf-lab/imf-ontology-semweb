@@ -7,6 +7,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ex: <http://example.com#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix o-imf: <http://ns.imfid.org/templates/> .
 @prefix ottr: <http://ns.ottr.xyz/0.4/> .
@@ -23,13 +24,13 @@ imf:AspectObject
     a owl:Class ;
     rdfs:subClassOf [
         a owl:Restriction ;
-        owl:onClass imf:IntegratedObject ;
-        owl:onProperty imf:isAspectOf ;
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ], [
         a owl:Restriction ;
-        owl:onClass imf:Aspect ;
-        owl:onProperty imf:hasAspect ;
+        owl:onClass imf:IntegratedObject ;
+        owl:onProperty imf:isAspectOf ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     skos:definition """
@@ -135,7 +136,6 @@ imf:isAspectOf
 <http://ns.imfid.org/imf-top>
     a owl:Ontology ;
     owl:imports <http://www.w3.org/2004/02/skos/core> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf-top> ;
     skos:altLabel "IMF top ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
     skos:scopeNote """

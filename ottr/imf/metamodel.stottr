@@ -1,0 +1,119 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+o-imf:Description [
+  ottr:IRI ?id,
+  ? xsd:string ?label,
+  ? xsd:string ?note
+] :: {
+  ottr:Triple(?id, skos:prefLabel, ?label),
+  ottr:Triple(?id, skos:note, ?note)
+} .
+
+o-imf:Versioning [
+  ottr:IRI ?id,
+  ? xsd:dateTime ?createdDate,
+  ? ottr:IRI ?createdBy,
+  ? xsd:dateTime ?updatedDate,
+  ? ottr:IRI ?updatedBy,
+  xsd:string ?version,
+  ? ottr:IRI ?status
+] :: {
+  ottr:Triple(?id, pav:createdBy, ?createdBy),
+  ottr:Triple(?id, pav:createdOn, ?createdDate),
+  ottr:Triple(?id, pav:contributedBy, ?updatedBy),
+  ottr:Triple(?id, pav:lastUpdateOn, ?updatedDate),
+  ottr:Triple(?id, pav:version, ?version),
+  ottr:Triple(?id, imf:status, ?status)
+} .
+ 
+o-imf:AspectObject [
+  owl:NamedIndividual ?id, 
+  owl:Class ?type, 
+  ? owl:NamedIndividual ?aspect, 
+  ? owl:NamedIndividual ?parent,
+  ? xsd:string ?label, 
+  ? xsd:string ?description
+] :: {
+  o-rdf:Type(?id, ?type),
+  ottr:Triple(?id, imf:hasAspect, ?aspect), 
+  ottr:Triple(?id, imf:hasParent, ?parent),
+  # cross | ottr:Triple(?id, imf:hasChild, ++?children),
+  o-imf:Description(?id, ?label, ?description)
+} .
+
+o-imf:SystemBlock[
+  owl:NamedIndividual ?id, 
+  ? owl:NamedIndividual ?aspect, 
+  ? owl:NamedIndividual ?parent,
+  ? xsd:string ?label, 
+  ? xsd:string ?description,
+  ? List<owl:NamedIndividual> ?terminals
+] :: {
+  o-imf:AspectObject(?id, imf:SystemBlock, ?aspect, ?parent, ?label, ?description),
+  cross | ottr:Triple(?id, imf:hasTerminal, ++?terminals)
+} .
+
+o-imf:InletTerminal[
+  owl:NamedIndividual ?id,
+  ? owl:NamedIndividual ?aspect,
+  owl:NamedIndividual ?systemBlock,
+  ? owl:NamedIndividual ?parent,
+  ? List<owl:NamedIndividual> ?directlyPrecedes,
+  ? owl:NamedIndividual ?isConnectedTo,
+  ? xsd:string ?label, 
+  ? xsd:string ?description
+] :: {
+  o-imf:AspectObject(?id, imf:InletTerminal, ?aspect, ?parent, ?label, ?description),
+  ottr:Triple(?systemBlock, imf:hasInletTerminal, ?id),
+  cross | ottr:Triple(?id, imf:directlyPrecedes, ++?directlyPrecedes),
+  ottr:Triple(?isConnectedTo, imf:isConnectedTo, ?id)
+} .
+
+o-imf:OutletTerminal[
+  owl:NamedIndividual ?id,
+  ? owl:NamedIndividual ?aspect,
+  owl:NamedIndividual ?systemBlock,
+  ? owl:NamedIndividual ?parent,
+  ? List<owl:NamedIndividual> ?directlyPrecedes,
+  ? owl:NamedIndividual ?isConnectedTo,
+  ? xsd:string ?label, 
+  ? xsd:string ?description
+] :: {
+  o-imf:AspectObject(?id, imf:OutletTerminal, ?aspect, ?parent, ?label, ?description),
+  ottr:Triple(?systemBlock, imf:hasOutletTerminal, ?id),
+  cross | ottr:Triple(++?directlyPrecedes, imf:directlyPrecedes, ?id),
+  ottr:Triple(?id, imf:isConnectedTo, ?isConnectedTo)
+} .
+
+o-imf:Connection[
+  owl:NamedIndividual ?id,
+  ? owl:NamedIndividual ?aspect,
+  ? owl:NamedIndividual ?parent,
+  owl:NamedIndividual ?inletTerminal, 
+  owl:NamedIndividual ?connectedInputTerminal, 
+  owl:NamedIndividual ?outletTerminal, 
+  owl:NamedIndividual ?connectedOutputTerminal,
+  xsd:string ?label, 
+  ? xsd:string ?description
+] :: {
+  o-imf:AspectObject(?id, imf:InletTerminal, ?aspect, ?parent, ?label, ?description),
+  ottr:Triple(?id, imf:hasInletTerminal, ?inletTerminal),
+  ottr:Triple(?connectedInputTerminal, imf:isConnectedTo, ?inletTerminal),
+  ottr:Triple(?id, imf:hasOutletTerminal, ?outletTerminal),
+  ottr:Triple(?outletTerminal, imf:isConnectedTo, ?connectedOutputTerminal)
+} .

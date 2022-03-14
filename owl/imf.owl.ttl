@@ -6,21 +6,21 @@
 @prefix pav:	<http://purl.org/pav/> .
 @prefix sh: 	<http://www.w3.org/ns/shacl#> . 
 @prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
 @prefix imf:	<http://ns.imfid.org/imf#> .
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
 @prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
 @prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
-
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 
 <http://ns.imfid.org/imf> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/ontology/2022-01-31/imf> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/[unreleased]/imf> ;
     owl:imports 
-      <http://ns.imfid.org/ontology/2022-01-31/imf-top> ,
-      <http://ns.imfid.org/ontology/2022-01-31/imf-metamodel> ,
-      <http://ns.imfid.org/ontology/2022-01-31/imf-aspects> ;
+      <http://ns.imfid.org/ontology/[unreleased]/imf-top> ,
+      <http://ns.imfid.org/ontology/[unreleased]/imf-metamodel> ,
+      <http://ns.imfid.org/ontology/[unreleased]/imf-aspects> ;
     skos:prefLabel "Information Modelling Framework Ontology " ;
     skos:altLabel "IMF ontology" ;
     skos:scopeNote """
@@ -35,7 +35,7 @@
       2. IMF Metamodel defines the metamodel for aspect objects and
       their permissible properties.
 
-      3. IMG Aspects defines the aspects that are available to aspect
+      3. IMF Aspects defines the aspects that are available to aspect
       objects.
 
     """;
