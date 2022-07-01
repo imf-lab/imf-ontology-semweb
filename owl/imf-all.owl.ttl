@@ -6,10 +6,10 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <http://ns.imfid.org/imf> a owl:Ontology ;
-    owl:imports <http://ns.imfid.org/ontology/--prerelease--/imf-aspects>,
-        <http://ns.imfid.org/ontology/--prerelease--/imf-metamodel>,
-        <http://ns.imfid.org/ontology/--prerelease--/imf-top> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/--prerelease--/imf> ;
+    owl:imports <http://ns.imfid.org/ontology/20220701/imf-aspects>,
+        <http://ns.imfid.org/ontology/20220701/imf-metamodel>,
+        <http://ns.imfid.org/ontology/20220701/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf> ;
     skos:altLabel "IMF ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology " ;
     skos:scopeNote """
@@ -29,79 +29,66 @@
 
     """ .
 
-imf:Connection a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:onClass imf:InletTerminal ;
-            owl:onProperty imf:hasInletTerminal ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
-        [ a owl:Restriction ;
-            owl:onClass imf:OutletTerminal ;
-            owl:onProperty imf:hasOutletTerminal ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
-        imf:SystemBlock ;
-    skos:altLabel "Junction",
-        "Transport" ;
-    skos:definition """
-
-     A simple type of system block that has exactly one input and one
-     output. No transformation of the input is performed.
-
-     The connection, in effect, merges the two connected
-     terminals. The connection itself has no function or spatial
-     significance.
-
-  """ ;
-    skos:prefLabel "Connection" .
-
 imf:directlyPrecedes a owl:ObjectProperty ;
-    rdfs:domain imf:InletTerminal ;
-    rdfs:range imf:OutletTerminal ;
+    rdfs:domain imf:InputTerminal ;
+    rdfs:range imf:OutputTerminal ;
     rdfs:subPropertyOf imf:precedes ;
     skos:definition """
 
-    An immediate, non-transitive, precedes relation between inlet
-    terminals and outlet terminals *of the same system* such that
-    (parts of) the input to the inlet terminal is processed by the
-    system to produce (parts of) the output of the outlet terminal.
+    An immediate, non-transitive, precedes relation between input
+    terminals and output terminals *of the same system* such that
+    (parts of) the input to the input terminal is processed by the
+    system to produce (parts of) the output of the output terminal.
 
   """ ;
     skos:prefLabel "directly precedes" .
 
-imf:hasActivity a owl:ObjectProperty ;
-    rdfs:domain imf:FunctionAspectObject ;
-    rdfs:range imf:ActivityAspectObject ;
-    rdfs:subPropertyOf imf:interAspectRelation .
+imf:hasAspectObject a owl:ObjectProperty ;
+    rdfs:domain imf:MultiAspectObject ;
+    rdfs:range imf:AspectObject ;
+    skos:definition """
 
-imf:hasChild a owl:ObjectProperty ;
+    Relates the multi-aspect object to the aspect object(s) it
+    collects.
+
+    """ ;
+    skos:prefLabel "has aspect object" .
+
+imf:hasPart a owl:ObjectProperty ;
     rdfs:subPropertyOf imf:hierarchicalRelation,
         imf:intraAspectRelation,
         skos:narrower ;
-    owl:inverseOf imf:hasParent ;
+    owl:inverseOf imf:isPartOf ;
     skos:altLabel "has part" ;
     skos:prefLabel "has child" .
 
+imf:interAspectRelation a owl:ObjectProperty ;
+    rdfs:domain imf:AspectObject ;
+    rdfs:range imf:AspectObject ;
+    rdfs:subPropertyOf skos:related ;
+    skos:definition """
+
+      Relates aspects objects of different aspects.
+
+    """ .
+
 imf:isConnectedTo a owl:ObjectProperty ;
-    rdfs:domain imf:OutletTerminal ;
-    rdfs:range imf:InletTerminal ;
+    rdfs:domain imf:OutputTerminal ;
+    rdfs:range imf:InputTerminal ;
     rdfs:subPropertyOf imf:associativeRelation,
         imf:intraAspectRelation,
         imf:precedes ;
     skos:definition """
 
     The relation between to terminals that are connected. The output
-    of the outlet terminal is given as input to the inlet terminal.
+    of the output terminal is given as input to the input terminal.
 
   """ ;
     skos:prefLabel "is connected to" .
 
-imf:isFulfilledBy a owl:ObjectProperty ;
-    rdfs:domain imf:FunctionAspectObject ;
-    rdfs:range imf:ProductAspectObject ;
-    rdfs:subPropertyOf imf:interAspectRelation .
-
 <http://ns.imfid.org/imf-aspects> a owl:Ontology ;
-    owl:imports <http://ns.imfid.org/ontology/--prerelease--/imf-top> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/--prerelease--/imf-aspects> ;
+    owl:imports <http://ns.imfid.org/ontology/20220701/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-aspects> ;
     skos:altLabel "IMF aspects ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology: Aspects Ontology " ;
     skos:scopeNote """
@@ -111,8 +98,8 @@ imf:isFulfilledBy a owl:ObjectProperty ;
     """ .
 
 <http://ns.imfid.org/imf-metamodel> a owl:Ontology ;
-    owl:imports <http://ns.imfid.org/ontology/--prerelease--/imf-top> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/--prerelease--/imf-metamodel> ;
+    owl:imports <http://ns.imfid.org/ontology/20220701/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-metamodel> ;
     skos:altLabel "IMF metamodel ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology: Metamodel Ontology " ;
     skos:scopeNote """
@@ -124,16 +111,36 @@ imf:isFulfilledBy a owl:ObjectProperty ;
 
 <http://ns.imfid.org/imf-top> a owl:Ontology ;
     owl:imports <http://www.w3.org/2004/02/skos/core> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/--prerelease--/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-top> ;
     skos:altLabel "IMF top ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
     skos:scopeNote """
 
       This ontology defines the very core classes and relations of the
-      Information Modelling Framework (IMF) that provide a structure
-      for ontologies that extend this ontology.
+      Information Modelling Framework (IMF) to provide a structure for
+      ontologies that extend this ontology.
 
     """ .
+
+imf:FunctionAspectObject a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom imf:FunctionAspectObject ;
+            owl:onProperty imf:intraAspectRelation ],
+        imf:AspectObject ;
+    owl:equivalentClass [ a owl:Class,
+                owl:Restriction ;
+            owl:hasValue imf:FunctionAspect ;
+            owl:onProperty imf:hasAspect ] .
+
+imf:InstalledAspectObject a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom imf:InstalledAspectObject ;
+            owl:onProperty imf:intraAspectRelation ],
+        imf:AspectObject ;
+    owl:equivalentClass [ a owl:Class,
+                owl:Restriction ;
+            owl:hasValue imf:InstalledAspect ;
+            owl:onProperty imf:hasAspect ] .
 
 imf:LocationAspectObject a owl:Class ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -145,53 +152,6 @@ imf:LocationAspectObject a owl:Class ;
             owl:hasValue imf:LocationAspect ;
             owl:onProperty imf:hasAspect ] .
 
-imf:hasInletTerminal a owl:ObjectProperty ;
-    rdfs:range imf:InletTerminal ;
-    rdfs:subPropertyOf imf:hasTerminal ;
-    skos:definition "The relation between a system and its inlet terminals." ;
-    skos:prefLabel "has inlet terminal" .
-
-imf:hasOutletTerminal a owl:ObjectProperty ;
-    rdfs:range imf:OutletTerminal ;
-    rdfs:subPropertyOf imf:hasTerminal ;
-    skos:definition "The relation between a system and its outlet terminals." ;
-    skos:prefLabel "has outlet terminal" .
-
-imf:isAspectOf a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:IntegratedObject ;
-    skos:definition """
-
-    Relates an aspect object to the integrated object the aspect
-    object provides a specification for/description of.""" ;
-    skos:prefLabel "is aspect of" .
-
-imf:ActivityAspect a imf:Aspect ;
-    imf:color "#000000" ;
-    imf:prefix ">" .
-
-imf:ActivityAspectObject a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:ActivityAspectObject ;
-            owl:onProperty imf:intraAspectRelation ],
-        imf:AspectObject ;
-    owl:equivalentClass [ a owl:Class,
-                owl:Restriction ;
-            owl:hasValue imf:ActivityAspect ;
-            owl:onProperty imf:hasAspect ] .
-
-imf:FunctionAspect a imf:Aspect ;
-    imf:color "#FFFF00" ;
-    imf:prefix "=" .
-
-imf:LocationAspect a imf:Aspect ;
-    imf:color "#FF00FF" ;
-    imf:prefix "+" .
-
-imf:ProductAspect a imf:Aspect ;
-    imf:color "#00FFFF" ;
-    imf:prefix "-" .
-
 imf:ProductAspectObject a owl:Class ;
     rdfs:subClassOf [ a owl:Restriction ;
             owl:allValuesFrom imf:ProductAspectObject ;
@@ -201,6 +161,73 @@ imf:ProductAspectObject a owl:Class ;
                 owl:Restriction ;
             owl:hasValue imf:ProductAspect ;
             owl:onProperty imf:hasAspect ] .
+
+imf:hasInputTerminal a owl:ObjectProperty ;
+    rdfs:range imf:InputTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a system and its input terminals." ;
+    skos:prefLabel "has input terminal" .
+
+imf:hasOutputTerminal a owl:ObjectProperty ;
+    rdfs:range imf:OutputTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a system and its output terminals." ;
+    skos:prefLabel "has output terminal" .
+
+imf:FunctionAspect a imf:Aspect ;
+    imf:color "#FFFF00" ;
+    imf:prefix "=" .
+
+imf:InstalledAspect a imf:Aspect ;
+    imf:color "#FFFFFF" ;
+    imf:prefix "::" .
+
+imf:InterfacePoint a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onClass imf:OutputTerminal ;
+            owl:onProperty imf:hasOutputTerminal ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        [ a owl:Restriction ;
+            owl:onClass imf:InputTerminal ;
+            owl:onProperty imf:hasInputTerminal ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        imf:AspectObject ;
+    skos:altLabel "Connection",
+        "Junction",
+        "Transport" ;
+    skos:definition """
+
+     A simple type of system block that has exactly one input and one
+     output. No transformation of the input is performed.
+
+     The connection, in effect, merges the two connected
+     terminals. The connection itself has no function or spatial
+     significance.
+
+  """ ;
+    skos:prefLabel "Interface Point" .
+
+imf:LocationAspect a imf:Aspect ;
+    imf:color "#FF00FF" ;
+    imf:prefix "+" .
+
+imf:MultiAspectObject a owl:Class ;
+    skos:prefLabel "Multi-Aspect Object" ;
+    skos:scopeNote """
+
+  A multi-aspect object is a collection of aspect objects that
+  describe an asset from different viewpoints (aspects). 
+
+  There are currently no formal restrictions on the aspect objects
+  that a multi-aspect object groups together. Hence, a multi-aspect
+  object may collect aspect objects of the same aspect, or of
+  different aspects.
+
+  """ .
+
+imf:ProductAspect a imf:Aspect ;
+    imf:color "#00FFFF" ;
+    imf:prefix "-" .
 
 imf:hasTerminal a owl:ObjectProperty ;
     rdfs:domain imf:SystemBlock ;
@@ -226,16 +253,6 @@ imf:hierarchicalRelation a owl:IrreflexiveProperty,
       
     """ .
 
-imf:interAspectRelation a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    rdfs:subPropertyOf skos:related ;
-    skos:definition """
-
-      Relates aspects objects of different aspects.
-
-    """ .
-
 imf:precedes a owl:ObjectProperty,
         owl:TransitiveProperty ;
     rdfs:domain imf:Terminal ;
@@ -253,36 +270,6 @@ imf:precedes a owl:ObjectProperty,
   """ ;
     skos:prefLabel "precedes" .
 
-imf:FunctionAspectObject a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:FunctionAspectObject ;
-            owl:onProperty imf:intraAspectRelation ],
-        imf:AspectObject ;
-    owl:equivalentClass [ a owl:Class,
-                owl:Restriction ;
-            owl:hasValue imf:FunctionAspect ;
-            owl:onProperty imf:hasAspect ] .
-
-imf:IntegratedObject a owl:Class ;
-    skos:editorialNote """
-
-    [2022-01-19 Wed] Is it the case that an integrated object can only
-    have one aspect of the same aspect? 
-
-    """ ;
-    skos:prefLabel "Integrated Object" ;
-    skos:scopeNote """
-
-    The primary use of the IMF ontology is to specify requirements for
-    entities, where 'entity' is ment in a very generic sense; an
-    entity may be abstract or concrete, a high-level system, a product
-    class or an installed product. In the ontology these entities are
-    called integrated objects.
-
-    Following the IMF methodology, an intergrated object is not
-    described directly, but through typically multiple aspects
-    objects, see also imf:AspectObject.""" .
-
 imf:associativeRelation a owl:ObjectProperty ;
     rdfs:domain imf:AspectObject ;
     rdfs:range imf:AspectObject ;
@@ -299,7 +286,28 @@ imf:associativeRelation a owl:ObjectProperty ;
       
     """ .
 
-imf:hasParent a owl:FunctionalProperty,
+imf:SystemBlock a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom imf:SystemBlock ;
+            owl:onProperty imf:isPartOf ],
+        imf:AspectObject ;
+    skos:definition """
+
+    A system is a processing (black) box. It processes the input to
+    output, possibly changing the state of what is processed.
+
+    Transforms the input from its input terminals to the output to its
+    output terminals. The relation between the input and output
+    terminals may be complex and may be further described by
+    subsystems which are related by hasPart.
+
+    A system may have multiple input and output terminals. A system
+    with zero terminals is uncommon.
+
+  """ ;
+    skos:prefLabel "System Block" .
+
+imf:isPartOf a owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:domain imf:AspectObject ;
     rdfs:range imf:AspectObject ;
@@ -310,7 +318,7 @@ imf:hasParent a owl:FunctionalProperty,
     skos:definition """
 
     An aspect object is placed in a tree-shaped breakdown structure
-    using hasParent/hasChild relationships. An aspect object may have
+    using isPartOf/hasPart relationships. An aspect object may have
     a single parent (the root object has no parent) and possibly
     multiple children. This is an abstraction mechanism. The children
     of an aspect object provide a more detailed description of (parts
@@ -318,27 +326,6 @@ imf:hasParent a owl:FunctionalProperty,
 
   """ ;
     skos:prefLabel "has parent" .
-
-imf:SystemBlock a owl:Class ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:SystemBlock ;
-            owl:onProperty imf:hasParent ],
-        imf:AspectObject ;
-    skos:definition """
-
-    A system is a processing (black) box. It processes the input to
-    output, possibly changing the state of what is processed.
-
-    Transforms the input from its inlet terminals to the output to its
-    outlet terminals. The relation between the inlet and outlet
-    terminals may be complex and may be further described by
-    subsystems which are related by hasChild.
-
-    A system may have multiple inlet and outlet terminals. A system
-    with zero terminals is uncommon.
-
-  """ ;
-    skos:prefLabel "System Block" .
 
 imf:hasAspect a owl:ObjectProperty ;
     rdfs:domain imf:AspectObject ;
@@ -355,39 +342,49 @@ imf:Aspect a owl:Class ;
     have that aspect, e.g,. imf:FunctionAspectObject is the class of
     aspect objects with the aspect imf:FunctionAspect. These classes
     are used to specify permissible relationships between aspect
-    objects according to their aspect.""" .
+    objects according to their aspect.""",
+        """
 
-imf:InletTerminal a owl:Class ;
+  viewpoint
+  modalitity
+
+  """ .
+
+imf:InputTerminal a owl:Class ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:InletTerminal ;
-            owl:onProperty imf:hasParent ],
+            owl:allValuesFrom imf:InputTerminal ;
+            owl:onProperty imf:isPartOf ],
         imf:Terminal ;
+    skos:altLabel "Input" ;
     skos:definition """
 
     A terminal whose default function is to recieve input for its
     system.
 
   """ ;
-    skos:prefLabel "Inlet Terminal" .
+    skos:prefLabel "Input Terminal" .
 
-imf:OutletTerminal a owl:Class ;
+imf:OutputTerminal a owl:Class ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom imf:OutletTerminal ;
-            owl:onProperty imf:hasParent ],
+            owl:allValuesFrom imf:OutputTerminal ;
+            owl:onProperty imf:isPartOf ],
         imf:Terminal ;
+    skos:altLabel "Output" ;
     skos:definition """
 
     A terminal whose default function is to give output for its
     system.
 
   """ ;
-    skos:prefLabel "Outlet Terminal" .
+    skos:prefLabel "Output Terminal" .
 
 imf:Terminal a owl:Class ;
     rdfs:subClassOf imf:AspectObject ;
     owl:equivalentClass [ a owl:Class ;
-            owl:unionOf ( imf:InletTerminal imf:OutletTerminal ) ] ;
-    skos:altLabel "Port" ;
+            owl:unionOf ( imf:InputTerminal imf:OutputTerminal ) ] ;
+    skos:altLabel "Channel",
+        "Input/Output",
+        "Port" ;
     skos:definition """
 
     A port or boundry point through which a system block can interact
@@ -423,22 +420,16 @@ imf:AspectObject a owl:Class ;
     rdfs:subClassOf [ a owl:Restriction ;
             owl:onClass imf:Aspect ;
             owl:onProperty imf:hasAspect ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
-        [ a owl:Restriction ;
-            owl:onClass imf:IntegratedObject ;
-            owl:onProperty imf:isAspectOf ;
             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] ;
     owl:equivalentClass [ a owl:Class ;
-            owl:unionOf ( imf:SystemBlock imf:Terminal ) ] ;
+            owl:unionOf ( imf:SystemBlock imf:Terminal imf:InterfacePoint ) ] ;
     skos:definition """
 
-    Aspect object is the most central concept of the IMF ontology.
+    An aspect object describes an asset from a specific viewpoint (or
+    aspect).
 
-    An aspect object describes a specific type of feature (or aspect)
-    of one (and exactly one) integrated object.
-
-    An aspect object must have a single aspect, we say that the
-    aspect object "is of" this aspect.  
+    An aspect object has a single aspect, we say that the aspect
+    object "is of" this aspect.
 
     """ ;
     skos:prefLabel "Aspect Object" ;
@@ -447,14 +438,14 @@ imf:AspectObject a owl:Class ;
     Each aspect object is either a system block or a terminal.""" .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( imf:Aspect imf:AspectObject imf:IntegratedObject ) .
+    owl:members ( imf:Aspect imf:AspectObject imf:MultiAspectObject ) .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( imf:InletTerminal imf:OutletTerminal ) .
+    owl:members ( imf:InputTerminal imf:OutputTerminal ) .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( imf:SystemBlock imf:Terminal ) .
+    owl:members ( imf:SystemBlock imf:Terminal imf:InterfacePoint ) .
 
 [] a owl:AllDifferent ;
-    owl:members ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:ActivityAspect ) .
+    owl:members ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:InstalledAspect ) .
 

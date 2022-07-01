@@ -18,7 +18,13 @@
 imf:Aspect
     a owl:Class ;
     skos:example "Function, Location, Product are examples of aspects." ;
-    skos:prefLabel "Aspect" .
+    skos:prefLabel "Aspect" ;
+    skos:scopeNote """
+
+  viewpoint
+  modalitity
+
+  """ .
 
 imf:AspectObject
     a owl:Class ;
@@ -27,45 +33,32 @@ imf:AspectObject
         owl:onClass imf:Aspect ;
         owl:onProperty imf:hasAspect ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
-    ], [
-        a owl:Restriction ;
-        owl:onClass imf:IntegratedObject ;
-        owl:onProperty imf:isAspectOf ;
-        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ] ;
     skos:definition """
 
-    Aspect object is the most central concept of the IMF ontology.
+    An aspect object describes an asset from a specific viewpoint (or
+    aspect).
 
-    An aspect object describes a specific type of feature (or aspect)
-    of one (and exactly one) integrated object.
-
-    An aspect object must have a single aspect, we say that the
-    aspect object \"is of\" this aspect.  
+    An aspect object has a single aspect, we say that the aspect
+    object \"is of\" this aspect.
 
     """ ;
     skos:prefLabel "Aspect Object" .
 
-imf:IntegratedObject
+imf:MultiAspectObject
     a owl:Class ;
-    skos:editorialNote """
-
-    [2022-01-19 Wed] Is it the case that an integrated object can only
-    have one aspect of the same aspect? 
-
-    """ ;
-    skos:prefLabel "Integrated Object" ;
+    skos:prefLabel "Multi-Aspect Object" ;
     skos:scopeNote """
 
-    The primary use of the IMF ontology is to specify requirements for
-    entities, where 'entity' is ment in a very generic sense; an
-    entity may be abstract or concrete, a high-level system, a product
-    class or an installed product. In the ontology these entities are
-    called integrated objects.
+  A multi-aspect object is a collection of aspect objects that
+  describe an asset from different viewpoints (aspects). 
 
-    Following the IMF methodology, an intergrated object is not
-    described directly, but through typically multiple aspects
-    objects, see also imf:AspectObject.""" .
+  There are currently no formal restrictions on the aspect objects
+  that a multi-aspect object groups together. Hence, a multi-aspect
+  object may collect aspect objects of the same aspect, or of
+  different aspects.
+
+  """ .
 
 imf:associativeRelation
     a owl:ObjectProperty ;
@@ -90,6 +83,18 @@ imf:hasAspect
     rdfs:range imf:Aspect ;
     skos:definition "Relates an aspect object to its aspect." ;
     skos:prefLabel "has aspect" .
+
+imf:hasAspectObject
+    a owl:ObjectProperty ;
+    rdfs:domain imf:MultiAspectObject ;
+    rdfs:range imf:AspectObject ;
+    skos:definition """
+
+    Relates the multi-aspect object to the aspect object(s) it
+    collects.
+
+    """ ;
+    skos:prefLabel "has aspect object" .
 
 imf:hierarchicalRelation
     a owl:IrreflexiveProperty, owl:ObjectProperty ;
@@ -123,27 +128,17 @@ imf:intraAspectRelation
       
     """ .
 
-imf:isAspectOf
-    a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:IntegratedObject ;
-    skos:definition """
-
-    Relates an aspect object to the integrated object the aspect
-    object provides a specification for/description of.""" ;
-    skos:prefLabel "is aspect of" .
-
 <http://ns.imfid.org/imf-top>
     a owl:Ontology ;
     owl:imports <http://www.w3.org/2004/02/skos/core> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/--prerelease--/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-top> ;
     skos:altLabel "IMF top ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
     skos:scopeNote """
 
       This ontology defines the very core classes and relations of the
-      Information Modelling Framework (IMF) that provide a structure
-      for ontologies that extend this ontology.
+      Information Modelling Framework (IMF) to provide a structure for
+      ontologies that extend this ontology.
 
     """ .
 
@@ -151,6 +146,6 @@ imf:isAspectOf
     a owl:AllDisjointClasses ;
     owl:members (imf:Aspect
         imf:AspectObject
-        imf:IntegratedObject
+        imf:MultiAspectObject
     ) .
 

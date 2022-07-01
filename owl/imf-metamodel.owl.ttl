@@ -21,26 +21,43 @@ imf:AspectObject
         a owl:Class ;
         owl:unionOf (imf:SystemBlock
             imf:Terminal
+            imf:InterfacePoint
         )
     ] ;
     skos:scopeNote """
 
     Each aspect object is either a system block or a terminal.""" .
 
-imf:Connection
+imf:InputTerminal
     a owl:Class ;
-    rdfs:subClassOf imf:SystemBlock, [
+    rdfs:subClassOf imf:Terminal, [
         a owl:Restriction ;
-        owl:onClass imf:InletTerminal ;
-        owl:onProperty imf:hasInletTerminal ;
+        owl:allValuesFrom imf:InputTerminal ;
+        owl:onProperty imf:isPartOf
+    ] ;
+    skos:altLabel "Input" ;
+    skos:definition """
+
+    A terminal whose default function is to recieve input for its
+    system.
+
+  """ ;
+    skos:prefLabel "Input Terminal" .
+
+imf:InterfacePoint
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectObject, [
+        a owl:Restriction ;
+        owl:onClass imf:OutputTerminal ;
+        owl:onProperty imf:hasOutputTerminal ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ], [
         a owl:Restriction ;
-        owl:onClass imf:OutletTerminal ;
-        owl:onProperty imf:hasOutletTerminal ;
+        owl:onClass imf:InputTerminal ;
+        owl:onProperty imf:hasInputTerminal ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     ] ;
-    skos:altLabel "Junction", "Transport" ;
+    skos:altLabel "Connection", "Junction", "Transport" ;
     skos:definition """
 
      A simple type of system block that has exactly one input and one
@@ -51,56 +68,42 @@ imf:Connection
      significance.
 
   """ ;
-    skos:prefLabel "Connection" .
+    skos:prefLabel "Interface Point" .
 
-imf:InletTerminal
+imf:OutputTerminal
     a owl:Class ;
     rdfs:subClassOf imf:Terminal, [
         a owl:Restriction ;
-        owl:allValuesFrom imf:InletTerminal ;
-        owl:onProperty imf:hasParent
+        owl:allValuesFrom imf:OutputTerminal ;
+        owl:onProperty imf:isPartOf
     ] ;
-    skos:definition """
-
-    A terminal whose default function is to recieve input for its
-    system.
-
-  """ ;
-    skos:prefLabel "Inlet Terminal" .
-
-imf:OutletTerminal
-    a owl:Class ;
-    rdfs:subClassOf imf:Terminal, [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:OutletTerminal ;
-        owl:onProperty imf:hasParent
-    ] ;
+    skos:altLabel "Output" ;
     skos:definition """
 
     A terminal whose default function is to give output for its
     system.
 
   """ ;
-    skos:prefLabel "Outlet Terminal" .
+    skos:prefLabel "Output Terminal" .
 
 imf:SystemBlock
     a owl:Class ;
     rdfs:subClassOf imf:AspectObject, [
         a owl:Restriction ;
         owl:allValuesFrom imf:SystemBlock ;
-        owl:onProperty imf:hasParent
+        owl:onProperty imf:isPartOf
     ] ;
     skos:definition """
 
     A system is a processing (black) box. It processes the input to
     output, possibly changing the state of what is processed.
 
-    Transforms the input from its inlet terminals to the output to its
-    outlet terminals. The relation between the inlet and outlet
+    Transforms the input from its input terminals to the output to its
+    output terminals. The relation between the input and output
     terminals may be complex and may be further described by
-    subsystems which are related by hasChild.
+    subsystems which are related by hasPart.
 
-    A system may have multiple inlet and outlet terminals. A system
+    A system may have multiple input and output terminals. A system
     with zero terminals is uncommon.
 
   """ ;
@@ -111,11 +114,11 @@ imf:Terminal
     rdfs:subClassOf imf:AspectObject ;
     owl:equivalentClass [
         a owl:Class ;
-        owl:unionOf (imf:InletTerminal
-            imf:OutletTerminal
+        owl:unionOf (imf:InputTerminal
+            imf:OutputTerminal
         )
     ] ;
-    skos:altLabel "Port" ;
+    skos:altLabel "Channel", "Input/Output", "Port" ;
     skos:definition """
 
     A port or boundry point through which a system block can interact
@@ -134,57 +137,39 @@ imf:Terminal
 
 imf:directlyPrecedes
     a owl:ObjectProperty ;
-    rdfs:domain imf:InletTerminal ;
-    rdfs:range imf:OutletTerminal ;
+    rdfs:domain imf:InputTerminal ;
+    rdfs:range imf:OutputTerminal ;
     rdfs:subPropertyOf imf:precedes ;
     skos:definition """
 
-    An immediate, non-transitive, precedes relation between inlet
-    terminals and outlet terminals *of the same system* such that
-    (parts of) the input to the inlet terminal is processed by the
-    system to produce (parts of) the output of the outlet terminal.
+    An immediate, non-transitive, precedes relation between input
+    terminals and output terminals *of the same system* such that
+    (parts of) the input to the input terminal is processed by the
+    system to produce (parts of) the output of the output terminal.
 
   """ ;
     skos:prefLabel "directly precedes" .
 
-imf:hasChild
+imf:hasInputTerminal
+    a owl:ObjectProperty ;
+    rdfs:range imf:InputTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a system and its input terminals." ;
+    skos:prefLabel "has input terminal" .
+
+imf:hasOutputTerminal
+    a owl:ObjectProperty ;
+    rdfs:range imf:OutputTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a system and its output terminals." ;
+    skos:prefLabel "has output terminal" .
+
+imf:hasPart
     a owl:ObjectProperty ;
     rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:narrower ;
-    owl:inverseOf imf:hasParent ;
+    owl:inverseOf imf:isPartOf ;
     skos:altLabel "has part" ;
     skos:prefLabel "has child" .
-
-imf:hasInletTerminal
-    a owl:ObjectProperty ;
-    rdfs:range imf:InletTerminal ;
-    rdfs:subPropertyOf imf:hasTerminal ;
-    skos:definition "The relation between a system and its inlet terminals." ;
-    skos:prefLabel "has inlet terminal" .
-
-imf:hasOutletTerminal
-    a owl:ObjectProperty ;
-    rdfs:range imf:OutletTerminal ;
-    rdfs:subPropertyOf imf:hasTerminal ;
-    skos:definition "The relation between a system and its outlet terminals." ;
-    skos:prefLabel "has outlet terminal" .
-
-imf:hasParent
-    a owl:FunctionalProperty, owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:broader ;
-    skos:altLabel "is part of" ;
-    skos:definition """
-
-    An aspect object is placed in a tree-shaped breakdown structure
-    using hasParent/hasChild relationships. An aspect object may have
-    a single parent (the root object has no parent) and possibly
-    multiple children. This is an abstraction mechanism. The children
-    of an aspect object provide a more detailed description of (parts
-    of) its parent.
-
-  """ ;
-    skos:prefLabel "has parent" .
 
 imf:hasTerminal
     a owl:ObjectProperty ;
@@ -196,16 +181,34 @@ imf:hasTerminal
 
 imf:isConnectedTo
     a owl:ObjectProperty ;
-    rdfs:domain imf:OutletTerminal ;
-    rdfs:range imf:InletTerminal ;
+    rdfs:domain imf:OutputTerminal ;
+    rdfs:range imf:InputTerminal ;
     rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation, imf:precedes ;
     skos:definition """
 
     The relation between to terminals that are connected. The output
-    of the outlet terminal is given as input to the inlet terminal.
+    of the output terminal is given as input to the input terminal.
 
   """ ;
     skos:prefLabel "is connected to" .
+
+imf:isPartOf
+    a owl:FunctionalProperty, owl:ObjectProperty ;
+    rdfs:domain imf:AspectObject ;
+    rdfs:range imf:AspectObject ;
+    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:broader ;
+    skos:altLabel "is part of" ;
+    skos:definition """
+
+    An aspect object is placed in a tree-shaped breakdown structure
+    using isPartOf/hasPart relationships. An aspect object may have
+    a single parent (the root object has no parent) and possibly
+    multiple children. This is an abstraction mechanism. The children
+    of an aspect object provide a more detailed description of (parts
+    of) its parent.
+
+  """ ;
+    skos:prefLabel "has parent" .
 
 imf:precedes
     a owl:ObjectProperty, owl:TransitiveProperty ;
@@ -225,8 +228,8 @@ imf:precedes
 
 <http://ns.imfid.org/imf-metamodel>
     a owl:Ontology ;
-    owl:imports <http://ns.imfid.org/ontology/--prerelease--/imf-top> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/--prerelease--/imf-metamodel> ;
+    owl:imports <http://ns.imfid.org/ontology/20220701/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-metamodel> ;
     skos:altLabel "IMF metamodel ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology: Metamodel Ontology " ;
     skos:scopeNote """
@@ -238,13 +241,14 @@ imf:precedes
 
 []
     a owl:AllDisjointClasses ;
-    owl:members (imf:InletTerminal
-        imf:OutletTerminal
+    owl:members (imf:InputTerminal
+        imf:OutputTerminal
     ) .
 
 []
     a owl:AllDisjointClasses ;
     owl:members (imf:SystemBlock
         imf:Terminal
+        imf:InterfacePoint
     ) .
 

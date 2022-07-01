@@ -51,8 +51,8 @@ o-imf:AspectObject [
 ] :: {
   o-rdf:Type(?id, ?type),
   ottr:Triple(?id, imf:hasAspect, ?aspect), 
-  ottr:Triple(?id, imf:hasParent, ?parent),
-  # cross | ottr:Triple(?id, imf:hasChild, ++?children),
+  ottr:Triple(?id, imf:isPartOf, ?parent),
+  # cross | ottr:Triple(?id, imf:hasPart, ++?children),
   o-imf:Description(?id, ?label, ?description)
 } .
 
@@ -68,7 +68,7 @@ o-imf:SystemBlock[
   cross | ottr:Triple(?id, imf:hasTerminal, ++?terminals)
 } .
 
-o-imf:InletTerminal[
+o-imf:InputTerminal[
   owl:NamedIndividual ?id,
   ? owl:NamedIndividual ?aspect,
   owl:NamedIndividual ?systemBlock,
@@ -78,13 +78,13 @@ o-imf:InletTerminal[
   ? xsd:string ?label, 
   ? xsd:string ?description
 ] :: {
-  o-imf:AspectObject(?id, imf:InletTerminal, ?aspect, ?parent, ?label, ?description),
-  ottr:Triple(?systemBlock, imf:hasInletTerminal, ?id),
+  o-imf:AspectObject(?id, imf:InputTerminal, ?aspect, ?parent, ?label, ?description),
+  ottr:Triple(?systemBlock, imf:hasInputTerminal, ?id),
   cross | ottr:Triple(?id, imf:directlyPrecedes, ++?directlyPrecedes),
   ottr:Triple(?isConnectedTo, imf:isConnectedTo, ?id)
 } .
 
-o-imf:OutletTerminal[
+o-imf:OutputTerminal[
   owl:NamedIndividual ?id,
   ? owl:NamedIndividual ?aspect,
   owl:NamedIndividual ?systemBlock,
@@ -94,26 +94,26 @@ o-imf:OutletTerminal[
   ? xsd:string ?label, 
   ? xsd:string ?description
 ] :: {
-  o-imf:AspectObject(?id, imf:OutletTerminal, ?aspect, ?parent, ?label, ?description),
-  ottr:Triple(?systemBlock, imf:hasOutletTerminal, ?id),
+  o-imf:AspectObject(?id, imf:OutputTerminal, ?aspect, ?parent, ?label, ?description),
+  ottr:Triple(?systemBlock, imf:hasOutputTerminal, ?id),
   cross | ottr:Triple(++?directlyPrecedes, imf:directlyPrecedes, ?id),
   ottr:Triple(?id, imf:isConnectedTo, ?isConnectedTo)
 } .
 
-o-imf:Connection[
+o-imf:InterfacePoint[
   owl:NamedIndividual ?id,
   ? owl:NamedIndividual ?aspect,
   ? owl:NamedIndividual ?parent,
-  owl:NamedIndividual ?inletTerminal, 
+  owl:NamedIndividual ?inputTerminal, 
   owl:NamedIndividual ?connectedInputTerminal, 
-  owl:NamedIndividual ?outletTerminal, 
+  owl:NamedIndividual ?outputTerminal, 
   owl:NamedIndividual ?connectedOutputTerminal,
   xsd:string ?label, 
   ? xsd:string ?description
 ] :: {
-  o-imf:AspectObject(?id, imf:InletTerminal, ?aspect, ?parent, ?label, ?description),
-  ottr:Triple(?id, imf:hasInletTerminal, ?inletTerminal),
-  ottr:Triple(?connectedInputTerminal, imf:isConnectedTo, ?inletTerminal),
-  ottr:Triple(?id, imf:hasOutletTerminal, ?outletTerminal),
-  ottr:Triple(?outletTerminal, imf:isConnectedTo, ?connectedOutputTerminal)
+  o-imf:AspectObject(?id, imf:InputTerminal, ?aspect, ?parent, ?label, ?description),
+  ottr:Triple(?id, imf:hasInputTerminal, ?inputTerminal),
+  ottr:Triple(?connectedInputTerminal, imf:isConnectedTo, ?inputTerminal),
+  ottr:Triple(?id, imf:hasOutputTerminal, ?outputTerminal),
+  ottr:Triple(?outputTerminal, imf:isConnectedTo, ?connectedOutputTerminal)
 } .

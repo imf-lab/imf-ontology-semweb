@@ -17,75 +17,75 @@
 
 ex:CoffeeInput
     imf:directlyPrecedes ex:CupTray ;
-    a imf:InletTerminal .
+    a imf:InputTerminal .
 
 ex:CoffeeMachine
     imf:hasAspect imf:Function ;
-    imf:hasInletTerminal ex:CoffeeInput, ex:MilkInput, ex:WaterInput, ex:WaterTankInput ;
-    imf:hasOutletTerminal ex:CupTray ;
+    imf:hasInputTerminal ex:CoffeeInput, ex:MilkInput, ex:WaterInput, ex:WaterTankInput ;
+    imf:hasOutputTerminal ex:CupTray ;
     a imf:SystemBlock ;
     skos:note "Makes different variants of espresso based coffee possibly with milk" ;
     skos:prefLabel "Coffee machine" .
 
 ex:CupTray
-    a imf:OutletTerminal ;
+    a imf:OutputTerminal ;
     skos:note "Landing area for produced coffee" .
 
 ex:Grinder
-    imf:hasInletTerminal ex:GrinderInput ;
-    imf:hasOutletTerminal ex:GrinderOutput ;
-    imf:hasParent ex:CoffeeMachine ;
+    imf:hasInputTerminal ex:GrinderInput ;
+    imf:hasOutputTerminal ex:GrinderOutput ;
+    imf:isPartOf ex:CoffeeMachine ;
     a imf:SystemBlock ;
     skos:note "Grinds coffee beans" .
 
 ex:GrinderInput
-    imf:hasParent ex:CoffeeInput ;
-    a imf:InletTerminal .
+    imf:isPartOf ex:CoffeeInput ;
+    a imf:InputTerminal .
 
 ex:GrinderOutput
-    a imf:OutletTerminal .
+    a imf:OutputTerminal .
 
 ex:MilkInput
     imf:directlyPrecedes ex:CupTray ;
-    a imf:InletTerminal .
+    a imf:InputTerminal .
 
 ex:Mixer
-    imf:hasParent ex:CoffeeMachine ;
+    imf:isPartOf ex:CoffeeMachine ;
     a imf:SystemBlock ;
     skos:note "Mixes coffee and milk to perfection" .
 
 ex:Steamer
-    imf:hasInletTerminal ex:SteamerInput ;
-    imf:hasParent ex:CoffeeMachine ;
+    imf:hasInputTerminal ex:SteamerInput ;
+    imf:isPartOf ex:CoffeeMachine ;
     a imf:SystemBlock ;
     skos:note "Steams milk with water steam" .
 
 ex:SteamerInput
-    a imf:InletTerminal .
+    a imf:InputTerminal .
 
 ex:WaterHeater
-    imf:hasInletTerminal ex:WaterHeaterInput ;
-    imf:hasParent ex:CoffeeMachine ;
+    imf:hasInputTerminal ex:WaterHeaterInput ;
+    imf:isPartOf ex:CoffeeMachine ;
     a imf:SystemBlock ;
     skos:note "Heats water" .
 
 ex:WaterHeaterInput
-    a imf:InletTerminal .
+    a imf:InputTerminal .
 
 ex:WaterInput
     imf:directlyPrecedes ex:CupTray ;
-    a imf:InletTerminal .
+    a imf:InputTerminal .
 
 ex:WaterTank
-    imf:hasOutletTerminal ex:WaterTankOutput ;
-    imf:hasParent ex:CoffeeMachine ;
+    imf:hasOutputTerminal ex:WaterTankOutput ;
+    imf:isPartOf ex:CoffeeMachine ;
     a imf:SystemBlock ;
     skos:note "Stores water" .
 
 ex:WaterTankInput
-    imf:hasParent ex:WaterInput ;
-    a imf:InletTerminal .
+    imf:isPartOf ex:WaterInput ;
+    a imf:InputTerminal .
 
 ex:WaterTankOutput
-    a imf:OutletTerminal .
+    a imf:OutputTerminal .
 

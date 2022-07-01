@@ -15,24 +15,6 @@
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
-imf:ActivityAspect
-    imf:color "#000000" ;
-    imf:prefix ">" ;
-    a imf:Aspect .
-
-imf:ActivityAspectObject
-    a owl:Class ;
-    rdfs:subClassOf imf:AspectObject, [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:ActivityAspectObject ;
-        owl:onProperty imf:intraAspectRelation
-    ] ;
-    owl:equivalentClass [
-        a owl:Class, owl:Restriction ;
-        owl:hasValue imf:ActivityAspect ;
-        owl:onProperty imf:hasAspect
-    ] .
-
 imf:Aspect
     a owl:Class ;
     skos:scopeNote """
@@ -58,6 +40,24 @@ imf:FunctionAspectObject
     owl:equivalentClass [
         a owl:Class, owl:Restriction ;
         owl:hasValue imf:FunctionAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
+imf:InstalledAspect
+    imf:color "#FFFFFF" ;
+    imf:prefix "::" ;
+    a imf:Aspect .
+
+imf:InstalledAspectObject
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectObject, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:InstalledAspectObject ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:InstalledAspect ;
         owl:onProperty imf:hasAspect
     ] .
 
@@ -97,12 +97,6 @@ imf:ProductAspectObject
         owl:onProperty imf:hasAspect
     ] .
 
-imf:hasActivity
-    a owl:ObjectProperty ;
-    rdfs:domain imf:FunctionAspectObject ;
-    rdfs:range imf:ActivityAspectObject ;
-    rdfs:subPropertyOf imf:interAspectRelation .
-
 imf:hasAspect
     a owl:ObjectProperty .
 
@@ -120,16 +114,10 @@ imf:interAspectRelation
 imf:intraAspectRelation
     a owl:ObjectProperty .
 
-imf:isFulfilledBy
-    a owl:ObjectProperty ;
-    rdfs:domain imf:FunctionAspectObject ;
-    rdfs:range imf:ProductAspectObject ;
-    rdfs:subPropertyOf imf:interAspectRelation .
-
 <http://ns.imfid.org/imf-aspects>
     a owl:Ontology ;
-    owl:imports <http://ns.imfid.org/ontology/--prerelease--/imf-top> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/--prerelease--/imf-aspects> ;
+    owl:imports <http://ns.imfid.org/ontology/20220701/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-aspects> ;
     skos:altLabel "IMF aspects ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology: Aspects Ontology " ;
     skos:scopeNote """
@@ -143,6 +131,6 @@ imf:isFulfilledBy
     owl:members (imf:FunctionAspect
         imf:LocationAspect
         imf:ProductAspect
-        imf:ActivityAspect
+        imf:InstalledAspect
     ) .
 

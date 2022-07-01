@@ -16,11 +16,11 @@
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 
 <http://ns.imfid.org/imf> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/ontology/--prerelease--/imf> ;
+    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf> ;
     owl:imports 
-      <http://ns.imfid.org/ontology/--prerelease--/imf-top> ,
-      <http://ns.imfid.org/ontology/--prerelease--/imf-metamodel> ,
-      <http://ns.imfid.org/ontology/--prerelease--/imf-aspects> ;
+      <http://ns.imfid.org/ontology/20220701/imf-top> ,
+      <http://ns.imfid.org/ontology/20220701/imf-metamodel> ,
+      <http://ns.imfid.org/ontology/20220701/imf-aspects> ;
     skos:prefLabel "Information Modelling Framework Ontology " ;
     skos:altLabel "IMF ontology" ;
     skos:scopeNote """

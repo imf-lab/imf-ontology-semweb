@@ -15,61 +15,61 @@
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
-imf:ConnectionShape
+imf:InputTerminalShape
     a sh:NodeShape ;
     sh:property [
-        sh:class imf:OutletTerminal ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path imf:hasOutletTerminal
+        sh:class imf:InputTerminal ;
+        sh:path imf:hasPart
     ], [
-        sh:class imf:InletTerminal ;
+        sh:class imf:InputTerminal ;
         sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path imf:hasInletTerminal
-    ] ;
-    sh:targetClass imf:Connection .
-
-imf:InletTerminalShape
-    a sh:NodeShape ;
-    sh:property [
-        sh:class imf:OutletTerminal ;
+        sh:path imf:isPartOf
+    ], [
+        sh:class imf:OutputTerminal ;
         sh:path imf:directlyPrecedes
-    ], [
-        sh:class imf:InletTerminal ;
-        sh:path imf:hasChild
-    ], [
-        sh:class imf:InletTerminal ;
-        sh:maxCount 1 ;
-        sh:path imf:hasParent
     ] ;
-    sh:targetClass imf:InletTerminal .
+    sh:targetClass imf:InputTerminal .
 
-imf:OutletTerminalShape
+imf:InterfacePointShape
     a sh:NodeShape ;
     sh:property [
-        sh:class imf:OutletTerminal ;
-        sh:path imf:hasChild
+        sh:class imf:InputTerminal ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path imf:hasInputTerminal
     ], [
-        sh:class imf:InletTerminal ;
+        sh:class imf:OutputTerminal ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path imf:hasOutputTerminal
+    ] ;
+    sh:targetClass imf:InterfacePoint .
+
+imf:OutputTerminalShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:class imf:InputTerminal ;
         sh:maxCount 1 ;
         sh:path imf:isConnectedTo
     ], [
-        sh:class imf:OutletTerminal ;
+        sh:class imf:OutputTerminal ;
         sh:maxCount 1 ;
-        sh:path imf:hasParent
+        sh:path imf:isPartOf
+    ], [
+        sh:class imf:OutputTerminal ;
+        sh:path imf:hasPart
     ] ;
-    sh:targetClass imf:OutletTerminal .
+    sh:targetClass imf:OutputTerminal .
 
 imf:SystemBlockShape
     a sh:NodeShape ;
     sh:property [
         sh:class imf:SystemBlock ;
-        sh:path imf:hasChild
+        sh:maxCount 1 ;
+        sh:path imf:isPartOf
     ], [
         sh:class imf:SystemBlock ;
-        sh:maxCount 1 ;
-        sh:path imf:hasParent
+        sh:path imf:hasPart
     ] ;
     sh:targetClass imf:SystemBlock .
 

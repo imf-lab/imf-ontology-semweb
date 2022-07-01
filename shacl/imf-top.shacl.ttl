@@ -18,27 +18,27 @@
 imf:AspectObjectShape
     a sh:NodeShape ;
     sh:property [
-        sh:class imf:AspectObject ;
-        sh:path imf:hasChild
-    ], [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
         sh:path skos:prefLabel ;
         sh:severity sh:Warning
     ], [
-        sh:class imf:AspectObject ;
-        sh:maxCount 1 ;
-        sh:path imf:hasParent
-    ], [
-        sh:class imf:IntegratedObject ;
-        sh:maxCount 1 ;
-        sh:path imf:isAspectOf
-    ], [
         sh:class imf:Aspect ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
         sh:path imf:hasAspect
+    ], [
+        sh:class imf:MultiAspectObject ;
+        sh:maxCount 1 ;
+        sh:path imf:isAspectOf
+    ], [
+        sh:class imf:AspectObject ;
+        sh:maxCount 1 ;
+        sh:path imf:hasParent
+    ], [
+        sh:class imf:AspectObject ;
+        sh:path imf:hasPart
     ] ;
     sh:targetClass imf:AspectObject .
 
