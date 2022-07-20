@@ -18,30 +18,30 @@
 imf:InputTerminalShape
     a sh:NodeShape ;
     sh:property [
+        sh:class imf:OutputTerminal ;
+        sh:path imf:directlyPrecedes
+    ], [
         sh:class imf:InputTerminal ;
         sh:path imf:hasPart
     ], [
         sh:class imf:InputTerminal ;
         sh:maxCount 1 ;
         sh:path imf:isPartOf
-    ], [
-        sh:class imf:OutputTerminal ;
-        sh:path imf:directlyPrecedes
     ] ;
     sh:targetClass imf:InputTerminal .
 
 imf:InterfacePointShape
     a sh:NodeShape ;
     sh:property [
-        sh:class imf:InputTerminal ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path imf:hasInputTerminal
-    ], [
         sh:class imf:OutputTerminal ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
         sh:path imf:hasOutputTerminal
+    ], [
+        sh:class imf:InputTerminal ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path imf:hasInputTerminal
     ] ;
     sh:targetClass imf:InterfacePoint .
 
@@ -53,11 +53,11 @@ imf:OutputTerminalShape
         sh:path imf:isConnectedTo
     ], [
         sh:class imf:OutputTerminal ;
-        sh:maxCount 1 ;
-        sh:path imf:isPartOf
+        sh:path imf:hasPart
     ], [
         sh:class imf:OutputTerminal ;
-        sh:path imf:hasPart
+        sh:maxCount 1 ;
+        sh:path imf:isPartOf
     ] ;
     sh:targetClass imf:OutputTerminal .
 

@@ -1601,86 +1601,252 @@ TODO: Coordinate with existing PCA templates.
 
 * Type definitions
 
-Type definitions are represented using the Reasonable Ontology
-Templates (OTTR) framework [ref]. OTTR templates allows for ontology
-modelling patterns to be precisely captured and instantiated. An OTTR
-template is instantiated by referring to the template and providing
-arguments that match the template's parameters. The template instance
-is expanded (meaning rewritten or transformed) to an instance of the
-modellilng pattern the template represents in RDF or OWL serialisation
-syntax using an straigh-forward macro programming language expansion
-technique.
+A type definition (or just type) is informally to be understood as a
+template, schema or form from which objects (instances of the type)
+are easily and consistently constructed or specified, allowing reuse
+of the type definitions specification (for the aspect objects that are
+created from the type, or /is of/ or /is classified by/ the type).
+The specification of the type is inherited by the objects that are of
+the type.
 
-A type definition is represented by an OTTR template and it expands to
-an individual that is classified by the type definition that the OTTR
-template represents.
+The details of type definitions and how they should be interpreted,
+represented and implemented are under development; the following
+are features that are under development/consideration:
+
+ - A type may be implemented as an OWL class and a SHACL shape and
+   OTTR template:
+   - The OWL class representation is used for checking semantic
+     consistency. This includes checking
+     - any alignment with external ontologies
+     - consistency of type definitions
+     - consistency of object 
+   - The SHACL shape representation is used for checking constraints,
+     in particular for attribute values.
+   - The OTTR template represenation is used for creating objects of
+     the given type.
+
+ - Can an aspect object have multiple types?
+
+ - Can a type inherit from other types --- can there be multiple
+   parent types?
+
+** Informal meta-model
+
+Legend:
+
+ - "A" stands for Abstract and is used in the diagram to indicate shared value fields.
+ - E stands for Enum(eration) and gives a complete list of legal values
+
+#+begin_src plantuml :file img/types-overview.png
+
+skinparam class {
+ BackgroundColor White
+}
+
+skinparam groupInheritance 2
+
+abstract class Definition {
+ id : 1 uri
+ name : 0..1 string
+ description : 0..1 string
+}
+
+abstract class ObjectDefinition {
+ aspect : 0..1 uri
+}
+
+class TypeDefinition {
+ RDS : 0..1 uri
+ classifier : 0..x uri
+ symbol : 0..1 uri
+}
+
+abstract class TerminalDefinition {
+ medium : 0..1 uri
+}
+ 
+class AttributeDefinition {
+ property : 1 uri
+ value : 0..*
+ uom : 0..1 uri
+ ..constraints..
+ legal values : 0..*
+ legal value range : 0..1
+ number of required values : 0..1 integer
+ required datatype : 0..1 url
+}
+
+enum Dimension {
+  provenance
+  range
+  regularity
+  scope
+}
+
+enum Kind {
+  absolute
+  actual
+  average
+  calculated
+  design
+  estimated
+  maximum
+  measured
+  minimum
+  nominal
+  normal
+  operating
+  required
+  set
+  specified
+  test
+}
+
+class InTerminalDefinition
+class OutTerminalDefinition
+
+TypeDefinition --> TypeDefinition : 0..* : parent
+ObjectDefinition --> AttributeDefinition : 0..*
+TypeDefinition --> TerminalDefinition : 0..*
+AttributeDefinition --> Kind : 1
+AttributeDefinition --> Dimension : 1
+
+Definition <|-- ObjectDefinition
+ObjectDefinition <|-- TypeDefinition
+ObjectDefinition <|-- TerminalDefinition
+Definition <|-- AttributeDefinition
 
 
-#+BEGIN_SRC ditaa :file img/ottr-typedefinitions.png
-+---------------+			   +------------------+
-|               |	represents	   |                  |
-| OTTR template |------------------------->| Type definition  |	
-|               |       	       	   |                  |
-+---------------+       		   +------------------+
-       ^               	       	       	       	    ^	       
-       | instantiation	       	       	       	    | classification  
-       |       	       				    |	       	    
-+--------------+			   +------------------+
-|              |	represents	   |                  |
-| OTTR template|-------------------------->|  Aspect object   |
-|   instance   |			   |                  |
-+--------------+			   +------------------+							      -
-#+END_SRC
+TerminalDefinition <|-- InTerminalDefinition 
+TerminalDefinition <|-- OutTerminalDefinition
+
+#+end_src
 
 #+RESULTS:
-[[file:img/ottr-typedefinitions.png]]
+[[file:img/types-overview.png]]
+
+** Implementation: OTTR templates
+
+Type definitions are represented as OTTR template instances using OTTR
+template signatures that reflect the above meta-model.
+
+No template expansions are currently defined for the signatures, but
+the anticipation is that instances of these templates will be able to
+expand to some or all of the following formats, which are discussed in
+more detail below.
+ - OWL class expressions
+ - SHACL shapes
+ - OTTR templates (that generate object of the specified type)
+ - Custom RDF representation, where e.g., a type definition becomes an
+   RDF resource, and an instance according to a RDFS vocabulary
+   representation of the above metamodel.
 
 
 #+BEGIN_SRC ttl :noweb strip-export :tangle ottr/imf/typedefinitions.stottr :mkdirp yes
 <<prefixes>>
 
+## The super template of all specification templates
 o-imf:Definition [
-  ?id,              # the id of the type def
-  ?name,            # the name of the type def
-  ? ?definition    # textual definition of the type def
+  ?id,              # the id that is created
+  ?name,            # the name 
+  ?definition     # textual definition
 ] .
 
+
+## The super template of object and terminal type templates
 o-imf:TypeDefinition [
   # "inherit" from Definition
-  ?class,           # the classification of instances of the type def
-  ? ?aspect,          # the aspect of instances
-  ? ?attributes
+  ?aspect,        # 0--1 aspect
+  ?symbol,        # 
+  #? ?attributes
 ] .
 
 o-imf:ObjectTypeDefinition [
   # "inherit" from TypeDefinition
-  ?rds,             # ??
-  ? ?purpose,       # ??
-  ? ?symbol,        # symbol used for visualising instance of the type def
-  ? ?terminals      # list of terminals set for the type def
+  ?rds,           # ??
+  ?classifier,    # 0--* RDL classes, e.g., "purpose"
+  ?symbol,        # symbol used for visualising instance of the type def
 ] .
 
 o-imf:TerminalTypeDefinition [
-  # "inherit" from TypeDefinition
+  # "inherit" from TypeDefinitio
+  ?objecttype      # "foreign key", the id of the object type definition that this terminal type belongs to
   ?media
+  ?direction       # in or out -- Note: probably implement this with two different templates
 ] .
 
-o-imf:MediaTypeDefinition [
-  # "inherit" from TypeDefinition
-] .
-
-
+# generic attribute definition for recording all types of attributes
 o-imf:AttributeDefinition [
  ## "inherit" from Definition
- ?dimension, # provenance, range, regularity, scope
- ?valuetype, # absolute, actual, average, calculated, design, estimated, maximum, measured, minimum, nominal, normal, operating, required, set, specified, test
- ?uom,
- ?value
+  ?entity        # "foreign key", the id of the entity that this attibute type is set for
+  ?dimension,    # provenance, range, regularity, scope
+  ?kind,         # 
+  ?uom,          # 0--1 unit of measure, e.g., Meter
+  ## constraints:
+  ?datatype,     # 0--1 value datatype -- if set, then the values must be of this datatype. Examples: xsd:int, xsd:date
+  ?legal_values, # 0--*, if set, then this list of values are the only permissible values
+  ?legal_value_range, # if set, then values must be in this range (NB! Note, this is a complex multivalue field (range can be open/closed and open-ended or nor in both directions (min, max)), which is not supported in OTTR, so if and how this is implemented needs to be worked out.
+  ?no_of_required_values, # 0--1, if set, then this indicates the number of required values (occurrences)
 ] .
 
+### Is this useful? A template for defining media
+#o-imf:MediaTypeDefinition [
+#  # "inherit" from TypeDefinition
+#] .
 
 #+END_SRC
 
+Questions/Comments:
+
+ - Some arguments for Attribute definition are mutually exclusive.
+ - Unsupported case: restricting to a permissible set of uom's.
+
+** Ontology for Type definitions
+
+TODO: establish vocabulary and ontology for expressing type
+definitions.
+
+** Interpretation and representation
+
+The formal interpretation of type definition specified by its
+transation to other languages: OWL, SHACL and OTTR.
+
+*** OWL class expressions
+
+ - A type definition becomes a class.
+   - name, definition, symbol become annotation property assertions
+   - aspect become a subclass axiom to the appropriate aspect class,
+     e.g., FunctionalAspectObject
+   - classifiers add a subclass axiom to the class, stating that the
+     class is a subclass of the classifier
+   - rds -- subclass too?
+ - A terminal definition becomes a class, and adds a existential
+   restriction to the class representation of the type defintion it
+   belongs to.
+   - media is represented similiar to aspect for type definition
+ - An attribute becomes a datatype(?) property(?) (look to PCA
+   template representation), and adds a (possibly nested) existential
+   restriction to the type or terminal definition it belongs to. The
+   existential restriction includes the "constraints" set on the
+   attribute.
+
+*** SHACL shapes
+
+Implement the close world representation of the [[OWL class expressions]]
+translation.
+
+*** OTTR templates
+
+ - A type definition becomes a OTTR template with following parameters:
+   - id
+   - name?
+   - description?
+   - (at least ?) one parameter for each attribute, which takes the
+     (list of) value(s) for the attribute
+   - for each terminal accociated with the type:
+     - name?
+     - description?
+     - parameters for atttributes as above
 
 * TODO Visualisation Ontology                                      :noexport:
 
