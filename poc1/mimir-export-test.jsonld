@@ -1,0 +1,318 @@
+{
+  "@graph": [
+    {
+      "@id": "https://rdf.runir.net/IDe8b91139-f586-4a26-924f-51c0cf05eec5",
+      "@type": [
+        "mimir:Project",
+        "IntegratedObject"
+      ],
+      "hasOwner": "Demo Test",
+      "lastUpdated": {
+        "@value": "2022-10-06 09:28:02Z",
+        "@type": "xsd:dateTime"
+      },
+      "updatedBy": "Demo Test",
+      "mimir:domain": "runir.net",
+      "http://www.w3.org/2000/01/rdf-schema#comment": "demo",
+      "http://www.w3.org/2000/01/rdf-schema#label": "demo",
+      "http://www.w3.org/2002/07/owl#versionInfo": "1.0.0",
+      "hasAspectModel": [
+        {
+          "@id": "https://rdf.runir.net/ID3b6001a3-18e8-46e9-8c41-10855db4a1c5",
+          "created": {
+            "@value": "2022-10-06 06:12:32Z",
+            "@type": "xsd:dateTime"
+          },
+          "createdBy": "Demo Test",
+          "hasAspect": {
+            "@id": "imf:Product"
+          },
+          "isAspectOf": {
+            "@id": "https://rdf.runir.net/IDe8b91139-f586-4a26-924f-51c0cf05eec5"
+          },
+          "lastUpdated": {
+            "@value": "2022-10-06 06:12:32Z",
+            "@type": "xsd:dateTime"
+          },
+          "rds": "<DEMO>",
+          "updatedBy": "Demo Test",
+          "mimir:domain": "runir.net",
+          "mimir:hasBlockPosX": {
+            "@value": "0.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:hasBlockPosY": {
+            "@value": "0.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:hasMasterProject": {
+            "@id": "https://rdf.runir.net/IDe8b91139-f586-4a26-924f-51c0cf05eec5"
+          },
+          "mimir:hasPosX": {
+            "@value": "600.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:hasPosY": {
+            "@value": "5.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:name": "Product",
+          "mimir:type": "Product",
+          "http://www.w3.org/2000/01/rdf-schema#label": "Product",
+          "http://www.w3.org/2002/07/owl#versionInfo": "1.0"
+        },
+        {
+          "@id": "https://rdf.runir.net/IDa6b95cd5-d3eb-4ceb-86a0-83ebe09a0c54",
+          "created": {
+            "@value": "2022-10-06 06:12:32Z",
+            "@type": "xsd:dateTime"
+          },
+          "createdBy": "Demo Test",
+          "hasAspect": {
+            "@id": "imf:Location"
+          },
+          "isAspectOf": {
+            "@id": "https://rdf.runir.net/IDe8b91139-f586-4a26-924f-51c0cf05eec5"
+          },
+          "lastUpdated": {
+            "@value": "2022-10-06 06:12:32Z",
+            "@type": "xsd:dateTime"
+          },
+          "rds": "<DEMO>",
+          "updatedBy": "Demo Test",
+          "mimir:domain": "runir.net",
+          "mimir:hasBlockPosX": {
+            "@value": "0.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:hasBlockPosY": {
+            "@value": "0.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:hasMasterProject": {
+            "@id": "https://rdf.runir.net/IDe8b91139-f586-4a26-924f-51c0cf05eec5"
+          },
+          "mimir:hasPosX": {
+            "@value": "1050.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:hasPosY": {
+            "@value": "5.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:name": "Location",
+          "mimir:type": "Location",
+          "http://www.w3.org/2000/01/rdf-schema#label": "Location",
+          "http://www.w3.org/2002/07/owl#versionInfo": "1.0"
+        },
+        {
+          "@id": "https://rdf.runir.net/IDff396778-b512-4eb5-a6e6-3cd88ea8c472",
+          "created": {
+            "@value": "2022-10-06 06:12:32Z",
+            "@type": "xsd:dateTime"
+          },
+          "createdBy": "Demo Test",
+          "hasAspect": {
+            "@id": "imf:Function"
+          },
+          "isAspectOf": {
+            "@id": "https://rdf.runir.net/IDe8b91139-f586-4a26-924f-51c0cf05eec5"
+          },
+          "lastUpdated": {
+            "@value": "2022-10-06 06:12:32Z",
+            "@type": "xsd:dateTime"
+          },
+          "rds": "<DEMO>",
+          "updatedBy": "Demo Test",
+          "mimir:domain": "runir.net",
+          "mimir:hasBlockPosX": {
+            "@value": "0.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:hasBlockPosY": {
+            "@value": "0.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:hasHeight": {
+            "@value": "1100",
+            "@type": "xsd:integer"
+          },
+          "mimir:hasMasterProject": {
+            "@id": "https://rdf.runir.net/IDe8b91139-f586-4a26-924f-51c0cf05eec5"
+          },
+          "mimir:hasPosX": {
+            "@value": "150.0000",
+            "@type": "xsd:float"
+          },
+          "mimir:hasPosY": {
+            "@value": "3.5714",
+            "@type": "xsd:float"
+          },
+          "mimir:hasWidth": {
+            "@value": "2430",
+            "@type": "xsd:integer"
+          },
+          "mimir:name": "Function",
+          "mimir:type": "Function",
+          "http://www.w3.org/2000/01/rdf-schema#label": "Function",
+          "http://www.w3.org/2002/07/owl#versionInfo": "1.0"
+        }
+      ]
+    },
+    {
+      "@id": "https://rdf.runir.net/IDf6adfae6-74c2-8016-e140-b8c6c14ae4a9",
+      "@type": [
+        "http://example.com/rds/og3#FunctionFLA",
+        "FunctionalSystemBlock"
+      ],
+      "created": {
+        "@value": "2022-10-06 09:11:55Z",
+        "@type": "xsd:dateTime"
+      },
+      "createdBy": "mknad@equinor.com",
+      "hasAspect": {
+        "@id": "imf:Function"
+      },
+      "hasInTerminal": {
+        "@id": "https://rdf.runir.net/ID3ebf0fc1-324e-ba65-beba-3b643cb70d60"
+      },
+      "hasOutTerminal": {
+        "@id": "https://rdf.runir.net/IDded7d3fd-453b-60b5-e03c-7ef73e516536"
+      },
+      "hasParent": {
+        "@id": "https://rdf.runir.net/IDff396778-b512-4eb5-a6e6-3cd88ea8c472"
+      },
+      "lastUpdated": {
+        "@value": "2022-10-06 09:27:38Z",
+        "@type": "xsd:dateTime"
+      },
+      "rds": "<DEMO>=FLA0",
+      "updatedBy": "Demo Test",
+      "mimir:domain": "runir.net",
+      "mimir:hasBlockPosX": {
+        "@value": "150.0000",
+        "@type": "xsd:float"
+      },
+      "mimir:hasBlockPosY": {
+        "@value": "3.5714",
+        "@type": "xsd:float"
+      },
+      "mimir:hasHeight": {
+        "@value": "1100",
+        "@type": "xsd:integer"
+      },
+      "mimir:hasMasterProject": {
+        "@id": "https://rdf.runir.net/IDe8b91139-f586-4a26-924f-51c0cf05eec5"
+      },
+      "mimir:hasPosX": {
+        "@value": "115.0000",
+        "@type": "xsd:float"
+      },
+      "mimir:hasPosY": {
+        "@value": "223.5714",
+        "@type": "xsd:float"
+      },
+      "mimir:hasWidth": {
+        "@value": "2430",
+        "@type": "xsd:integer"
+      },
+      "mimir:name": "Demo",
+      "mimir:rds": "FLA0",
+      "mimir:symbol": "https://tyleserver.runir.net/symbol/08112B4FEA2F0544B34E11E98ABB7554.svg",
+      "mimir:type": "91D1213DBD491C0089BBFED83CD9B4EC",
+      "lis:hasPhysicalQuantity": {
+        "@id": "https://rdf.runir.net/ID03d29056-c9c6-f5a9-87c8-209b6fd11c43",
+        "@type": "lis:PhysicalQuantity",
+        "mimir:allowedUnit": [
+          {
+            "@id": "mimir:runir.net_a4989699-e411-985e-73bb-9a6629a5d417-millimetre per square second rms"
+          },
+          {
+            "@id": "mimir:runir.net_00925ce0-e759-2f9c-da6b-9a7ba102a338-metre per second squared"
+          },
+          {
+            "@id": "mimir:runir.net_8e8835eb-e183-339c-3842-66ae3a6d67c7-metre per square second root mean square"
+          },
+          {
+            "@id": "mimir:runir.net_e3eb39c3-084e-cda3-8758-f2d9c0299e9e-g (gravity)"
+          },
+          {
+            "@id": "mimir:runir.net_3ff0daf1-ad0f-f0a5-18de-431450499dcb-millimetre per square second"
+          },
+          {
+            "@id": "mimir:runir.net_87dabd9e-aaa9-00fa-07ed-3a55ec5ad282-gravity peak"
+          },
+          {
+            "@id": "mimir:runir.net_357ce5bd-6b44-a964-f67e-cb50df6aca84-millimetre per square second peak"
+          }
+        ],
+        "mimir:discipline": {
+          "@id": "mimir:NotSet"
+        },
+        "mimir:selectType": {
+          "@id": "mimir:None"
+        },
+        "mimir:type": {
+          "@id": "https://tyleserver.runir.net/v1/ont/attribute/C0B0FB3F893FC258E185FF9C8C22C211"
+        },
+        "lis:qualityQuantifiedAs": {
+          "@id": "https://rdf.runir.net/ID03d29056-c9c6-f5a9-87c8-209b6fd11c43-datum",
+          "https://rdf.runir.net/rangespecifyingpredicate": {
+            "@id": "https://rdf.runir.net/specifying/Actual+Datum"
+          },
+          "https://rdf.runir.net/regularityspecifiedpredicate": {
+            "@id": "https://rdf.runir.net/specified/Absolute+Datum"
+          },
+          "https://rdf.runir.net/specifiedprovenancepredicate": {
+            "@id": "https://rdf.runir.net/provenance/Calculated+Datum"
+          },
+          "https://rdf.runir.net/specifiedscopesredicate": {
+            "@id": "https://rdf.runir.net/scope/Operating+Datum"
+          }
+        },
+        "http://www.w3.org/2000/01/rdf-schema#label": "Demo",
+        "http://www.w3.org/2002/07/owl#sameAs": {
+          "@id": "http://rds.posccaesar.org/ontology/plm/rdl/PCA_100003561",
+          "http://www.w3.org/2000/01/rdf-schema#label": "acceleration"
+        }
+      },
+      "http://www.w3.org/2000/01/rdf-schema#label": "Demo",
+      "http://www.w3.org/2002/07/owl#versionInfo": "1.0"
+    },
+    {
+      "@id": "https://rdf.runir.net/ID3ebf0fc1-324e-ba65-beba-3b643cb70d60",
+      "@type": [
+        "mimir:Transmitter-Demo-Demo",
+        "FunctionalSystemBlockTerminal",
+        "inTerminal"
+      ],
+      "mimir:color": "#ffa200",
+      "mimir:domain": "runir.net",
+      "mimir:isRequired": "False",
+      "mimir:terminalDirection": "Input",
+      "mimir:type": {
+        "@id": "https://tyleserver.runir.net/v1/ont/terminal/99A1E0A662AE756056B47FFD1D3E53DA"
+      },
+      "mimir:visibility": "None",
+      "http://www.w3.org/2000/01/rdf-schema#label": "Demo"
+    },
+    {
+      "@id": "https://rdf.runir.net/IDded7d3fd-453b-60b5-e03c-7ef73e516536",
+      "@type": [
+        "mimir:Transmitter-Demo-Demo",
+        "FunctionalSystemBlockTerminal",
+        "OutTerminal"
+      ],
+      "mimir:color": "#ffa200",
+      "mimir:domain": "runir.net",
+      "mimir:isRequired": "False",
+      "mimir:terminalDirection": "Output",
+      "mimir:type": {
+        "@id": "https://tyleserver.runir.net/v1/ont/terminal/99A1E0A662AE756056B47FFD1D3E53DA"
+      },
+      "mimir:visibility": "None",
+      "http://www.w3.org/2000/01/rdf-schema#label": "Demo"
+    }
+  ],
+  "@context": "mimir-jsonld-context.jsonld"
+}
