@@ -1,7 +1,7 @@
-#+TITLE: IMF Formalised using Semantic Technologies
+#+TITLE: IMF and Semantic Technologies
 #+DATE:
-#+AUTHOR: Martin G. Skjæveland
-#+EMAIL: martige@uio.no
+#+AUTHOR:
+#+EMAIL: 
 
 #+OPTIONS: ':nil *:t -:t ::t <:t H:4 \n:nil ^:t arch:headline
 #+OPTIONS: author:t broken-links:nil c:nil creator:nil
@@ -13,63 +13,56 @@
 #+EXCLUDE_TAGS: noexport QA
 #+EXPORT_FILE_NAME: index.html
 
-*This is work in progress.*
-
 * TODOs
 
- - [ ] IMF IT spec [0/2]
-   - [ ] Concept figure for IT spec
-   - [ ] Define abstract/structural model for IMG, including an
-     abstract language for data and types.
-     - This model can have many implementations and different parts can
-       be represented by different languages with different
-       capabilities, for instance a type can be represented as a SHACL
-       shape (for validation of IMF RDF data) and a OWL class (for
-       semantic validation of the type wrt. to an RDL)
+   - Input to this document [0/5]
+     - [ ] Define abstract model  - AW
+     - [ ] Collect requirements to format from Mimir - ??
+       - https://github.com/mimir-org/mimir/blob/main/src/service/ModelBuilder.Rdf/Properties/Resources.resx
+     - [ ] Collect requirements to format from POC data - ??
+     - [ ] Collect requirements from Tyle
+     - [ ] Collect requirements to format for exchanging IMF models?
+       How to sucessfully merge models? - ??
 
- - [ ] IMF data [0/17]
-   1. [ ] Define abstract model  - AW
-   2. [ ] Collect requirements to format from Mimir - ??
-      - https://github.com/mimir-org/mimir/blob/main/src/service/ModelBuilder.Rdf/Properties/Resources.resx
-   3. [ ] Collect requirements to format from POC data - ??
-   4. [ ] Collect requirements to format for exchanging IMF models?
-      How to sucessfully merge models? - ??
-   5. [ ] Define OWL vocabulary - MGS
-   6. [ ] Define SHACL grammar - MGS
-   7. [ ] Define OTTR templates for creating data - MGS
-   8. [ ] Implement example from Erlend - MGS
-   9. [ ] Update Mimir output format - DH?
-   10. [ ] ?? Define JSON/JSON-LD format (using JSON-LD context object) - MGS + DH
-   11. [ ] ?? Use JSON framing - DH? + MGS
-   12. [ ] Define Abstract translation of IMF data model to ISO 15926-14 - AW + JWK
-   13. [ ] Define OTTR templates for translating IMF to ISO 15926-14 - DNV + MGS
-   14. [ ] Test validation of IMF data against SHACL grammar - MGS
-   15. [ ] ?? Demonstrate use of OWL ontology - MGS
-   16. [ ] ?? Demonstrate use of OTTR templates for creating IMF data - MGS
-   17. [ ] ?? Test visualisation of RDF on IMF data - MGS
+   - Introduction
+     - [ ] Concept figure for IT spec
+     - [ ] Define abstract/structural model for IMF, including an
+       abstract language for data and types.
+       - This model can have many implementations and different parts can
+	 be represented by different languages with different
+	 capabilities, for instance a type can be represented as a SHACL
+	 shape (for validation of IMF RDF data) and a OWL class (for
+	 semantic validation of the type wrt. to an RDL)
 
- - [ ] IMF Types [0/9]
-   1. [ ] Define abstract model - MGS + DW + AW
-   2. [ ] Collect requirements from Tyle
-   3. [ ] Collect requirements from POC
-   4. [ ] Define exchange format for types - MGS + DW 
-   5. [ ] Implement example from Erlend - MGS
-   6. [ ] Update Tyle output format
-   7. [ ] Define OTTR templates for translating to SHACL - MGS
-   8. [ ] Define transation to OWL (using OTTR?) - DW
-   9. [ ] ?? Test visualisation of RDF on IMF data - MGS
+   - Format specifications [0/6]
+     - [ ] Define OWL vocabulary - MGS
+     - [ ] Define exchange format
+       - how to represent types
+       - do data object inherit or copy type data?
+     - [ ] Define SHACL grammar - MGS
+     - [ ] Define OTTR templates for creating data - MGS
+     - [ ] Define OTTR templates for translating to SHACL - MGS
+     - [ ] ?? Define JSON/JSON-LD format (using JSON-LD context object) - MGS + DH
 
- - [ ] POC [0/10]
-   1. [ ] Decide on IMF data format for POC
-   2. [ ] Decide on IMF type format for POC
-   3. [ ] Extend PCA RDL with missing RD
-   4. [ ] Represent POC data (in Mimir, with OTTR templates, or directly in RDF)
-   5. [ ] Represent POC types (in Mimir, with OTTR templates, or directly in RDF)
-   6. [ ] Validate IMF data against SHACL IMF grammar
-   7. [ ] Validate IMF data against IMF type SHACL shapes
-   8. [ ] Merge POC data to one model
-   9. [ ] Compile IMF data to ISO 15926-14 and perform semantic validation
-   10. [ ] Compile IMF types to ISO 15926-14 and perform semantic validation
+   - Tools [0/2]
+     - [ ] Update Mimir output format - DH?
+     - [ ] Update Tyle output format
+
+   - Semantics [0/2]
+     - [ ] Define Abstract translation of IMF data model to ISO 15926-14 - AW + JWK
+     - [ ] Define OTTR templates for translating IMF to ISO 15926-14 - DNV + MGS
+
+   - Examples/Demonstrations [0/5]
+     - [ ] Implement example from Erlend - MGS
+     - [ ] Test validation of IMF data against SHACL grammar - MGS
+     - [ ] ?? Demonstrate use of OWL ontology - MGS
+     - [ ] ?? Demonstrate use of OTTR templates for creating IMF data - MGS
+     - [ ] ?? Test visualisation of RDF on IMF data - MGS
+
+
+   - Other [0/1]
+     - [ ] ?? Use JSON framing - DH? + MGS
+
 
 ** Notes: IMF vocabulary 
 
@@ -96,7 +89,10 @@
  - [ ] mimir:type
 
 * Introduction
-** IMF IT Specification Document Overview
+** TODO IMF IT Specification Document Overview
+
+Todos:
+ - collapse data and types whereever approprioate
 
 /This is loosely inspired by the OWL 2 Web Ontology Language Document Overview [[https://www.w3.org/TR/2012/REC-owl2-overview-20121211/]]./
 
@@ -137,7 +133,7 @@ This document defines the following:
  "schematic" specifications. Blue boxes indicate specification of
  multiple multiple occurrences.
 
-#+BEGIN_SRC dot :file img/overview-specifications.png :exports results :noweb yes
+#+BEGIN_SRC dot :file out/img/overview-specifications.png :exports results :noweb yes
 digraph {
  rankdir = BT;
  newrank=true;
@@ -221,7 +217,7 @@ digraph {
 #+END_SRC
 
 #+RESULTS:
-[[file:img/overview-specifications.png]]
+[[file:out/img/overview-specifications.png]]
 
 ** TODO W3C technology
 
@@ -254,28 +250,296 @@ The ontology will be published at their address. The resources
 (classes, properties, individuals) are made resolvable by publishing a
 merged ontology of all ontology files at the ~imf~ namespace address.
 
-* TODO IMF structural specification
+* IMF Formal Specification
 
-#+BEGIN_SRC plantuml :file img/imf-structural-spec.png
+/Note: This section is excerpts taken from the ongoing work on the IMF
+manual (16/11) and may be out of sync./
 
-hide empty members
+** TODOs [5/6]                                                        :todos:
 
-skinparam class {
- BackgroundColor White
+ - [X] ?? drop System element categories definition
+ - [X] ?? add something like, in the definition of System element: "A
+   system element is either a (System) Block, Terminal or Interface
+   point."
+ - [ ] "A system element scheme is a blueprint from which (instances
+   of) system elements may be created. A system element created from a
+   system element scheme gets the aspect and the attributes as
+   required by the system element scheme specification".
+ - [X] FB :: A function block is a block with the aspect function. A
+             function block holds requirements to purpose.
+ - [X] "The purpose of a system or a system element is specified by
+   the activities that the system performs or achieves. The IMF relies
+   on external reference data libraries of the definition of these
+   activities."
+ - [X] +include "Breakdown" in partOf?+
+
+
+** Core components
+
+ - System :: Combination of interacting elements organized to achieve
+             one or more stated purpose.
+ - System Element :: Member of a set of elements that constitute a
+                     system. A System Element is is either a System
+                     Block, a Terminal or an Interface point.
+ - Purpose :: The purpose of a system or a system element is specified
+              by the activities that the system performs or
+              achieves. IMF relies on external reference data
+              libraries of the definition of these activities.
+ - Breakdown :: A breakdown is a rule by which a system element can be
+                divided into parts according to a given perspective.
+ - Aspect :: An aspect is a system perspective that provides guideline
+             for specifying a breakdown relation on system element and
+             properties to the elements in the breakdown relation. An
+             aspect is a particular way of viewing a facility
+             asset. Different aspects have no overlap in information.
+ - Aspect element :: An Aspect element is a System Element with
+                     exactly one accociated Aspect.
+
+
+*** ??
+
+ - System element categories :: A system element category is a scheme
+      used as a blueprint to instantiate System element schemes. There
+      are three system element categories: Block, Terminal, Interface
+      point.
+ - System element scheme :: A System element scheme is an instance of
+      a system element category with a defined set of attributes,
+      including an attribute which defines a unique aspect.
+
+
+** Aspects
+
+   - Function aspect :: The Function aspect is an aspect with the
+        activity perspective on breakdown, providing information about
+        required activity, performance, and function.
+   - Product aspect :: The Product aspect is an aspect with the
+                       artifact, or assembly, perspective on
+                       breakdown. It is about the specification of a
+                       solution that is intended to perform the
+                       activity.
+   - Location aspect :: The Location aspect is an aspect with the
+        spatial perspective on breakdown. It is about the spatial
+        envelope, the size and shape, of the specified pump and the
+        requirements imposed by the location.
+   - Installed aspect :: The Installed aspect is an aspect with the
+        installed artifact, or installed assembly, perspective on
+        breakdown. It is about information about the actual pump,
+        e.g., serial number, run hours, and status.
+
+** System elements
+
+*** Block
+
+   - System Block :: A System Block (or just Block) B is an object
+                     with a collection of attributes used to describe
+                     an entity.
+   - Function Block :: 
+   - Product Block :: 
+   - Location Block :: 
+   - Installed Block :: 
+
+
+*** Terminal
+
+   - Terminal ::  A Terminal is an object with a collection of
+                 attributes used to describe the input or output of a
+                 Block, and hence its boundaries.
+
+   - Function Terminal :: 
+   - Product Terminal :: 
+   - Location Terminal :: /Not used/
+   - Installed Terminal :: 
+
+*** Interface point
+
+   - Interface point :: An Interface Point is an object with a
+        collection of attributes used to specify the condition for
+        connecting one Block B1 and its Terminal T1, to another Block
+        B2 and its Terminal T2.
+
+   - Function Interface Point :: 
+   - Product Interface Point :: 
+   - Location Interface Point :: /Not used/
+   - Installed Interface Point :: 
+
+** Relationships between system elements
+
+*** hasTerminal
+
+The hasTerminal relation is a specification of a connection between a
+block and a terminal of the same aspect.
+
+   - FB->FT :: hasTerminal(FB,FT) is a specification to the effect
+               that the stream state of FT is the input/output of the
+               purpose activity of FB.
+   - PB->PT :: hasTerminal(PB,PT) is a specification to the effect
+               that the artifactterminal of PT is an input/output
+               terminal of the artifact of PB.
+   - LB->LT :: hasTerminal(LB,LT) is a specification to the effect
+               that the spatial position of the terminal is placed on
+               the spatial extension of the artifact.
+   - IB->IT :: hasTerminal(IB,IT) documents that the installed
+               artifact terminal IT is an input/output terminal of the
+               installed artifact PB.
+
+*** hasPart
+
+hasPart is a specification of a connection between two blocks of the
+same aspects.
+
+   - FB->FB :: hasPart(FB1,FB2) is a specification to the effect that
+               purpose activity of FB2 is a sub-activity of that of
+               FB1.
+   - PB->PB :: hasPart(PB1,PB2) is a specification to the effect that
+               the artifact of PB2 is a sub-assembly of the artifact
+               of PB1.
+   - LB->LB :: hasPart(LB1,LB2) is a specification to the effect that
+               the location of LB2 is located in the location of LB1.
+   - IB->IB :: hasPart(IB1,IB2) documents that the installed artifact
+               IB2 is sub-assembly of the installed artifact IB1.
+
+*** connectedTo
+
+The connectedTo relation is a specification of a connection between
+two terminals of the same aspect.
+
+   - FT-(FIP)-FT :: connectedTo(FT1,FT2,FIP) is a specification to the
+                    effect that the stream state of FT1 is equal to
+                    that of FT2 and satisfies the requirement in FIP.
+   - PT-(PIP)-PT :: connectedTo(PT1,PT2,PIP) is a specification to the
+                    effect that the artifact terminal of PT1 is
+                    physically connected to the artifact terminal of
+                    PT2 and satisfies the requirement in PIP.
+   - LT-(LIP)-LT :: connectedTo(LT1,LT2,LIP) is a specification to the
+                    effect that the location of the terminal of LT1
+                    matches the location of the terminal of LT2 and
+                    satisfies the requirement in LIP.
+   - IT-IT :: connectedTo(IT1,IT2) documents that IT1 is physically
+              connected to IT2.
+
+
+*** fulfilledBy
+
+The fulfilledBy relation is a specification of a connection between
+two blocks (or two terminals) of different aspects.
+
+   - FB->PB :: fulfilledBy(FB,PB)is a specification to the effect that
+               the artifact of PB fulfills the purpose of FB.
+   - FT->PT :: fulfilledBy(FT,PT)is a specification to the effect that
+               the artifact terminal of PT contains the stream state
+               of FT.
+   - LB->PB :: PB artifact fulfills the location requirements of
+               LB. fulfilledBy(LB,PB) is a specification to the effect
+               that the artifact of PB fulfills the location
+               requirements of LB.
+   - LT->PT :: fulfilledBy(LT,PT) is a specification to the effect
+               that the artifact terminal of LT fulfills the location
+               requirements of PT.
+   - PB->IB :: fulfilledBy(PB,IB) is a specification to the effect
+               that the installed artifact IB fulfills the artifact
+               specification PB. fulfilledBy(PB,IB) is a specification
+               to the effect that the installed artifact of IB
+               fulfills the artifact specifications of PB.
+   - PT->IT :: fulfilledBy(PT,IT) is a specification to the effect
+               that the installed artifact terminal IT fulfills the
+               terminal specifications of PT.
+
+
+* IMF Structural Specification
+
+The structural specification is a format and application independent
+data model specification of the formal specification of IMF. The
+structural specification aims to faithfully represent the intentions
+of the formal specification while also including the specification of
+how, e.g., metadata about objects and attributes and attribute values
+are represented, which the formal specification does not contain. The
+purpose of the structural specification is to be a common language and
+format for developing concrete serialisation formats for IMF and serve
+as documentation for application developers.
+
+** Diagram legend
+
+The specification consists of a series of partially overlapping
+diagrams. The combined diagram is presented in Figure ...
+
+The diagrams are UML class diagrams are drawn using [[https://plantuml.com/][PlantUML]]
+restricted to the following elements:
+
+ - UML classes, marked with the icon "C".
+ - Abstract UML classes, marked with an icon "A", are UML classes that
+   are not intended to be instantiated.
+ - Enumerations, marked with the icon "E", are used to represent UML
+   classes with a limited list of instantiations and where the
+   instantiations are defined in the IMF language.
+ - Subclass relationships between classes, directed relations with an
+   open arrow.
+ - Directed associations (relations) between classes, which are marked
+   with a name and possibly a cardinality. If no cardinality is given,
+   then the cardinality is 0--many.
+
+ Here is an example:
+
+#+NAME: structural-spec-diagram-legend
+#+BEGIN_SRC plantuml :noweb yes :file out/img/plantuml-legend.png
+<<plantuml-style>>
+
+abstract class AbstractConcept1
+
+AbstractConcept1 <|-- Concept2
+Concept2 <|-- SubConcept3
+
+Concept2 -left-> Concept4 : 1..* hasRelationA
+
+enum EnumeratedConcept5 {
+ element1
+ element2
 }
 
+Concept2 -right-> EnumeratedConcept5 : 1 hasRelationB
+#+END_SRC
 
-''' Model book-keeping
+#+RESULTS: structural-spec-diagram-legend
+[[file:out/img/plantuml-legend.png]]
 
+Note: The structural specification is described by a series of
+diagrams, each focus on a specific part. In the case that a class is
+used in multiple diagrams, only one diagram contains the full
+specification of the class, while the other diagrams only contain the
+class name. The diagram that contains the complete specification
+combines all diagrams and contains all information.
 
+** Model
 
-abstract class VersionedElement {
+Entity is the most general construct in the structural
+specification. Everything is an entity. No fields or attributes are
+required for Entity, e.g., an Entity is not required to have in id.
+
+An AnnotatedEntity is an Entity that has an identifier and additional
+metadata and provenace data as specified by the diagram. An Entity
+that is not an AnnotatedEntity may only exist through some relation to
+an AnnotatedEntity.
+
+A Model is a collection of AnnotatedEntities and their dependent
+entities. These AnnotatedEntities may be called
+ModelElements. ModelElements are Entities that can occur in Models and
+are hence those AnnotatedEntities that may be exchanged as part of a
+Model.
+
+Note: most subclass relationships to Entity are not depicted in
+diagrams as this make them difficult to read.
+
+#+NAME: structural-spec-model-versioning
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-model-versioning.png
+<<plantuml-style>>
+
+abstract class Entity
+
+abstract class AnnotatedEntity {
  id : 
  name : string
  description : string
 .. provenance ..
  version : string
- previous version : VersionedElement
  created : date
  createdBy : string
  lastUpdated : date
@@ -284,18 +548,37 @@ abstract class VersionedElement {
 
 class Model
 abstract class ModelElement
-Model -left-o ModelElement
 
-VersionedElement <|-- ModelElement
-VersionedElement <|-- Model
+Model -left-> ModelElement : contains
 
-VersionedElement <|-- Type
-VersionedElement <|-- AttributeGroup
-''VersionedElement <|-- Attribute
+Entity <|-- AnnotatedEntity
+AnnotatedEntity <|-- ModelElement
+AnnotatedEntity <|-- Model
+#+END_SRC
 
-ModelElement <|-- AspectObject
 
-''' Types
+#+RESULTS: structural-spec-model-versioning
+[[file:out/img/imf-structural-spec-model-versioning.png]]
+
+*** TODOs [0/1]                                                       :todos:
+
+ - [ ] Decide on required and/or useful set of provenance fields.
+
+** System Elements
+
+Every AspectElement has exacty one Aspect.
+
+Every SystemElement is a AspectElement. 
+A SystemElement is associated 0--many Datums. 
+The structure of Datums is described below.
+
+#+NAME: structural-spec-topelements
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-topelements.png
+<<plantuml-style>>
+
+abstract class AspectElement
+
+abstract class SystemElement
 
 enum Aspect {
   Function
@@ -304,57 +587,49 @@ enum Aspect {
   Installed
 }
 
-abstract class Type {
+AspectElement --> Aspect : 1 hasAspect
+
+SystemElement --> Datum
+
+ModelElement  <|-- AspectElement
+AspectElement <|-- SystemElement
+
+#+END_SRC
+
+#+RESULTS: structural-spec-topelements
+[[file:out/img/imf-structural-spec-topelements.png]]
+
+
+** Attribute
+
+An Attribute is a specification of Datums. An Attribute must specify a
+quality, and may specify a value with an accociated unit of measure
+(uom). An Attribute may be classified at most one of each of the
+Attribute classifiers Provenance, Range, Regularity and Scope.
+
+A Datum is an instantiation of an Attribute and must specify a value
+and a unit of measure as according to the Attribute specification.
+
+Note: The specification of Attributes is currently basic. A more
+thorough analysis of requirements for expressing Attribute is planned
+for future releases.
+
+#+NAME: structural-spec-datum
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-datum.png
+<<plantuml-style>>
+
+abstract class Attribute {
+ property : 1
+ value : 0 .. 1
+ uom : 0 .. 1
 }
 
-Type -left-> Aspect : 0 .. 1 hasAspect 
-SystemBlockType -left-> TerminalType : hasTerminal
+Attribute <|-- Datum
 
-class SystemBlockType {
-  RDS : 0 .. 1 string
-  purpose : rdl id
-  symbol
-}
-class TerminalType {
-  direction : in/out
-}
-
-enum Medium {
-  A
-  B
-  C
-}
-
-TerminalType --> Medium : 0 .. 1 hasMedium 
-
-class AttributeGroup
-class Datum {
- property
- value
- uom
-}
-class Attribute {
-.. constraints ..
- legal values
- legal value range
- number of required values
- datatype
- regex
-}
-
-
-Type <|-- SystemBlockType
-Type <|-- TerminalType
-
-Type --o AttributeGroup
-AttributeGroup --o Attribute
-Datum <|-- Attribute
-
-Datum -- Provenance
-Datum -- Range
-Datum -- Regularity
-Datum -- Scope
-
+Attribute --> Provenance : 0..1
+Attribute --> Range : 0..1
+Attribute --> Regularity : 0..1
+Attribute --> Scope : 0..1
 
 ''' Quantity Datum Classifiers
 
@@ -378,35 +653,151 @@ enum Scope {
   design
   operating
 }
+#+END_SRC
+
+#+RESULTS: structural-spec-datum
+[[file:out/img/imf-structural-spec-datum.png]]
+
+*** TODOs [0/2]                                                       :todos:
+
+ - [ ] Is this a good way of modelling attributes and datums?
+ - [ ] Does a datum copy the attribute values or refer to the
+   attribute (similar discussion applies to types in general).
+
+** Types
+
+Types define a blueprint from which SystemElements are created. There
+two kinds of Types: BlockType and TerminalType each representing
+blueprints for Blocks and Terminals, respectively. Types specify
+fields and relationships that must also hold for its instances. A
+BlockType may specify fields such as RDS string, purpose and symbol
+and Terminals by relationships to TerminalTypes. A TerminalType
+specifies a direction and a Medium.
+
+A Type may include multiple AttributeGroups. An AttributeGroup is a
+collection of AttributeTypes.
+
+An AttributeType is an Attribute with additional constraints
+associated. These constraints may specify premissible values for the
+Attribute in different ways, e.g., by specifying a list of legal
+values, a range of values (in the case of a numerical values), legal
+datatype, regular expression, and so on. The expressivity of
+constraints for AttributeTypes will be defined upon a thorough analysis
+including both requirements from SMEs, application developers and the
+expressivity of suitable constraint languages.
+
+An AttributeGroup is an AnnotatedEntity that is used to collect
+Attributes that naturally belong together to support ease of reuse. An
+AttributeGroup also serves the purpose of grouping together Attributes
+for presentational purposes, similarly as document sections in a data
+sheet does.
+
+Instances may be created from types in at least two ways:
+
+ 1. An instance is created from a copy of the type, hence the instance
+    will explicitly contain the fields and relationships specified by
+    its type.
+ 2. An instance is created by referring to its type with a specified
+    relationship that captures the semantics of the instantiation. 
+
+Both cases exibit different issues with regards to synchronisation and
+versioning. For case 1. an instance may evolve independently of its
+type, i.e., any updates to the instance will not affect the type (and
+vise versa) unless specific measures to avoid this is specified. For
+case 2, updates to a type will also affect all its instances. 
+
+#+NAME: structural-spec-types
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-types.png
+<<plantuml-style>>
+
+AnnotatedEntity <|-- Type
+AnnotatedEntity <|-- AttributeTypeGroup
+
+abstract class Type {
+}
+
+Type -left-> Aspect : 0 .. 1 hasAspect 
+BlockType -left-> TerminalType : hasTerminal
+
+class BlockType {
+  RDS : 0 .. 1 string
+  purpose : rdl id
+  symbol
+}
+class TerminalType {
+  direction : in/out
+}
+
+enum Medium 
+
+TerminalType --> Medium : 0 .. 1 hasMedium 
+
+class AttributeTypeGroup
+
+class AttributeType {
+.. constraints ..
+ legal values
+ legal value range
+ number of required values
+ datatype
+ regex
+}
+
+Type <|-- BlockType
+Type <|-- TerminalType
+'Type <|-- InterfacePointType
+
+BlockType <-- Block : 1 instanceOf
+TerminalType <-- Terminal : 1 instanceOf
+
+Type --> AttributeTypeGroup
+AttributeTypeGroup --> AttributeType
+Attribute <|-- AttributeType
+#+END_SRC
+
+#+RESULTS: structural-spec-types
+[[file:out/img/imf-structural-spec-types.png]]
+
+** Instances
+
+The strucutral specification of the different SystemElements closely
+follow the formal specification.
+
+The connectedTo relation between InTerminal and OutTerminal may either
+be a binary relationship between an InTerminal and an OutTerminal, or
+a ternary relationsship between an InTerminal, an OutTerminal and an
+InterfacePoint. The latter form is represented in the diagram with a
+diamond.
+
+#+NAME: structural-spec-instances
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-instances.png
+
+<<plantuml-style>>
 
 ''' Data
 
-abstract class AspectObject
-class SystemBlock
+class Block
 class Terminal
 class InTerminal
 class OutTerminal
 class InterfacePoint
 
-AspectObject --> Type : instanceOf
-AspectObject --> Datum
-
 ' subclasses
-AspectObject <|-- SystemBlock
-AspectObject <|-- Terminal
-AspectObject <|-- InterfacePoint
+SystemElement <|-- Block
+SystemElement <|-- Terminal
+SystemElement <|-- InterfacePoint
 
 Terminal <|-- InTerminal
 Terminal <|-- OutTerminal
 
 ' relations
-SystemBlock -right-> Terminal : hasTerminal
+Block -right-> Terminal : hasTerminal
 
 ' reified relations
-<> parthood
-AspectObject <-- parthood : thePart
-AspectObject <-- parthood : theWhole
-AspectObject <-- AspectObject : hasPart 
+'<> parthood
+'AspectElement <-- parthood : thePart
+'AspectElement <-- parthood : theWhole
+Block <-- Block : hasPart 
 
 <> connection
 InTerminal  <-left- connection : theInput
@@ -414,15 +805,37 @@ OutTerminal <-right- connection : theOutput
 InterfacePoint <-down- connection : theInterface
 InTerminal --> OutTerminal : isConnectedTo
 
+SystemElement <-- SystemElement : fulfilledBy
+
+#+END_SRC
+
+
+#+RESULTS: structural-spec-instances
+[[file:out/img/imf-structural-spec-instances.png]]
+
+** Complete Specification
+
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec.png
+<<plantuml-style>>
+
+<<structural-spec-model-versioning>>
+
+<<structural-spec-topelements>>
+
+<<structural-spec-types>>
+
+<<structural-spec-datum>>
+
+<<structural-spec-instances>>
 
 #+END_SRC
 
 #+RESULTS:
-[[file:img/imf-structural-spec.png]]
+[[file:out/img/imf-structural-spec.png]]
 
-** OLD Types
+** OLD Types                                                       :noexport:
 
-#+begin_src plantuml :file img/types-overview.png
+#+begin_src plantuml :file out/img/types-overview.png
 
 skinparam class {
  BackgroundColor White
@@ -533,12 +946,12 @@ information.
 
 Tests are put here at the start to make it easy to update file names.
 
-#+CALL: sh_jena_validate_rdf(files="imf.owl.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf.owl.ttl")
 
 #+RESULTS:
-: imf.owl.ttl     : 0.20 sec : 8 Triples : 40.00 per second
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.29 sec : 8 Triples : 27.78 per second
 
-#+CALL: sh_jena_shacl_std_validate(data="imf.owl.ttl")
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -555,15 +968,15 @@ Tests are put here at the start to make it easy to update file names.
 ** Ontology source
 
 #+NAME: owl-imf-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle owl/imf.owl.ttl :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/imf.owl.ttl :mkdirp yes
 <<prefixes>>
 
 <http://ns.imfid.org/imf> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf> ;
+    owl:versionIRI <http://ns.imfid.org/20221118/imf> ;
     owl:imports 
-      <http://ns.imfid.org/ontology/20220701/imf-top> ,
-      <http://ns.imfid.org/ontology/20220701/imf-metamodel> ,
-      <http://ns.imfid.org/ontology/20220701/imf-aspects> ;
+      <http://ns.imfid.org/20221118/imf-top> ,
+      <http://ns.imfid.org/20221118/imf-systemelements> ,
+      <http://ns.imfid.org/20221118/imf-aspects> ;
     skos:prefLabel "Information Modelling Framework Ontology " ;
     skos:altLabel "IMF ontology" ;
     skos:scopeNote """
@@ -573,13 +986,13 @@ Tests are put here at the start to make it easy to update file names.
       of which focus on one particular part of the ontology:
 
       1. IMF Top defines the very high-level classes and properties of
-      the IMF ontology, such as AspectObject.
+      the IMF ontology.
 
-      2. IMF Metamodel defines the metamodel for aspect objects and
+      2. IMF Metamodel defines the metamodel for system elements and
       their permissible properties.
 
       3. IMF Aspects defines the aspects that are available to aspect
-      objects.
+      elements.
 
     """;
 
@@ -592,29 +1005,30 @@ The diagram displays the different ontology documents that the IMF
 ontology consists of and the import relations that exist between
 these.
 
-#+CALL: rdfvizler(rules="rdfvizler/ontology-import-hierarchy.rule", output="owl/ontology-import-hierarchy.svg")
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-import-hierarchy.rule", output="out/owl/ontology-import-hierarchy.svg")
 
 #+RESULTS:
 
-[[./owl/ontology-import-hierarchy.svg]]
+[[./out/owl/ontology-import-hierarchy.svg]]
+
 
 ** IMF Top Sub-Ontology
 
-#+CALL: rdfvizler(rules="rdfvizler/ontology-overview.rule", data="owl/.imf-top.owl.wottr.ttl", output="owl/imf-top-overview.svg")
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/.imf-top.owl.wottr.ttl", output="out/owl/imf-top-overview.svg")
 
-#+RESULTS:
 
-[[./owl/imf-top-overview.svg]]
+[[./out/owl/imf-top-overview.svg]]
+
 
 *** Header
 
 #+NAME: owl-top-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle owl/.imf-top.owl.wottr.ttl
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-top.owl.wottr.ttl
 <<prefixes>>
 
 <http://ns.imfid.org/imf-top> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-top> ;
-    owl:imports <http://www.w3.org/2004/02/skos/core> ;
+    owl:versionIRI <http://ns.imfid.org/20221118/imf-top> ;
+    # owl:imports <http://www.w3.org/2004/02/skos/core> ;
     skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
     skos:altLabel "IMF top ontology" ;
     skos:scopeNote """
@@ -627,44 +1041,55 @@ these.
 
     .
 
-<<owl-top-aspectobject>> 
+<<owl-top-system>> 
+<<owl-top-systemelement>> 
+<<owl-top-aspectelement>> 
 <<owl-top-aspect>> 
-<<owl-top-integratedobject>> 
+<<owl-top-disjointness>> 
 <<owl-top-genericrelations>>
 #+END_SRC
 
-*** ~AspectObject~
+*** ~System~
 
-#+NAME: owl-top-aspectobject
+#+NAME: owl-top-system
 #+BEGIN_SRC ttl
-imf:AspectObject a owl:Class ;
+imf:System a owl:Class ;
+  skos:prefLabel "System" 
+.
+#+END_SRC
 
-  skos:prefLabel "Aspect Object";
+*** ~SystemElement~
 
-  skos:definition """
+#+NAME: owl-top-systemelement
+#+BEGIN_SRC ttl
+imf:SystemElement a owl:Class ;
+  rdfs:subClassOf imf:AspectElement ;
+  skos:prefLabel "System Element" 
+.
 
-    An aspect object describes an asset from a specific viewpoint (or
-    aspect).
+imf:memberOf a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:domain imf:SystemElement ;
+  rdfs:range imf:System .
 
-    An aspect object has a single aspect, we say that the aspect
-    object "is of" this aspect.
+[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
+   ottr:values ( imf:SystemElement imf:memberOf imf:System ) .
+#+END_SRC
 
-    """;
+*** ~AspectElement~
+
+#+NAME: owl-top-aspectelement
+#+BEGIN_SRC ttl
+imf:AspectElement a owl:Class ;
+  skos:prefLabel "Aspect Element";
   .
 
 ### properties
 
 imf:hasAspect a owl:ObjectProperty ;
   skos:prefLabel "has aspect" ;
-  skos:definition "Relates an aspect object to its aspect.";
-  rdfs:domain imf:AspectObject ;
+  skos:definition "Relates an Aspect Element to its Aspect.";
+  rdfs:domain imf:AspectElement ;
   rdfs:range imf:Aspect .
-
-
-# An aspect object has/is of exactly one aspect:
-[] ottr:of o-owl-ax:SubObjectExactCardinality ;
-   ottr:values ( imf:AspectObject "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
-
 #+END_SRC
 
 *** ~Aspect~
@@ -673,20 +1098,14 @@ imf:hasAspect a owl:ObjectProperty ;
 #+BEGIN_SRC ttl
 imf:Aspect a owl:Class ;
   skos:prefLabel "Aspect";
-  #skos:definition """TODO""";
-  skos:scopeNote """
-
-  """ ;
-  skos:example """Function, Location, Product are examples of aspects.""";
-
-  .
+.
 #+END_SRC
 
-*** ~MultiAspectObject~
+*** +Deprecated: ~MultiAspectElement~+                             :noexport:
 
-#+NAME: owl-top-integratedobject
+#+NAME: owl-top-DEPRECATED-integratedobject
 #+BEGIN_SRC ttl
-imf:MultiAspectObject a owl:Class ;
+imf:MultiAspectElement a owl:Class ;
 
   skos:prefLabel "Multi-Aspect Object" ;
   #skos:definition """TODO""";
@@ -704,7 +1123,7 @@ imf:MultiAspectObject a owl:Class ;
 
 .
 
-imf:hasAspectObject a owl:ObjectProperty ;
+imf:hasAspectElement a owl:ObjectProperty ;
   skos:prefLabel "has aspect object" ;
   skos:definition """
 
@@ -713,12 +1132,17 @@ imf:hasAspectObject a owl:ObjectProperty ;
 
     """;
 
-  rdfs:domain imf:MultiAspectObject ;
-  rdfs:range imf:AspectObject .
+  rdfs:domain imf:MultiAspectElement ;
+  rdfs:range imf:AspectElement .
+#+END_SRC
 
+*** Additional axioms
+
+#+NAME: owl-top-disjointness
+#+BEGIN_SRC ttl
 
 [] ottr:of o-owl-ax:DisjointClasses ;
-   ottr:values( ( imf:Aspect imf:AspectObject imf:MultiAspectObject ) ) .
+   ottr:values( ( imf:Aspect imf:AspectElement imf:System ) ) .
 #+END_SRC
 
 *** Structural relations
@@ -741,9 +1165,18 @@ skos:scopeNote """
 imf:intraAspectRelation a owl:ObjectProperty ;
     skos:prefLabel "intra-aspect relation";
     rdfs:subPropertyOf skos:semanticRelation ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
     skos:definition "A generic relation between aspect objects of the same aspect" ;
+    <<owl-top-toprelation-scope-note>>
+    .
+
+imf:interAspectRelation a owl:ObjectProperty ;
+    skos:prefLabel "inter-aspect relation";
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    rdfs:subPropertyOf skos:related ;
+    # owl:propertyDisjointWith imf:intraAspectRelation ; ## An error occurred during reasoning: Non-simple property or its inverse appears in disjoint properties axiom.
     <<owl-top-toprelation-scope-note>>
     .
 
@@ -751,8 +1184,8 @@ imf:hierarchicalRelation a owl:ObjectProperty ;
     a owl:IrreflexiveProperty ;
     skos:prefLabel "hierarchical relation";
     rdfs:subPropertyOf skos:semanticRelation ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
     skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
     <<owl-top-toprelation-scope-note>>
     .
@@ -761,8 +1194,8 @@ imf:associativeRelation a owl:ObjectProperty ;
     skos:prefLabel "associative relation";
     rdfs:subPropertyOf skos:related ;
     owl:propertyDisjointWith imf:hierachicalRelation ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
     skos:definition "A generic associative relation." ;
     <<owl-top-toprelation-scope-note>>
     .
@@ -776,13 +1209,13 @@ org-mode tangled files.
 
 **** RDF validate tangled file
 
-#+CALL: sh_jena_validate_rdf(files="owl/.imf-top.owl.wottr.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/owl/.imf-top.owl.wottr.ttl")
 
 #+RESULTS:
 : file:///home/martige/repo/imf-lab/imf-ontology/owl/.imf-top.owl.wottr.ttl : 0.19 sec : 69 Triples : 363.16 per second
 
 **** Expand OTTR instances
-#+CALL: lutra-expand(in="owl/.imf-top.owl.wottr.ttl", out="owl/imf-top.owl.ttl")
+#+CALL: lutra-expand(in="out/owl/.imf-top.owl.wottr.ttl", out="out/owl/imf-top.owl.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -838,7 +1271,7 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 # >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(blank505 : LUB<rdfs:Resource>, owl:onProperty :  ...
 # >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#hasAspect : LUB<ottr:IRI ...
 # >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#Aspect : LUB<ottr:IRI>,  ...
-# >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#AspectObject : LUB<ottr: ...
+# >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:Triple(http://ns.imfid.org/imf#AspectElement : LUB<ottr: ...
 
 # [WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
 # [WARNING] 
@@ -847,7 +1280,7 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 # >>> at [1: 1] (xyz.ottr.lutra.io.TemplateReader) xyz.ottr.lutra.stottr.parser.STemplateParser@5460b754
 # [WARNING] Failed fetching template: http://ns.ottr.xyz/0.4/NullableTriple
 
-# >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#AspectObject : L ...
+# >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#AspectElement : L ...
 rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/owl/.imf-top.owl.wottr.ttl.temp with parser turtle
 rapper: Serializing with serializer turtle
 rapper: Parsing returned 64 triples
@@ -880,7 +1313,7 @@ imf:Aspect
 
   """ .
 
-imf:AspectObject
+imf:AspectElement
     a owl:Class ;
     rdfs:subClassOf [
         a owl:Restriction ;
@@ -899,7 +1332,7 @@ imf:AspectObject
     """ ;
     skos:prefLabel "Aspect Object" .
 
-imf:MultiAspectObject
+imf:MultiAspectElement
     a owl:Class ;
     skos:prefLabel "Multi-Aspect Object" ;
     skos:scopeNote """
@@ -916,8 +1349,8 @@ imf:MultiAspectObject
 
 imf:associativeRelation
     a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
     rdfs:subPropertyOf skos:related ;
     owl:propertyDisjointWith imf:hierachicalRelation ;
     skos:definition "A generic associative relation." ;
@@ -933,15 +1366,15 @@ imf:associativeRelation
 
 imf:hasAspect
     a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
+    rdfs:domain imf:AspectElement ;
     rdfs:range imf:Aspect ;
     skos:definition "Relates an aspect object to its aspect." ;
     skos:prefLabel "has aspect" .
 
-imf:hasAspectObject
+imf:hasAspectElement
     a owl:ObjectProperty ;
-    rdfs:domain imf:MultiAspectObject ;
-    rdfs:range imf:AspectObject ;
+    rdfs:domain imf:MultiAspectElement ;
+    rdfs:range imf:AspectElement ;
     skos:definition """
 
     Relates the multi-aspect object to the aspect object(s) it
@@ -952,8 +1385,8 @@ imf:hasAspectObject
 
 imf:hierarchicalRelation
     a owl:IrreflexiveProperty, owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
     rdfs:subPropertyOf skos:semanticRelation ;
     skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
     skos:prefLabel "hierarchical relation" ;
@@ -968,8 +1401,8 @@ imf:hierarchicalRelation
 
 imf:intraAspectRelation
     a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
     rdfs:subPropertyOf skos:semanticRelation ;
     skos:definition "A generic relation between aspect objects of the same aspect" ;
     skos:prefLabel "intra-aspect relation" ;
@@ -985,7 +1418,7 @@ imf:intraAspectRelation
 <http://ns.imfid.org/imf-top>
     a owl:Ontology ;
     owl:imports <http://www.w3.org/2004/02/skos/core> ;
-    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/20221118/imf-top> ;
     skos:altLabel "IMF top ontology" ;
     skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
     skos:scopeNote """
@@ -999,20 +1432,20 @@ imf:intraAspectRelation
 []
     a owl:AllDisjointClasses ;
     owl:members (imf:Aspect
-        imf:AspectObject
-        imf:MultiAspectObject
+        imf:AspectElement
+        imf:MultiAspectElement
     ) .
 
 #+end_example
 
 **** RDF validate final file
 
-#+CALL: sh_jena_validate_rdf(files="owl/imf-top.owl.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-top.owl.ttl")
 
 #+RESULTS:
 : imf-top.owl.ttl : 0.21 sec : 78 Triples : 369.67 per second
 
-#+CALL: sh_jena_shacl_std_validate(data="owl/imf-top.owl.ttl")
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-top.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -1026,94 +1459,165 @@ imf:intraAspectRelation
 ] .
 #+END_src
 
-** IMF Metamodel Sub-Ontology
+** IMF System Element Sub-Ontology
 
-#+CALL: rdfvizler(rules="rdfvizler/ontology-overview.rule", data="owl/.imf-metamodel.owl.wottr.ttl", output="owl/imf-metamodel-overview.svg")
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/.imf-systemelements.owl.wottr.ttl", output="out/owl/imf-systemelements-overview.svg")
 
 #+RESULTS:
 
-[[./owl/imf-metamodel-overview.svg]]
+[[./out/owl/imf-systemelements-overview.svg]]
 
 *** Header
 #+NAME: owl-top-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle owl/.imf-metamodel.owl.wottr.ttl :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-systemelements.owl.wottr.ttl :mkdirp yes
 <<prefixes>>
 
-<http://ns.imfid.org/imf-metamodel> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-metamodel> ;
-    owl:imports <http://ns.imfid.org/ontology/20220701/imf-top> ;
-    skos:prefLabel "Information Modelling Framework Ontology: Metamodel Ontology " ;
+<http://ns.imfid.org/imf-systemelements> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20221118/imf-systemelements> ;
+    owl:imports <http://ns.imfid.org/20221118/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: System Elements " ;
     skos:altLabel "IMF metamodel ontology" ;
     skos:scopeNote """
 
       This ontology defines IMF's meta model which defines how
       IMF models are represented.
 
-    """;
-    #skos:editorialNote """ """;
+    """ ;
     .
 
-<<owl-metamodel-aspectobject>>
-<<owl-metamodel-relations-partof>>
-<<owl-metamodel-relations-precedes>>
-<<owl-metamodel-terminal>>
-<<owl-metamodel-system>>
-<<owl-metamodel-connection>>
+<<owl-systemelements-systemelement>>
+<<owl-systemelements-relations-partof>>
+<<owl-systemelements-terminal>>
+<<owl-systemelements-system>>
+<<owl-systemelements-connection>>
+<<owl-systemelements-relations-connectedTo>>
 #+END_SRC
 
-*** ~AspectObject~
+*** ~SystemElement~
 
-AspectObject is defined in IMF Top, but is further described here.
-
-#+NAME: owl-metamodel-aspectobject
+#+NAME: owl-systemelements-systemelement
 #+BEGIN_SRC ttl
-imf:AspectObject a owl:Class ;
-
-  skos:scopeNote """
-
-    Each aspect object is either a system block or a terminal.""".
+imf:SystemElement a owl:Class .
 
 [] ottr:of o-owl-ma:ClassPartition ;
-   ottr:values ( imf:AspectObject ( imf:SystemBlock imf:Terminal imf:InterfacePoint ) ) .
+   ottr:values ( imf:SystemElement ( imf:Block imf:Terminal imf:InterfacePoint ) ) .
+#+END_SRC
+
+*** ~Block~
+
+#+NAME: owl-systemelements-system
+#+BEGIN_SRC ttl
+imf:Block a owl:Class ;
+  rdfs:subClassOf imf:SystemElement ;
+  skos:prefLabel "Block" ;
+  .
+#+END_SRC
+
+*** ~Terminal~ 
+
+#+NAME: owl-systemelements-terminal
+#+BEGIN_SRC ttl
+imf:Terminal a owl:Class ;
+  rdfs:subClassOf imf:SystemElement ;
+  skos:prefLabel "Terminal" ;
+  skos:altLabel "Port", "Channel", "Input/Output" ;
+  .
+
+imf:InputTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Input Terminal" ;
+  skos:altLabel "Input" ;
+  .
+
+imf:OutputTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Output Terminal" ;
+  skos:altLabel "Output" ;
+  .
+
+[] ottr:of o-owl-ma:ClassPartition ;
+   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
+
+imf:hasTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  rdfs:domain imf:Block ;
+  rdfs:range imf:Terminal ;
+  skos:prefLabel "has terminal" ;
+  skos:definition "The relation between a system and its terminals.";
+  .
+
+imf:hasInputTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has input terminal" ;
+  rdfs:range imf:InputTerminal ;
+  skos:definition "The relation between a system and its input terminals.";
+  .
+
+imf:hasOutputTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has output terminal" ;
+  rdfs:range imf:OutputTerminal ;
+  skos:definition "The relation between a system and its output terminals.";
+  .
+#+END_SRC
+
+*** ~InterfacePoint~
+
+#+NAME: owl-systemelements-connection
+#+BEGIN_SRC ttl
+imf:InterfacePoint a owl:Class ;
+  rdfs:subClassOf imf:SystemElement ;
+  skos:prefLabel "Interface Point" ;  
+  skos:altLabel "Connection", "Junction" , "Transport" ;
+  .
+
+imf:theInput a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:domain imf:InterfacePoint ;
+  rdfs:range imf:InputTerminal ;
+  .
+
+imf:theOutput a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:domain imf:InterfacePoint ;
+  rdfs:range imf:OutputTerminal ;
+  .
 #+END_SRC
 
 *** ~isPartOf~ / ~hasPart~
 
-#+NAME: owl-metamodel-relations-partof
+#+NAME: owl-systemelements-relations-partof
 #+BEGIN_SRC ttl
 imf:isPartOf a owl:ObjectProperty;
   a owl:FunctionalProperty ;
   rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
-
-  rdfs:domain imf:AspectObject ;
-  rdfs:range imf:AspectObject ;
-
-  skos:prefLabel "has parent" ;
-  skos:altLabel "is part of" ;
-  skos:definition """
-
-    An aspect object is placed in a tree-shaped breakdown structure
-    using isPartOf/hasPart relationships. An aspect object may have
-    a single parent (the root object has no parent) and possibly
-    multiple children. This is an abstraction mechanism. The children
-    of an aspect object provide a more detailed description of (parts
-    of) its parent.
-
-  """;
+  rdfs:domain imf:Block ;
+  rdfs:range imf:Block ;
+  skos:prefLabel "is part of" ;
+  skos:altLabel "has parent" ;
   .
 
 imf:hasPart a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
   owl:inverseOf imf:isPartOf ;
-
-  skos:prefLabel "has child";
-  skos:altLabel "has part";
+  skos:prefLabel "has part";
+  skos:altLabel "has child";
   .
 #+END_SRC
 
-*** ~precedes~
+*** ~isConnectedTo~
 
-#+NAME: owl-metamodel-relations-precedes
+#+NAME: owl-systemelements-relations-connectedTo
+#+BEGIN_SRC ttl
+imf:isConnectedTo a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  owl:propertyChainAxiom ( imf:theInput [ owl:inverseOf imf:theOutput ] ) ;
+  skos:prefLabel "is connected to" ;
+  rdfs:domain imf:OutputTerminal ;
+  rdfs:range imf:InputTerminal ;
+  .
+#+END_SRC
+
+*** +Deprecated ~precedes~+                                        :noexport:
+
 #+BEGIN_SRC ttl
 imf:precedes a owl:ObjectProperty ;
   a
@@ -1150,173 +1654,20 @@ imf:directlyPrecedes a owl:ObjectProperty ;
 
 #+END_SRC
 
-*** ~SystemBlock~
-
-#+NAME: owl-metamodel-system
-#+BEGIN_SRC ttl
-imf:SystemBlock a owl:Class ;
-  rdfs:subClassOf imf:AspectObject ;
-
-  skos:prefLabel "System Block";
-  skos:definition """
-
-    A system is a processing (black) box. It processes the input to
-    output, possibly changing the state of what is processed.
-
-    Transforms the input from its input terminals to the output to its
-    output terminals. The relation between the input and output
-    terminals may be complex and may be further described by
-    subsystems which are related by hasPart.
-
-    A system may have multiple input and output terminals. A system
-    with zero terminals is uncommon.
-
-  """;
-  .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:SystemBlock imf:isPartOf imf:SystemBlock ) .
-#+END_SRC
-
-*** ~Terminal~ and its subclasses and relations
-
-#+NAME: owl-metamodel-terminal
-#+BEGIN_SRC ttl
-imf:Terminal a owl:Class ;
-  rdfs:subClassOf imf:AspectObject ;
-
-  skos:prefLabel "Terminal" ;
-  skos:altLabel "Port", "Channel", "Input/Output" ;
-  skos:definition """
-
-    A port or boundry point through which a system block can interact
-    and communicate with the world outside the system, receiving input
-    and giving output.
-
-  """;
-
-   skos:editorialNote """
-
-     [2022-03-11 Fri] Need to represent the type of a terminal, and
-     constraints on connections between typed terminals: material,
-     information, energy, structural.
-
-   """ ;
-
-  .
-
-imf:InputTerminal a owl:Class ;
-  rdfs:subClassOf imf:Terminal ;
-  skos:prefLabel "Input Terminal" ;
-  skos:altLabel "Input" ;
-  skos:definition """
-
-    A terminal whose default function is to recieve input for its
-    system.
-
-  """;
-
-  .
-
-imf:OutputTerminal a owl:Class ;
-  rdfs:subClassOf imf:Terminal ;
-  skos:prefLabel "Output Terminal" ;
-  skos:altLabel "Output" ;
-  skos:definition """
-
-    A terminal whose default function is to give output for its
-    system.
-
-  """;
-
-  .
-
-[] ottr:of o-owl-ma:ClassPartition ;
-   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:InputTerminal imf:isPartOf imf:InputTerminal ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:OutputTerminal imf:isPartOf imf:OutputTerminal ) .
-
-imf:hasTerminal a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
-  rdfs:domain imf:SystemBlock ;
-  rdfs:range imf:Terminal ;
-  skos:prefLabel "has terminal" ;
-  skos:definition "The relation between a system and its terminals.";
-  .
-
-imf:hasInputTerminal a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:hasTerminal ;
-  skos:prefLabel "has input terminal" ;
-  rdfs:range imf:InputTerminal ;
-  skos:definition "The relation between a system and its input terminals.";
-  .
-
-imf:hasOutputTerminal a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:hasTerminal ;
-  skos:prefLabel "has output terminal" ;
-  rdfs:range imf:OutputTerminal ;
-  skos:definition "The relation between a system and its output terminals.";
-  .
-
-imf:isConnectedTo a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
-  rdfs:subPropertyOf imf:precedes ;
-  skos:prefLabel "is connected to" ;
-  skos:definition """
-
-    The relation between to terminals that are connected. The output
-    of the output terminal is given as input to the input terminal.
-
-  """;
-  rdfs:domain imf:OutputTerminal ;
-  rdfs:range imf:InputTerminal ;
-  .
-#+END_SRC
-
-*** ~InterfacePoint~ and its relations
-
-#+NAME: owl-metamodel-connection
-#+BEGIN_SRC ttl
-imf:InterfacePoint a owl:Class ;
-  rdfs:subClassOf imf:AspectObject ;
-  skos:prefLabel "Interface Point" ;  
-  skos:altLabel "Connection", "Junction" , "Transport" ;
-  skos:definition """
-
-     A simple type of system block that has exactly one input and one
-     output. No transformation of the input is performed.
-
-     The connection, in effect, merges the two connected
-     terminals. The connection itself has no function or spatial
-     significance.
-
-  """
-  .
-
-[] ottr:of o-owl-ax:SubObjectExactCardinality ;
-   ottr:values ( imf:InterfacePoint "1"^^xsd:nonNegativeInteger imf:hasInputTerminal imf:InputTerminal ) .
-
-[] ottr:of o-owl-ax:SubObjectExactCardinality ;
-   ottr:values ( imf:InterfacePoint "1"^^xsd:nonNegativeInteger imf:hasOutputTerminal imf:OutputTerminal ) .
-#+END_SRC
-
 *** Processing and QA                                                    :QA:
 **** RDF validate tangled file
 
-#+CALL: sh_jena_validate_rdf(files="owl/.imf-metamodel.owl.wottr.ttl owl/imf-metamodel.owl.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/owl/.imf-systemelements.owl.wottr.ttl out/owl/imf-systemelements.owl.ttl")
 
 #+RESULTS:
-: 17:42:38 INFO  riot            :: File: owl/.imf-metamodel.owl.wottr.ttl
-: file:///home/martige/repo/imf-lab/imf-ontology/owl/.imf-metamodel.owl.wottr.ttl : 0.22 sec : 159 Triples : 709.82 per second
-: 17:42:38 INFO  riot            :: File: owl/imf-metamodel.owl.ttl
-: file:///home/martige/repo/imf-lab/imf-ontology/owl/imf-metamodel.owl.ttl :  (No Output)
-: Total           : 0.22 sec : 159 Triples : 709.82 per second
+: 13:09:06 INFO  riot            :: File: out/owl/.imf-systemelements.owl.wottr.ttl
+: 13:09:06 ERROR riot            :: [line: 116, col: 3 ] Triples not terminated by DOT
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-systemelements.owl.wottr.ttl : 102 Triples : 1 errors : 0 warnings
+: 13:09:06 INFO  riot            :: File: out/owl/imf-systemelements.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-systemelements.owl.ttl :  (No Output)
+: Total           : 0.23 sec : 102 Triples : 447.37 per second : 1 errors : 0 warnings
 
-#+CALL: sh_jena_shacl_std_validate(data="owl/.imf-metamodel.owl.wottr.ttl")
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/.imf-systemelements.owl.wottr.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -1333,7 +1684,7 @@ imf:InterfacePoint a owl:Class ;
 
 **** Expand OTTR instances
 
-#+CALL: lutra-expand(in="owl/.imf-metamodel.owl.wottr.ttl", out="owl/imf-metamodel.owl.ttl")
+#+CALL: lutra-expand(in="out/owl/.imf-systemelements.owl.wottr.ttl", out="out/owl/imf-systemelements.owl.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -1413,19 +1764,19 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 # [WARNING] Failed fetching template: http://ns.ottr.xyz/0.4/NullableTriple
 
 # >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#isConnectedTo :  ...
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/owl/.imf-metamodel.owl.wottr.ttl.temp with parser turtle
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/owl/.imf-systemelements.owl.wottr.ttl.temp with parser turtle
 rapper: Serializing with serializer turtle
 rapper: Parsing returned 159 triples
 #+end_example
 
 **** RDF validate final file
 
-#+CALL: sh_jena_validate_rdf(files="owl/imf-metamodel.owl.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-systemelements.owl.ttl")
 
 #+RESULTS:
-: file:///home/martige/repo/imf-lab/imf-ontology/owl/imf-metamodel.owl.ttl : 0.19 sec : 144 Triples : 742.27 per second
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-systemelements.owl.ttl : 0.20 sec : 109 Triples : 556.12 per second
 
-#+CALL: sh_jena_shacl_std_validate(data="owl/imf-metamodel.owl.ttl")
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-systemelements.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -1443,23 +1794,23 @@ rapper: Parsing returned 159 triples
 ** IMF Aspects Sub-Ontology
 *** Overview
 
-#+CALL: rdfvizler(rules="rdfvizler/ontology-overview.rule", data="owl/imf-aspects.owl.ttl", output="owl/imf-aspects-overview.svg")
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-aspects.owl.ttl", output="out/owl/imf-aspects-overview.svg")
 
 #+RESULTS:
 
-[[./owl/imf-aspects-overview.svg]]
+[[./out/owl/imf-aspects-overview.svg]]
 
 *** Processing and QA                                                    :QA:
 **** RDF validate tangled file
 
-#+CALL: sh_jena_validate_rdf(files="owl/.imf-aspects.owl.wottr.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/owl/.imf-aspects.owl.wottr.ttl")
 
 #+RESULTS:
 : .imf-aspects.owl.wottr.ttl : 0.27 sec : 105 Triples : 394.74 per second
 
 **** Expand OTTR instances
 
-#+CALL: lutra-expand(in="owl/.imf-aspects.owl.wottr.ttl", out="owl/imf-aspects.owl.ttl")
+#+CALL: lutra-expand(in="out/owl/.imf-aspects.owl.wottr.ttl", out="out/owl/imf-aspects.owl.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -1512,12 +1863,12 @@ rapper: Parsing returned 101 triples
 
 **** RDF validate final file
 
-#+CALL: sh_jena_validate_rdf(files="owl/imf-aspects.owl.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-aspects.owl.ttl")
 
 #+RESULTS:
 : imf-aspects.owl.ttl : 0.26 sec : 89 Triples : 349.02 per second
 
-#+CALL: sh_jena_shacl_std_validate(data="owl/imf-aspects.owl.ttl")
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-aspects.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -1535,13 +1886,13 @@ rapper: Parsing returned 101 triples
 **** Header
 
 #+NAME: owl-aspect-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle owl/.imf-aspects.owl.wottr.ttl :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-aspects.owl.wottr.ttl :mkdirp yes
 <<prefixes>>
 
 <http://ns.imfid.org/imf-aspects> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-aspects> ;
-    owl:imports <http://ns.imfid.org/ontology/20220701/imf-top> ;
-    skos:prefLabel "Information Modelling Framework Ontology: Aspects Ontology " ;
+    owl:versionIRI <http://ns.imfid.org/20221118/imf-aspects> ;
+    owl:imports <http://ns.imfid.org/20221118/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Aspects " ;
     skos:altLabel "IMF aspects ontology" ;
     skos:scopeNote """
 
@@ -1551,9 +1902,11 @@ rapper: Parsing returned 101 triples
     .
 
 <<owl-aspects-aspect>>
+<<owl-aspects-fulfilledBy>>
 <<py_aspect_ottr_instances_aspects()>>
-<<owl-aspects-interaspectrelation>>
-<<py_ottr_instances(template="o-imf:InterAspectRelation", table=tbl-interaspectrelations)>>
+
+imf:LocationTerminal        rdfs:subClassOf owl:Nothing .
+imf:LocationInterfacePoint  rdfs:subClassOf owl:Nothing .
 #+END_SRC
 
 #+RESULTS: owl-aspect-ontology
@@ -1575,8 +1928,8 @@ rapper: Parsing returned 101 triples
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 
 <http://ns.imfid.org/imf-aspects> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/ontology/20220701/imf-aspects> ;
-    owl:imports <http://ns.imfid.org/ontology/20220701/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/20221118/imf-aspects> ;
+    owl:imports <http://ns.imfid.org/20221118/imf-top> ;
     skos:prefLabel "Information Modelling Framework Ontology: Aspects Ontology " ;
     skos:altLabel "IMF aspects ontology" ;
     skos:scopeNote """
@@ -1591,7 +1944,7 @@ imf:Aspect a owl:Class ;
   skos:scopeNote """
 
     Each aspect is associated with a class of the aspect objects that
-    have that aspect, e.g,. imf:FunctionAspectObject is the class of
+    have that aspect, e.g,. imf:FunctionAspectElement is the class of
     aspect objects with the aspect imf:FunctionAspect. These classes
     are used to specify permissible relationships between aspect
     objects according to their aspect.""" ;
@@ -1609,18 +1962,18 @@ imf:Aspect a owl:Class ;
 [] ottr:of o-owl-ax:DifferentIndividuals ;
    ottr:values( ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:ActivityAspect ) ) . 
 
-[] ottr:of o-imf:AspectObjectClass ;
-   ottr:values( imf:FunctionAspectObject imf:FunctionAspect ) . 
-[] ottr:of o-imf:AspectObjectClass ;
-   ottr:values( imf:LocationAspectObject imf:LocationAspect ) . 
-[] ottr:of o-imf:AspectObjectClass ;
-   ottr:values( imf:ProductAspectObject imf:ProductAspect ) . 
-[] ottr:of o-imf:AspectObjectClass ;
-   ottr:values( imf:ActivityAspectObject imf:ActivityAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:FunctionAspectElement imf:FunctionAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:LocationAspectElement imf:LocationAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:ProductAspectElement imf:ProductAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:ActivityAspectElement imf:ActivityAspect ) . 
 
 imf:interAspectRelation a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
     rdfs:subPropertyOf skos:related ;
     # owl:propertyDisjointWith imf:intraAspectRelation ; ## An error occurred during reasoning: Non-simple property or its inverse appears in disjoint properties axiom.
 
@@ -1629,30 +1982,18 @@ imf:interAspectRelation a owl:ObjectProperty ;
       [2022-01-24 Mon] Do interAspectRelations always relate aspect
       objects of the same type?""" .
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:hasLocation ottr:none imf:LocationAspectObject ) . 
+   ottr:values( imf:hasLocation ottr:none imf:LocationAspectElement ) . 
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:isFulfilledBy imf:FunctionAspectObject imf:ProductAspectObject ) . 
+   ottr:values( imf:isFulfilledBy imf:FunctionAspectElement imf:ProductAspectElement ) . 
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:hasActivity imf:FunctionAspectObject imf:ActivityAspectObject ) . 
+   ottr:values( imf:hasActivity imf:FunctionAspectElement imf:ActivityAspectElement ) . 
 #+end_example
 
 **** ~Aspect~
 
-Aspect is defined in IMF Top, but is further described here.
-
 #+NAME: owl-aspects-aspect
 #+BEGIN_SRC ttl
-imf:Aspect a owl:Class ;
-
-  skos:scopeNote """
-
-    Each aspect is associated with a class of the aspect objects that
-    have that aspect, e.g,. imf:FunctionAspectObject is the class of
-    aspect objects with the aspect imf:FunctionAspect. These classes
-    are used to specify permissible relationships between aspect
-    objects according to their aspect.""" ;
-  .
-
+imf:Aspect a owl:Class .
 #+END_SRC
 
 ***** CANCELLED Primary Aspect                                     :noexport:
@@ -1701,7 +2042,6 @@ imf:SecondaryAspect rdf:type owl:Class ;
 
   owl:disjointWith imf:PrimaryAspect .
 #+END_SRC
-
 **** Aspects
 
 This is the current list of aspects:
@@ -1714,7 +2054,7 @@ This is the current list of aspects:
 | imf:ProductAspect   | '-'            | '#00FFFF'     |
 | imf:InstalledAspect | '::'           | '#FFFFFF'     |
 
-#+BEGIN_SRC ttl :noweb strip-export :tangle ottr/imf/aspects.stottr :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf/aspects.stottr :mkdirp yes
 <<prefixes>>
 
 o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?symbol, xsd:string ?color] :: {
@@ -1723,11 +2063,18 @@ o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?symbol, xsd:string ?color
   ottr:Triple(?aspect, imf:color, ?color)
 } .
 
-o-imf:AspectObjectClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
-  o-owl-ax:SubClassOf(?class, imf:AspectObject),  
-  o-owl-ax:EquivObjectHasValue(?class, imf:hasAspect, ?aspect),  
-  o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class)
+o-imf:AspectElementClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
+  o-owl-ax:SubClassOf(?class, imf:AspectElement),  
+  o-owl-ax:EquivObjectHasValue(?class, imf:hasAspect, ?aspect)
+  # o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class)
 } .
+
+o-imf:SystemElementAspectClass [owl:Class ?class, owl:Class ?aspectClass, owl:Class ?systemElementClass] :: {
+  o-owl-ax:SubClassOf(?class, ?aspectClass),  
+  o-owl-ax:SubClassOf(?class, ?systemElementClass)
+} .
+
+
 #+END_SRC
 
 #+NAME: py_aspect_ottr_instances_aspects
@@ -1743,6 +2090,7 @@ for row in table[0:]:
 output += "\n"
 
 all_aspects = list(zip(*table[0:]))[0]
+all_systemelements = [ 'Block', 'Terminal', 'InterfacePoint' ]
 
 ## aspects are different
 output += instance.format("o-owl-ax:DifferentIndividuals", "( " + " ".join(all_aspects) + " )")
@@ -1751,7 +2099,15 @@ output += "\n"
 
 ## aspect object classes
 for cell in all_aspects:
-  output += instance.format("o-imf:AspectObjectClass", cell + "Object " + cell)
+  output += instance.format("o-imf:AspectElementClass", cell + "Element " + cell)
+
+output += "\n"
+
+## aspect object classes
+for aspect in all_aspects:
+  for element in all_systemelements:
+    output += instance.format("o-imf:SystemElementAspectClass", aspect.replace('Aspect', '') + element + " " + aspect  + "Element imf:" + element)
+
 
 return output
 #+END_SRC
@@ -1765,48 +2121,48 @@ return output
 [] ottr:of o-imf:Aspect ;
    ottr:values( imf:ProductAspect '-' '#00FFFF' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:ActivityAspect '>' '#000000' ) . 
+   ottr:values( imf:InstalledAspect '::' '#FFFFFF' ) . 
 
 [] ottr:of o-owl-ax:DifferentIndividuals ;
-   ottr:values( ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:ActivityAspect ) ) . 
+   ottr:values( ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:InstalledAspect ) ) . 
 
-[] ottr:of o-imf:AspectObjectClass ;
-   ottr:values( imf:FunctionAspectObject imf:FunctionAspect ) . 
-[] ottr:of o-imf:AspectObjectClass ;
-   ottr:values( imf:LocationAspectObject imf:LocationAspect ) . 
-[] ottr:of o-imf:AspectObjectClass ;
-   ottr:values( imf:ProductAspectObject imf:ProductAspect ) . 
-[] ottr:of o-imf:AspectObjectClass ;
-   ottr:values( imf:ActivityAspectObject imf:ActivityAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:FunctionAspectElement imf:FunctionAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:LocationAspectElement imf:LocationAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:ProductAspectElement imf:ProductAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:InstalledAspectElement imf:InstalledAspect ) . 
+
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:FunctionBlock imf:FunctionAspectElement imf:Block ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:FunctionTerminal imf:FunctionAspectElement imf:Terminal ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:FunctionInterfacePoint imf:FunctionAspectElement imf:InterfacePoint ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:LocationBlock imf:LocationAspectElement imf:Block ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:LocationTerminal imf:LocationAspectElement imf:Terminal ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:LocationInterfacePoint imf:LocationAspectElement imf:InterfacePoint ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:ProductBlock imf:ProductAspectElement imf:Block ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:ProductTerminal imf:ProductAspectElement imf:Terminal ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:ProductInterfacePoint imf:ProductAspectElement imf:InterfacePoint ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:InstalledBlock imf:InstalledAspectElement imf:Block ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:InstalledTerminal imf:InstalledAspectElement imf:Terminal ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:InstalledInterfacePoint imf:InstalledAspectElement imf:InterfacePoint ) . 
 #+END_src
 
-**** Inter-aspect relationships
 
-#+NAME: owl-aspects-interaspectrelation
-#+BEGIN_SRC ttl
-imf:interAspectRelation a owl:ObjectProperty ;
-    rdfs:domain imf:AspectObject ;
-    rdfs:range imf:AspectObject ;
-    rdfs:subPropertyOf skos:related ;
-    skos:definition """
-
-      Relates aspects objects of different aspects.
-
-    """
-    # owl:propertyDisjointWith imf:intraAspectRelation ; ## An error occurred during reasoning: Non-simple property or its inverse appears in disjoint properties axiom.
-
-    .
-#+END_SRC
-
-The following inter-aspect relationships are defined:
-
-#+NAME: tbl-interaspectrelations
- | Relation              | Domain | Range                    |
- |-----------------------+--------+--------------------------|
- | imf:hasLocationAspect |        | imf:LocationAspectObject |
- | imf:hasFunctionAspect |        | imf:FunctionAspectObject |
-
-#+BEGIN_SRC ttl :noweb strip-export :tangle ottr/imf/interaspectrelations.stottr :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf/interaspectrelations.stottr :mkdirp yes
 <<prefixes>>
 
 o-imf:InterAspectRelation[owl:ObjectProperty ?relation, owl:Class ?domain, owl:Class ?range] :: {
@@ -1817,6 +2173,35 @@ o-imf:InterAspectRelation[owl:ObjectProperty ?relation, owl:Class ?domain, owl:C
 } .
 #+END_SRC
 
+
+**** ~fulfilledBy~
+
+#+NAME: owl-aspects-fulfilledBy
+#+BEGIN_SRC ttl
+imf:fulfilledBy a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:InterAspectRelation ;
+  owl:inverseOf imf:fulfills ;
+  rdfs:domain imf:AspectElement ;
+  rdfs:range imf:AspectElement ;
+.
+#+END_SRC
+
+
+** Altogehter 
+
+#+CALL: sh_jena_merge(files="out/owl/imf.owl.ttl out/owl/imf-aspects.owl.ttl out/owl/imf-systemelements.owl.ttl out/owl/imf-top.owl.ttl", out="out/owl/imf-all.owl.ttl")
+
+#+RESULTS:
+: 15:08:33 INFO  riot            :: File: out/owl/imf.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.18 sec : 8 Triples : 44.44 per second
+: 15:08:33 INFO  riot            :: File: out/owl/imf-aspects.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-aspects.owl.ttl : 0.03 sec : 116 Triples : 4,640.00 per second
+: 15:08:33 INFO  riot            :: File: out/owl/imf-systemelements.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-systemelements.owl.ttl : 0.01 sec : 113 Triples : 8,071.43 per second
+: 15:08:33 INFO  riot            :: File: out/owl/imf-top.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-top.owl.ttl : 0.01 sec : 69 Triples : 6,900.00 per second
+: Total           : 0.23 sec : 306 Triples : 1,336.24 per second
+
 * TODO IMF Grammar: SHACL                                          :noexport:
 
 The IMF grammar is defined by SHACL shapes.
@@ -1824,63 +2209,129 @@ The IMF grammar is defined by SHACL shapes.
 These SHACL shape constaints are defined using the OTTR templates for
 SHACL.
 
-** AspectObject
+** Grammar rules                                                   :noexport:
+
+ - A System Element is either Block, a Terminal or an Interface Point.
+ - An Aspect Element has exactly one Aspect.
+ - In this version of IMF, there are four Aspects: Function, Product, Location and Installed.
+
+ - partOf, hasTerminal and connectedTo are intra-aspect relations and may only relate aspect elements of the same aspect.
+ - fulfilledBy is an inter-aspect relations and may only relate aspect elements of different aspect.
+
+ - partOf is a relation between Blocks. A block may have many children and maximum one parent.
+ - hasTerminal is a relation between Blocks and Terminals. A Block may have many Terminals. A Terminal must belong to exactly one Block.
+ - connectedTo is a relation between Output Terminals and Input Terminals and Interface Points. A connectionTo relationship relates one Output Terminal with one Input Terminal and optionally one Interface Point. A Terminal is connected to at most one (other) Terminal.
+ - fulfilledBy is a relation between Blocks or between Terminals. The inverse relation of fulfilledBy is fulfills. The following additional rules hold for fulfilledBy:
+   - A function element is fulfilledBy at most one product element. A product element may fulfill many function elements.
+   - A location element is fulfilledBy at most one product element. A location element may fulfill many product elements.
+   - A product element can be fulfilledBy by many installed elements. An installed elements can fulfill by at most one product element.
+   - No other fulfilledBy relationships then the above mentioned are allowed.
+
+
+** Top
 
 Node shapes:
 
 #+NAME: tbl-aspectobject-shacl-nodes
-| nodeshape             | targetClass      | closed | ignoredProperties |
-|-----------------------+------------------+--------+-------------------|
-| imf:AspectObjectShape | imf:AspectObject |        |                   |
+| nodeshape              | targetClass       | closed | ignoredProperties |
+|------------------------+-------------------+--------+-------------------|
+| imf:AspectElementShape | imf:AspectElement |        |                   |
 
 Path shapes:
 
 #+NAME: tbl-aspectobject-shacl-properties
-| nodeshape             | path           | message | severity   | mincount | maxcount | class                 | datatype   | in-values |
-|-----------------------+----------------+---------+------------+----------+----------+-----------------------+------------+-----------|
-| imf:AspectObjectShape | skos:prefLabel |         | sh:Warning |        1 |        1 |                       | xsd:string |           |
-| imf:AspectObjectShape | imf:hasParent  |         |            |          |        1 | imf:AspectObject      |            |           |
-| imf:AspectObjectShape | imf:hasPart    |         |            |          |          | imf:AspectObject      |            |           |
-| imf:AspectObjectShape | imf:hasAspect  |         |            |        1 |        1 | imf:Aspect            |            |           |
-| imf:AspectObjectShape | imf:isAspectOf |         |            |          |        1 | imf:MultiAspectObject |            |           |
+| nodeshape              | path           | message | severity   | mincount | maxcount | class      | datatype   | in-values |
+|------------------------+----------------+---------+------------+----------+----------+------------+------------+-----------|
+| imf:AspectElementShape | skos:prefLabel |         | sh:Warning |        1 |        1 |            | xsd:string |           |
+| imf:AspectElementShape | imf:hasAspect  |         |            |        1 |        1 | imf:Aspect |            |           |
 
-** Metamodel
+** SystemElements
 
 Node shapes:
 
-#+NAME: tbl-metamodel-shacl-nodes
+#+NAME: tbl-systemelements-shacl-nodes
 | nodeshape               | targetClass        | closed | ignoredProperties |
 |-------------------------+--------------------+--------+-------------------|
-| imf:SystemBlockShape    | imf:SystemBlock    |        |                   |
+| imf:BlockShape          | imf:Block          |        |                   |
+| imf:TerminalShape       | imf:Terminal       |        |                   |
 | imf:InputTerminalShape  | imf:InputTerminal  |        |                   |
 | imf:OutputTerminalShape | imf:OutputTerminal |        |                   |
 | imf:InterfacePointShape | imf:InterfacePoint |        |                   |
 
 Path shapes:
 
-#+NAME: tbl-metamodel-shacl-properties
-| nodeshape               | path                  | message | severity | mincount | maxcount | class              | datatype | in-values |
-|-------------------------+-----------------------+---------+----------+----------+----------+--------------------+----------+-----------|
-| imf:SystemBlockShape    | imf:isPartOf          |         |          |          |        1 | imf:SystemBlock    |          |           |
-| imf:SystemBlockShape    | imf:hasPart           |         |          |          |          | imf:SystemBlock    |          |           |
-| imf:InputTerminalShape  | imf:isPartOf          |         |          |          |        1 | imf:InputTerminal  |          |           |
-| imf:InputTerminalShape  | imf:hasPart           |         |          |          |          | imf:InputTerminal  |          |           |
-| imf:InputTerminalShape  | imf:directlyPrecedes  |         |          |          |          | imf:OutputTerminal |          |           |
-| imf:OutputTerminalShape | imf:isPartOf          |         |          |          |        1 | imf:OutputTerminal |          |           |
-| imf:OutputTerminalShape | imf:hasPart           |         |          |          |          | imf:OutputTerminal |          |           |
-| imf:OutputTerminalShape | imf:isConnectedTo     |         |          |          |        1 | imf:InputTerminal  |          |           |
-| imf:InterfacePointShape | imf:hasInputTerminal  |         |          |        1 |        1 | imf:InputTerminal  |          |           |
-| imf:InterfacePointShape | imf:hasOutputTerminal |         |          |        1 |        1 | imf:OutputTerminal |          |           |
+#+NAME: tbl-systemelements-shacl-properties
+| nodeshape               | path              | message | severity | mincount | maxcount | class              | datatype | in-values |
+|-------------------------+-------------------+---------+----------+----------+----------+--------------------+----------+-----------|
+| imf:BlockShape          | imf:isPartOf      |         |          |          |        1 | imf:Block          |          |           |
+| imf:BlockShape          | imf:hasPart       |         |          |          |          | imf:Block          |          |           |
+| imf:BlockShape          | imf:hasTerminal   |         |          |          |          | imf:Terminal       |          |           |
+| imf:BlockShape          | imf:fulfilledBy   |         |          |          |          | imf:Block          |          |           |
+| imf:TerminalShape       | imf:fulfilledBy   |         |          |          |          | imf:Terminal       |          |           |
+| imf:InterfacePointShape | imf:fulfilledBy   |         |          |          |        0 |                    |          |           |
+| imf:OutputTerminalShape | imf:isConnectedTo |         |          |          |        1 | imf:InputTerminal  |          |           |
+| imf:InterfacePointShape | imf:theInput      |         |          |          |        1 | imf:InputTerminal  |          |           |
+| imf:InterfacePointShape | imf:theOutput     |         |          |          |        1 | imf:OutputTerminal |          |           |
+
+#+NAME: systemelements-extra-shacl
+#+BEGIN_SRC ttl
+imf:TerminalShape 
+  sh:property [
+    sh:path [ sh:inversePath imf:hasTerminal ] ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:class imf:Block ] 
+  .
+
+imf:InputTerminalShape 
+  sh:property [
+    sh:path [ sh:inversePath imf:isConnectedTo ] ;
+    sh:maxCount 1 ;
+    sh:class imf:OutputTerminal ] 
+  .
+
+#+END_SRC
+
+** Aspects
+
+Node shapes:
+
+#+NAME: tbl-aspects-shacl-nodes
+| nodeshape                       | targetClass                | closed | ignoredProperties |
+|---------------------------------+----------------------------+--------+-------------------|
+| imf:FunctionAspectElementShape  | imf:FunctionAspectElement  |        |                   |
+| imf:ProductAspectElementShape   | imf:ProductAspectElement   |        |                   |
+| imf:LocationAspectElementShape  | imf:LocationAspectElement  |        |                   |
+| imf:InstalledAspectElementShape | imf:InstalledAspectElement |        |                   |
+
+Path shapes:
+
+#+NAME: tbl-aspects-shacl-properties
+| nodeshape                       | path                    | message | severity | mincount | maxcount | class                      | datatype | in-values |
+|---------------------------------+-------------------------+---------+----------+----------+----------+----------------------------+----------+-----------|
+| imf:FunctionAspectElementShape  | imf:intraAspectRelation |         |          |          |          | imf:FunctionAspectElement  |          |           |
+| imf:ProductAspectElementShape   | imf:intraAspectRelation |         |          |          |          | imf:ProductAspectElement   |          |           |
+| imf:LocationAspectElementShape  | imf:intraAspectRelation |         |          |          |          | imf:LocationAspectElement  |          |           |
+| imf:InstalledAspectElementShape | imf:intraAspectRelation |         |          |          |          | imf:InstalledAspectElement |          |           |
+| imf:FunctionAspectElementShape  | imf:fulfilledBy         |         |          |          |        1 | imf:ProductAspectElement   |          |           |
+| imf:LocationAspectElementShape  | imf:fulfilledBy         |         |          |          |        1 | imf:ProductAspectElement   |          |           |
+| imf:ProductAspectElementShape   | imf:fulfilledBy         |         |          |          |          | imf:InstalledAspectElement |          |           |
+| imf:InstalledAspectElementShape | imf:fulfilledBy         |         |          |          |        0 |                            |          |           |
+| imf:InstalledAspectElementShape | imf:fulfills            |         |          |          |        1 | imf:ProductAspectElement   |          |           |
+
 
 ** Compiling to one document                                             :QA:
 
-#+BEGIN_SRC ttl :noweb yes :tangle shacl/.imf.shacl.wottr.ttl :mkdirp yes
+#+BEGIN_SRC ttl :noweb yes :tangle out/shacl/.imf.shacl.wottr.ttl :mkdirp yes
 <<prefixes>>
 
 <<py_ottr_instances(template="o-imf:ShaclNodeShape", table=tbl-aspectobject-shacl-nodes)>>
 <<py_ottr_instances(template="o-imf:ShaclPropertyShape", table=tbl-aspectobject-shacl-properties)>>
-<<py_ottr_instances(template="o-imf:ShaclNodeShape", table=tbl-metamodel-shacl-nodes)>>
-<<py_ottr_instances(template="o-imf:ShaclPropertyShape", table=tbl-metamodel-shacl-properties)>>
+<<py_ottr_instances(template="o-imf:ShaclNodeShape", table=tbl-systemelements-shacl-nodes)>>
+<<py_ottr_instances(template="o-imf:ShaclPropertyShape", table=tbl-systemelements-shacl-properties)>>
+<<systemelements-extra-shacl>>
+<<py_ottr_instances(template="o-imf:ShaclNodeShape", table=tbl-aspects-shacl-nodes)>>
+<<py_ottr_instances(template="o-imf:ShaclPropertyShape", table=tbl-aspects-shacl-properties)>>
 #+END_SRC
 
 #+RESULTS:
@@ -1905,51 +2356,78 @@ Path shapes:
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 
 [] ottr:of o-imf:ShaclNodeShape ;
-   ottr:values ( imf:AspectObjectShape imf:AspectObject ottr:none ottr:none ) . 
+   ottr:values ( imf:AspectElementShape imf:AspectElement ottr:none ottr:none ) . 
 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:AspectObjectShape skos:prefLabel ottr:none sh:Warning 1 1 ottr:none xsd:string ottr:none ) . 
+   ottr:values ( imf:AspectElementShape skos:prefLabel ottr:none sh:Warning 1 1 ottr:none xsd:string ottr:none ) . 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:AspectObjectShape imf:hasParent ottr:none ottr:none ottr:none 1 imf:AspectObject ottr:none ottr:none ) . 
-[] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:AspectObjectShape imf:hasPart ottr:none ottr:none ottr:none ottr:none imf:AspectObject ottr:none ottr:none ) . 
-[] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:AspectObjectShape imf:hasAspect ottr:none ottr:none 1 1 imf:Aspect ottr:none ottr:none ) . 
-[] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:AspectObjectShape imf:isAspectOf ottr:none ottr:none ottr:none 1 imf:MultiAspectObject ottr:none ottr:none ) . 
+   ottr:values ( imf:AspectElementShape imf:hasAspect ottr:none ottr:none 1 1 imf:Aspect ottr:none ottr:none ) . 
 
 [] ottr:of o-imf:ShaclNodeShape ;
-   ottr:values ( imf:SystemBlockShape imf:SystemBlock ottr:none ottr:none ) . 
+   ottr:values ( imf:BlockShape imf:Block ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclNodeShape ;
-   ottr:values ( imf:InputTerminalShape imf:InputTerminal ottr:none ottr:none ) . 
+   ottr:values ( imf:TerminalShape imf:Terminal ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclNodeShape ;
    ottr:values ( imf:OutputTerminalShape imf:OutputTerminal ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclNodeShape ;
    ottr:values ( imf:InterfacePointShape imf:InterfacePoint ottr:none ottr:none ) . 
 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:SystemBlockShape imf:isPartOf ottr:none ottr:none ottr:none 1 imf:SystemBlock ottr:none ottr:none ) . 
+   ottr:values ( imf:BlockShape imf:isPartOf ottr:none ottr:none ottr:none 1 imf:Block ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:SystemBlockShape imf:hasPart ottr:none ottr:none ottr:none ottr:none imf:SystemBlock ottr:none ottr:none ) . 
+   ottr:values ( imf:BlockShape imf:hasPart ottr:none ottr:none ottr:none ottr:none imf:Block ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:InputTerminalShape imf:isPartOf ottr:none ottr:none ottr:none 1 imf:InputTerminal ottr:none ottr:none ) . 
+   ottr:values ( imf:BlockShape imf:hasTerminal ottr:none ottr:none ottr:none ottr:none imf:Terminal ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:InputTerminalShape imf:hasPart ottr:none ottr:none ottr:none ottr:none imf:InputTerminal ottr:none ottr:none ) . 
+   ottr:values ( imf:BlockShape imf:fulfilledBy ottr:none ottr:none ottr:none ottr:none imf:Block ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:InputTerminalShape imf:directlyPrecedes ottr:none ottr:none ottr:none ottr:none imf:OutputTerminal ottr:none ottr:none ) . 
+   ottr:values ( imf:TerminalShape imf:fulfilledBy ottr:none ottr:none ottr:none ottr:none imf:Terminal ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:OutputTerminalShape imf:isPartOf ottr:none ottr:none ottr:none 1 imf:OutputTerminal ottr:none ottr:none ) . 
-[] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:OutputTerminalShape imf:hasPart ottr:none ottr:none ottr:none ottr:none imf:OutputTerminal ottr:none ottr:none ) . 
+   ottr:values ( imf:InterfacePointShape imf:fulfilledBy ottr:none ottr:none ottr:none 0 ottr:none ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclPropertyShape ;
    ottr:values ( imf:OutputTerminalShape imf:isConnectedTo ottr:none ottr:none ottr:none 1 imf:InputTerminal ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:InterfacePointShape imf:hasInputTerminal ottr:none ottr:none 1 1 imf:InputTerminal ottr:none ottr:none ) . 
+   ottr:values ( imf:InterfacePointShape imf:theInput ottr:none ottr:none ottr:none 1 imf:InputTerminal ottr:none ottr:none ) . 
 [] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( imf:InterfacePointShape imf:hasOutputTerminal ottr:none ottr:none 1 1 imf:OutputTerminal ottr:none ottr:none ) . 
+   ottr:values ( imf:InterfacePointShape imf:theOutput ottr:none ottr:none ottr:none 1 imf:OutputTerminal ottr:none ottr:none ) . 
+
+imf:TerminalShape 
+  sh:property [
+    sh:path [ sh:inversePath ex:parent ] ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:class imf:Block ] 
+  .
+[] ottr:of o-imf:ShaclNodeShape ;
+   ottr:values ( imf:FunctionAspectElementShape imf:FunctionAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclNodeShape ;
+   ottr:values ( imf:ProductAspectElementShape imf:ProductAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclNodeShape ;
+   ottr:values ( imf:LocationAspectElementShape imf:LocationAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclNodeShape ;
+   ottr:values ( imf:InstalledAspectElementShape imf:InstalledAspectElement ottr:none ottr:none ) . 
+
+[] ottr:of o-imf:ShaclPropertyShape ;
+   ottr:values ( imf:FunctionAspectElementShape imf:intraAspectRelation ottr:none ottr:none ottr:none ottr:none imf:FunctionAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclPropertyShape ;
+   ottr:values ( imf:ProductAspectElementShape imf:intraAspectRelation ottr:none ottr:none ottr:none ottr:none imf:ProductAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclPropertyShape ;
+   ottr:values ( imf:LocationAspectElementShape imf:intraAspectRelation ottr:none ottr:none ottr:none ottr:none imf:LocationAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclPropertyShape ;
+   ottr:values ( imf:InstalledAspectElementShape imf:intraAspectRelation ottr:none ottr:none ottr:none ottr:none imf:InstalledAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclPropertyShape ;
+   ottr:values ( imf:FunctionAspectElementShape imf:fulfilledBy ottr:none ottr:none ottr:none 1 imf:ProductAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclPropertyShape ;
+   ottr:values ( imf:LocationAspectElementShape imf:fulfilledBy ottr:none ottr:none ottr:none 1 imf:ProductAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclPropertyShape ;
+   ottr:values ( imf:ProductAspectElementShape imf:fulfilledBy ottr:none ottr:none ottr:none ottr:none imf:InstalledAspectElement ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclPropertyShape ;
+   ottr:values ( imf:InstalledAspectElementShape imf:fulfilledBy ottr:none ottr:none ottr:none 0 ottr:none ottr:none ottr:none ) . 
+[] ottr:of o-imf:ShaclPropertyShape ;
+   ottr:values ( imf:InstalledAspectElementShape imf:fulfills ottr:none ottr:none ottr:none 1 imf:ProductAspectElement ottr:none ottr:none ) . 
 #+end_example
 
-#+CALL: lutra-expand(in="shacl/.imf.shacl.wottr.ttl", out="shacl/imf.shacl.ttl")
+#+CALL: lutra-expand(in="out/shacl/.imf.shacl.wottr.ttl", out="out/shacl/imf.shacl.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -1959,8 +2437,6 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 
 # [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
 
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectAllValuesFrom
-
 # [INFO] Fetched template: http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
 
 # [INFO] Fetched template: http://tpl.ottr.xyz/rdf/0.1/Type
@@ -1969,24 +2445,29 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 
 # [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
 
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/restriction/0.1/ObjectAllValuesFrom
-
 # [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/EquivalentClass
 
 # [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubPropertyOf
 
 # [INFO] Fetched template: http://tpl.ottr.xyz/owl/restriction/0.1/ObjectHasValue
 
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/restriction/0.1/AllValuesFrom
-
 # [INFO] Fetched template: http://tpl.ottr.xyz/owl/restriction/0.1/HasValue
 
 # [INFO] Fetched template: http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
 
 # [WARNING] Unused parameter in template http://ns.imfid.org/templates/Type. The template has a parameter ?class : ottr:IRI (arg no. 2) which does not occur in the pattern of the template.
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/shacl/.imf.shacl.wottr.ttl.temp with parser turtle
+
+# [WARNING] Fetch missing template: http://ns.ottr.xyz/0.4/NullableTriple
+# [WARNING] 
+# [WARNING] Empty file: http://ns.ottr.xyz/0.4/NullableTriple
+
+# >>> at [1: 1] (xyz.ottr.lutra.io.TemplateReader) xyz.ottr.lutra.stottr.parser.STemplateParser@5a3a1bf9
+# [WARNING] Failed fetching template: http://ns.ottr.xyz/0.4/NullableTriple
+
+# >>> at [1: 1] (xyz.ottr.lutra.model.Instance) ottr:NullableTriple(http://ns.imfid.org/imf#TerminalShape :  ...
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/shacl/.imf.shacl.wottr.ttl.temp with parser turtle
 rapper: Serializing with serializer turtle
-rapper: Parsing returned 70 triples
+rapper: Parsing returned 103 triples
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix imf: <http://ns.imfid.org/imf#> .
 @prefix pav: <http://purl.org/pav/> .
@@ -2005,24 +2486,13 @@ rapper: Parsing returned 70 triples
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
-imf:AspectObjectShape
+imf:AspectElementShape
     a sh:NodeShape ;
     sh:property [
-        sh:class imf:AspectObject ;
-        sh:maxCount 1 ;
-        sh:path imf:hasParent
-    ], [
         sh:class imf:Aspect ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
         sh:path imf:hasAspect
-    ], [
-        sh:class imf:MultiAspectObject ;
-        sh:maxCount 1 ;
-        sh:path imf:isAspectOf
-    ], [
-        sh:class imf:AspectObject ;
-        sh:path imf:hasPart
     ], [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
@@ -2030,69 +2500,130 @@ imf:AspectObjectShape
         sh:path skos:prefLabel ;
         sh:severity sh:Warning
     ] ;
-    sh:targetClass imf:AspectObject .
+    sh:targetClass imf:AspectElement .
+
+imf:BlockShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:class imf:Block ;
+        sh:path imf:fulfilledBy
+    ], [
+        sh:class imf:Block ;
+        sh:maxCount 1 ;
+        sh:path imf:isPartOf
+    ], [
+        sh:class imf:Block ;
+        sh:path imf:hasPart
+    ], [
+        sh:class imf:Terminal ;
+        sh:path imf:hasTerminal
+    ] ;
+    sh:targetClass imf:Block .
+
+imf:FunctionAspectElementShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:class imf:ProductAspectElement ;
+        sh:maxCount 1 ;
+        sh:path imf:fulfilledBy
+    ], [
+        sh:class imf:FunctionAspectElement ;
+        sh:path imf:intraAspectRelation
+    ] ;
+    sh:targetClass imf:FunctionAspectElement .
 
 imf:InputTerminalShape
     a sh:NodeShape ;
     sh:property [
-        sh:class imf:InputTerminal ;
-        sh:maxCount 1 ;
-        sh:path imf:isPartOf
-    ], [
-        sh:class imf:InputTerminal ;
-        sh:path imf:hasPart
-    ], [
         sh:class imf:OutputTerminal ;
-        sh:path imf:directlyPrecedes
+        sh:maxCount 1 ;
+        sh:path [
+            sh:inversePath imf:isConnectedTo
+        ]
     ] ;
     sh:targetClass imf:InputTerminal .
+
+imf:InstalledAspectElementShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:class imf:InstalledAspectElement ;
+        sh:path imf:intraAspectRelation
+    ], [
+        sh:class imf:ProductAspectElement ;
+        sh:maxCount 1 ;
+        sh:path imf:fulfills
+    ], [
+        sh:maxCount 0 ;
+        sh:path imf:fulfilledBy
+    ] ;
+    sh:targetClass imf:InstalledAspectElement .
 
 imf:InterfacePointShape
     a sh:NodeShape ;
     sh:property [
-        sh:class imf:OutputTerminal ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path imf:hasOutputTerminal
-    ], [
         sh:class imf:InputTerminal ;
         sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path imf:hasInputTerminal
+        sh:path imf:theInput
+    ], [
+        sh:maxCount 0 ;
+        sh:path imf:fulfilledBy
+    ], [
+        sh:class imf:OutputTerminal ;
+        sh:maxCount 1 ;
+        sh:path imf:theOutput
     ] ;
     sh:targetClass imf:InterfacePoint .
+
+imf:LocationAspectElementShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:class imf:ProductAspectElement ;
+        sh:maxCount 1 ;
+        sh:path imf:fulfilledBy
+    ], [
+        sh:class imf:LocationAspectElement ;
+        sh:path imf:intraAspectRelation
+    ] ;
+    sh:targetClass imf:LocationAspectElement .
 
 imf:OutputTerminalShape
     a sh:NodeShape ;
     sh:property [
-        sh:class imf:OutputTerminal ;
-        sh:path imf:hasPart
-    ], [
-        sh:class imf:OutputTerminal ;
-        sh:maxCount 1 ;
-        sh:path imf:isPartOf
-    ], [
         sh:class imf:InputTerminal ;
         sh:maxCount 1 ;
         sh:path imf:isConnectedTo
     ] ;
     sh:targetClass imf:OutputTerminal .
 
-imf:SystemBlockShape
+imf:ProductAspectElementShape
     a sh:NodeShape ;
     sh:property [
-        sh:class imf:SystemBlock ;
-        sh:path imf:hasPart
+        sh:class imf:ProductAspectElement ;
+        sh:path imf:intraAspectRelation
     ], [
-        sh:class imf:SystemBlock ;
-        sh:maxCount 1 ;
-        sh:path imf:isPartOf
+        sh:class imf:InstalledAspectElement ;
+        sh:path imf:fulfilledBy
     ] ;
-    sh:targetClass imf:SystemBlock .
+    sh:targetClass imf:ProductAspectElement .
+
+imf:TerminalShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:class imf:Terminal ;
+        sh:path imf:fulfilledBy
+    ], [
+        sh:class imf:Block ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path [
+            sh:inversePath imf:hasTerminal
+        ]
+    ] ;
+    sh:targetClass imf:Terminal .
 
 #+end_example
 
-* TODO IMF Types
+* TODO IMF Types                                                   :noexport:
 * TODO IMF Data Exchange Format: RDF                               :noexport:
 
 The primary data exchange format for IMF data is RDF as defined by the
@@ -2199,7 +2730,7 @@ IMF Grammar SHACL Shapes.
 
 * TODO IMF Modelling Patterns: OTTR
 ** IMF Type patterns
-#+BEGIN_SRC ttl :noweb strip-export :tangle ottr/type-patterns.stottr
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/type-patterns.stottr
 <<prefixes>>
 
 o-imf:Type[
@@ -2249,7 +2780,7 @@ o-imf:ShaclPropertyValueShape[
 #+END_SRC
 ** IMF Data patterns
 
-#+BEGIN_SRC ttl :noweb strip-export :tangle ottr/data-patterns.stottr
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/data-patterns.stottr
 <<prefixes>>
 
 o-imf:System[
@@ -2304,7 +2835,7 @@ o-imf:Attribute[
 This section defines helpful patterns for expressing SHACL shape
 expressions.
 
-#+BEGIN_SRC ttl :noweb yes :tangle ottr/shacl/shacl.stottr :mkdirp yes
+#+BEGIN_SRC ttl :noweb yes :tangle out/ottr/shacl/shacl.stottr :mkdirp yes
 <<prefixes>>
 
 o-imf:ShaclNodeShape[ 
@@ -2356,7 +2887,7 @@ o-imf:ShaclPropertyShape[
 
 This is the result of representing the above tables as OTTR instances.
 
-#+BEGIN_SRC ttl :noweb yes :tangle temp/example-shacl-shapes.wottr.ttl
+#+BEGIN_SRC ttl :noweb yes :tangle out/temp/example-shacl-shapes.wottr.ttl :mkdirp yes
 @prefix ex:	<http://example.com#> .
 <<prefixes>>
 
@@ -2393,7 +2924,7 @@ This is the result of representing the above tables as OTTR instances.
    ottr:values ( ex:node1 ex:p1 'Error: bla' sh:Warning 1 3 ex:MyClass2 ottr:none ( ex:c1 ex:c2 ) ) . 
 #+end_example
 
-#+CALL: lutra-expand(in="temp/example-shacl-shapes.wottr.ttl", out="temp/example-shacl-shapes.ttl")
+#+CALL: lutra-expand(in="out/temp/example-shacl-shapes.wottr.ttl", out="out/temp/example-shacl-shapes.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -2436,6 +2967,21 @@ rapper: Parsing returned 20 triples
 
 
 * TODO Translation to ISO 15926-14                                 :noexport:
+
+Da blir det vel i henhold til dette pattern: https://rds.posccaesar.org/doc/patterns/pattern_physical_quantity_quantification/
+
+physical quantity:  pressure:  http://rds.posccaesar.org/ontology/plm/rdl/PCA_100003596
+
+uom: barg: http://rds.posccaesar.org/ontology/plm/rdl/PCA_100003649
+
+"Quantity datum(http://rds.posccaesar.org/ontology/lis14/rdl/QuantityDatum)" klasser;
+
+Calculated : http://rds.posccaesar.org/ontology/plm/rdl/PCA_100004038
+Operating  : http://rds.posccaesar.org/ontology/plm/rdl/PCA_100004043
+Maximum    : http://rds.posccaesar.org/ontology/plm/rdl/PCA_100004048
+Absolute   : http://rds.posccaesar.org/ontology/plm/rdl/PCA_100004052
+
+
 * Examples
 ** Pumping Use Case
 
@@ -2445,24 +2991,24 @@ data.
 
 The example is inspired by the following diagram:
 
-[[./example-pumping/pumpingFunction.png]]
+[[./img/pumpingFunction.png]]
 
 *** Types
 
-#+BEGIN_SRC ttl :noweb strip-export :tangle example-pumping/types.stottr :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/example/pumping/types.stottr :mkdirp yes
 <<prefixes>>
 
-o-imf:Type(ex:PumpingType, imf:System, imf:Function) .
-o-imf:AttributeType(ex:myPumpingType, imf:Purpose, p14:Pressure, p14:Calculated, p14:Maximum, p14:Absolute, p14:Operating, none, none).
+o-imf:Type(ex:PumpingType, imf:Block, imf:Function) .
+o-imf:AttributeType(ex:myPumpingType, imf:Purpose, p14:Pressure, none, none, none, none, none, none).
 
 o-imf:Type(ex:PumpingOutTerminalType, imf:Terminal, imf:Function) .
-o-imf:AttributeType(ex:PumpingOutTerminalType, imf:Purpose, p14:Topsx, p14:Calculated, p14:Maximum, p14:Absolute, p14:Operating, none, p14:cm).
-o-imf:AttributeType(ex:PumpingOutTerminalType, imf:Purpose, p14:Topsy, p14:Calculated, p14:Minimum, p14:Absolute, p14:Operating, none, p14:cm).
+o-imf:AttributeType(ex:PumpingOutTerminalType, imf:Purpose, p14:Topsx, none, none, none, none, none, p14:cm).
+o-imf:AttributeType(ex:PumpingOutTerminalType, imf:Purpose, p14:Topsy, none, none, none, none, none, p14:cm).
 #+END_SRC
 
 *** Data
 
-#+BEGIN_SRC ttl :noweb strip-export :tangle example-pumping/data.stottr
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/example/pumping/data.stottr
 <<prefixes>>
 
 o-imf:System(ex:myPumping, ex:PumpingType, imf:Function) .
@@ -2478,7 +3024,7 @@ o-imf:Attribute(ex:myPumpingOutTerminal, imf:Purpose, p14:Topsy, p14:Calculated,
 
 The type pattern instances expand to SHACL shape definitions.
 
-#+CALL: lutra-expand(in="example-pumping/types.stottr", inFormat="stottr", out="example-pumping/types.stottr.ttl")
+#+CALL: lutra-expand(in="out/example/pumping/types.stottr", inFormat="stottr", out="out/example/pumping/types.stottr.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -2489,7 +3035,7 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 # [INFO] Fetched template: http://tpl.ottr.xyz/rdf/0.1/Type
 
 # [WARNING] Unused parameter in template http://ns.imfid.org/templates/Type. The template has a parameter ?class : ottr:IRI (arg no. 2) which does not occur in the pattern of the template.
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/example-pumping/types.stottr.temp with parser turtle
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/example/pumping/types.stottr.temp with parser turtle
 rapper: Serializing with serializer turtle
 rapper: Parsing returned 180 triples
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -2649,7 +3195,7 @@ ex:myPumpingType
 
 The data pattern instances expand to RDF.
 
-#+CALL: lutra-expand(in="example-pumping/data.stottr", inFormat="stottr", out="example-pumping/data.stottr.ttl")
+#+CALL: lutra-expand(in="out/example/pumping/data.stottr", inFormat="stottr", out="out/example/pumping/data.stottr.ttl")
 
 #+RESULTS:
 #+begin_example
@@ -2660,7 +3206,7 @@ SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further detail
 # [INFO] Fetched template: http://tpl.ottr.xyz/rdf/0.1/Type
 
 # [WARNING] Unused parameter in template http://ns.imfid.org/templates/Type. The template has a parameter ?class : ottr:IRI (arg no. 2) which does not occur in the pattern of the template.
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/example-pumping/data.stottr.temp with parser turtle
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/example/pumping/data.stottr.temp with parser turtle
 rapper: Serializing with serializer turtle
 rapper: Parsing returned 37 triples
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -2719,7 +3265,7 @@ ex:myPumpingOutTerminal
 
 We can validate the IMF RDF data against the IMF type SHACL shapes.
 
-#+CALL: sh_jena_shacl_validate(shapes="example-pumping/types.stottr.ttl", data="example-pumping/data.stottr.ttl")
+#+CALL: sh_jena_shacl_validate(shapes="out/example/pumping/types.stottr.ttl", data="out/example/pumping/data.stottr.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -2769,7 +3315,7 @@ This section contains the prefixes used throughout this document.
 ** Standard vocabulary prefixes
 
 #+NAME: prefixes-std
-#+BEGIN_SRC ttl :tangle .std-prefixes.ttl
+#+BEGIN_SRC ttl :tangle out/.std-prefixes.ttl
 @prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
@@ -2851,7 +3397,7 @@ range of possible values for an attribute, e.g, that the permissible
 values for the Pressure attribute should be within the range [0, 120]
 and/or a list of permissible unit of measures.
 
-[[./example-pumping/pumpingFunction.png]]
+[[./img/pumpingFunction.png]]
 
 *** Implementation possibilities
 
@@ -2926,14 +3472,14 @@ Example:
   :pressure [ ] . # use a blank node to indicate that *some* value is required. 
 
 # Instance, approach 1: copy of type data:
-:MyPumping a :AspectObject ;
+:MyPumping a :AspectElement ;
   :instanceOf :PumpingType ; # keep a reference to type object.
   :purpose :Pumping ;
   :fluid :Water ;
   :pressure [ :datumValue 99; :datumUoM :Uom1 ]. # give a concrete value
 
 # Instance, approach 2: reference to type:
-:MyPumping a :AspectObject ;
+:MyPumping a :AspectElement ;
   :instanceOf :PumpingType ;
   :pressure [ :datumValue 99; :datumUoM :Uom1 ] . # give a concrete value only unspecified type attributes.
 #+END_SRC
@@ -2995,7 +3541,7 @@ Example:
       ] .
 
 # Instance
-:MyPumping a :AspectObject ;
+:MyPumping a :AspectElement ;
   rdf:type :PumpingType ;
   :pressure [ :datumValue 99; :datumUoM :Uom1 ] .
 #+END_SRC
@@ -3041,7 +3587,7 @@ Example:
 #+BEGIN_SRC ttl
 # Type
 :PumpingTypeInstance[ ottr:IRI ?id, xsd:integer ?pressureValue, ottr:IRI ?pressureUom ] :: {
-  o-rdf:Type(?id, AspectObject),
+  o-rdf:Type(?id, AspectElement),
   o-rdf:Type(?id, :PumpingType),
   ottr:Triple(?id, ?pressure, _:datum),
   ottr:Triple(_:datum, :datumValue, ?pressureValue),
@@ -3052,22 +3598,6 @@ Example:
 :PumpingTypeInstance(:MyPumping, 99, :Uom1) .
 #+END_SRC
 * Software                                                         :noexport:
-** Setup
-
-Include stderr:
-
-#+PROPERTY: header-args:sh :prologue "exec 2>&1" :epilogue ":"
-
-Folders:
-
-#+BEGIN_SRC ttl :tangle temp/.folder :mkdirp yes
-
-#+END_SRC
-
-#+BEGIN_SRC ttl :tangle bin/.folder :mkdirp yes
-
-#+END_SRC
-
 ** Apache Jena
 
 https://jena.apache.org/:
@@ -3424,7 +3954,7 @@ riot [--help] [--time] [--base=IRI] [-syntax=FORMAT] [--out=FORMAT] [--count] fi
 #+end_example
 
 #+NAME: sh_jena_validate_rdf
-#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="owl/imf-top.owl.ttl"
+#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="out/owl/imf-top.owl.ttl"
 bin/apache-jena/bin/riot --verbose --syntax=$syntax --validate --time $files 
 #+END_SRC
 
@@ -3432,8 +3962,8 @@ bin/apache-jena/bin/riot --verbose --syntax=$syntax --validate --time $files
 : imf-top.owl     : 0.21 sec : 78 Triples : 373.21 per second
 
 #+NAME: sh_jena_merge
-#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="owl/imf-top.owl.ttl owl/imf-aspects.owl.ttl" :var out="owl/imf-all.owl.ttl"
-bin/apache-jena/bin/riot --verbose --syntax=$syntax --check --formatted=json-ld --set="asdf" --time $files > $out
+#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="out/owl/imf-top.owl.ttl owl/imf-aspects.owl.ttl" :var out="out/owl/imf-all.owl.ttl"
+bin/apache-jena/bin/riot --verbose --syntax=$syntax --check --time $files > $out
 #+END_SRC
 
 #+RESULTS: sh_jena_merge
@@ -3534,7 +4064,7 @@ bin/apache-jena/bin/shacl v --shapes shacl/imf-all.shacl.ttl --data $data
 
 
 #+NAME: sh_jena_shacl_std_validate
-#+BEGIN_SRC sh :results output raw :var data="owl/imf-top.owl.ttl" :wrap src ttl
+#+BEGIN_SRC sh :results output raw :var data="out/owl/imf-top.owl.ttl" :wrap src ttl
 bin/apache-jena/bin/shacl v --shapes http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl --shapes https://spec.ottr.xyz/wOTTR/0.4.3/core-grammar.shacl.ttl --data $data
 #+END_SRC
 
@@ -3595,16 +4125,16 @@ sparql --data=<file> --query=<query>
 
 
 #+NAME: sh_jena_sparql
-#+BEGIN_SRC sh :results output :var query="PREFIX imf: <http://ns.imfid.org/imf#> SELECT * {?s ?p ?o} LIMIT 1" :var files="owl/imf-top.owl.ttl" :hlines yes :exports both
-echo "$query" > temp/.temp-sh_jena_sparql
-bin/apache-jena/bin/sparql --results=text --data=$files --query temp/.temp-sh_jena_sparql
+#+BEGIN_SRC sh :results output :var query="PREFIX imf: <http://ns.imfid.org/imf#> SELECT * {?s ?p ?o} LIMIT 1" :var files="out/owl/imf-top.owl.ttl" :hlines yes :exports both
+echo "$query" > out/temp/.temp-sh_jena_sparql
+bin/apache-jena/bin/sparql --results=text --data=$files --query out/temp/.temp-sh_jena_sparql
 #+END_SRC
 
 #+RESULTS: sh_jena_sparql
 : -----------------------------------------------------------------------------------------------
 : | s                        | p                                             | o                |
 : ===============================================================================================
-: | imf:hierarchicalRelation | <http://www.w3.org/2000/01/rdf-schema#domain> | imf:AspectObject |
+: | imf:hierarchicalRelation | <http://www.w3.org/2000/01/rdf-schema#domain> | imf:AspectElement |
 : -----------------------------------------------------------------------------------------------
 
 
@@ -3714,8 +4244,8 @@ Git repo: https://gitlab.com/ottr/lutra/lutra
 #+end_example
 
 #+NAME: lutra-expand
-#+BEGIN_SRC sh :results output verbatim :var in="owl/.imf-aspects.owl.wottr.ttl" :var inFormat="wottr" :var out="owl/imf-aspects.owl.ttl"
-java -jar bin/lutra.jar -l ottr -L stottr -f -p .std-prefixes.ttl -I $inFormat -o $in.temp $in 
+#+BEGIN_SRC sh :results output verbatim :var in="out/owl/.imf-aspects.owl.wottr.ttl" :var inFormat="wottr" :var out="out/owl/imf-aspects.owl.ttl"
+java -jar bin/lutra.jar -l out/ottr -L stottr -f -p out/.std-prefixes.ttl -I $inFormat -o $in.temp $in 
 rapper -i turtle -o turtle $in.temp > $out
 cat $out
 #+END_SRC
@@ -3791,16 +4321,40 @@ Options:
 
 
 #+NAME: rdfvizler
-#+BEGIN_SRC sh :results output verbatim :var rules="rdfvizler/import-hierarchy.rule" :var data="owl/imf-all.owl.ttl" :var output=".output-rdfvizler.svg"
+#+BEGIN_SRC sh :results output verbatim :var rules="out/rdfvizler/import-hierarchy.rule" :var data="out/owl/imf-all.owl.ttl" :var output="out/.output-rdfvizler.svg"
 java -jar bin/rdfvizler.jar --rules=$rules $data > $output
 #+END_SRC
 
 #+RESULTS: rdfvizler
+#+begin_example
+Exception in thread "main" picocli.CommandLine$ExecutionException: Error while running command (xyz.dyreriket.rdfvizler.cli.RDFVizlerCLI@66498326): org.apache.jena.shared.RulesetNotFoundException: out/rdfvizler/import-hierarchy.rule
+	at picocli.CommandLine.execute(CommandLine.java:1056)
+	at picocli.CommandLine.access$900(CommandLine.java:142)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:1255)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:1223)
+	at picocli.CommandLine$AbstractParseResultHandler.handleParseResult(CommandLine.java:1131)
+	at picocli.CommandLine.parseWithHandlers(CommandLine.java:1414)
+	at picocli.CommandLine.run(CommandLine.java:1878)
+	at picocli.CommandLine.run(CommandLine.java:1808)
+	at xyz.dyreriket.rdfvizler.cli.RDFVizlerCLI.main(RDFVizlerCLI.java:133)
+Caused by: org.apache.jena.shared.RulesetNotFoundException: out/rdfvizler/import-hierarchy.rule
+	at org.apache.jena.reasoner.rulesys.Rule.rulesFromURL(Rule.java:511)
+	at org.apache.jena.reasoner.rulesys.Rule.rulesFromURL(Rule.java:524)
+	at xyz.dyreriket.rdfvizler.RDFVizler.getRules(RDFVizler.java:39)
+	at xyz.dyreriket.rdfvizler.RDFVizler.getRDFDotModel(RDFVizler.java:72)
+	at xyz.dyreriket.rdfvizler.RDFVizler.writeDotGraph(RDFVizler.java:105)
+	at xyz.dyreriket.rdfvizler.RDFVizler.writeDotGraph(RDFVizler.java:111)
+	at xyz.dyreriket.rdfvizler.RDFVizler.write(RDFVizler.java:99)
+	at xyz.dyreriket.rdfvizler.cli.RDFVizlerCLI.processFile(RDFVizlerCLI.java:156)
+	at xyz.dyreriket.rdfvizler.cli.RDFVizlerCLI.run(RDFVizlerCLI.java:166)
+	at picocli.CommandLine.execute(CommandLine.java:1048)
+	... 8 more
+#+end_example
 
 *** Prefixes                                                       :noexport:
 
 #+NAME: prefixes-rdfvizler
-#+BEGIN_SRC ttl :noweb yes :tangle rdfvizler/imf-data.rule :mkdirp yes
+#+BEGIN_SRC ttl :noweb yes :tangle out/rdfvizler/imf-data.rule :mkdirp yes
 <<prefixes>>
 @prefix rvz:  <http://rdfvizler.dyreriket.xyz/vocabulary/core#> .
 @prefix rvz-a: <http://rdfvizler.dyreriket.xyz/vocabulary/attribute#> .
@@ -3942,7 +4496,7 @@ java -jar bin/rdfvizler.jar --rules=$rules $data > $output
         ]
 
     [System-block-shape:
-        (:graph rvz:hasNode ?node)(?node rdf:type imf:FunctionalSystemBlock)
+        (:graph rvz:hasNode ?node)(?node rdf:type imf:FunctionalBlock)
         -> (?node rvz-a:shape "square")
         ]
 
@@ -3962,7 +4516,7 @@ java -jar bin/rdfvizler.jar --rules=$rules $data > $output
 
 This rule set visualises the owl:imports hierarchy.
 
-#+BEGIN_SRC ttl :noweb yes :tangle rdfvizler/ontology-import-hierarchy.rule :mkdirp yes
+#+BEGIN_SRC ttl :noweb yes :tangle out/rdfvizler/ontology-import-hierarchy.rule :mkdirp yes
 <<prefixes-rdfvizler>>
 
 ### GRAPH default settings
@@ -3994,7 +4548,7 @@ This rule set visualises the owl:imports hierarchy.
         ]
 #+END_SRC
 
-#+CALL: rdfvizler(rules="rdfvizler/ontology-import-hierarchy.rule", output="temp/.ontology-import-hierarchy.svg")
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-import-hierarchy.rule", output="out/temp/.ontology-import-hierarchy.svg")
 
 #+RESULTS:
 
@@ -4004,7 +4558,7 @@ This rule set creates a overview visualisation of an ontology taking
 only the "easy to visualise" structures like classes, subclass
 relations, properties with their domain and range, and instances.
 
-#+BEGIN_SRC ttl :noweb yes :tangle rdfvizler/ontology-overview.rule :mkdirp yes
+#+BEGIN_SRC ttl :noweb yes :tangle out/rdfvizler/ontology-overview.rule :mkdirp yes
 <<prefixes-rdfvizler>>
 
     [init-graph:
@@ -4118,7 +4672,7 @@ relations, properties with their domain and range, and instances.
 	]
 #+END_SRC
 
-#+CALL: rdfvizler(rules="rdfvizler/ontology-overview.rule", output="temp/.ontology-overview.svg")
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", output="out/temp/.ontology-overview.svg")
 
 #+RESULTS:
 
@@ -4126,7 +4680,7 @@ relations, properties with their domain and range, and instances.
 
 Work in process. Rule set for visualising IMF data.
 
-#+BEGIN_SRC ttl  :noweb yes :tangle rdfvizler/imf-data.rule :mkdirp yes
+#+BEGIN_SRC ttl :noweb yes :tangle out/rdfvizler/imf-data.rule :mkdirp yes
 <<prefixes-rdfvizler>>
 
 ### GRAPH default settings
@@ -4233,7 +4787,7 @@ return output
 Run SPARQL queries on RDF data files.
 
 #+NAME: py_run_sparql
-#+BEGIN_SRC python :var query="SELECT ?s ?p ?o {?s ?p ?o} LIMIT 10" :var prefixes="" :var data="owl/imf-all.owl.ttl" :results raw
+#+BEGIN_SRC python :var query="SELECT ?s ?p ?o {?s ?p ?o} LIMIT 10" :var prefixes="" :var data="out/owl/imf-all.owl.ttl" :results raw
 
 # input: 'query': SPARQL query string
 # input: 'prefixes': a string of prefixes for conveniently appending to the query
@@ -4313,7 +4867,7 @@ return output
 Parses an ttl file and outputs a turtle source block.
 
 #+NAME: py_parse-ttl-file
-#+BEGIN_SRC python :var file="owl/imf-top.owl.ttl"
+#+BEGIN_SRC python :var file="out/owl/imf-top.owl.ttl"
 from rdflib import Graph
 
 g = Graph()
@@ -4342,7 +4896,7 @@ return g.serialize(format='turtle').decode('utf-8')
 *** Output
 
 #+NAME: py_output
-#+BEGIN_SRC python :var file="owl/imf-top.owl.ttl" :var s="None" :var p="RDF.type"
+#+BEGIN_SRC python :var file="out/owl/imf-top.owl.ttl" :var s="None" :var p="RDF.type"
 from rdflib import Graph, RDF
 
 g = Graph()
@@ -4418,8 +4972,37 @@ return output
 #+CALL: py_prefixlist2ttl[:wrap src ttl](list=prefixlist)
 * Setup                                                            :noexport:
 
+
+Include stderr:
+
+#+PROPERTY: header-args:sh :prologue "exec 2>&1" :epilogue ":"
+
+** Folders
+
+#+BEGIN_SRC ttl :tangle out/temp/.folder :mkdirp yes
+#+END_SRC
+
+#+BEGIN_SRC ttl :tangle bin/.folder :mkdirp yes
+#+END_SRC
+
+#+BEGIN_SRC ttl :tangle out/img/.folder :mkdirp yes
+
+#+END_SRC
+
+** Global tangle includes
+
 #+NAME: graphviz-style
-#+BEGIN_SRC dot :file img/.dummy
+#+BEGIN_SRC dot :file out/img/.dummy-graphiz
  node [shape=box, fontname="Arial", style="filled"];
  edge [fontname="Arial"];
+#+END_SRC
+
+
+#+NAME: plantuml-style
+#+BEGIN_SRC plantuml :file out/img/.dummy-plantuml
+hide empty members
+
+skinparam class {
+ BackgroundColor White
+}
 #+END_SRC
