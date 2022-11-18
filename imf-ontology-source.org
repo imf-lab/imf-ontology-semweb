@@ -11,19 +11,191 @@
 #+LANGUAGE: en
 #+SELECT_TAGS: export
 #+EXCLUDE_TAGS: noexport QA
-#+EXPORT_FILE_NAME: index.html
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
-#+HTML_HEAD: <style> #content{max-width:1800px;}</style>
-#+HTML_HEAD: <style> p{max-width:800px;}</style>
-#+HTML_HEAD: <style> li{max-width:800px;}</style
+#+##SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+##HTML_HEAD: <style> #content{max-width:1800px;}</style>
+#+##HTML_HEAD: <style> p{max-width:800px;}</style>
+#+##HTML_HEAD: <style> li{max-width:800px;}</style
 
-* TODO Definisjoner                                                :noexport:
 
- - System
+*Note: as of 2022-10-20 this document is superseeded by imf-sem-web-formalisation.org*
 
- - AspectObject
- - SystemBlock
- - Terminal
+* Tasks                                                            :noexport:
+** TODO [#A] Identify project use case
+
+  1. Requirements for selecting use case
+     - IMF model (what is the correct word for this?) already exists?
+     - Attribute data exists
+     - Extendable to Aibel's subcontractors
+
+  2. Describe use case
+     - Data, tabular, diagrams, descriptions
+     - Use case goal, value-proposition wrt. IMF project
+** TODO [#A] Develop project use case architecture
+** TODO [#A] Define OWL Ontology for IMF models
+
+Build model for representing IMF models (what is the correct name for
+IMF models?). 
+
+Why: This is the/a formal specification of IMF and the ground
+representation format for IMF models. The format is the basis for
+"all" formal data management tasks for IMF models: reasoning,
+validation, visualisation, exchange, storage format.
+
+** TODO [#B] Define SHACL shapes (constraints) for IMF models
+
+In addition to an OWL ontology that expresses the metamodel and
+terminology for IMF models, it may be necessary and convenient to also
+define constraints for IMF models, to support additional specification
+of what an legal IMF model is --- that goes beyond the expressivity of
+OWL.
+
+Why: increase quality of IMF models, increase data quality in general.
+
+
+** TODO [#C] Visualisation techniques for IMF models
+
+Experiment with graph based visualisation techniques for IMF models.
+
+Why: improve end-user communication. discover modelling errors. good
+for demonstration.
+
+Create visualisation vocabulary?
+   - hasX
+   - hasY
+
+** TODO [#B] OTTR templates for building IMF models
+
+Develop a OTTR template library for expressing IMF models.
+
+Why: Provides a tabular abstraction format for IMF model
+construction. Makes building and maintaining IMF models simpler and
+abstracts away many of the details of semantic technologies. For
+example, the export from tools such as Mimir could make use of OWL
+templates only.
+** TODO Setup tmp.imfid.org?
+** TODO [#C] Publish public artefacts on imfid.org
+
+Artefacts: OWL ontology, SHACL shapes, visualisation specifications,
+OTTR templates. Consider versioning, provenience, ease of maintenance
+and publication. Make artefacts resolvable.  Publish alongside
+documentation. Exploit content negotiation.
+** TODO Represent RDS-code hierarchy?
+** TODO [#C] Develop data lab
+
+Develop a lab of reusable scripts and software for applying semantic
+technologies and tools to IMF data. Examples: reasoning, constraint
+validation, OTTR template expansion, AAS packaging, SPARQL query for
+building reports, SPARQL endpoints and linked open data
+frontends. Exploit open standards, publicly available artefacts, open
+source tools.
+
+Why: Demonstrate use and value of semantic technologies. Build
+competence in project. Public, live demonstrators.
+
+** TODO [#A] Develop use case for attribute data/types
+
+The use case should make it clear what the use of attribute data is,
+in order define requirements for the representation, management and
+use of such data. This relates to the concept of types in IMF, and to
+questions like if and how attribute data should be added directly to
+IMF aspect objects, how do types relate to IMF models?
+
+** TODO [#B] OTTR templates for representing attribute data
+
+Identify and define modelling patterns for attribute data:
+ - uom value
+ - min--max range
+ - enumeration
+ - free text
+ - ...
+
+Ask for links to templates: https://rds.posccaesar.org/ontology/plm/tpl/0.1/
+
+Datum characteristics?
+ - origin
+ - phase
+ - agregation
+ - regularity
+
+** TODO Define types
+
+#+BEGIN_QUOTE
+ 3 ting:
+ 1. OTTR signature
+ 2. seksjoner - gruppering - attribute group, order of groups
+ 3. syntaksregler
+
+ 4. Provenance :: where does it come from
+ 5. Scope :: 
+ 6. Range
+ 7. Regularity
+
+ property -> quantity
+
+ add regex to attribute definition
+
+ avledet attribute
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+ Types:
+ - external types, i.e, external ontology classes (no specified colour)
+ - single aspect types, one specified colour
+ - multi (colour) types: combination of single aspect types with given interaspect relations
+ - generic types/quality types: uncoloured, useful for many aspects
+#+END_QUOTE
+** TODO JSON-LD framing?
+
+https://www.w3.org/TR/json-ld11-framing/
+
+https://jena.apache.org/documentation/io/json-ld-11.html
+https://jena.apache.org/documentation/io/rdf-output.html#json-ld
+https://github.com/apache/jena/blob/main/jena-examples/src/main/java/arq/examples/riot/Ex_WriteJsonLD.java#L261
+https://github.com/apache/jena/tree/main/jena-arq/src/main/java/org/apache/jena/riot/writer
+https://jena.apache.org/documentation/javadoc/arq/org/apache/jena/riot/writer/JsonLDWriter.html#JSONLD_FRAME
+
+ - can one use `--set` in RIOT to specify framing file?
+ - Is it possible to give frame as a uri?
+
+
+
+** TODO [#A] Internal representation of IMF model and attribute data at Aibel
+
+Decide how to represent and store IMF models in Aibel infrastructure
+and how to amend IMF aspect objects with attribute data. Should one
+
+ - use EIS for representing the IMF model, or
+ - only hold the IRIs of aspect objects, or
+ - represent the object with proxy EIS object plus a mapping to the
+   IMF aspect object?
+
+Export attribute data from EIS to RDF using OTTR templates?
+
+** TODO Export/Payload format for IMF models + attribute data
+
+Develop format for exchanging IMF models. This can be the ground IMF
+OWL ontology format, but can also use a more compact format based on
+OTTR templates and/or JSON LD context object descriptions --- from
+which one can describe tabular formats.
+
+** TODO Define "manifest datamodel"
+
+Define a protocol and/or datamodel for representing the manifest that
+should follow data payloads that describes that data objects have been
+added/changed/removed? Is there something already in AAS for this?
+
+
+** TODO AAS(X) packaging
+
+Package IMF model data in an AAS package including necessary
+manifest. Experiment with including a useful AAS frontpage report for
+the package based on data in the payload and manifest.
+
+** TODO Document how to consume exchanged IMF data
+
+The data is to be consumed by Equinor and its EB system. They will
+need to know how to do this. What are the requirements that Eqn/EB
+have to the data?
 
 * TODOs [0/8]                                                      :noexport:
 
@@ -210,7 +382,313 @@ The ontology will be published at their address. The resources
 (classes, properties, individuals) are made resolvable by publishing a
 merged ontology of all ontology files at the ~imf~ namespace address.
 
-* IMF Ontology
+* Highlevel perspective
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+OPTIONS: H:2
+
+** 3 languages
+
+ - IMF models
+ - IMF types
+ - ISO 15926-14 ontology
+
+** IMF models
+
+asdff
+
+** IMF types
+
+asdf
+
+** ISO 15926-14 ontology
+
+asdf
+
+** Other                                                           :noexport:
+
+| *Language name* | 81346 / IMF  | IMF type     | ISO 15926                        |
+|-----------------+--------------+--------------+----------------------------------|
+| *Tool*          | Mimir        | Tyle         | --                               |
+| *Library*       |              | Type library | (PCA) RDL                        |
+| *Format*        | JSON-LD, RDF | *?? 1*       | OWL                              |
+| *Instance*      | IMF model    |              | *?? 2* "semantic facility model" |
+|-----------------+--------------+--------------+----------------------------------|
+| *Java analogy*  | object       | classes/API  | bytecode                         |
+
+ Requirements:
+
+ - Application independent
+
+ - ?? 1 IMF type language, what is it?
+   - What functionality do we need?
+     - Blueprint
+     - Exchange
+     - Programmer friendly
+     - Syntax checks: schema constraints
+     - Semantic checks: reasoning
+   - Expressivity:
+     - What do SMEs want to express?
+       - Relation to RDL
+       - Attributes
+
+  - ?? 2 How should it look like in ISO 15926?
+    - Translation of IMF model + IMF type to ISO 15926-14
+    - Representation/Implementation of the translation
+
+* Specification Architecture
+
+  Specifications:
+
+  - IMF Asset Model specifications:
+    - Purpose :: define a model for representing and exchanging IMF
+                 asset models. The models should be possible to check
+                 for syntactic and semantic correctness, and to
+                 translate to other ontological representations using
+                 mappings.
+    - functionality ::
+      - 
+    - possible/suggested specifications:
+      - JSON schema :: a schema that defines a data exchange format for
+                       IMF asset models
+      - JSON-LD context :: a translation of IMF JSON data (according to
+           the JSON schame) to RDF. With this, JSON-LD aware processors
+           can treat IMF asset models in JSON format as RDF.
+      - OWL ontology :: the specification of the IMF vocabulary and its
+			semantics
+      - SHACL shapes :: constaints for the RDF representation (Q: is
+			there a difference from this and the JSON
+			schema?)
+      - Mapping to ISO 15926 :: expressed as OTTR templates?
+      - OTTR templates :: Modelling patterns for expressing IMF Asset
+                          Models (Q: what is the difference from the
+                          JSON schema?)
+
+  - IMF Type specifications: 
+    - purpose :: an IMF type defines "an IMF Asset Model 'building
+                 block'" that specifies required and possible(?)
+                 properties/attributes and required and possible
+                 values for these properties/attributes. An IMF type
+                 can be considered as a schema for IMF aspect objects.
+    - functionality ::
+      1. an IMF type should be simple to create and understand by SMEs
+      2. an IMF type should be used to form new IMF objects (that would
+         be an instance of the given type)
+      3. it should be possible to validate an IMF object against its/a
+         type
+      4. it should be possible to validate the syntactic correctness of
+         a type
+      5. it should be possible to create new types by extending other
+         types
+      6. it should be possible to validate the semantic correctness of
+         a type wrt. the other types and/or external ontologies that
+         the type depend on
+    - implementation ::
+      - f1: the (main target) expressivity of types should be limited
+        to something that it natural for SMEs to formulate, e.g.,
+        complex, nested expressions are out of scope.
+      - f2 + f3: types should be represented in a form or schema language
+      - f4: the language for representing types should (also) be
+        possible to against a schema.
+      - f5: a subclass/inheritance relationship between types must (be
+        possible to) be defined
+      - f6: formal semantics of types must be defined. this can be
+        complex by the fact that a type can have different
+        interpretations: it is a schema, a constraint, and a semantic
+        class.
+    - possible/suggested specifications:
+      - a language similar to the IMF Asset Model language with which
+        types are expressed in a prototypical manner. Additional
+        expressivity for representing, e.g., possible values and
+        ranges of values must be added. Since this language is not a
+        neither a schema, constraint nor semantic specification
+        language these features must be met by other means. It should
+        be possible to translate the language to other languages JSON
+        schema, SHACL, OWL, OTTR to acheive this.
+
+#+RESULTS:
+[[file:img/imf-spec-overview.png]]
+
+
+* IMF asset model format
+
+The data exchange format for IMG asset models is specified as a JSON
+schema that is compatible with JSON-LD. This means that JSON data
+according to the schema also can be processed as RDF.
+
+** Informal model
+
+#+RESULTS:
+[[file:img/imf-data-exchange-format-overview.png]]
+
+
+* IMF Type definition format
+
+A type definition (or just type) is informally to be understood as a
+template, schema or form from which objects (instances of the type)
+are easily and consistently constructed or specified, allowing reuse
+of the type definitions specification (for the aspect objects that are
+created from the type, or /is of/ or /is classified by/ the type).
+The specification of the type is inherited by the objects that are of
+the type.
+
+The details of type definitions and how they should be interpreted,
+represented and implemented are under development; the following
+are features that are under development/consideration:
+
+ - A type may be implemented as an OWL class and a SHACL shape and
+   OTTR template:
+   - The OWL class representation is used for checking semantic
+     consistency. This includes checking
+     - any alignment with external ontologies
+     - consistency of type definitions
+     - consistency of object 
+   - The SHACL shape representation is used for checking constraints,
+     in particular for attribute values.
+   - The OTTR template represenation is used for creating objects of
+     the given type.
+
+ - Can an aspect object have multiple types?
+
+ - Can a type inherit from other types --- can there be multiple
+   parent types?
+
+** Informal model
+
+Legend:
+
+ - "A" stands for Abstract and is used in the diagram to indicate shared value fields.
+ - E stands for Enum(eration) and gives a complete list of legal values
+
+#+RESULTS:
+[[file:img/types-overview.png]]
+
+** Implementation: OTTR templates
+
+Type definitions are represented as OTTR template instances using OTTR
+template signatures that reflect the above meta-model.
+
+No template expansions are currently defined for the signatures, but
+the anticipation is that instances of these templates will be able to
+expand to some or all of the following formats, which are discussed in
+more detail below.
+ - OWL class expressions
+ - SHACL shapes
+ - OTTR templates (that generate object of the specified type)
+ - Custom RDF representation, where e.g., a type definition becomes an
+   RDF resource, and an instance according to a RDFS vocabulary
+   representation of the above metamodel.
+
+
+#+BEGIN_SRC ttl
+
+
+## The super template of all specification templates
+o-imf:Definition [
+  ?id,              # the id that is created
+  ?name,            # the name 
+  ?definition     # textual definition
+] .
+
+
+## The super template of object and terminal type templates
+o-imf:TypeDefinition [
+  # "inherit" from Definition
+  ?aspect,        # 0--1 aspect
+  ?symbol,        # 
+  #? ?attributes
+] .
+
+o-imf:ObjectTypeDefinition [
+  # "inherit" from TypeDefinition
+  ?rds,           # ??
+  ?classifier,    # 0--* RDL classes, e.g., "purpose"
+  ?symbol,        # symbol used for visualising instance of the type def
+] .
+
+o-imf:TerminalTypeDefinition [
+  # "inherit" from TypeDefinitio
+  ?objecttype      # "foreign key", the id of the object type definition that this terminal type belongs to
+  ?media
+  ?direction       # in or out -- Note: probably implement this with two different templates
+] .
+
+# generic attribute definition for recording all types of attributes
+o-imf:AttributeDefinition [
+ ## "inherit" from Definition
+  ?entity        # "foreign key", the id of the entity that this attibute type is set for
+  ?dimension,    # provenance, range, regularity, scope
+  ?kind,         # 
+  ?uom,          # 0--1 unit of measure, e.g., Meter
+  ## constraints:
+  ?datatype,     # 0--1 value datatype -- if set, then the values must be of this datatype. Examples: xsd:int, xsd:date
+  ?legal_values, # 0--*, if set, then this list of values are the only permissible values
+  ?legal_value_range, # if set, then values must be in this range (NB! Note, this is a complex multivalue field (range can be open/closed and open-ended or nor in both directions (min, max)), which is not supported in OTTR, so if and how this is implemented needs to be worked out.
+  ?no_of_required_values, # 0--1, if set, then this indicates the number of required values (occurrences)
+] .
+
+### Is this useful? A template for defining media
+#o-imf:MediaTypeDefinition [
+#  # "inherit" from TypeDefinition
+#] .
+
+#+END_SRC
+
+Questions/Comments:
+
+ - Some arguments for Attribute definition are mutually exclusive.
+ - Unsupported case: restricting to a permissible set of uom's.
+
+** Ontology for Type definitions
+
+TODO: establish vocabulary and ontology for expressing type
+definitions.
+
+** Interpretation and representation
+
+The formal interpretation of type definition specified by its
+transation to other languages: OWL, SHACL and OTTR.
+
+*** OWL class expressions
+
+ - A type definition becomes a class.
+   - name, definition, symbol become annotation property assertions
+   - aspect become a subclass axiom to the appropriate aspect class,
+     e.g., FunctionalAspectObject
+   - classifiers add a subclass axiom to the class, stating that the
+     class is a subclass of the classifier
+   - rds -- subclass too?
+ - A terminal definition becomes a class, and adds a existential
+   restriction to the class representation of the type defintion it
+   belongs to.
+   - media is represented similiar to aspect for type definition
+ - An attribute becomes a datatype(?) property(?) (look to PCA
+   template representation), and adds a (possibly nested) existential
+   restriction to the type or terminal definition it belongs to. The
+   existential restriction includes the "constraints" set on the
+   attribute.
+
+*** SHACL shapes
+
+Implement the close world representation of the [[OWL class expressions]]
+translation.
+
+*** OTTR templates
+
+ - A type definition becomes a OTTR template with following parameters:
+   - id
+   - name?
+   - description?
+   - (at least ?) one parameter for each attribute, which takes the
+     (list of) value(s) for the attribute
+   - for each terminal accociated with the type:
+     - name?
+     - description?
+     - parameters for atttributes as above
+
+* Ontology
+
+** IMF Ontology
 
 The IMF ontology is specified by this document using a series of code
 snippets which are compiled to different OWL files serialised in RDF
@@ -221,7 +699,7 @@ definition and description of the ontology and its contents are put
 directly in the ontology sources; please read these for more
 information.
 
-** QA tests                                                              :QA:
+*** QA tests                                                             :QA:
 
 Tests are put here at the start to make it easy to update file names.
 
@@ -244,7 +722,7 @@ Tests are put here at the start to make it easy to update file names.
 ] .
 #+END_src
 
-** Ontology source
+*** Ontology source
 
 #+NAME: owl-imf-ontology
 #+BEGIN_SRC ttl :noweb strip-export :tangle owl/imf.owl.ttl :mkdirp yes
@@ -278,7 +756,7 @@ Tests are put here at the start to make it easy to update file names.
     .
 #+END_SRC
 
-** Import hierarchy
+*** Import hierarchy
 
 The diagram displays the different ontology documents that the IMF
 ontology consists of and the import relations that exist between
@@ -290,13 +768,13 @@ these.
 
 [[./owl/ontology-import-hierarchy.svg]]
 
-* IMF Top Ontology
-** Processing and QA                                                     :QA:
+** IMF Top Ontology
+*** Processing and QA                                                    :QA:
 
 This is placed here so that it is easier to syncronise filenames with
 org-mode tangled files.
 
-*** RDF validate tangled file
+**** RDF validate tangled file
 
 #+CALL: sh_jena_validate_rdf(files="owl/.imf-top.owl.wottr.ttl")
 
@@ -307,7 +785,7 @@ org-mode tangled files.
 : imf-top.owl     : 0.01 sec : 78 Triples : 5,571.43 per second
 : Total           : 0.25 sec : 168 Triples : 677.42 per second
 
-*** Expand OTTR instances
+**** Expand OTTR instances
 #+CALL: lutra-expand(in="owl/.imf-top.owl.wottr.ttl", out="owl/imf-top.owl.ttl")
 
 #+RESULTS:
@@ -377,7 +855,7 @@ rapper: Serializing with serializer turtle
 rapper: Parsing returned 82 triples
 #+end_example
 
-*** RDF validate final file
+**** RDF validate final file
 
 #+CALL: sh_jena_validate_rdf(files="owl/imf-top.owl.ttl")
 
@@ -398,7 +876,7 @@ rapper: Parsing returned 82 triples
 ] .
 #+END_src
 
-** Overview
+*** Overview
 
 #+CALL: rdfvizler(rules="rdfvizler/ontology-overview.rule", data="owl/.imf-top.owl.wottr.ttl", output="owl/imf-top-overview.svg")
 
@@ -406,8 +884,8 @@ rapper: Parsing returned 82 triples
 
 [[./owl/imf-top-overview.svg]]
 
-** Ontology source
-*** Header
+*** Ontology source
+**** Header
 
 #+NAME: owl-top-ontology
 #+BEGIN_SRC ttl :noweb strip-export :tangle owl/.imf-top.owl.wottr.ttl
@@ -434,7 +912,7 @@ rapper: Parsing returned 82 triples
 <<owl-top-genericrelations>>
 #+END_SRC
 
-*** ~AspectObject~
+**** ~AspectObject~
 
 #+NAME: owl-top-aspectobject
 #+BEGIN_SRC ttl
@@ -468,7 +946,7 @@ imf:hasAspect a owl:ObjectProperty ;
 
 #+END_SRC
 
-*** ~Aspect~
+**** ~Aspect~
 
 #+NAME: owl-top-aspect
 #+BEGIN_SRC ttl
@@ -486,7 +964,7 @@ imf:Aspect a owl:Class ;
   .
 #+END_SRC
 
-*** ~MultiAspectObject~
+**** ~MultiAspectObject~
 
 #+NAME: owl-top-integratedobject
 #+BEGIN_SRC ttl
@@ -525,7 +1003,7 @@ imf:hasAspectObject a owl:ObjectProperty ;
    ottr:values( ( imf:Aspect imf:AspectObject imf:MultiAspectObject ) ) .
 #+END_SRC
 
-*** Structural relations
+**** Structural relations
 
 The following scope note is put on all following top-level relations:
 #+NAME: owl-top-toprelation-scope-note
@@ -572,7 +1050,7 @@ imf:associativeRelation a owl:ObjectProperty ;
     .
 #+END_SRC
 
-** SHACL shapes
+*** SHACL shapes
 
 These SHACL shape constaints are defined using the OTTR templates
 specified in the appendix: [[OTTR templates for SHACL Shapes]]
@@ -595,7 +1073,7 @@ Path shapes:
 | imf:AspectObjectShape | imf:hasAspect  |         |            |        1 |        1 | imf:Aspect           |            |           |
 | imf:AspectObjectShape | imf:isAspectOf |         |            |          |        1 | imf:MultiAspectObject |            |           |
 
-*** Processing                                                           :QA:
+**** Processing                                                          :QA:
 
 #+BEGIN_SRC ttl :noweb yes :tangle shacl/.imf-top.shacl.wottr.ttl :mkdirp yes
 <<prefixes>>
@@ -674,8 +1152,8 @@ rapper: Serializing with serializer turtle
 rapper: Parsing returned 24 triples
 #+end_example
 
-* IMF Metamodel Ontology
-** Overview
+** IMF Metamodel Ontology
+*** Overview
 
 #+CALL: rdfvizler(rules="rdfvizler/ontology-overview.rule", data="owl/.imf-metamodel.owl.wottr.ttl", output="owl/imf-metamodel-overview.svg")
 
@@ -683,8 +1161,8 @@ rapper: Parsing returned 24 triples
 
 [[./owl/imf-metamodel-overview.svg]]
 
-** Processing and QA                                                :QA:
-*** RDF validate tangled file
+*** Processing and QA                                                    :QA:
+**** RDF validate tangled file
 
 #+CALL: sh_jena_validate_rdf(files="owl/.imf-metamodel.owl.wottr.ttl owl/imf-metamodel.owl.ttl")
 
@@ -710,7 +1188,7 @@ rapper: Parsing returned 24 triples
 #+END_src
 
 
-*** Expand OTTR instances
+**** Expand OTTR instances
 
 #+CALL: lutra-expand(in="owl/.imf-metamodel.owl.wottr.ttl", out="owl/imf-metamodel.owl.ttl")
 
@@ -797,7 +1275,7 @@ rapper: Serializing with serializer turtle
 rapper: Parsing returned 159 triples
 #+end_example
 
-*** RDF validate final file
+**** RDF validate final file
 
 #+CALL: sh_jena_validate_rdf(files="owl/imf-metamodel.owl.ttl")
 
@@ -819,8 +1297,8 @@ rapper: Parsing returned 159 triples
 #+END_src
 
 
-** Ontology source
-*** Header
+*** Ontology source
+**** Header
 #+NAME: owl-top-ontology
 #+BEGIN_SRC ttl :noweb strip-export :tangle owl/.imf-metamodel.owl.wottr.ttl :mkdirp yes
 <<prefixes>>
@@ -847,7 +1325,7 @@ rapper: Parsing returned 159 triples
 <<owl-metamodel-connection>>
 #+END_SRC
 
-*** ~AspectObject~
+**** ~AspectObject~
 
 AspectObject is defined in IMF Top, but is further described here.
 
@@ -863,7 +1341,7 @@ imf:AspectObject a owl:Class ;
    ottr:values ( imf:AspectObject ( imf:SystemBlock imf:Terminal imf:InterfacePoint ) ) .
 #+END_SRC
 
-*** ~isPartOf~ / ~hasPart~
+**** ~isPartOf~ / ~hasPart~
 
 #+NAME: owl-metamodel-relations-partof
 #+BEGIN_SRC ttl
@@ -897,7 +1375,7 @@ imf:hasPart a owl:ObjectProperty ;
   .
 #+END_SRC
 
-*** ~precedes~
+**** ~precedes~
 
 #+NAME: owl-metamodel-relations-precedes
 #+BEGIN_SRC ttl
@@ -936,7 +1414,7 @@ imf:directlyPrecedes a owl:ObjectProperty ;
 
 #+END_SRC
 
-*** ~SystemBlock~
+**** ~SystemBlock~
 
 #+NAME: owl-metamodel-system
 #+BEGIN_SRC ttl
@@ -964,7 +1442,7 @@ imf:SystemBlock a owl:Class ;
    ottr:values ( imf:SystemBlock imf:isPartOf imf:SystemBlock ) .
 #+END_SRC
 
-*** ~Terminal~ and its subclasses and relations
+**** ~Terminal~ and its subclasses and relations
 
 #+NAME: owl-metamodel-terminal
 #+BEGIN_SRC ttl
@@ -1063,7 +1541,7 @@ imf:isConnectedTo a owl:ObjectProperty ;
   .
 #+END_SRC
 
-*** ~InterfacePoint~ and its relations
+**** ~InterfacePoint~ and its relations
 
 #+NAME: owl-metamodel-connection
 #+BEGIN_SRC ttl
@@ -1090,7 +1568,7 @@ imf:InterfacePoint a owl:Class ;
    ottr:values ( imf:InterfacePoint "1"^^xsd:nonNegativeInteger imf:hasOutputTerminal imf:OutputTerminal ) .
 #+END_SRC
 
-** SHACL shapes
+*** SHACL shapes
 
 These SHACL shape constaints are defined using the OTTR templates
 specified in the appendix: [[OTTR templates for SHACL Shapes]].
@@ -1121,7 +1599,7 @@ Path shapes:
 | imf:InterfacePointShape | imf:hasInputTerminal  |         |          |        1 |        1 | imf:InputTerminal  |          |           |
 | imf:InterfacePointShape | imf:hasOutputTerminal |         |          |        1 |        1 | imf:OutputTerminal |          |           |
 
-*** Processing                                                           :QA:
+**** Processing                                                          :QA:
 
 #+BEGIN_SRC ttl :noweb yes :tangle shacl/.imf-metamodel.shacl.wottr.ttl :mkdirp yes
 <<prefixes>>
@@ -1218,8 +1696,8 @@ rapper: Serializing with serializer turtle
 rapper: Parsing returned 48 triples
 #+end_example
 
-* IMF Aspects Ontology
-** Overview
+** IMF Aspects Ontology
+*** Overview
 
 #+CALL: rdfvizler(rules="rdfvizler/ontology-overview.rule", data="owl/imf-aspects.owl.ttl", output="owl/imf-aspects-overview.svg")
 
@@ -1227,15 +1705,15 @@ rapper: Parsing returned 48 triples
 
 [[./owl/imf-aspects-overview.svg]]
 
-** Processing and QA                                                     :QA:
-*** RDF validate tangled file
+*** Processing and QA                                                    :QA:
+**** RDF validate tangled file
 
 #+CALL: sh_jena_validate_rdf(files="owl/.imf-aspects.owl.wottr.ttl")
 
 #+RESULTS:
 : .imf-aspects.owl.wottr.ttl : 0.27 sec : 105 Triples : 394.74 per second
 
-*** Expand OTTR instances
+**** Expand OTTR instances
 
 #+CALL: lutra-expand(in="owl/.imf-aspects.owl.wottr.ttl", out="owl/imf-aspects.owl.ttl")
 
@@ -1288,7 +1766,7 @@ rapper: Serializing with serializer turtle
 rapper: Parsing returned 101 triples
 #+end_example
 
-*** RDF validate final file
+**** RDF validate final file
 
 #+CALL: sh_jena_validate_rdf(files="owl/imf-aspects.owl.ttl")
 
@@ -1309,8 +1787,8 @@ rapper: Parsing returned 101 triples
 ] .
 #+END_src
 
-** Ontology source
-*** Header
+*** Ontology source
+**** Header
 
 #+NAME: owl-aspect-ontology
 #+BEGIN_SRC ttl :noweb strip-export :tangle owl/.imf-aspects.owl.wottr.ttl :mkdirp yes
@@ -1414,7 +1892,7 @@ imf:interAspectRelation a owl:ObjectProperty ;
    ottr:values( imf:hasActivity imf:FunctionAspectObject imf:ActivityAspectObject ) . 
 #+end_example
 
-*** ~Aspect~
+**** ~Aspect~
 
 Aspect is defined in IMF Top, but is further described here.
 
@@ -1433,7 +1911,7 @@ imf:Aspect a owl:Class ;
 
 #+END_SRC
 
-**** CANCELLED Primary Aspect                                      :noexport:
+***** CANCELLED Primary Aspect                                     :noexport:
 
 #+NAME: owl-aspects-primary
 #+BEGIN_SRC ttl
@@ -1455,7 +1933,7 @@ imf:PrimaryAspect rdf:type owl:Class ;
    ottr:values ( imf:PrimaryAspect ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect ) ) .
 #+END_SRC
 
-**** CANCELLED Secondary Aspect                                    :noexport:
+***** CANCELLED Secondary Aspect                                   :noexport:
 
 #+NAME: owl-aspects-secondary
 #+BEGIN_SRC ttl
@@ -1480,7 +1958,7 @@ imf:SecondaryAspect rdf:type owl:Class ;
   owl:disjointWith imf:PrimaryAspect .
 #+END_SRC
 
-*** Aspects
+**** Aspects
 
 This is the current list of aspects:
 
@@ -1558,7 +2036,7 @@ return output
    ottr:values( imf:ActivityAspectObject imf:ActivityAspect ) . 
 #+END_src
 
-*** Inter-aspect relationships
+**** Inter-aspect relationships
 
 #+NAME: owl-aspects-interaspectrelation
 #+BEGIN_SRC ttl
@@ -1598,89 +2076,6 @@ o-imf:InterAspectRelation[owl:ObjectProperty ?relation, owl:Class ?domain, owl:C
 * TODO Attribute data aka. Quantities                              :noexport:
 
 TODO: Coordinate with existing PCA templates.
-
-* Type definitions
-
-Type definitions are represented using the Reasonable Ontology
-Templates (OTTR) framework [ref]. OTTR templates allows for ontology
-modelling patterns to be precisely captured and instantiated. An OTTR
-template is instantiated by referring to the template and providing
-arguments that match the template's parameters. The template instance
-is expanded (meaning rewritten or transformed) to an instance of the
-modellilng pattern the template represents in RDF or OWL serialisation
-syntax using an straigh-forward macro programming language expansion
-technique.
-
-A type definition is represented by an OTTR template and it expands to
-an individual that is classified by the type definition that the OTTR
-template represents.
-
-
-#+BEGIN_SRC ditaa :file img/ottr-typedefinitions.png
-+---------------+			   +------------------+
-|               |	represents	   |                  |
-| OTTR template |------------------------->| Type definition  |	
-|               |       	       	   |                  |
-+---------------+       		   +------------------+
-       ^               	       	       	       	    ^	       
-       | instantiation	       	       	       	    | classification  
-       |       	       				    |	       	    
-+--------------+			   +------------------+
-|              |	represents	   |                  |
-| OTTR template|-------------------------->|  Aspect object   |
-|   instance   |			   |                  |
-+--------------+			   +------------------+							      -
-#+END_SRC
-
-#+RESULTS:
-[[file:img/ottr-typedefinitions.png]]
-
-
-#+BEGIN_SRC ttl :noweb strip-export :tangle ottr/imf/typedefinitions.stottr :mkdirp yes
-<<prefixes>>
-
-o-imf:Definition [
-  ?id,              # the id of the type def
-  ?name,            # the name of the type def
-  ? ?definition    # textual definition of the type def
-] .
-
-o-imf:TypeDefinition [
-  # "inherit" from Definition
-  ?class,           # the classification of instances of the type def
-  ? ?aspect,          # the aspect of instances
-  ? ?attributes
-] .
-
-o-imf:ObjectTypeDefinition [
-  # "inherit" from TypeDefinition
-  ?rds,             # ??
-  ? ?purpose,       # ??
-  ? ?symbol,        # symbol used for visualising instance of the type def
-  ? ?terminals      # list of terminals set for the type def
-] .
-
-o-imf:TerminalTypeDefinition [
-  # "inherit" from TypeDefinition
-  ?media
-] .
-
-o-imf:MediaTypeDefinition [
-  # "inherit" from TypeDefinition
-] .
-
-
-o-imf:AttributeDefinition [
- ## "inherit" from Definition
- ?dimension, # provenance, range, regularity, scope
- ?valuetype, # absolute, actual, average, calculated, design, estimated, maximum, measured, minimum, nominal, normal, operating, required, set, specified, test
- ?uom,
- ?value
-] .
-
-
-#+END_SRC
-
 
 * TODO Visualisation Ontology                                      :noexport:
 
@@ -3810,7 +4205,7 @@ https://www.w3.org/TR/skos-primer/#secdocumentation:
  - skos:changeNote :: documents fine-grained changes to a concept, for
       the purposes of administration and maintenance.
       
-** RDF templates of OWL constructs                                 :noexport:
+** RDF "templates" of OWL constructs                               :noexport:
 
 Copy-paste this block for definition of OWL constructs:
 
@@ -3905,6 +4300,7 @@ This is the result of representing the above tables as OTTR instances.
 
 #+RESULTS:
 #+begin_example
+@prefix ex:	<http://example.com#> .
 @prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
@@ -3913,6 +4309,7 @@ This is the result of representing the above tables as OTTR instances.
 @prefix pav:	<http://purl.org/pav/> .
 @prefix sh: 	<http://www.w3.org/ns/shacl#> . 
 @prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
 @prefix imf:	<http://ns.imfid.org/imf#> .
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
 @prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
