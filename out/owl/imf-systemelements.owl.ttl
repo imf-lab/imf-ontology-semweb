@@ -1,0 +1,148 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: <http://example.com/P14#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:Block
+    a owl:Class ;
+    rdfs:subClassOf imf:SystemElement ;
+    skos:prefLabel "Block" .
+
+imf:InputTerminal
+    a owl:Class ;
+    rdfs:subClassOf imf:Terminal ;
+    skos:altLabel "Input" ;
+    skos:prefLabel "Input Terminal" .
+
+imf:InterfacePoint
+    a owl:Class ;
+    rdfs:subClassOf imf:SystemElement ;
+    skos:altLabel "Connection", "Junction", "Transport" ;
+    skos:prefLabel "Interface Point" .
+
+imf:OutputTerminal
+    a owl:Class ;
+    rdfs:subClassOf imf:Terminal ;
+    skos:altLabel "Output" ;
+    skos:prefLabel "Output Terminal" .
+
+imf:SystemElement
+    a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:unionOf (imf:Block
+            imf:Terminal
+            imf:InterfacePoint
+        )
+    ] .
+
+imf:Terminal
+    a owl:Class ;
+    rdfs:subClassOf imf:SystemElement ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:unionOf (imf:InputTerminal
+            imf:OutputTerminal
+        )
+    ] ;
+    skos:altLabel "Channel", "Input/Output", "Port" ;
+    skos:prefLabel "Terminal" .
+
+imf:hasInputTerminal
+    a owl:ObjectProperty ;
+    rdfs:range imf:InputTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a system and its input terminals." ;
+    skos:prefLabel "has input terminal" .
+
+imf:hasOutputTerminal
+    a owl:ObjectProperty ;
+    rdfs:range imf:OutputTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a system and its output terminals." ;
+    skos:prefLabel "has output terminal" .
+
+imf:hasPart
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:narrower ;
+    owl:inverseOf imf:isPartOf ;
+    skos:altLabel "has child" ;
+    skos:prefLabel "has part" .
+
+imf:hasTerminal
+    a owl:ObjectProperty ;
+    rdfs:domain imf:Block ;
+    rdfs:range imf:Terminal ;
+    rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation ;
+    skos:definition "The relation between a system and its terminals." ;
+    skos:prefLabel "has terminal" .
+
+imf:isConnectedTo
+    a owl:ObjectProperty ;
+    rdfs:domain imf:OutputTerminal ;
+    rdfs:range imf:InputTerminal ;
+    rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation ;
+    owl:propertyChainAxiom (imf:theInput
+        [
+            owl:inverseOf imf:theOutput
+        ]
+    ) ;
+    skos:prefLabel "is connected to" .
+
+imf:isPartOf
+    a owl:FunctionalProperty, owl:ObjectProperty ;
+    rdfs:domain imf:Block ;
+    rdfs:range imf:Block ;
+    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:broader ;
+    skos:altLabel "has parent" ;
+    skos:prefLabel "is part of" .
+
+imf:theInput
+    a owl:FunctionalProperty, owl:ObjectProperty ;
+    rdfs:domain imf:InterfacePoint ;
+    rdfs:range imf:InputTerminal .
+
+imf:theOutput
+    a owl:FunctionalProperty, owl:ObjectProperty ;
+    rdfs:domain imf:InterfacePoint ;
+    rdfs:range imf:OutputTerminal .
+
+<http://ns.imfid.org/imf-systemelements>
+    a owl:Ontology ;
+    owl:imports <http://ns.imfid.org/20221118/imf-top> ;
+    owl:versionIRI <http://ns.imfid.org/20221118/imf-systemelements> ;
+    skos:altLabel "IMF metamodel ontology" ;
+    skos:prefLabel "Information Modelling Framework Ontology: System Elements " ;
+    skos:scopeNote """
+
+      This ontology defines IMF's meta model which defines how
+      IMF models are represented.
+
+    """ .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:Block
+        imf:Terminal
+        imf:InterfacePoint
+    ) .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:InputTerminal
+        imf:OutputTerminal
+    ) .
+

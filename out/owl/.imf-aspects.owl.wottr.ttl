@@ -1,0 +1,87 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+<http://ns.imfid.org/imf-aspects> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20221118/imf-aspects> ;
+    owl:imports <http://ns.imfid.org/20221118/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Aspects " ;
+    skos:altLabel "IMF aspects ontology" ;
+    skos:scopeNote """
+
+      This ontology defines IMF's central aspects.
+
+    """;
+    .
+
+imf:Aspect a owl:Class .
+imf:fulfilledBy a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:InterAspectRelation ;
+  owl:inverseOf imf:fulfills ;
+  rdfs:domain imf:AspectElement ;
+  rdfs:range imf:AspectElement ;
+.
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:FunctionAspect '=' '#FFFF00' ) . 
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:LocationAspect '+' '#FF00FF' ) . 
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:ProductAspect '-' '#00FFFF' ) . 
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:InstalledAspect '::' '#FFFFFF' ) . 
+
+[] ottr:of o-owl-ax:DifferentIndividuals ;
+   ottr:values( ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:InstalledAspect ) ) . 
+
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:FunctionAspectElement imf:FunctionAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:LocationAspectElement imf:LocationAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:ProductAspectElement imf:ProductAspect ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:InstalledAspectElement imf:InstalledAspect ) . 
+
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:FunctionBlock imf:FunctionAspectElement imf:Block ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:FunctionTerminal imf:FunctionAspectElement imf:Terminal ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:FunctionInterfacePoint imf:FunctionAspectElement imf:InterfacePoint ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:LocationBlock imf:LocationAspectElement imf:Block ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:LocationTerminal imf:LocationAspectElement imf:Terminal ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:LocationInterfacePoint imf:LocationAspectElement imf:InterfacePoint ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:ProductBlock imf:ProductAspectElement imf:Block ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:ProductTerminal imf:ProductAspectElement imf:Terminal ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:ProductInterfacePoint imf:ProductAspectElement imf:InterfacePoint ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:InstalledBlock imf:InstalledAspectElement imf:Block ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:InstalledTerminal imf:InstalledAspectElement imf:Terminal ) . 
+[] ottr:of o-imf:SystemElementAspectClass ;
+   ottr:values( imf:InstalledInterfacePoint imf:InstalledAspectElement imf:InterfacePoint ) . 
+
+
+imf:LocationTerminal        rdfs:subClassOf owl:Nothing .
+imf:LocationInterfacePoint  rdfs:subClassOf owl:Nothing .

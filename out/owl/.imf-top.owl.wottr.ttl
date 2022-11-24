@@ -1,0 +1,130 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+<http://ns.imfid.org/imf-top> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20221118/imf-top> ;
+    # owl:imports <http://www.w3.org/2004/02/skos/core> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
+    skos:altLabel "IMF top ontology" ;
+    skos:scopeNote """
+
+      This ontology defines the very core classes and relations of the
+      Information Modelling Framework (IMF) to provide a structure for
+      ontologies that extend this ontology.
+
+    """;
+
+    .
+
+imf:System a owl:Class ;
+  skos:prefLabel "System" 
+. 
+imf:SystemElement a owl:Class ;
+  rdfs:subClassOf imf:AspectElement ;
+  skos:prefLabel "System Element" 
+.
+
+imf:memberOf a owl:ObjectProperty , owl:FunctionalProperty ;
+  rdfs:domain imf:SystemElement ;
+  rdfs:range imf:System .
+
+[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
+   ottr:values ( imf:SystemElement imf:memberOf imf:System ) . 
+imf:AspectElement a owl:Class ;
+  skos:prefLabel "Aspect Element";
+  .
+
+### properties
+
+imf:hasAspect a owl:ObjectProperty ;
+  skos:prefLabel "has aspect" ;
+  skos:definition "Relates an Aspect Element to its Aspect.";
+  rdfs:domain imf:AspectElement ;
+  rdfs:range imf:Aspect . 
+imf:Aspect a owl:Class ;
+  skos:prefLabel "Aspect";
+. 
+
+[] ottr:of o-owl-ax:DisjointClasses ;
+   ottr:values( ( imf:Aspect imf:AspectElement imf:System ) ) . 
+imf:intraAspectRelation a owl:ObjectProperty ;
+    skos:prefLabel "intra-aspect relation";
+    rdfs:subPropertyOf skos:semanticRelation ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    skos:definition "A generic relation between aspect objects of the same aspect" ;
+    skos:scopeNote """
+    
+      This relation is used to enforce that subproperties respect this
+      relation's definition. This must be enforced by introducing
+      class axioms that locally further restrict the domain and range
+      of the relation.
+      
+    """
+    .
+
+imf:interAspectRelation a owl:ObjectProperty ;
+    skos:prefLabel "inter-aspect relation";
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    rdfs:subPropertyOf skos:related ;
+    # owl:propertyDisjointWith imf:intraAspectRelation ; ## An error occurred during reasoning: Non-simple property or its inverse appears in disjoint properties axiom.
+    skos:scopeNote """
+    
+      This relation is used to enforce that subproperties respect this
+      relation's definition. This must be enforced by introducing
+      class axioms that locally further restrict the domain and range
+      of the relation.
+      
+    """
+    .
+
+imf:hierarchicalRelation a owl:ObjectProperty ;
+    a owl:IrreflexiveProperty ;
+    skos:prefLabel "hierarchical relation";
+    rdfs:subPropertyOf skos:semanticRelation ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
+    skos:scopeNote """
+    
+      This relation is used to enforce that subproperties respect this
+      relation's definition. This must be enforced by introducing
+      class axioms that locally further restrict the domain and range
+      of the relation.
+      
+    """
+    .
+
+imf:associativeRelation a owl:ObjectProperty ;
+    skos:prefLabel "associative relation";
+    rdfs:subPropertyOf skos:related ;
+    owl:propertyDisjointWith imf:hierachicalRelation ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    skos:definition "A generic associative relation." ;
+    skos:scopeNote """
+    
+      This relation is used to enforce that subproperties respect this
+      relation's definition. This must be enforced by introducing
+      class axioms that locally further restrict the domain and range
+      of the relation.
+      
+    """
+    .

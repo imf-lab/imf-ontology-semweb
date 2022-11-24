@@ -1,0 +1,52 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+o-imf:ShaclNodeShape[ 
+  ottr:IRI ?nodeshapeID, 
+  ? owl:Class ?targetClass, 
+  ? xsd:boolean ?closed, 
+  ? List<ottr:IRI> ?ignoredProperties
+] :: {
+  o-rdf:Type(?nodeshapeID, sh:NodeShape),
+  ottr:Triple(?nodeshapeID, sh:targetClass, ?targetClass),
+  ottr:Triple(?nodeshapeID, sh:closed, ?closed),
+  ottr:Triple(?nodeshapeID, sh:ignoredProperties, ?ignoredProperties)
+} .
+
+o-imf:ShaclPropertyShape[
+    ottr:IRI ?nodeshape, 
+    ottr:IRI ?path, 
+  ? xsd:string ?message, 
+  ? ottr:IRI ?severity,
+  ? xsd:integer ?mincount, 
+  ? xsd:integer ?maxcount, 
+  ? owl:Class ?class,
+  ? ottr:IRI ?datatype,
+  ? List<rdfs:Resource> ?inValues
+] :: {
+  ottr:Triple(?nodeshape, sh:property, _:P) ,
+  ottr:Triple(_:P, sh:path, ?path),
+  ottr:Triple(_:P, sh:minCount, ?mincount),
+  ottr:Triple(_:P, sh:maxCount, ?maxcount),
+  ottr:Triple(_:P, sh:message, ?message),
+  ottr:Triple(_:P, sh:class, ?class),
+  ottr:Triple(_:P, sh:datatype, ?datatype),
+  ottr:Triple(_:P, sh:severity, ?severity),
+  ottr:Triple(_:P, sh:in, ?inValues)
+} .

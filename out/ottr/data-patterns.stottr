@@ -1,0 +1,63 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+o-imf:System[
+  ottr:IRI ?id,
+  ottr:IRI ?type,
+  ottr:IRI ?aspect
+] :: {
+  o-rdf:Type(?id, imf:System),
+  o-rdf:Type(?id, ?type),
+  ottr:Triple(?id, imf:hasAspect, ?aspect)
+} .
+
+o-imf:Terminal[
+  ottr:IRI ?id,
+  ottr:IRI ?type,
+  ottr:IRI ?aspect,
+  ottr:IRI ?system
+] :: {
+  o-rdf:Type(?id, imf:System),
+  o-rdf:Type(?id, ?type),
+  ottr:Triple(?id, imf:hasAspect, ?aspect),
+  ottr:Triple(?system, imf:hasTerminal, ?id)
+} .
+
+o-imf:Attribute[
+     ottr:IRI ?id,
+  !  ottr:IRI ?classifier,         # Purpose, Supplimentary, ???
+  !  ottr:IRI ?quality,            # Example: pressure
+  !? ottr:IRI ?provenance,         # Required, Specified, Design, Calculated, Measured, Estimated, Set
+  !? ottr:IRI ?range,              # Nominal, Normal, Average, Maximum, Minimum, Actual
+  !? ottr:IRI ?regularity,         # Continuous, Absolute 
+  !? ottr:IRI ?scope,              # Design, Operating, Test
+     rdfs:Literal ?value,      
+     ottr:IRI ?uom
+] :: {
+  ottr:Triple(?id, imf:hasAttribute, _:attr),
+  o-rdf:Type(_:attr, ?classifier),
+  o-rdf:Type(_:attr, ?quality),
+  ottr:Triple(_:attr, p14:hasDatum, _:datum),	
+  o-rdf:Type(_:datum, ?provenance),
+  o-rdf:Type(_:datum, ?range),
+  o-rdf:Type(_:datum, ?regularity),
+  o-rdf:Type(_:datum, ?scope),
+  ottr:Triple(_:datum, p14:datumValue, ?value),
+  ottr:Triple(_:datum, p14:datumUOM, ?uom)
+} .
