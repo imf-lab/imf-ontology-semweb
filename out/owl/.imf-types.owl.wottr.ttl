@@ -1,0 +1,100 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+<http://ns.imfid.org/imf-types> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:altLabel "IMF types ontology" ;
+    skos:scopeNote """
+
+    """;
+    .
+
+imf:Type a owl:Class ;
+  skos:prefLabel "Type";
+  .
+
+imf:ElementType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Element Type";
+  .
+
+imf:BlockType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Block Type";
+  .
+
+imf:TerminalType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Terminal Type";
+  .
+
+imf:AttributeType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Type";
+  .
+
+imf:AttributeGroupType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Group Type";
+  .
+
+imf:hasTerminalType a owl:ObjectProperty ;
+  rdfs:domain imf:BlockType ;
+  rdfs:range imf:TerminalType ;
+  .
+
+imf:instanceOf a owl:ObjectProperty ;
+  skos:prefLabel "instance of" ;
+  rdfs:range imf:Type .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeValue imf:instanceOf imf:AttributeType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
+imf:TypeConstraint a owl:Class .
+
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
+
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
+
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .

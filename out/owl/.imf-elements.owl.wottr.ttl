@@ -1,0 +1,158 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+<http://ns.imfid.org/imf-elements> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-elements> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Elements " ;
+    skos:scopeNote """
+
+    """ ;
+    .
+
+imf:Element a owl:Class .
+
+[] ottr:of o-owl-ma:ClassPartition ;
+   ottr:values ( imf:Element ( imf:Block imf:Terminal ) ) .
+imf:Block a owl:Class ;
+  rdfs:subClassOf imf:Element ;
+  skos:prefLabel "Block" ;
+  .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Block imf:partOf imf:Block) .
+imf:Terminal a owl:Class ;
+  rdfs:subClassOf imf:Element ;
+  skos:prefLabel "Terminal" ;
+  skos:altLabel "Port", "Channel", "Input/Output" ;
+  .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Terminal imf:partOf imf:Terminal) .
+
+imf:hasTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  rdfs:domain imf:Block ;
+  rdfs:range imf:Terminal ;
+  skos:prefLabel "has terminal" ;
+  skos:definition "The relation between a block and its terminals.";
+  .
+
+imf:InputTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Input Terminal" ;
+  skos:altLabel "Input" ;
+  .
+
+[] ottr:of o-owl-ax:EquivHasValue ;
+   ottr:values ( imf:InputTerminal imf:hasDirection imf:inDirection ) .
+
+imf:OutputTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Output Terminal" ;
+  skos:altLabel "Output" ;
+  .
+
+[] ottr:of o-owl-ax:EquivHasValue ;
+   ottr:values ( imf:OutputTerminal imf:hasDirection imf:outDirection ) .
+
+[] ottr:of o-owl-ma:ClassPartition ;
+   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
+
+imf:hasInputTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has input terminal" ;
+  rdfs:range imf:InputTerminal ;
+  skos:definition "The relation between a block and its input terminals.";
+  .
+
+imf:hasOutputTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has output terminal" ;
+  rdfs:range imf:OutputTerminal ;
+  skos:definition "The relation between a block and its output terminals.";
+  .
+
+# skos:notation
+imf:symbol a owl:DatatypeProperty .
+
+imf:partOf a owl:ObjectProperty;
+  a owl:FunctionalProperty ;
+  a owl:IrreflexiveProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  skos:prefLabel "is part of" ;
+  skos:altLabel "has parent" ;
+  .
+
+imf:hasPart a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
+  owl:inverseOf imf:partOf ;
+  skos:prefLabel "has part";
+  skos:altLabel "has child";
+  .
+imf:connectedTo a owl:ObjectProperty ;
+  a owl:FunctionalProperty ;
+  a owl:IrreflexiveProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  skos:prefLabel "connected to" ;
+  rdfs:domain imf:Terminal ;
+  rdfs:range imf:Terminal ;
+  .
+imf:hasClassifier a owl:ObjectProperty .
+imf:hasMedium a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasClassifier ;
+  rdfs:domain imf:Terminal .
+
+
+imf:BreakdownPoint a owl:Class ;
+  # rdfs:subClassOf 
+  skos:prefLabel "Breakdown Point" ;
+  # skos:altLabel
+  .
+
+imf:thePart a owl:ObjectProperty ;
+  rdfs:domain imf:BreakdownPoint ;
+  rdfs:range imf:Element .
+
+imf:theWhole a owl:ObjectProperty ;
+  rdfs:domain imf:BreakdownPoint ;
+  rdfs:range imf:Element .
+
+imf:partOf a owl:ObjectProperty ;
+  owl:propertyChainAxiom ( [ owl:inverseOf imf:thePart ] imf:theWhole ) .
+
+imf:ConnectionPoint a owl:Class ;
+  # rdfs:subClassOf 
+  skos:prefLabel "Connection Point" ;
+  # skos:altLabel
+  .
+
+imf:theInput a owl:ObjectProperty ;
+  rdfs:domain imf:ConnectionPoint ;
+  rdfs:range imf:Terminal . # imf:OutputTerminal  
+
+imf:theOutput a owl:ObjectProperty ;
+  rdfs:domain imf:ConnectionPoint ;
+  rdfs:range imf:Terminal . # imf:InputTerminal  
+
+imf:connectedTo a owl:ObjectProperty ;
+  owl:propertyChainAxiom ( imf:theOutput [ owl:inverseOf imf:theInput ] ) .

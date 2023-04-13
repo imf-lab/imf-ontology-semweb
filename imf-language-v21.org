@@ -1,0 +1,4561 @@
+#+TITLE: IMF Language v2.1
+#+DATE: Editor: Martin G. Skjæveland
+#+AUTHOR:
+#+EMAIL:
+
+#+OPTIONS: ':nil *:t -:t ::t <:t H:4 \n:nil ^:t arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport QA update
+#+EXPORT_FILE_NAME: index.html
+
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [12pt]
+#+LATEX_HEADER: \usepackage{fullpage,parskip,times}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \usepackage[zerostyle=d]{newtxtt} %% Various versions of zeros available. See documentation for details
+
+* TODOs [10/27]
+
+ Fundamentals:
+ - [ ] Are BreakdownPoints and ConnectionPoints also Elements? Perhaps
+   not: If Elements may be broken down, ie. related by partOf, then we
+   can breakdown a breakdown point, which does not seem correct.
+ - [ ] Block and ConnectionPoints should be broken down to
+   Graphs. Terminals might not be Elements (if elements are things
+   that can be broken down to graphs).
+ - [ ] Can an Element be member of many Models? What is the name of
+   the relation between an Element and a Model. 
+
+ Structural spec:
+ - [X] Which fields should be set for
+   - [X] elements?
+     - [X] nomenclature
+   - [X] types?
+   - [X] identifiedEntities
+ - [X] Which entities should be IdentifiedEntities?
+ - [ ] Include reifiedRelationships? Could include, but not implement?
+ - [X] Describe Model
+ - [X] Medium
+ - [X] Introduce stereotypes: Identified, Type, 
+
+ Ontology:
+ - [ ] problem with direction-less connectedTo and the names theInput
+   and theOutput.
+ - [ ] replace subproperty of inter/intra-aspectrelation to class
+   axioms on AspectElement.
+   - [ ] also FunctionElement and so on, do this in Template
+
+ Documentation:
+ - [ ] Maturity: Experimental
+ - [ ] Make example
+ - [ ] Define instanceOf
+   - [ ] annotation to identify properties on types that are to be
+     copied. -> don't copy stereotype attributes
+
+ Process:
+ - [ ] Diagrams
+ - [ ] Definitions
+ - [ ] OWL ontology for RDF data model
+ - [ ] SHACL shapes for RDF data model
+ - [ ] OTTR templates to instantiate datamodel
+ - [ ] bOTTR (SHACL + OTTR) over data model to
+   - [ ] OWL class,
+   - [ ] SHACL shapes
+ - [ ] Visualisation of RDF data model
+   - [ ] Instance data
+   - [ ] Type data
+
+ Diagrams:
+ - [X] Cardinalities
+ - [X] relation names
+ - [X] Use stereotypes for
+   - identified element
+   - reified relation
+ - [X] only datatype properties are represented using fields in the UML classes
+ - [X] color UML classes differently
+   - Instance
+   - Type
+   - External RDL
+
+ Styling:
+ - [ ] size of images
+
+** TODOs from v2.0 
+
+   - Input to this document [0/5]
+     - [ ] Define abstract model  - AW
+     - [ ] Collect requirements to format from Mimir - ??
+       - https://github.com/mimir-org/mimir/blob/main/src/service/ModelBuilder.Rdf/Properties/Resources.resx
+     - [ ] Collect requirements to format from POC data - ??
+     - [ ] Collect requirements from Tyle
+     - [ ] Collect requirements to format for exchanging IMF models?
+       How to sucessfully merge models? - ??
+
+   - Introduction
+     - [ ] Concept figure for IT spec
+     - [ ] Define abstract/structural model for IMF, including an
+       abstract language for data and types.
+       - This model can have many implementations and different parts can
+	 be represented by different languages with different
+	 capabilities, for instance a type can be represented as a SHACL
+	 shape (for validation of IMF RDF data) and a OWL class (for
+	 semantic validation of the type wrt. to an RDL)
+
+   - Format specifications [0/6]
+     - [ ] Define OWL vocabulary - MGS
+     - [ ] Define exchange format
+       - how to represent types
+       - do data object inherit or copy type data?
+     - [ ] Define SHACL grammar - MGS
+     - [ ] Define OTTR templates for creating data - MGS
+     - [ ] Define OTTR templates for translating to SHACL - MGS
+     - [ ] ?? Define JSON/JSON-LD format (using JSON-LD context object) - MGS + DH
+
+   - Tools [0/2]
+     - [ ] Update Mimir output format - DH?
+     - [ ] Update Tyle output format
+
+   - Semantics [0/2]
+     - [ ] Define Abstract translation of IMF data model to ISO 15926-14 - AW + JWK
+     - [ ] Define OTTR templates for translating IMF to ISO 15926-14 - DNV + MGS
+
+   - Examples/Demonstrations [0/5]
+     - [ ] Implement example from Erlend - MGS
+     - [ ] Test validation of IMF data against SHACL grammar - MGS
+     - [ ] ?? Demonstrate use of OWL ontology - MGS
+     - [ ] ?? Demonstrate use of OTTR templates for creating IMF data - MGS
+     - [ ] ?? Test visualisation of RDF on IMF data - MGS
+
+
+   - Other [0/1]
+     - [ ] ?? Use JSON framing - DH? + MGS
+
+
+*** Notes: IMF vocabulary 
+
+**** From Mimir
+
+ - [ ] created -  date -> pav:createdOn
+ - [ ] createdBy - string? -> pav:createdBy
+ - [ ] lastUpdated - date -> pav:lastUpdateOn
+ - [ ] updatedBy - string -> pav:contributedBy
+
+ - [ ] rds - string
+
+ - [ ] domain: "mimir:domain": "runir.net",
+ - [ ] owl:versionInfo - definition: "The annotation property that
+   provides version information for an ontology or another OWL
+   construct". Rather use pav:version?
+
+ - [ ] hasAspect
+ - [ ] hasInTerminal
+ - [ ] hasOutTerminal
+ - [ ] hasParent
+
+ - [ ] lis:hasPhysicalQuantity
+ - [ ] mimir:type
+
+
+* Introduction                                                       :update:
+** TODO IMF IT Document Overview
+
+*** Version 2
+
+#+BEGIN_SRC dot :file out/img/overview-specifications-v2.png :exports results :noweb yes
+digraph {
+ rankdir = TB;
+ newrank=true;
+ 
+ <<graphviz-style>>
+
+ IMF_Manual ->  Vocabulary, Grammar, Semantics;
+
+ DataModel, Vocabulary -> OWL;
+ DataModel, Grammar -> SHACL;
+ Semantics -> ISO15926_14;
+
+ DataModel -> OTTR -> RDFdata;
+
+ OWL, SHACL -> RDFdata [dir=back];
+
+ OTTR -> SHACLtypes, OWLclasses;
+
+ SHACLtypes -> RDFdata [dir=back, constraint=false];
+ OWLclasses -> RDFdata [dir=back, constraint=false, style=dotted];
+
+ ISO15926_14 -> OWLclasses;
+
+}
+
+#+END_SRC
+
+#+RESULTS:
+[[file:out/img/overview-specifications-v2.png]]
+
+*** Version 1
+
+Todos:
+ - collapse data and types whereever approprioate
+
+/This is loosely inspired by the OWL 2 Web Ontology Language Document Overview [[https://www.w3.org/TR/2012/REC-owl2-overview-20121211/]]./
+
+
+This document defines the following:
+
+ - A structural specification of IMF, or IMF datamodel, including IMF
+   Data (2) and IMF Types (3) based on the formal abstract
+   specification of IMF (1).
+ - The IMF Vocabulary (9) and IMF Grammar (10) are an implementation
+   of (parts of) the Structural specification (2+3).
+ - IMF Data (2) is represented in different forms:
+   - The IMF Data exchange format (7) is RDF as specified by the IMF
+     grammar (10), specified in the form of a set of SHACL shapes, and
+     uses the IMF vocabulary (9), specified in the form of an OWL
+     ontology.
+   - OTTR templates represent an implementation of the structural
+     specification of IMF Data, and may be used to generate the IMF
+     Data exchange format (7) and OWL instances as according to the
+     ISO 15926-14 ontology (11).
+ - IMF types (3) are represented in different formats:
+   - An exchange format for IMF types (6) should be specified.
+   - SHACL shapes (8) capture the constraint nature of IMF types and
+     may be used validate the IMF Data Exchange format (7).
+   - OWL class definitions (12) following the ISO 15926-14 OWL ontology
+     capture the semantics of the types and may be used for semantic
+     validation of the types and their instances.
+   - OTTR templates (5) represent an implementation of the structural
+     specification of types, and allow for a succinct definition of
+     the translation into SHACL shapes (8) and OWL class definitions
+     (12).
+   - It should be possible to define a grammar (10b) for IMF Type
+     SHACL constraints, in the form of a subset or dialect of the
+     SHACL standard.
+
+ The (generated) diagram below illustrates the main relations between
+ the parts of the specification. Green boxes indicates a single
+ "schematic" specifications. Blue boxes indicate specification of
+ multiple multiple occurrences.
+
+#+BEGIN_SRC dot :file out/img/overview-specifications-v1.png :exports results :noweb yes
+digraph {
+ rankdir = BT;
+ newrank=true;
+ 
+ <<graphviz-style>>
+
+     IMFdataAbsSpec [label="IMF (1)\nAbstract spec.", fillcolor=lightyellow]
+
+     IMFdataAbsSpec -> IMFdataSpec;
+     IMFdataAbsSpec -> IMFtypeSpec [style=dashed];
+
+     IMFdataSpec [label="IMF Data (2)\nStructural spec.", fillcolor=pink]
+     IMFtypeSpec [label="IMF Type (3)\nStructural spec.", fillcolor=pink]
+
+     IMFdataSpec -> data [arrowhead=none, constraint=false, color=gray];
+     IMFdataSpec -> data_patterns [arrowhead=none, color=gray];
+     IMFdataSpec -> p14_data [arrowhead=none, constraint=false, color=gray] ;
+
+     IMFdataSpec -> IMFtypeSpec [constraint=false];
+
+     IMFtypeSpec -> types [arrowhead=none, constraint=false, color=gray];
+     IMFtypeSpec -> type_patterns [arrowhead=none, color=gray];
+     IMFtypeSpec -> type_syntax [arrowhead=none, color=gray];
+     IMFtypeSpec -> p14_types [arrowhead=none, constraint=false, color=gray];
+
+    { rank="same"
+    voc [label="IMF Vocabulary (9)\nOWL", fillcolor=darkseagreen2];
+    grammar [label="IMF Grammar (10)\nSHACL", fillcolor=darkseagreen2];
+    typegrammar [style="dashed,filled", label="IMF Type Grammar (10b)\nSHACL", fillcolor=darkseagreen];
+    }
+
+    { rank="same"
+    data [label="IMF Data (7)\nExchange format\nRDF",fillcolor=darkslategray2];
+    types [label="IMF Types (8)\nConstraints\nSHACL",fillcolor=darkslategray2];
+    }
+
+     types -> grammar [style="dashed", label="\"restricts\""];
+     data -> voc [label = "uses"];
+     grammar -> voc [label = "uses", constraint=false];
+     typegrammar -> types [label = "validates", constraint=false];
+
+     data -> grammar [dir="back", label = "validates"];
+     data -> types [dir="back", constraint=false, label="validates"];
+
+
+    { rank="same"
+    data_patterns [label="IMF Data (4)\nTemplate\nOTTR", fillcolor=darkseagreen2];
+    type_patterns [label="IMF Type (5)\nTemplate\nOTTR", fillcolor=darkseagreen2];
+    type_syntax [style="filled,dashed", label="IMF Type (6)\nExchange format\n??", fillcolor=darkseagreen];
+    }
+
+    type_patterns -> data_patterns [style=dotted, arrowhead=none, constraint=false];
+
+ 
+  subgraph cluster_p14 {
+
+    p14 [label="ISO 15926-14 (14)\nOWL"]
+    rdl [label="PCA RDL (13)\nOWL"]
+    p14_types [label="IMF Types (12)\nSemantics\nOWL classes", fillcolor=darkslategray3];
+    p14_data [label="IMF Data (11)\nSemantics\nOWL instances", fillcolor=darkslategray3];
+
+   rdl -> p14;
+  }
+
+
+ ##### edges
+
+ data_patterns -> data  [label="expands"];
+ type_patterns -> types [label="expands"];
+
+ type_patterns -> p14_types [label="expands", constraint=false];
+ data_patterns -> p14_data  [label="expands", constraint=false];
+
+ p14_data -> p14_types [label="inst. of"];
+ p14_types -> rdl;
+ #types -> rdl [style="dashed", constraint=false];
+ p14_types -> IMFtypeSpec [constraint=false, label = "verifiy"];
+
+
+}
+#+END_SRC
+
+#+RESULTS:
+[[file:out/img/overview-specifications.png]]
+
+** TODO W3C technology
+
+[Explain and motivate the use of semantic technologies?]
+
+*** RDF
+
+RDF is an abstract data model defined as an open standard by the W3C.
+
+RDF may be serialised in different serialisation formats such as
+RDF/XML (based on XML), JSON-LD (based on JSON), Turtle (a favorite
+amongst many familiar with RDF due to its ease of reading and
+writing), or N-Triples (a very simple format only appropriate for
+software).
+
+
+* Namespace and identifiers and filenames                            :update:
+
+The namespace for resources used by the formalisation of the IMF using
+semantic technologies for publicly available and shared resources
+should be:
+
+ : http://ns.imfid.org/imf#
+
+Suggestion for an identifier schema for different IMF ontology versions:
+
+ : http://ns.imfid.org/ontology/[yyyy-mm-dd]/[ontology-name]
+
+The ontology will be published at their address. The resources
+(classes, properties, individuals) are made resolvable by publishing a
+merged ontology of all ontology files at the ~imf~ namespace address.
+
+* Structural Specification
+** Introduction
+
+The structural specification is a format and application independent
+data model specification of the formal specification of IMF. The
+structural specification aims to faithfully represent the intentions
+of the formal specification while also including the specification of
+how, e.g., metadata about objects and attributes and attribute values
+are represented, which the formal specification does not contain. The
+purpose of the structural specification is to be a common language and
+format for developing concrete serialisation formats for IMF and serve
+as documentation for application developers.
+
+** Diagram legend
+
+The specification consists of a series of partially overlapping
+diagrams. The combined diagram is presented in Figure ...
+
+The diagrams are UML class diagrams are drawn using [[https://plantuml.com/][PlantUML]]
+restricted to the following elements:
+
+ - Classes, marked with the icon "C". Classes may have "fields" that
+   can hold values, fields are not used to represent relationships.
+ - Abstract classes, marked with an icon "A", are classes that are not
+   intended to be instantiated.
+ - Enumerations, marked with the icon "E", are used to represent UML
+   classes with a limited list of instantiations and where the
+   instantiations are defined in the IMF language.
+ - Stereotypes, marked with an icon "S" are used to represent a class
+   structure that is not intended to be explictly represented in the
+   language, but represents a tag and a convenient repetative
+   structure. Classes that use stereotypes indicate this with ~<< stereotype >>~ above the class name.
+ - Subclass relationships between classes, which are drawn using
+   directed relations with an open arrow.
+ - Directed associations (relations) between classes, which are marked
+   with a name and possibly a cardinality. If no cardinality is given,
+   then the cardinality is 0--many.
+ - Composition relations, drawn with a filled diamond as arrow,
+   indicates a strong dependency to the target of the relationship;
+   the target is considered as a part of the source and cannot exist
+   independently of the source of the relationship.
+ - Composition relations, drawn with a open diamond as arrow,
+   indicates a weak dependency to the target of the relationship than
+   to that of a composition relation, the target is considered as part
+   of the sourec but can exist independently of the source of the
+   relationship.
+
+ Here is an example:
+
+#+NAME: structural-spec-diagram-legend
+#+BEGIN_SRC plantuml :noweb yes :file out/img/plantuml-legend.png
+<<plantuml-style>>
+
+abstract class AbstractConcept1
+
+class Concept2 {
+ field1
+ field2
+}
+
+AbstractConcept1 <|-- Concept2
+Concept2 <|-- SubConcept3
+
+Concept2 -left-> Concept4 : 1..* hasRelationA
+
+enum EnumeratedConcept5 {
+ element1
+ element2
+}
+
+Concept2 -right-> EnumeratedConcept5 : 1 hasRelationB
+
+Concept4 --o SubConcept3
+
+Concept4 --> Item
+
+class Item << RDL >>
+#+END_SRC
+
+#+RESULTS: structural-spec-diagram-legend
+[[file:out/img/plantuml-legend.png]]
+
+Note: The structural specification is described by a series of
+diagrams, each focus on a specific part. In the case that a class is
+used in multiple diagrams, only one diagram contains the full
+specification of the class, while the other diagrams only contain the
+class name. The diagram that contains the complete specification
+combines all diagrams and contains all information.
+
+** Model and Identified's                                              :todo:
+
+#+NAME: structural-spec-model-versioning
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-model-versioning.png
+<<plantuml-style>>
+
+stereotype Identified {
+ id :
+ name : string
+ description : string
+.. provenance ..
+ version : string
+ created : date
+ createdBy : string
+ lastUpdated : date
+ updatedBy : string
+}
+
+class Model << Identified >>
+abstract class Element << Identified >>
+
+Model o--> "*" Element
+#+END_SRC
+
+
+#+RESULTS: structural-spec-model-versioning
+[[file:out/img/imf-structural-spec-model-versioning.png]]
+
+
+** Elements
+
+#+NAME: structural-spec-instances
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-instances.png
+<<plantuml-style>>
+
+abstract class Element << Identified >> {
+  notation : 0..1 
+  symbol : 0..1
+}
+
+class Block
+class Terminal
+class InputTerminal
+class OutputTerminal
+
+class RDLItem << RDL >>
+class Medium << RDL >>
+
+enum Direction {
+ input
+ output
+}
+
+Element "*" --> "*" RDLItem : classifier
+
+' subclasses
+Element <|-- Block
+Element <|-- Terminal
+
+Terminal <|-- InputTerminal
+Terminal <|-- OutputTerminal
+
+' relations
+Block "1" --> "*" Terminal : hasTerminal
+Terminal "*" --> "0..1" Medium : hasMedium
+Terminal "*" --> "0..1" Direction : hasDirection
+
+Element "1" <-- "*" Element : partOf
+Terminal "1" --> "1" Terminal : connectedTo
+#+END_SRC
+
+#+ATTR_LATEX: :width 8cm
+#+RESULTS: structural-spec-instances
+[[file:out/img/imf-structural-spec-instances.png]]
+
+Notes:
+
+ - Use classifier for purpose?
+
+*** ... with reified relations
+
+#+NAME: structural-spec-instances-w-reified
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-instances-w-reified.png
+<<structural-spec-instances>>
+
+' reified relations
+class BreakdownPoint
+(Element, Element) .. BreakdownPoint
+Element "1" <-- "1" BreakdownPoint : thePart
+Element "1" <-- "1" BreakdownPoint : theWhole
+
+class ConnectionPoint
+(Terminal, Terminal) .. ConnectionPoint
+Terminal "1" <-- "1" ConnectionPoint : theInput
+Terminal "1" <-- "1" ConnectionPoint : theOutput
+#+END_SRC
+
+
+
+** Aspects and Aspect Elements
+
+#+NAME: structural-spec-aspect-element
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-aspect-element.png
+<<plantuml-style>>
+
+abstract class AspectElement
+abstract class Element
+
+Element <|-- AspectElement
+
+enum Aspect {
+  Function
+  Location
+  Product
+  Installed
+}
+
+AspectElement "*" --> "1" Aspect : hasAspect
+
+AspectElement --> AspectElement : intraAspectRelation
+AspectElement --> AspectElement : interAspectRelation
+#+END_SRC
+
+#+ATTR_LATEX: :width 6cm
+#+RESULTS: structural-spec-aspect-element
+[[file:out/img/imf-structural-spec-aspect-element.png]]
+
+*** Inter aspect Relations
+
+#+NAME: structural-spec-aspect-element-interaspect
+#+BEGIN_SRC plantuml :noweb yes :file out/img/structural-spec-aspect-element-interaspect.png
+<<plantuml-style>>
+
+<<py_aspectelement_interaspect_rels()>>
+#+END_SRC
+
+#+RESULTS: structural-spec-aspect-element-interaspect
+[[file:out/img/structural-spec-aspect-element-interaspect.png]]
+
+
+*** Convenient AspectElement specialisations
+
+#+NAME: structural-spec-aspect-element-subs
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-aspect-element-subs.png
+<<plantuml-style>>
+
+<<py_aspectelement_interaspect_rels()>>
+<<py_aspectelement_subs()>>
+#+END_SRC
+
+#+RESULTS: structural-spec-aspect-element-subs
+[[file:out/img/imf-structural-spec-aspect-element-subs.png]]
+
+
+#+NAME: py_aspectelement_interaspect_rels
+#+BEGIN_SRC python :var table=tbl-aspects :exports none
+output = ""
+
+for row in table:
+  aspect = row[0].replace("imf:","").replace("Aspect", "")
+  color = row[2].replace("'","").replace("#","")
+
+  ae = aspect + "Element"
+
+  output += "class " + ae + " #back:" + color + "\n"
+  output += "AspectElement --> " + ae + " : as" + aspect + "\n"
+  output += "AspectElement <|-- " + ae + " \n"
+
+return output
+#+END_SRC
+
+
+#+NAME: py_aspectelement_subs
+#+BEGIN_SRC python :var table=tbl-aspects :exports none
+output = ""
+
+for row in table:
+  aspect = row[0].replace("imf:","").replace("Aspect", "")
+  color = row[2].replace("'","").replace("#","")
+
+  for element in ['Block', 'Terminal']:
+    ae = aspect + element
+
+    output += "class " + ae + " #back:" + color + "\n"
+    output += element + " <|-- " + ae + "\n" 
+    output += aspect + "Element <|-- " + ae + "\n" 
+
+output += "\n"
+return output
+#+END_SRC
+
+#+RESULTS: py_aspectelement_subs
+#+begin_example
+class FunctionBlock #back:FFFF00
+Block <|-- FunctionBlock
+FunctionElement <|-- FunctionBlock
+class FunctionTerminal #back:FFFF00
+Terminal <|-- FunctionTerminal
+FunctionElement <|-- FunctionTerminal
+class LocationBlock #back:FF00FF
+Block <|-- LocationBlock
+LocationElement <|-- LocationBlock
+class LocationTerminal #back:FF00FF
+Terminal <|-- LocationTerminal
+LocationElement <|-- LocationTerminal
+class ProductBlock #back:00FFFF
+Block <|-- ProductBlock
+ProductElement <|-- ProductBlock
+class ProductTerminal #back:00FFFF
+Terminal <|-- ProductTerminal
+ProductElement <|-- ProductTerminal
+class InstalledBlock #back:0000FF
+Block <|-- InstalledBlock
+InstalledElement <|-- InstalledBlock
+class InstalledTerminal #back:0000FF
+Terminal <|-- InstalledTerminal
+InstalledElement <|-- InstalledTerminal
+#+end_example
+
+
+
+** Attribute Values (aka Datums)
+
+#+NAME: structural-spec-datum
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-datum.png
+<<plantuml-style>>
+
+abstract class Element
+
+Element *--> "*" AttributeValue : hasAttributeValue
+Element *--> "*" AttributeGroup : hasAttributeGroup
+
+AttributeGroup *--> "*" AttributeValue : hasAttributeValue
+
+class AttributeGroup {
+ name : 0 .. 1
+ description : 0 .. 1
+}
+
+class AttributeValue {
+ value : 0 .. 1
+}
+
+class UoM << RDL >>
+class RDLItem <<RDL >>
+
+AttributeValue "*" --> "0..1" UoM : hasUoM
+AttributeValue "*" --> "1" RDLItem : property
+
+AttributeValue "*" --> "0..1" Provenance
+AttributeValue "*" --> "0..1" Range
+AttributeValue "*" --> "0..1" Regularity
+AttributeValue "*" --> "0..1" Scope
+
+''' Quantity Datum Classifiers
+
+enum Provenance {
+  calculated
+  measured
+  specified
+}
+enum Range {
+  average
+  maximum
+  minimum
+  nominal
+  normal
+}
+enum Regularity {
+  absolute
+  continuous
+}
+enum Scope {
+  design
+  operating
+}
+#+END_SRC
+
+#+ATTR_LATEX: :width 12cm
+#+RESULTS: structural-spec-datum
+[[file:out/img/imf-structural-spec-datum.png]]
+
+** Types
+
+#+NAME: structural-spec-types
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-types.png
+<<plantuml-style>>
+
+stereotype Type << Identified >>
+
+abstract class ElementType << Type >> {
+  notation : 0..1 
+  symbol : 0..1
+}
+
+class BlockType << Type >> {
+}
+
+class TerminalType << Type >>
+
+class AttributeGroupType << Identified >> << Type >>
+
+class AttributeType << Type >> {
+.. constraints ..
+ 'legal values
+ legal value range
+ datatype
+ regex
+}
+
+'Type <|-- ElementType
+'Type <|-- AttributeType
+ElementType <|-- BlockType
+ElementType <|-- TerminalType
+
+Type "*" --> "*" RDLItem : classifier
+
+ElementType "*" --> "0..1" Aspect : hasAspect
+
+TerminalType "*" --> "1" Medium : hasMedium
+TerminalType "*" --> "0..1" Direction : hasDirection
+
+BlockType o--> "*" TerminalType : hasTerminalType
+(BlockType, TerminalType) .. _Constraint
+
+class _Constraint {
+ min : 0..1
+ max : 0..1
+ name : 0..1
+ description : 0..1
+}
+
+ElementType "*" --> "*" AttributeGroupType : hasAttributeGroupType
+(ElementType, AttributeGroupType) .. _Constraint
+
+ElementType *--> "*" AttributeType : hasAttributeType
+(ElementType, AttributeType) .. _Constraint
+
+AttributeGroupType *--> "1..*" AttributeType : hasAttributeType
+
+BlockType "0..1" <-- "*" Block : instanceOf
+TerminalType "0..1" <-- "*" Terminal : instanceOf
+AttributeType "0..1" <-- "*" AttributeValue : instanceOf
+AttributeGroupType "0..1" <-- "*" AttributeGroup : instanceOf
+
+enum ValueEnumeration << RDL >>
+AttributeType --> ValueEnumeration : 0 .. 1
+#+END_SRC
+
+#+RESULTS: structural-spec-types
+[[file:out/img/imf-structural-spec-types.png]]
+
+** +OLD Types+                                                     :noexport:
+
+#+begin_src plantuml :file out/img/types-overview.png
+
+skinparam class {
+ BackgroundColor White
+}
+
+skinparam groupInheritance 2
+
+abstract class Definition {
+ id : 1 uri
+ name : 0..1 string
+ description : 0..1 string
+}
+
+abstract class ObjectDefinition {
+ aspect : 0..1 uri
+}
+
+class TypeDefinition {
+ RDS : 0..1 uri
+ classifier : 0..x uri
+ symbol : 0..1 uri
+}
+
+abstract class TerminalDefinition {
+ medium : 0..1 uri
+}
+
+class AttributeDefinition {
+ property : 1 uri
+ value : 0..*
+ uom : 0..1 uri
+ ..constraints..
+ legal values : 0..*
+ legal value range : 0..1
+ number of required values : 0..1 integer
+ required datatype : 0..1 url
+}
+
+enum Provenance {
+  calculated
+  measured
+  specified
+}
+enum Range {
+  average
+  maximum
+  minimum
+  nominal
+  normal
+}
+enum Regularity {
+  absolute
+  continuous
+}
+enum Scope {
+  design
+  operating
+}
+
+enum Kind {
+  actual
+  estimated
+  required
+  set
+  test
+}
+
+class InTerminalDefinition
+class OutTerminalDefinition
+
+TypeDefinition --> TypeDefinition : 0..* : parent
+ObjectDefinition --> AttributeDefinition : 0..*
+TypeDefinition --> TerminalDefinition : 0..*
+AttributeDefinition --> Kind : 1
+AttributeDefinition --> Dimension : 1
+
+Definition <|-- ObjectDefinition
+ObjectDefinition <|-- TypeDefinition
+ObjectDefinition <|-- TerminalDefinition
+Definition <|-- AttributeDefinition
+
+
+TerminalDefinition <|-- InTerminalDefinition
+TerminalDefinition <|-- OutTerminalDefinition
+
+#+end_src
+
+#+RESULTS:
+[[file:img/types-overview.png]]
+
+** Complete Specification
+
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec.png
+<<plantuml-style>>
+
+<<structural-spec-model-versioning>>
+
+<<structural-spec-aspect-element>>
+
+<<structural-spec-types>>
+
+<<structural-spec-datum>>
+
+<<structural-spec-instances-w-reified>>
+
+
+#+END_SRC
+
+#+RESULTS:
+[[file:out/img/imf-structural-spec.png]]
+
+* Media                                                            :noexport:
+
+  Media, taken from ~MaterialsBreakdownRev3.xlsx~.
+  
+  | 1           | 2          | 3            |
+  |-------------+------------+--------------|
+  | Material    |            |              |
+  |             | Fluid      |              |
+  |             |            | Process (HC) |
+  |             |            | Water        |
+  |             |            | Chemicals    |
+  |             |            | Utilities    |
+  |             | Solids     |              |
+  |             |            | Granulate    |
+  |             |            | Brick        |
+  |-------------+------------+--------------|
+  | Energy      |            |              |
+  |             | Mechanical |              |
+  |             |            | Rotating     |
+  |             |            | Reciprocing  |
+  |             | Electrical |              |
+  |             |            | EHV          |
+  |             |            | HV           |
+  |             |            | LV           |
+  |             |            | <50V         |
+  |             | Thermal    |              |
+  |             |            | Liquid       |
+  |             |            | Steam        |
+  |             |            | Burner       |
+  |             |            | Air          |
+  |             |            | Electric     |
+  |-------------+------------+--------------|
+  | Force       |            |              |
+  |             | Mechanical |              |
+  |             |            | Support      |
+  |             |            | Connect      |
+  |             |            | Restrain     |
+  |-------------+------------+--------------|
+  | Information |            |              |
+  |             | Electrical |              |
+  |             |            | Wired        |
+  |             |            | Bus          |
+  |             | Optical    |              |
+  |             |            | Digital      |
+  |             | Wireless   |              |
+  |             |            | Digital      |
+
+
+* Vocabulary: OWL Ontology
+
+The IMF vocabulary is defined by an OWL ontology, also called the IMF
+ontology.
+
+The IMF ontology is specified by this document using a series of code
+snippets which are compiled to different OWL files serialised in RDF
+Turtle syntax.
+
+In order not to duplicate and to avoid synchronisation issues, the
+definition and description of the ontology and its contents are put
+directly in the ontology sources; please read these for more
+information.
+
+** Main ontology
+*** QA tests                                                             :QA:
+
+Tests are put here at the start to make it easy to update file names.
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf.owl.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.29 sec : 8 Triples : 27.78 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf.owl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+*** Ontology source                                                  :update:
+
+#+NAME: owl-imf-ontology
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/imf.owl.ttl :mkdirp yes
+<<prefixes>>
+
+<http://ns.imfid.org/imf> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf> ;
+    owl:imports
+      <http://ns.imfid.org/20230331/imf-elements> ,
+      <http://ns.imfid.org/20230331/imf-aspects> ,
+      <http://ns.imfid.org/20230331/imf-attributes> ,
+      <http://ns.imfid.org/20230331/imf-types> ;
+    skos:prefLabel "Information Modelling Framework Ontology " ;
+    skos:altLabel "IMF ontology" ;
+    skos:scopeNote """
+
+      This is the main IMF ontology and its main point of entry.  This
+      ontology document imports all other IMF sub-ontology documents, each
+      of which focus on one particular part of the ontology.
+
+    """;
+
+    .
+<<owl-main-genericrelations>>
+#+END_SRC
+
+**** Structural relations
+
+The following scope note is put on all following top-level relations:
+#+NAME: owl-main-generitrelation-scope-note
+#+BEGIN_SRC ttl
+skos:scopeNote """
+
+  This relation is used to enforce that subproperties respect this
+  relation's definition. This must be enforced by introducing
+  class axioms that locally further restrict the domain and range
+  of the relation.
+  
+"""
+#+END_SRC
+
+#+NAME: owl-main-genericrelations
+#+BEGIN_SRC ttl :noweb strip-export
+
+imf:hierarchicalRelation a owl:ObjectProperty ;
+    # a owl:IrreflexiveProperty ; ### An error occurred during reasoning: Non-simple property '<http://ns.imfid.org/imf#hierarchicalRelation>' or its inverse appears in irreflexive object property axiom..
+    skos:prefLabel "hierarchical relation";
+    rdfs:subPropertyOf skos:semanticRelation ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
+    <<owl-top-toprelation-scope-note>>
+    .
+
+imf:associativeRelation a owl:ObjectProperty ;
+    skos:prefLabel "associative relation";
+    rdfs:subPropertyOf skos:related ;
+    owl:propertyDisjointWith imf:hierachicalRelation ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    skos:definition "A generic associative relation." ;
+    <<owl-top-toprelation-scope-note>>
+    .
+#+END_SRC
+
+*** Import hierarchy
+
+The diagram displays the different ontology documents that the IMF
+ontology consists of and the import relations that exist between
+these.
+
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-import-hierarchy.rule", output="out/owl/ontology-import-hierarchy.svg")
+
+#+RESULTS:
+
+[[./out/owl/ontology-import-hierarchy.svg]]
+
+
+** Elements Sub-Ontology
+
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/.imf-elements.owl.wottr.ttl", output="out/owl/imf-elements-overview.svg")
+
+#+RESULTS:
+
+[[./out/owl/imf-elements-overview.svg]]
+
+*** Processing and QA                                                    :QA:
+**** RDF validate tangled file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/.imf-elements.owl.wottr.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-elements.owl.wottr.ttl : 0.20 sec : 151 Triples : 747.52 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/.imf-elements.owl.wottr.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+**** Expand OTTR instances
+
+#+CALL: lutra-expand(in="out/owl/.imf-elements.owl.wottr.ttl", out="out/owl/imf-elements.owl.ttl")
+
+#+RESULTS:
+#+begin_example
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-elements.owl.wottr.ttl.temp with parser turtle
+rapper: Serializing with serializer turtle
+rapper: Parsing returned 151 triples
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: <http://example.com/P14#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:Block
+    a owl:Class ;
+    rdfs:subClassOf imf:Element, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:Block ;
+        owl:onProperty imf:partOf
+    ] ;
+    skos:prefLabel "Block" .
+
+imf:BreakdownPoint
+    a owl:Class ;
+    skos:prefLabel "Breakdown Point" .
+
+imf:ConnectionPoint
+    a owl:Class ;
+    skos:prefLabel "Connection Point" .
+
+imf:Element
+    a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:unionOf (imf:Block
+            imf:Terminal
+        )
+    ] .
+
+imf:InputTerminal
+    a owl:Class ;
+    rdfs:subClassOf imf:Terminal ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:inDirection ;
+        owl:onProperty imf:hasDirection
+    ] ;
+    skos:altLabel "Input" ;
+    skos:prefLabel "Input Terminal" .
+
+imf:OutputTerminal
+    a owl:Class ;
+    rdfs:subClassOf imf:Terminal ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:outDirection ;
+        owl:onProperty imf:hasDirection
+    ] ;
+    skos:altLabel "Output" ;
+    skos:prefLabel "Output Terminal" .
+
+imf:Terminal
+    a owl:Class ;
+    rdfs:subClassOf imf:Element, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:Terminal ;
+        owl:onProperty imf:partOf
+    ] ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:unionOf (imf:InputTerminal
+            imf:OutputTerminal
+        )
+    ] ;
+    skos:altLabel "Channel", "Input/Output", "Port" ;
+    skos:prefLabel "Terminal" .
+
+imf:connectedTo
+    a owl:FunctionalProperty, owl:IrreflexiveProperty, owl:ObjectProperty ;
+    rdfs:domain imf:Terminal ;
+    rdfs:range imf:Terminal ;
+    rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation ;
+    owl:propertyChainAxiom (imf:theOutput
+        [
+            owl:inverseOf imf:theInput
+        ]
+    ) ;
+    skos:prefLabel "connected to" .
+
+imf:hasClassifier
+    a owl:ObjectProperty .
+
+imf:hasInputTerminal
+    a owl:ObjectProperty ;
+    rdfs:range imf:InputTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a block and its input terminals." ;
+    skos:prefLabel "has input terminal" .
+
+imf:hasMedium
+    a owl:ObjectProperty ;
+    rdfs:domain imf:Terminal ;
+    rdfs:subPropertyOf imf:hasClassifier .
+
+imf:hasOutputTerminal
+    a owl:ObjectProperty ;
+    rdfs:range imf:OutputTerminal ;
+    rdfs:subPropertyOf imf:hasTerminal ;
+    skos:definition "The relation between a block and its output terminals." ;
+    skos:prefLabel "has output terminal" .
+
+imf:hasPart
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:narrower ;
+    owl:inverseOf imf:partOf ;
+    skos:altLabel "has child" ;
+    skos:prefLabel "has part" .
+
+imf:hasTerminal
+    a owl:ObjectProperty ;
+    rdfs:domain imf:Block ;
+    rdfs:range imf:Terminal ;
+    rdfs:subPropertyOf imf:associativeRelation, imf:intraAspectRelation ;
+    skos:definition "The relation between a block and its terminals." ;
+    skos:prefLabel "has terminal" .
+
+imf:partOf
+    a owl:FunctionalProperty, owl:IrreflexiveProperty, owl:ObjectProperty ;
+    rdfs:domain imf:Element ;
+    rdfs:range imf:Element ;
+    rdfs:subPropertyOf imf:hierarchicalRelation, imf:intraAspectRelation, skos:broader ;
+    owl:propertyChainAxiom ([
+            owl:inverseOf imf:thePart
+        ]
+        imf:theWhole
+    ) ;
+    skos:altLabel "has parent" ;
+    skos:prefLabel "is part of" .
+
+imf:symbol
+    a owl:DatatypeProperty .
+
+imf:theInput
+    a owl:ObjectProperty ;
+    rdfs:domain imf:ConnectionPoint ;
+    rdfs:range imf:Terminal .
+
+imf:theOutput
+    a owl:ObjectProperty ;
+    rdfs:domain imf:ConnectionPoint ;
+    rdfs:range imf:Terminal .
+
+imf:thePart
+    a owl:ObjectProperty ;
+    rdfs:domain imf:BreakdownPoint ;
+    rdfs:range imf:Element .
+
+imf:theWhole
+    a owl:ObjectProperty ;
+    rdfs:domain imf:BreakdownPoint ;
+    rdfs:range imf:Element .
+
+<http://ns.imfid.org/imf-elements>
+    a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-elements> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Elements " ;
+    skos:scopeNote """
+
+    """ .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:InputTerminal
+        imf:OutputTerminal
+    ) .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:Block
+        imf:Terminal
+    ) .
+
+#+end_example
+
+**** RDF validate final file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-elements.owl.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-elements.owl.ttl : 0.19 sec : 141 Triples : 750.00 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-elements.owl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+*** Header
+#+NAME: owl-top-ontology
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-elements.owl.wottr.ttl :mkdirp yes
+<<prefixes>>
+
+<http://ns.imfid.org/imf-elements> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-elements> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Elements " ;
+    skos:scopeNote """
+
+    """ ;
+    .
+
+<<owl-elements-element>>
+<<owl-elements-block>>
+<<owl-elements-terminal>>
+<<owl-elements-inputoutputTerminal>>
+
+<<owl-elements-dataproperties>>
+
+<<owl-elements-relations-partof>>
+<<owl-elements-relations-connectedTo>>
+<<owl-elements-relations-classifier>>
+<<owl-elements-relations-hasmedium>>
+
+<<owl-elements-reifieds-breakdownpoint>>
+<<owl-elements-reifieds-connectionpoint>>
+#+END_SRC
+
+*** ~Element~
+
+#+NAME: owl-elements-element
+#+BEGIN_SRC ttl
+imf:Element a owl:Class .
+
+[] ottr:of o-owl-ma:ClassPartition ;
+   ottr:values ( imf:Element ( imf:Block imf:Terminal ) ) .
+#+END_SRC
+
+*** ~partOf~ / ~hasPart~
+
+#+NAME: owl-elements-relations-partof
+#+BEGIN_SRC ttl
+imf:partOf a owl:ObjectProperty;
+  a owl:FunctionalProperty ;
+  a owl:IrreflexiveProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  skos:prefLabel "is part of" ;
+  skos:altLabel "has parent" ;
+  .
+
+imf:hasPart a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
+  owl:inverseOf imf:partOf ;
+  skos:prefLabel "has part";
+  skos:altLabel "has child";
+  .
+#+END_SRC
+
+*** ~hasClassifier~
+
+#+NAME: owl-elements-relations-classifier
+#+BEGIN_SRC ttl
+imf:hasClassifier a owl:ObjectProperty .
+#+END_SRC
+
+*** Element data properties
+
+#+NAME: owl-elements-dataproperties
+#+BEGIN_SRC ttl
+# skos:notation
+imf:symbol a owl:DatatypeProperty .
+#+END_SRC
+
+*** ~Block~
+
+#+NAME: owl-elements-block
+#+BEGIN_SRC ttl
+imf:Block a owl:Class ;
+  rdfs:subClassOf imf:Element ;
+  skos:prefLabel "Block" ;
+  .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Block imf:partOf imf:Block) .
+#+END_SRC
+
+*** ~Terminal~
+
+#+NAME: owl-elements-terminal
+#+BEGIN_SRC ttl
+imf:Terminal a owl:Class ;
+  rdfs:subClassOf imf:Element ;
+  skos:prefLabel "Terminal" ;
+  skos:altLabel "Port", "Channel", "Input/Output" ;
+  .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Terminal imf:partOf imf:Terminal) .
+
+imf:hasTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  rdfs:domain imf:Block ;
+  rdfs:range imf:Terminal ;
+  skos:prefLabel "has terminal" ;
+  skos:definition "The relation between a block and its terminals.";
+  .
+
+#+END_SRC
+
+*** ~hasMedium~
+
+#+NAME: owl-elements-relations-hasmedium
+#+BEGIN_SRC ttl
+imf:hasMedium a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasClassifier ;
+  rdfs:domain imf:Terminal .
+#+END_SRC
+
+*** ~connectedTo~
+
+#+NAME: owl-elements-relations-connectedTo
+#+BEGIN_SRC ttl
+imf:connectedTo a owl:ObjectProperty ;
+  a owl:FunctionalProperty ;
+  a owl:IrreflexiveProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  skos:prefLabel "connected to" ;
+  rdfs:domain imf:Terminal ;
+  rdfs:range imf:Terminal ;
+  .
+#+END_SRC
+
+
+*** Terminal Direction + ~hasDirection~
+
+#+NAME: owl-elements-direction
+#+BEGIN_SRC ttl
+imf:TerminalDirection a owl:Class .
+
+imf:inDirection  a owl:NamedIndividual, imf:TerminalDirection .
+imf:outDirection a owl:NamedIndividual, imf:TerminalDirection. 
+
+imf:hasDirection a owl:ObjectProperty ;
+  rdfs:domain imf:Terminal ;
+  rdfs:range imf:TerminalDirection .
+#+END_SRC
+
+*** Input/OutputTerminal
+
+#+NAME: owl-elements-inputoutputTerminal
+#+BEGIN_SRC ttl
+imf:InputTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Input Terminal" ;
+  skos:altLabel "Input" ;
+  .
+
+[] ottr:of o-owl-ax:EquivHasValue ;
+   ottr:values ( imf:InputTerminal imf:hasDirection imf:inDirection ) .
+
+imf:OutputTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Output Terminal" ;
+  skos:altLabel "Output" ;
+  .
+
+[] ottr:of o-owl-ax:EquivHasValue ;
+   ottr:values ( imf:OutputTerminal imf:hasDirection imf:outDirection ) .
+
+[] ottr:of o-owl-ma:ClassPartition ;
+   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
+
+imf:hasInputTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has input terminal" ;
+  rdfs:range imf:InputTerminal ;
+  skos:definition "The relation between a block and its input terminals.";
+  .
+
+imf:hasOutputTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has output terminal" ;
+  rdfs:range imf:OutputTerminal ;
+  skos:definition "The relation between a block and its output terminals.";
+  .
+#+END_SRC
+
+*** ~BreakdownPoint~
+
+#+NAME: owl-elements-reifieds-breakdownpoint
+#+BEGIN_SRC ttl
+
+imf:BreakdownPoint a owl:Class ;
+  # rdfs:subClassOf 
+  skos:prefLabel "Breakdown Point" ;
+  # skos:altLabel
+  .
+
+imf:thePart a owl:ObjectProperty ;
+  rdfs:domain imf:BreakdownPoint ;
+  rdfs:range imf:Element .
+
+imf:theWhole a owl:ObjectProperty ;
+  rdfs:domain imf:BreakdownPoint ;
+  rdfs:range imf:Element .
+
+imf:partOf a owl:ObjectProperty ;
+  owl:propertyChainAxiom ( [ owl:inverseOf imf:thePart ] imf:theWhole ) .
+#+END_SRC
+
+*** ~ConnectionPoint~
+
+#+NAME: owl-elements-reifieds-connectionpoint
+#+BEGIN_SRC ttl
+
+imf:ConnectionPoint a owl:Class ;
+  # rdfs:subClassOf 
+  skos:prefLabel "Connection Point" ;
+  # skos:altLabel
+  .
+
+imf:theInput a owl:ObjectProperty ;
+  rdfs:domain imf:ConnectionPoint ;
+  rdfs:range imf:Terminal . # imf:OutputTerminal  
+
+imf:theOutput a owl:ObjectProperty ;
+  rdfs:domain imf:ConnectionPoint ;
+  rdfs:range imf:Terminal . # imf:InputTerminal  
+
+imf:connectedTo a owl:ObjectProperty ;
+  owl:propertyChainAxiom ( imf:theOutput [ owl:inverseOf imf:theInput ] ) .
+#+END_SRC
+
+
+** Aspects Sub-Ontology
+*** Overview
+
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-aspects.owl.ttl", output="out/owl/imf-aspects-overview.svg")
+
+#+RESULTS:
+
+[[./out/owl/imf-aspects-overview.svg]]
+
+*** Processing and QA                                                    :QA:
+**** RDF validate tangled file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/.imf-aspects.owl.wottr.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-aspects.owl.wottr.ttl : 0.19 sec : 187 Triples : 1,000.00 per second
+
+**** Expand OTTR instances
+
+#+CALL: lutra-expand(in="out/owl/.imf-aspects.owl.wottr.ttl", out="out/owl/imf-aspects.owl.ttl")
+
+#+RESULTS:
+#+begin_example
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-aspects.owl.wottr.ttl.temp with parser turtle
+rapper: Serializing with serializer turtle
+rapper: Parsing returned 135 triples
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: <http://example.com/P14#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:Aspect
+    a owl:Class .
+
+imf:AspectElement
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:AspectElement ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    rdfs:subclassOf imf:Element ;
+    skos:prefLabel "Aspect Element" .
+
+imf:FunctionAspect
+    imf:color "#FFFF00" ;
+    imf:prefix "=" ;
+    a imf:Aspect .
+
+imf:FunctionBlock
+    rdfs:subClassOf imf:Block, imf:FunctionElement .
+
+imf:FunctionElement
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectElement, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:FunctionElement ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:FunctionAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
+imf:FunctionTerminal
+    rdfs:subClassOf imf:FunctionElement, imf:Terminal .
+
+imf:InstalledAspect
+    imf:color "#0000FF" ;
+    imf:prefix "::" ;
+    a imf:Aspect .
+
+imf:InstalledBlock
+    rdfs:subClassOf imf:Block, imf:InstalledElement .
+
+imf:InstalledElement
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectElement, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:InstalledElement ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:InstalledAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
+imf:InstalledTerminal
+    rdfs:subClassOf imf:InstalledElement, imf:Terminal .
+
+imf:LocationAspect
+    imf:color "#FF00FF" ;
+    imf:prefix "+" ;
+    a imf:Aspect .
+
+imf:LocationBlock
+    rdfs:subClassOf imf:Block, imf:LocationElement .
+
+imf:LocationElement
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectElement, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:LocationElement ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:LocationAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
+imf:LocationTerminal
+    rdfs:subClassOf imf:LocationElement, imf:Terminal .
+
+imf:ProductAspect
+    imf:color "#00FFFF" ;
+    imf:prefix "-" ;
+    a imf:Aspect .
+
+imf:ProductBlock
+    rdfs:subClassOf imf:Block, imf:ProductElement .
+
+imf:ProductElement
+    a owl:Class ;
+    rdfs:subClassOf imf:AspectElement, [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:ProductElement ;
+        owl:onProperty imf:intraAspectRelation
+    ] ;
+    owl:equivalentClass [
+        a owl:Class, owl:Restriction ;
+        owl:hasValue imf:ProductAspect ;
+        owl:onProperty imf:hasAspect
+    ] .
+
+imf:ProductTerminal
+    rdfs:subClassOf imf:ProductElement, imf:Terminal .
+
+imf:asFunction
+    a owl:ObjectProperty ;
+    rdfs:range imf:FunctionElement ;
+    rdfs:subPropertyOf imf:InterAspectRelation .
+
+imf:asInstalled
+    a owl:ObjectProperty ;
+    rdfs:range imf:InstalledElement ;
+    rdfs:subPropertyOf imf:InterAspectRelation .
+
+imf:asLocation
+    a owl:ObjectProperty ;
+    rdfs:range imf:LocationElement ;
+    rdfs:subPropertyOf imf:InterAspectRelation .
+
+imf:asProduct
+    a owl:ObjectProperty ;
+    rdfs:range imf:ProductElement ;
+    rdfs:subPropertyOf imf:InterAspectRelation .
+
+imf:hasAspect
+    a owl:ObjectProperty ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:Aspect ;
+    skos:definition "Relates an Aspect Element to its Aspect." ;
+    skos:prefLabel "has aspect" .
+
+imf:interAspectRelation
+    a owl:ObjectProperty ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    rdfs:subPropertyOf skos:related ;
+    skos:prefLabel "inter-aspect relation" .
+
+imf:intraAspectRelation
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf skos:semanticRelation ;
+    skos:definition "A generic relation between aspect objects of the same aspect" ;
+    skos:prefLabel "intra-aspect relation" .
+
+<http://ns.imfid.org/imf-aspects>
+    a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-aspects> ;
+    skos:altLabel "IMF aspects ontology" ;
+    skos:prefLabel "Information Modelling Framework Ontology: Aspects " ;
+    skos:scopeNote """
+
+      This ontology defines IMF's central aspects.
+
+    """ .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:FunctionAspect
+        imf:LocationAspect
+        imf:ProductAspect
+        imf:InstalledAspect
+    ) .
+
+#+end_example
+
+**** RDF validate final file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-aspects.owl.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-aspects.owl.ttl : 0.19 sec : 121 Triples : 643.62 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-aspects.owl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+*** Ontology source
+**** Header
+
+#+NAME: owl-aspect-ontology
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-aspects.owl.wottr.ttl :mkdirp yes
+<<prefixes>>
+
+<http://ns.imfid.org/imf-aspects> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-aspects> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Aspects " ;
+    skos:altLabel "IMF aspects ontology" ;
+    skos:scopeNote """
+
+      This ontology defines IMF's central aspects.
+
+    """;
+    .
+
+<<owl-aspects-aspect>>
+<<owl-aspect-aspectelement>>
+<<owl-aspects-relations>>
+<<py_aspect_ottr_instances_aspects()>>
+
+# imf:LocationTerminal        rdfs:subClassOf owl:Nothing .
+# imf:LocationInterfacePoint  rdfs:subClassOf owl:Nothing .
+
+#+END_SRC
+
+#+RESULTS: owl-aspect-ontology
+#+begin_example
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+<http://ns.imfid.org/imf-aspects> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-aspects> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Aspects " ;
+    skos:altLabel "IMF aspects ontology" ;
+    skos:scopeNote """
+
+      This ontology defines IMF's central aspects.
+
+    """;
+    .
+
+imf:Aspect a owl:Class .
+imf:AspectElement a owl:Class ;
+  rdfs:subclassOf imf:Element ;
+  skos:prefLabel "Aspect Element";
+  .
+
+### properties
+
+imf:hasAspect a owl:ObjectProperty ;
+  skos:prefLabel "has aspect" ;
+  skos:definition "Relates an Aspect Element to its Aspect.";
+  rdfs:domain imf:AspectElement ;
+  rdfs:range imf:Aspect .
+imf:intraAspectRelation a owl:ObjectProperty ;
+    skos:prefLabel "intra-aspect relation";
+    rdfs:subPropertyOf skos:semanticRelation ;
+    #rdfs:domain imf:AspectElement ;
+    #rdfs:range imf:AspectElement ;
+    skos:definition "A generic relation between aspect objects of the same aspect" 
+    .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AspectElement imf:intraAspectRelation imf:AspectElement ) .
+
+imf:interAspectRelation a owl:ObjectProperty ;
+    skos:prefLabel "inter-aspect relation";
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    rdfs:subPropertyOf skos:related
+    # owl:propertyDisjointWith imf:intraAspectRelation ; ## An error occurred during reasoning: Non-simple property or its inverse appears in disjoint properties axiom.
+    .
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:FunctionAspect '=' '#FFFF00' ) . 
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:LocationAspect '+' '#FF00FF' ) . 
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:ProductAspect '-' '#00FFFF' ) . 
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:InstalledAspect '::' '#0000FF' ) . 
+
+[] ottr:of o-owl-ax:DifferentIndividuals ;
+   ottr:values( ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:InstalledAspect ) ) . 
+
+[] ottr:of o-imf:AspectClass ;
+   ottr:values( imf:FunctionElement imf:FunctionAspect ) . 
+[] ottr:of o-imf:AspectClass ;
+   ottr:values( imf:LocationElement imf:LocationAspect ) . 
+[] ottr:of o-imf:AspectClass ;
+   ottr:values( imf:ProductElement imf:ProductAspect ) . 
+[] ottr:of o-imf:AspectClass ;
+   ottr:values( imf:InstalledElement imf:InstalledAspect ) . 
+
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:FunctionBlock imf:FunctionElement imf:Block ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:FunctionTerminal imf:FunctionElement imf:Terminal ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:LocationBlock imf:LocationElement imf:Block ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:LocationTerminal imf:LocationElement imf:Terminal ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:ProductBlock imf:ProductElement imf:Block ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:ProductTerminal imf:ProductElement imf:Terminal ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:InstalledBlock imf:InstalledElement imf:Block ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:InstalledTerminal imf:InstalledElement imf:Terminal ) . 
+
+[] ottr:of o-imf:InterAspectRelation ;
+   ottr:values( imf:asFunction  imf:FunctionElement ) . 
+[] ottr:of o-imf:InterAspectRelation ;
+   ottr:values( imf:asLocation  imf:LocationElement ) . 
+[] ottr:of o-imf:InterAspectRelation ;
+   ottr:values( imf:asProduct  imf:ProductElement ) . 
+[] ottr:of o-imf:InterAspectRelation ;
+   ottr:values( imf:asInstalled  imf:InstalledElement ) . 
+
+
+
+# imf:LocationTerminal        rdfs:subClassOf owl:Nothing .
+# imf:LocationInterfacePoint  rdfs:subClassOf owl:Nothing .
+#+end_example
+
+**** ~AspectElement~
+
+#+NAME: owl-aspect-aspectelement
+#+BEGIN_SRC ttl
+imf:AspectElement a owl:Class ;
+  rdfs:subclassOf imf:Element ;
+  skos:prefLabel "Aspect Element";
+  .
+
+### properties
+
+imf:hasAspect a owl:ObjectProperty ;
+  skos:prefLabel "has aspect" ;
+  skos:definition "Relates an Aspect Element to its Aspect.";
+  rdfs:domain imf:AspectElement ;
+  rdfs:range imf:Aspect .
+#+END_SRC
+
+**** ~Aspect~
+
+#+NAME: owl-aspects-aspect
+#+BEGIN_SRC ttl
+imf:Aspect a owl:Class .
+#+END_SRC
+
+#+NAME: owl-aspects-relations
+#+BEGIN_SRC ttl
+imf:intraAspectRelation a owl:ObjectProperty ;
+    skos:prefLabel "intra-aspect relation";
+    rdfs:subPropertyOf skos:semanticRelation ;
+    #rdfs:domain imf:AspectElement ;
+    #rdfs:range imf:AspectElement ;
+    skos:definition "A generic relation between aspect objects of the same aspect" 
+    .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AspectElement imf:intraAspectRelation imf:AspectElement ) .
+
+imf:interAspectRelation a owl:ObjectProperty ;
+    skos:prefLabel "inter-aspect relation";
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    rdfs:subPropertyOf skos:related
+    # owl:propertyDisjointWith imf:intraAspectRelation ; ## An error occurred during reasoning: Non-simple property or its inverse appears in disjoint properties axiom.
+    .
+#+END_SRC
+
+**** Aspects
+
+This is the current list of aspects:
+
+#+NAME: tbl-aspects
+| Aspect, IRIs        | Prefix, string | Color, string |
+|---------------------+----------------+---------------|
+| imf:FunctionAspect  | '='            | '#FFFF00'     |
+| imf:LocationAspect  | '+'            | '#FF00FF'     |
+| imf:ProductAspect   | '-'            | '#00FFFF'     |
+| imf:InstalledAspect | '::'           | '#0000FF'     |
+
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf/aspects.stottr :mkdirp yes
+<<prefixes>>
+
+## This creates an individual for each of the aspects in the table.
+o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?symbol, xsd:string ?color] :: {
+  o-rdf:Type(?aspect, imf:Aspect) ,
+  ottr:Triple(?aspect, imf:prefix, ?symbol),
+  ottr:Triple(?aspect, imf:color, ?color)
+} .
+
+o-imf:AspectClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
+  o-owl-ax:SubClassOf(?class, imf:AspectElement),  
+  o-owl-ax:EquivObjectHasValue(?class, imf:hasAspect, ?aspect)
+  o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class)
+} .
+
+o-imf:AspectElementClass [owl:Class ?class, owl:Class ?aspectClass, owl:Class ?elementClass] :: {
+  o-owl-ax:SubClassOf(?class, ?aspectClass),  
+  o-owl-ax:SubClassOf(?class, ?elementClass)
+} .
+
+o-imf:InterAspectRelation [owl:ObjectProperty ?property, owl:Class ?aspectClass] :: {
+  o-rdf:Type(?property, owl:ObjectProperty),
+  o-owl-ax:SubPropertyOf(?property, imf:InterAspectRelation),  
+  o-rdfs:Range(?property, ?aspectClass)
+} .
+#+END_SRC
+
+#+NAME: py_aspect_ottr_instances_aspects
+#+BEGIN_SRC python :results raw :wrap src ttl :var table=tbl-aspects :exports none
+output = ""
+
+instance = "[] ottr:of {} ;\n   ottr:values( {} ) . \n"
+
+## aspects
+for row in table[0:]:
+  output += instance.format("o-imf:Aspect", " ".join(f'{w}' for w in row))
+
+output += "\n"
+
+all_aspects = list(zip(*table[0:]))[0]
+all_systemelements = [ 'Block', 'Terminal' ]
+
+## aspects are different
+output += instance.format("o-owl-ax:DifferentIndividuals", "( " + " ".join(all_aspects) + " )")
+
+output += "\n"
+
+## Create a class that represents all elements of a given aspect
+for aspect in all_aspects:
+  output += instance.format("o-imf:AspectClass", aspect.replace('Aspect', '') + "Element " + aspect)
+
+output += "\n"
+
+## create a class of each aspect, element type combination, e.g., FunctionBlock.
+for aspect in all_aspects:
+  for element in all_systemelements:
+    output += instance.format("o-imf:AspectElementClass", aspect.replace('Aspect', '') + element + " " + aspect.replace('Aspect', '')  + "Element imf:" + element)
+
+output += "\n"
+
+## Create a object property for each aspect
+for aspect in all_aspects:
+  output += instance.format("o-imf:InterAspectRelation", aspect.replace('Aspect', '').replace("imf:", "imf:as") + "  " + aspect.replace('Aspect', '') + "Element")
+
+output += "\n"
+
+
+return output
+#+END_SRC
+
+#+RESULTS: py_aspect_ottr_instances_aspects
+#+BEGIN_src ttl
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:FunctionAspect '=' '#FFFF00' ) . 
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:LocationAspect '+' '#FF00FF' ) . 
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:ProductAspect '-' '#00FFFF' ) . 
+[] ottr:of o-imf:Aspect ;
+   ottr:values( imf:InstalledAspect '::' '#FFFFFF' ) . 
+
+[] ottr:of o-owl-ax:DifferentIndividuals ;
+   ottr:values( ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:InstalledAspect ) ) . 
+
+[] ottr:of o-imf:AspectClass ;
+   ottr:values( imf:FunctionElement imf:FunctionAspect ) . 
+[] ottr:of o-imf:AspectClass ;
+   ottr:values( imf:LocationElement imf:LocationAspect ) . 
+[] ottr:of o-imf:AspectClass ;
+   ottr:values( imf:ProductElement imf:ProductAspect ) . 
+[] ottr:of o-imf:AspectClass ;
+   ottr:values( imf:InstalledElement imf:InstalledAspect ) . 
+
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:FunctionBlock imf:FunctionElement imf:Block ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:FunctionTerminal imf:FunctionElement imf:Terminal ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:LocationBlock imf:LocationElement imf:Block ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:LocationTerminal imf:LocationElement imf:Terminal ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:ProductBlock imf:ProductElement imf:Block ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:ProductTerminal imf:ProductElement imf:Terminal ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:InstalledBlock imf:InstalledElement imf:Block ) . 
+[] ottr:of o-imf:AspectElementClass ;
+   ottr:values( imf:InstalledTerminal imf:InstalledElement imf:Terminal ) . 
+
+[] ottr:of o-imf:InterAspectRelation ;
+   ottr:values( imf:asFunction  imf:FunctionElement ) . 
+[] ottr:of o-imf:InterAspectRelation ;
+   ottr:values( imf:asLocation  imf:LocationElement ) . 
+[] ottr:of o-imf:InterAspectRelation ;
+   ottr:values( imf:asProduct  imf:ProductElement ) . 
+[] ottr:of o-imf:InterAspectRelation ;
+   ottr:values( imf:asInstalled  imf:InstalledElement ) . 
+
+#+END_src
+
+** Attributes Sub-Ontology
+
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-attributes.owl.ttl", output="out/owl/imf-attributes-overview.svg")
+
+#+RESULTS:
+
+[[./out/owl/imf-attributes-overview.svg]]
+
+*** Processing and QA                                                    :QA:
+**** RDF validate tangled file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/.imf-attributes.owl.wottr.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-attributes.owl.wottr.ttl : 0.18 sec : 82 Triples : 463.28 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/.imf-attributes.owl.wottr.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+
+**** Expand OTTR instances
+
+#+CALL: lutra-expand(in="out/owl/.imf-attributes.owl.wottr.ttl", out="out/owl/imf-attributes.owl.ttl")
+
+#+RESULTS:
+#+begin_example
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-attributes.owl.wottr.ttl.temp with parser turtle
+rapper: Serializing with serializer turtle
+rapper: Parsing returned 156 triples
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: <http://example.com/P14#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:AttributeGroup
+    a owl:Class .
+
+imf:AttributeValue
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Provenance ;
+        owl:onProperty imf:hasDatumQualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Range ;
+        owl:onProperty imf:hasDatumQualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Scope ;
+        owl:onProperty imf:hasDatumQualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Regularity ;
+        owl:onProperty imf:hasDatumQualifier
+    ] .
+
+imf:DatumQualifier
+    a owl:Class .
+
+imf:Provenance
+    a owl:Class ;
+    rdfs:subClassOf imf:DatumQualifier ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (imf:calculated
+            imf:measured
+            imf:specified
+        )
+    ] .
+
+imf:Range
+    a owl:Class ;
+    rdfs:subClassOf imf:DatumQualifier ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (imf:average
+            imf:maximum
+            imf:minimum
+            imf:nominal
+            imf:normal
+        )
+    ] .
+
+imf:Regularity
+    a owl:Class ;
+    rdfs:subClassOf imf:DatumQualifier ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (imf:absolute
+            imf:continuous
+        )
+    ] .
+
+imf:Scope
+    a owl:Class ;
+    rdfs:subClassOf imf:DatumQualifier ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (imf:design
+            imf:operating
+        )
+    ] .
+
+imf:absolute
+    a imf:Regularity .
+
+imf:average
+    a imf:Range .
+
+imf:calculated
+    a imf:Provenance .
+
+imf:continuous
+    a imf:Regularity .
+
+imf:design
+    a imf:Scope .
+
+imf:hasAttributeGroup
+    a owl:ObjectProperty ;
+    rdfs:range imf:AttributeGroup .
+
+imf:hasAttributeValue
+    a owl:ObjectProperty ;
+    rdfs:range imf:AttributeValue .
+
+imf:hasDatumQualifier
+    a owl:ObjectProperty ;
+    rdfs:domain imf:AttributeValue ;
+    rdfs:range imf:DatumQualifier .
+
+imf:hasProperty
+    a owl:ObjectProperty ;
+    rdfs:domain imf:AttributeValue ;
+    rdfs:subPropertyOf imf:hasClassifier .
+
+imf:hasUOM
+    a owl:ObjectProperty ;
+    rdfs:domain imf:AttributeValue ;
+    rdfs:subPropertyOf imf:hasClassifier .
+
+imf:hasValue
+    a owl:DatatypeProperty ;
+    rdfs:domain imf:AttributeValue .
+
+imf:maximum
+    a imf:Range .
+
+imf:measured
+    a imf:Provenance .
+
+imf:minimum
+    a imf:Range .
+
+imf:nominal
+    a imf:Range .
+
+imf:normal
+    a imf:Range .
+
+imf:operating
+    a imf:Scope .
+
+imf:specified
+    a imf:Provenance .
+
+<http://ns.imfid.org/imf-attributes>
+    a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-attributes> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Attributes " ;
+    skos:scopeNote """
+
+    """ .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:Range
+        imf:Provenance
+        imf:Regularity
+        imf:Scope
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:average
+        imf:maximum
+        imf:minimum
+        imf:nominal
+        imf:normal
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:design
+        imf:operating
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:absolute
+        imf:continuous
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:calculated
+        imf:measured
+        imf:specified
+    ) .
+
+#+end_example
+
+**** RDF validate final file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-attributes.owl.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-attributes.owl.ttl : 0.19 sec : 140 Triples : 752.69 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-attributes.owl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+
+*** Header
+
+#+NAME: owl-attributes-ontology
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-attributes.owl.wottr.ttl :mkdirp yes
+<<prefixes>>
+
+<http://ns.imfid.org/imf-attributes> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-attributes> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Attributes " ;
+    skos:scopeNote """
+
+    """ ;
+    .
+
+<<owl-attributes-value>>
+<<owl-attributes-group>>
+<<owl-attributes-datumqualifier>>
+<<py_aspect_ottr_datum_qualifiers()>>
+#+END_SRC
+
+#+RESULTS: owl-attributes-ontology
+#+begin_example
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+<http://ns.imfid.org/imf-attributes> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-attributes> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Attributes " ;
+    skos:scopeNote """
+
+    """ ;
+    .
+
+imf:AttributeValue a owl:Class .
+
+imf:hasAttributeValue a owl:ObjectProperty ;
+  rdfs:range  imf:AttributeValue .
+
+imf:hasProperty a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasClassifier ;
+  rdfs:domain imf:AttributeValue .
+
+imf:hasUOM a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasClassifier ;
+  rdfs:domain imf:AttributeValue .
+
+imf:hasValue a owl:DatatypeProperty ;
+  rdfs:domain imf:AttributeValue .
+
+imf:AttributeGroup a owl:Class .
+
+imf:hasAttributeGroup a owl:ObjectProperty ;
+  rdfs:range  imf:AttributeGroup .
+
+imf:DatumQualifier a owl:Class .
+
+imf:hasDatumQualifier a owl:ObjectProperty ;
+  rdfs:domain imf:AttributeValue ;
+  rdfs:range  imf:DatumQualifier .
+[] ottr:of o-imf:DatumQualifier ;
+   ottr:values( imf:Provenance (imf:calculated imf:measured imf:specified) ) . 
+[] ottr:of o-imf:DatumQualifier ;
+   ottr:values( imf:Range (imf:average imf:maximum imf:minimum imf:nominal imf:normal) ) . 
+[] ottr:of o-imf:DatumQualifier ;
+   ottr:values( imf:Scope (imf:design imf:operating) ) . 
+[] ottr:of o-imf:DatumQualifier ;
+   ottr:values( imf:Regularity (imf:absolute imf:continuous) ) . 
+
+[] ottr:of o-owl-ax:DisjointClasses ;
+   ottr:values( ( imf:Provenance imf:Range imf:Scope imf:Regularity ) ) . 
+#+end_example
+
+*** ~AttributeValue~
+
+#+NAME: owl-attributes-value
+#+BEGIN_SRC ttl
+imf:AttributeValue a owl:Class .
+
+imf:hasAttributeValue a owl:ObjectProperty ;
+  rdfs:range  imf:AttributeValue .
+
+imf:hasProperty a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasClassifier ;
+  rdfs:domain imf:AttributeValue .
+
+imf:hasUOM a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasClassifier ;
+  rdfs:domain imf:AttributeValue .
+
+imf:hasValue a owl:DatatypeProperty ;
+  rdfs:domain imf:AttributeValue .
+#+END_SRC
+
+*** ~AttributeGroup~
+
+#+NAME: owl-attributes-group
+#+BEGIN_SRC ttl
+
+imf:AttributeGroup a owl:Class .
+
+imf:hasAttributeGroup a owl:ObjectProperty ;
+  rdfs:range  imf:AttributeGroup .
+
+#+END_SRC
+
+
+*** ~DatumQualifier~
+
+#+NAME: owl-attributes-datumqualifier
+#+BEGIN_SRC ttl
+imf:DatumQualifier a owl:Class .
+
+imf:hasDatumQualifier a owl:ObjectProperty ;
+  rdfs:domain imf:AttributeValue ;
+  rdfs:range  imf:DatumQualifier .
+#+END_SRC
+
+*** DatumQualifiers
+
+#+NAME: tbl-datumqualifiers
+| Qualifier      | Instance       |
+|----------------+----------------|
+| imf:Provenance | imf:calculated |
+| imf:Provenance | imf:measured   |
+| imf:Provenance | imf:specified  |
+| imf:Range      | imf:average    |
+| imf:Range      | imf:maximum    |
+| imf:Range      | imf:minimum    |
+| imf:Range      | imf:nominal    |
+| imf:Range      | imf:normal     |
+| imf:Regularity | imf:absolute   |
+| imf:Regularity | imf:continuous |
+| imf:Scope      | imf:design     |
+| imf:Scope      | imf:operating  |
+
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf/attributes.stottr :mkdirp yes
+<<prefixes>>
+
+o-imf:DatumQualifier [owl:Class ?qualifierClass, NEList<owl:NamedIndividual> ?qualifierInstances] :: {
+  o-rdf:Type(?qualifierClass, owl:Class) ,
+  o-owl-ax:SubClassOf(?qualifierClass, imf:DatumQualifier) ,
+  o-owl-ax:SubObjectMaxCardinality(imf:AttributeValue, "1"^^xsd:nonNegativeInteger, imf:hasDatumQualifier, ?qualifierClass),
+  cross | o-rdf:Type(++?qualifierInstances, ?qualifierClass),
+  o-owl-ax:EquivObjectOneOf(?qualifierClass, ?qualifierInstances),
+  o-owl-ax:DifferentIndividuals(?qualifierInstances)
+} .
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+o-imf:DatumQualifier [owl:Class ?qualifierClass, NEList<owl:NamedIndividual> ?qualifierInstances] :: {
+  o-rdf:Type(?qualifierClass, owl:Class) ,
+  o-owl-ax:SubClassOf(?qualifierClass, imf:DatumQualifier) ,
+  o-owl-ax:SubObjectMaxCardinality(imf:AttributeValue, "1"^^xsd:nonNegativeInteger, imf:hasDatumQualifier, ?qualifierClass),
+  cross | o-rdf:Type(?qualifierInstances, ?qualifierClass),
+  o-owl-ax:EquivObjectOneOf(?qualifierInstances, ?qualifierClass),
+  o-owl-ax:DifferentIndividuals(?qualifierInstances)
+} .
+#+end_example
+
+#+NAME: py_aspect_ottr_datum_qualifiers
+#+BEGIN_SRC python :results raw :wrap src ttl :var table=tbl-datumqualifiers :exports none
+output = ""
+instance = "[] ottr:of {} ;\n   ottr:values( {} ) . \n"
+
+qualifiers = set(list(zip(*table[0:]))[0])
+
+for qualifier in qualifiers:
+  instances = []
+  for row in table[0:]:
+    if row[0] == qualifier :
+      instances.append(row[1])
+  output += instance.format("o-imf:DatumQualifier", qualifier + " (" + " ".join(instances) + ")")
+
+output += "\n"
+
+##all_qualifier_instances = list(zip(*table[0:]))[1]
+output += instance.format("o-owl-ax:DisjointClasses", "( " + " ".join(qualifiers) + " )")
+
+return output
+#+END_SRC
+
+#+RESULTS: py_aspect_ottr_datum_qualifiers
+#+BEGIN_src ttl
+[] ottr:of o-imf:DatumQualifier ;
+   ottr:values( imf:Regularity (imf:absolute imf:continuous) ) . 
+[] ottr:of o-imf:DatumQualifier ;
+   ottr:values( imf:Scope (imf:design imf:operating) ) . 
+[] ottr:of o-imf:DatumQualifier ;
+   ottr:values( imf:Provenance (imf:calculated imf:measured imf:specified) ) . 
+[] ottr:of o-imf:DatumQualifier ;
+   ottr:values( imf:Range (imf:average imf:maximum imf:minimum imf:nominal imf:normal) ) . 
+
+[] ottr:of o-owl-ax:DisjointClasses ;
+   ottr:values( ( imf:Regularity imf:Scope imf:Provenance imf:Range ) ) . 
+#+END_src
+
+** Types Sub-Ontology
+*** Overview
+
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-types.owl.ttl", output="out/owl/imf-types-overview.svg")
+
+#+RESULTS:
+
+[[./out/owl/imf-types-overview.svg]]
+
+*** Processing and QA                                                    :QA:
+**** RDF validate tangled file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/.imf-types.owl.wottr.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-types.owl.wottr.ttl : 0.19 sec : 139 Triples : 747.31 per second
+
+**** Expand OTTR instances
+
+#+CALL: lutra-expand(in="out/owl/.imf-types.owl.wottr.ttl", out="out/owl/imf-types.owl.ttl")
+
+#+RESULTS:
+#+begin_example
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-types.owl.wottr.ttl.temp with parser turtle
+rapper: Serializing with serializer turtle
+rapper: Parsing returned 108 triples
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: <http://example.com/P14#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:Aspect
+    a owl:Class .
+
+imf:AttributeGroup
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:AttributeGroupType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:AttributeGroupType
+    a owl:Class ;
+    rdfs:subClassOf imf:Type ;
+    skos:prefLabel "Attribute Group Type" .
+
+imf:AttributeType
+    a owl:Class ;
+    rdfs:subClassOf imf:Type ;
+    skos:prefLabel "Attribute Type" .
+
+imf:AttributeValue
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:AttributeType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:Block
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:BlockType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:BlockType
+    a owl:Class ;
+    rdfs:subClassOf imf:ElementType ;
+    skos:prefLabel "Block Type" .
+
+imf:Direction
+    a owl:Class .
+
+imf:Element
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:ElementType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:ElementType
+    a owl:Class ;
+    rdfs:subClassOf imf:Type, [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange rdfs:Literal ;
+        owl:onProperty imf:symbol
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange rdfs:Literal ;
+        owl:onProperty skos:notation
+    ] ;
+    skos:prefLabel "Element Type" .
+
+imf:Terminal
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:TerminalType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:TerminalType
+    a owl:Class ;
+    rdfs:subClassOf imf:ElementType, [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Direction ;
+        owl:onProperty imf:hasDirection
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass owl:Thing ;
+        owl:onProperty imf:hasMedium
+    ] ;
+    skos:prefLabel "Terminal Type" .
+
+imf:Type
+    a owl:Class ;
+    skos:prefLabel "Type" .
+
+imf:TypeConstraint
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange xsd:integer ;
+        owl:onProperty imf:minCount
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange xsd:integer ;
+        owl:onProperty imf:maxCount
+    ] .
+
+imf:hasAspect
+    a owl:ObjectProperty .
+
+imf:hasDirection
+    a owl:ObjectProperty .
+
+imf:hasMedium
+    a owl:ObjectProperty .
+
+imf:hasTerminalType
+    a owl:ObjectProperty ;
+    rdfs:domain imf:BlockType ;
+    rdfs:range imf:TerminalType .
+
+imf:instanceOf
+    a owl:ObjectProperty ;
+    rdfs:range imf:Type ;
+    skos:prefLabel "instance of" .
+
+imf:maxCount
+    a owl:DatatypeProperty .
+
+imf:minCount
+    a owl:DatatypeProperty .
+
+imf:symbol
+    a owl:DatatypeProperty .
+
+<http://ns.imfid.org/imf-types>
+    a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
+    skos:altLabel "IMF types ontology" ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:scopeNote """
+
+    """ .
+
+rdfs:Literal
+    a rdfs:Datatype .
+
+xsd:integer
+    a rdfs:Datatype .
+
+owl:Thing
+    a owl:Class .
+
+skos:notation
+    a owl:DatatypeProperty .
+
+#+end_example
+
+**** RDF validate final file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-types.owl.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.20 sec : 96 Triples : 477.61 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-types.owl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+*** Ontology source
+**** Header
+
+#+NAME: owl-types-ontology
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-types.owl.wottr.ttl :mkdirp yes
+<<prefixes>>
+
+<http://ns.imfid.org/imf-types> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:altLabel "IMF types ontology" ;
+    skos:scopeNote """
+
+    """;
+    .
+
+<<owl-types-type>>
+<<owl-types-instanceOf>>
+<<owl-types-typeconstraint>>
+<<owl-types-relationconstraints>>
+
+#+END_SRC
+
+#+RESULTS: owl-types-ontology
+#+begin_example
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+<http://ns.imfid.org/imf-types> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:altLabel "IMF types ontology" ;
+    skos:scopeNote """
+
+    """;
+    .
+
+imf:Type a owl:Class ;
+  skos:prefLabel "Type";
+  .
+
+imf:ElementType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Element Type";
+  .
+
+imf:BlockType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Block Type";
+  .
+
+imf:TerminalType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Terminal Type";
+  .
+
+imf:AttributeType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Type";
+  .
+
+imf:AttributeGroupType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Group Type";
+  .
+
+imf:hasTerminalType a owl:ObjectProperty ;
+  rdfs:domain imf:BlockType ;
+  rdfs:range imf:TerminalType ;
+  .
+
+imf:instanceOf a owl:ObjectProperty ;
+  skos:prefLabel "instance of" ;
+  rdfs:range imf:Type .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeValue imf:instanceOf imf:AttributeType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
+imf:TypeConstraint a owl:Class .
+
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
+
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
+
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
+#+end_example
+
+**** Types
+
+#+NAME: owl-types-type
+#+BEGIN_SRC ttl
+imf:Type a owl:Class ;
+  skos:prefLabel "Type";
+  .
+
+imf:ElementType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Element Type";
+  .
+
+imf:BlockType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Block Type";
+  .
+
+imf:TerminalType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Terminal Type";
+  .
+
+imf:AttributeType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Type";
+  .
+
+imf:AttributeGroupType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Group Type";
+  .
+
+imf:hasTerminalType a owl:ObjectProperty ;
+  rdfs:domain imf:BlockType ;
+  rdfs:range imf:TerminalType ;
+  .
+#+END_SRC
+
+**** Type constraint
+
+#+NAME: owl-types-typeconstraint
+#+BEGIN_SRC ttl
+imf:TypeConstraint a owl:Class .
+
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
+
+#+END_SRC
+
+**** Relation constraints
+
+#+NAME: owl-types-relationconstraints
+#+BEGIN_SRC ttl
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
+
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
+#+END_SRC
+
+**** instanceOf
+
+#+NAME: owl-types-instanceOf
+#+BEGIN_SRC ttl
+
+imf:instanceOf a owl:ObjectProperty ;
+  skos:prefLabel "instance of" ;
+  rdfs:range imf:Type .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeValue imf:instanceOf imf:AttributeType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
+#+END_SRC
+
+** All IMF Ontologies combined
+
+#+CALL: sh_jena_merge(files="out/owl/imf.owl.ttl out/owl/imf-aspects.owl.ttl out/owl/imf-attributes.owl.ttl out/owl/imf-types.owl.ttl", out="out/owl/imf-all.owl.ttl")
+
+#+RESULTS:
+: 15:19:34 INFO  riot            :: File: out/owl/imf.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.18 sec : 22 Triples : 125.00 per second
+: 15:19:34 INFO  riot            :: File: out/owl/imf-aspects.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-aspects.owl.ttl : 0.02 sec : 119 Triples : 5,173.91 per second
+: 15:19:34 INFO  riot            :: File: out/owl/imf-attributes.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-attributes.owl.ttl : 0.01 sec : 65 Triples : 5,909.09 per second
+: 15:19:34 INFO  riot            :: File: out/owl/imf-types.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.00 sec : 5 Triples : 1,250.00 per second
+: Total           : 0.21 sec : 211 Triples : 985.98 per second
+
+* Prefixes
+
+This section contains the prefixes used throughout this document.
+
+** Standard vocabulary prefixes
+
+#+NAME: prefixes-std
+#+BEGIN_SRC ttl :tangle out/.std-prefixes.ttl
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+#+END_SRC
+
+** IMF prefixes
+
+#+NAME: prefixes-imf
+#+BEGIN_SRC ttl
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+#+END_SRC
+
+** OTTR template prefixes
+
+#+NAME: prefixes-ottr
+#+BEGIN_SRC ttl
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+#+END_SRC
+
+** All prefixes combined                                           :noexport:
+
+#+NAME: prefixes
+#+BEGIN_SRC ttl :noweb yes
+<<prefixes-std>>
+<<prefixes-imf>>
+<<prefixes-ottr>>
+#+END_SRC
+
+* Software                                                         :noexport:
+** Apache Jena
+
+https://jena.apache.org/:
+
+"A free and open source Java framework for building Semantic Web and
+Linked Data applications", including reading and writing RDF, SHACL
+validation and SPARQL query processing.
+
+This section contains the script calls used for processing the RDF
+code snippets in this document.
+
+*** Download
+
+#+BEGIN_SRC sh :results raw
+cd bin
+wget -O apache-jena.zip -nc -x https://dlcdn.apache.org/jena/binaries/apache-jena-4.4.0.zip
+unzip apache-jena.zip
+mv apache-jena-4.4.0 apache-jena
+#+END_SRC
+
+#+RESULTS:
+File ‘apache-jena.zip’ already there; not retrieving.
+Archive:  apache-jena.zip
+   creating: apache-jena-4.4.0/
+   creating: apache-jena-4.4.0/bin/
+   creating: apache-jena-4.4.0/bat/
+   creating: apache-jena-4.4.0/src-examples/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/bin/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/aggregates/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/algebra/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/bgpmatching/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/constructquads/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/engine/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/filter/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/propertyfunction/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/update/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/helloworld/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/pizza/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/streaming/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shacl/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shacl/examples/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/examples/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/data/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/ontologies/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/org/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/org/apache/
+   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/org/apache/jena_examples/
+   creating: apache-jena-4.4.0/src-examples/data/
+   creating: apache-jena-4.4.0/src-examples/jena/
+   creating: apache-jena-4.4.0/src-examples/jena/examples/
+   creating: apache-jena-4.4.0/src-examples/jena/examples/ontology/
+   creating: apache-jena-4.4.0/src-examples/jena/examples/ontology/classHierarchy/
+   creating: apache-jena-4.4.0/src-examples/jena/examples/ontology/describeClass/
+   creating: apache-jena-4.4.0/src-examples/jena/examples/rdf/
+   creating: apache-jena-4.4.0/lib/
+   creating: apache-jena-4.4.0/lib-src/
+  inflating: apache-jena-4.4.0/README  
+  inflating: apache-jena-4.4.0/LICENSE  
+  inflating: apache-jena-4.4.0/NOTICE  
+  inflating: apache-jena-4.4.0/bin/arq  
+  inflating: apache-jena-4.4.0/bin/infer  
+  inflating: apache-jena-4.4.0/bin/iri  
+  inflating: apache-jena-4.4.0/bin/jena  
+  inflating: apache-jena-4.4.0/bin/jena.version  
+  inflating: apache-jena-4.4.0/bin/juuid  
+  inflating: apache-jena-4.4.0/bin/nquads  
+  inflating: apache-jena-4.4.0/bin/ntriples  
+  inflating: apache-jena-4.4.0/bin/qparse  
+  inflating: apache-jena-4.4.0/bin/rdfcat  
+  inflating: apache-jena-4.4.0/bin/rdfcompare  
+  inflating: apache-jena-4.4.0/bin/rdfcopy  
+  inflating: apache-jena-4.4.0/bin/rdfdiff  
+  inflating: apache-jena-4.4.0/bin/rdfparse  
+  inflating: apache-jena-4.4.0/bin/rdfxml  
+  inflating: apache-jena-4.4.0/bin/riot  
+  inflating: apache-jena-4.4.0/bin/rset  
+  inflating: apache-jena-4.4.0/bin/rsparql  
+  inflating: apache-jena-4.4.0/bin/rupdate  
+  inflating: apache-jena-4.4.0/bin/schemagen  
+  inflating: apache-jena-4.4.0/bin/shacl  
+  inflating: apache-jena-4.4.0/bin/shex  
+  inflating: apache-jena-4.4.0/bin/sparql  
+  inflating: apache-jena-4.4.0/bin/tdb1.xloader  
+  inflating: apache-jena-4.4.0/bin/tdb2.tdbbackup  
+  inflating: apache-jena-4.4.0/bin/tdb2.tdbcompact  
+  inflating: apache-jena-4.4.0/bin/tdb2.tdbdump  
+  inflating: apache-jena-4.4.0/bin/tdb2.tdbloader  
+  inflating: apache-jena-4.4.0/bin/tdb2.tdbquery  
+  inflating: apache-jena-4.4.0/bin/tdb2.tdbstats  
+  inflating: apache-jena-4.4.0/bin/tdb2.tdbupdate  
+  inflating: apache-jena-4.4.0/bin/tdb2.xloader  
+  inflating: apache-jena-4.4.0/bin/tdbbackup  
+  inflating: apache-jena-4.4.0/bin/tdbdump  
+  inflating: apache-jena-4.4.0/bin/tdbloader  
+  inflating: apache-jena-4.4.0/bin/tdbloader2  
+  inflating: apache-jena-4.4.0/bin/tdbquery  
+  inflating: apache-jena-4.4.0/bin/tdbstats  
+  inflating: apache-jena-4.4.0/bin/tdbupdate  
+  inflating: apache-jena-4.4.0/bin/trig  
+  inflating: apache-jena-4.4.0/bin/turtle  
+  inflating: apache-jena-4.4.0/bin/uparse  
+  inflating: apache-jena-4.4.0/bin/update  
+  inflating: apache-jena-4.4.0/bin/utf8  
+  inflating: apache-jena-4.4.0/bin/wwwdec  
+  inflating: apache-jena-4.4.0/bin/wwwenc  
+  inflating: apache-jena-4.4.0/bin/xload-common  
+  inflating: apache-jena-4.4.0/bin/xload-data  
+  inflating: apache-jena-4.4.0/bin/xload-index  
+  inflating: apache-jena-4.4.0/bin/xload-main  
+  inflating: apache-jena-4.4.0/log4j2.properties  
+  inflating: apache-jena-4.4.0/bat/arq.bat  
+  inflating: apache-jena-4.4.0/bat/infer.bat  
+  inflating: apache-jena-4.4.0/bat/iri.bat  
+  inflating: apache-jena-4.4.0/bat/jena_version.bat  
+  inflating: apache-jena-4.4.0/bat/juuid.bat  
+  inflating: apache-jena-4.4.0/bat/nquads.bat  
+  inflating: apache-jena-4.4.0/bat/ntriples.bat  
+  inflating: apache-jena-4.4.0/bat/qparse.bat  
+  inflating: apache-jena-4.4.0/bat/rdfcat.bat  
+  inflating: apache-jena-4.4.0/bat/rdfcompare.bat  
+  inflating: apache-jena-4.4.0/bat/rdfcopy.bat  
+  inflating: apache-jena-4.4.0/bat/rdfdiff.bat  
+  inflating: apache-jena-4.4.0/bat/rdfparse.bat  
+  inflating: apache-jena-4.4.0/bat/rdfxml.bat  
+  inflating: apache-jena-4.4.0/bat/riot.bat  
+  inflating: apache-jena-4.4.0/bat/rset.bat  
+  inflating: apache-jena-4.4.0/bat/rsparql.bat  
+  inflating: apache-jena-4.4.0/bat/rupdate.bat  
+  inflating: apache-jena-4.4.0/bat/schemagen.bat  
+  inflating: apache-jena-4.4.0/bat/shacl.bat  
+  inflating: apache-jena-4.4.0/bat/shex.bat  
+  inflating: apache-jena-4.4.0/bat/sparql.bat  
+  inflating: apache-jena-4.4.0/bat/tdb2_tdbbackup.bat  
+  inflating: apache-jena-4.4.0/bat/tdb2_tdbcompact.bat  
+  inflating: apache-jena-4.4.0/bat/tdb2_tdbdump.bat  
+  inflating: apache-jena-4.4.0/bat/tdb2_tdbloader.bat  
+  inflating: apache-jena-4.4.0/bat/tdb2_tdbquery.bat  
+  inflating: apache-jena-4.4.0/bat/tdb2_tdbstats.bat  
+  inflating: apache-jena-4.4.0/bat/tdb2_tdbupdate.bat  
+  inflating: apache-jena-4.4.0/bat/tdbbackup.bat  
+  inflating: apache-jena-4.4.0/bat/tdbdump.bat  
+  inflating: apache-jena-4.4.0/bat/tdbloader.bat  
+  inflating: apache-jena-4.4.0/bat/tdbquery.bat  
+  inflating: apache-jena-4.4.0/bat/tdbstats.bat  
+  inflating: apache-jena-4.4.0/bat/tdbupdate.bat  
+  inflating: apache-jena-4.4.0/bat/trig.bat  
+  inflating: apache-jena-4.4.0/bat/turtle.bat  
+  inflating: apache-jena-4.4.0/bat/uparse.bat  
+  inflating: apache-jena-4.4.0/bat/update.bat  
+  inflating: apache-jena-4.4.0/bat/utf8.bat  
+  inflating: apache-jena-4.4.0/bat/wwwdec.bat  
+  inflating: apache-jena-4.4.0/bat/wwwenc.bat  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/README.md  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/bin/get-data  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/pom.xml  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExModelStore01.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExModification01.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExProg1.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExProg2.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExQuerySelect1.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExQuerySelect2.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExQuerySubstitute_01.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExampleDBpedia1.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExampleDBpedia2.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExampleDBpedia3.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExamplesServer.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/aggregates/CustomAggregate.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/algebra/AlgebraEx.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/algebra/AlgebraExec.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth00_Setup.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth01_RDFConnectionPW.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth02_QueryExecutionPW.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth03_UpdateExecutionPW.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth04_ServicePW.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/bgpmatching/OpExecutorAlt.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/bgpmatching/StageAltMain.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/bgpmatching/StageGeneratorAlt.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/constructquads/ExampleConstructQuads.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/engine/MyQueryEngine.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/filter/classify.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/propertyfunction/labelSearch.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/propertyfunction/localname.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/propertyfunction/uppercase.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT1_ReadModel.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT2_ReadDataset.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT3_RDFParser.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT4_StreamRDF_Filter.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT5_StreamRDFCollect.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT6_AddNewReader.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT7_AddNewWriter.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT8_RelativeURIs.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT9_AsyncParser.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT_RDFXML_ReaderProperties.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT_RDFXML_WriteProperties.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT_writeModel.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT_writeRDF.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/Ex_WriteJsonLD.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/update/UpdateExecuteOperations.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/update/UpdateProgrammatic.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/update/UpdateReadFromFile.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/Base.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/CheeseBase.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/helloworld/HelloWorld.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/pizza/PizzaSparqlNoInf.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample1.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample2.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample3.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample4.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample5.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample6.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shacl/examples/Shacl01_validateGraph.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shacl/examples/Shacl02_validateTransaction.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/examples/Shex01_validateGraph.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/examples/Shex02_validateNode.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/examples/Shex03_validate.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExQuadFilter.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB1.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB2.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB3.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB4.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB5.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB6.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB_Txn1.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB_Txn2.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB_Txn3.java  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/data/cheeses-0.1.ttl  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/data/pizza.owl.rdf  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/ontologies/cheese.ttl  
+  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/org/apache/jena_examples/AppTest.java  
+  inflating: apache-jena-4.4.0/src-examples/data/camera.owl  
+  inflating: apache-jena-4.4.0/src-examples/data/eswc-2006-09-21.rdf  
+  inflating: apache-jena-4.4.0/src-examples/data/test1.owl  
+  inflating: apache-jena-4.4.0/src-examples/data/test2.owl  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/ontology/classHierarchy/ClassHierarchy.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/ontology/classHierarchy/Main.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/ontology/describeClass/DescribeClass.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/ontology/describeClass/Main.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial01.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial02.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial03.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial04.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial05.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial06.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial07.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial08.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial09.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial10.java  
+  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial11.java  
+  inflating: apache-jena-4.4.0/lib/jena-arq-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jsonld-java-0.13.4.jar  
+  inflating: apache-jena-4.4.0/lib/commons-io-2.11.0.jar  
+  inflating: apache-jena-4.4.0/lib/httpclient-cache-4.5.13.jar  
+  inflating: apache-jena-4.4.0/lib/httpclient-4.5.13.jar  
+  inflating: apache-jena-4.4.0/lib/httpcore-4.4.15.jar  
+  inflating: apache-jena-4.4.0/lib/jcl-over-slf4j-1.7.35.jar  
+  inflating: apache-jena-4.4.0/lib/jackson-core-2.13.1.jar  
+  inflating: apache-jena-4.4.0/lib/jackson-databind-2.13.1.jar  
+  inflating: apache-jena-4.4.0/lib/jackson-annotations-2.13.1.jar  
+  inflating: apache-jena-4.4.0/lib/titanium-json-ld-1.2.0.jar  
+  inflating: apache-jena-4.4.0/lib/jakarta.json-2.0.1.jar  
+  inflating: apache-jena-4.4.0/lib/protobuf-java-3.19.3.jar  
+  inflating: apache-jena-4.4.0/lib/libthrift-0.15.0.jar  
+  inflating: apache-jena-4.4.0/lib/javax.annotation-api-1.3.2.jar  
+  inflating: apache-jena-4.4.0/lib/commons-lang3-3.12.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-core-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-base-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-shaded-guava-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/commons-csv-1.9.0.jar  
+  inflating: apache-jena-4.4.0/lib/commons-codec-1.15.jar  
+  inflating: apache-jena-4.4.0/lib/commons-compress-1.21.jar  
+  inflating: apache-jena-4.4.0/lib/collection-0.7.jar  
+  inflating: apache-jena-4.4.0/lib/jena-iri-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/commons-cli-1.5.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-tdb-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-rdfconnection-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-shacl-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-shex-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-cmds-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-tdb2-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-dboe-storage-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-dboe-trans-data-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-dboe-transaction-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-dboe-base-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/jena-dboe-index-4.4.0.jar  
+  inflating: apache-jena-4.4.0/lib/slf4j-api-1.7.35.jar  
+  inflating: apache-jena-4.4.0/lib/log4j-slf4j-impl-2.17.1.jar  
+  inflating: apache-jena-4.4.0/lib/log4j-api-2.17.1.jar  
+  inflating: apache-jena-4.4.0/lib/log4j-core-2.17.1.jar  
+  inflating: apache-jena-4.4.0/lib-src/jena-arq-4.4.0-sources.jar  
+  inflating: apache-jena-4.4.0/lib-src/jena-core-4.4.0-sources.jar  
+  inflating: apache-jena-4.4.0/lib-src/jena-tdb-4.4.0-sources.jar  
+  inflating: apache-jena-4.4.0/lib-src/jena-rdfconnection-4.4.0-sources.jar  
+  inflating: apache-jena-4.4.0/lib-src/jena-shacl-4.4.0-sources.jar  
+  inflating: apache-jena-4.4.0/lib-src/jena-shex-4.4.0-sources.jar  
+  inflating: apache-jena-4.4.0/lib-src/jena-cmds-4.4.0-sources.jar  
+
+*** RIOT
+
+Reading, writing and validating RDF.
+
+#+BEGIN_SRC sh :results output verbatim
+bin/apache-jena/bin/riot --help
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+riot [--help] [--time] [--base=IRI] [-syntax=FORMAT] [--out=FORMAT] [--count] file ...
+  Parser control
+      --sink                 Parse but throw away output
+      --syntax=NAME          Set syntax (otherwise syntax guessed from file extension)
+      --base=URI             Set the base URI (does not apply to N-triples and N-Quads)
+      --check                Additional checking of RDF terms
+      --strict               Run with in strict mode
+      --validate             Same as --sink --check --strict
+      --count                Count triples/quads parsed, not output them
+      --rdfs=file            Apply some RDFS inference using the vocabulary in the file
+      --nocheck              Turn off checking of RDF terms
+  Output control
+      --output=FMT           Output in the given format, streaming if possible.
+      --formatted=FMT        Output, using pretty printing (consumes memory)
+      --stream=FMT           Output, using a streaming format
+      --compress             Compress the output with gzip
+  Time
+      --time                 Time the operation
+  Symbol definition
+      --set                  Set a configuration symbol to a value
+  General
+      -v   --verbose         Verbose
+      -q   --quiet           Run with minimal output
+      --debug                Output information for debugging
+      --help
+      --version              Version information
+#+end_example
+
+#+NAME: sh_jena_validate_rdf
+#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="out/owl/imf-top.owl.ttl"
+bin/apache-jena/bin/riot --verbose --syntax=$syntax --validate --time $files 
+#+END_SRC
+
+#+RESULTS: sh_jena_validate_rdf
+: imf-top.owl     : 0.21 sec : 78 Triples : 373.21 per second
+
+#+NAME: sh_jena_merge
+#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="out/owl/imf-top.owl.ttl owl/imf-aspects.owl.ttl" :var out="out/owl/imf-all.owl.ttl"
+bin/apache-jena/bin/riot --verbose --syntax=$syntax --check --time $files > $out
+#+END_SRC
+
+#+RESULTS: sh_jena_merge
+: java.lang.RuntimeException: Can't split 'asdf' -- looking for '=' to separate name and value
+: 	at arq.cmdline.ModContext.processArgs(ModContext.java:61)
+: 	at org.apache.jena.cmd.CmdArgModule.lambda$process$0(CmdArgModule.java:39)
+: 	at org.apache.jena.cmd.CmdArgModule.forEach(CmdArgModule.java:48)
+: 	at org.apache.jena.cmd.CmdArgModule.process(CmdArgModule.java:39)
+: 	at org.apache.jena.cmd.CmdMain.mainMethod(CmdMain.java:91)
+: 	at org.apache.jena.cmd.CmdMain.mainRun(CmdMain.java:58)
+: 	at org.apache.jena.cmd.CmdMain.mainRun(CmdMain.java:45)
+: 	at riotcmd.riot.main(riot.java:29)
+
+*** SHACL
+
+Validate RDF wrt. SHACL shapes.
+
+#+BEGIN_SRC sh :results output verbatim
+bin/apache-jena/bin/shacl v --help
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+shacl_validate [--target URI] --shapes shapesFile --data dataFile
+  General
+      -v   --verbose         Verbose
+      -q   --quiet           Run with minimal output
+      --debug                Output information for debugging
+      --help
+      --version              Version information
+      --shapes               Shapes file
+      --data                 Data file
+      --target               Validate specific node [may use prefixes from the data]
+      --text                 Output in concise text format
+#+end_example
+
+#+NAME: sh_jena_shacl_validate
+#+BEGIN_SRC sh :results output raw :var shapes="shapefile" :var data="rdf-examples/coffee-machine.ttl" :wrap src ttl
+bin/apache-jena/bin/shacl v --shapes $shapes --data $data
+#+END_SRC
+
+
+#+NAME: sh_jena_shacl_imf_validate
+#+BEGIN_SRC sh :results output raw :var data="rdf-examples/coffee-machine.ttl" :wrap src ttl
+bin/apache-jena/bin/shacl v --shapes shacl/imf-all.shacl.ttl --data $data
+#+END_SRC
+
+#+RESULTS: sh_jena_shacl_imf_validate
+#+BEGIN_src ttl
+@prefix ex:         <http://example.com#> .
+@prefix imf:        <http://ns.imfid.org/imf#> .
+@prefix o-imf:      <http://ns.imfid.org/templates/> .
+@prefix o-owl-ax:   <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:   <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-rdf:      <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix ottr:       <http://ns.ottr.xyz/0.4/> .
+@prefix owl:        <http://www.w3.org/2002/07/owl#> .
+@prefix pav:        <http://purl.org/pav/> .
+@prefix rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:       <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:         <http://www.w3.org/ns/shacl#> .
+@prefix shsh:       <http://www.w3.org/ns/shacl-shacl#> .
+@prefix skos:       <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:        <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  false ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  ex:MilkInput ;
+                 sh:resultMessage              "ClassConstraint[<http://ns.imfid.org/imf#OutputTerminal>]: Expected class :<http://ns.imfid.org/imf#OutputTerminal> for <http://example.com#CupTray>" ;
+                 sh:resultPath                 imf:directlyPrecedes ;
+                 sh:resultSeverity             sh:Violation ;
+                 sh:sourceConstraintComponent  sh:ClassConstraintComponent ;
+                 sh:sourceShape                _:b0 ;
+                 sh:value                      ex:CupTray
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  ex:WaterInput ;
+                 sh:resultMessage              "ClassConstraint[<http://ns.imfid.org/imf#OutputTerminal>]: Expected class :<http://ns.imfid.org/imf#OutputTerminal> for <http://example.com#CupTray>" ;
+                 sh:resultPath                 imf:directlyPrecedes ;
+                 sh:resultSeverity             sh:Violation ;
+                 sh:sourceConstraintComponent  sh:ClassConstraintComponent ;
+                 sh:sourceShape                _:b0 ;
+                 sh:value                      ex:CupTray
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  ex:CoffeeInput ;
+                 sh:resultMessage              "ClassConstraint[<http://ns.imfid.org/imf#OutputTerminal>]: Expected class :<http://ns.imfid.org/imf#OutputTerminal> for <http://example.com#CupTray>" ;
+                 sh:resultPath                 imf:directlyPrecedes ;
+                 sh:resultSeverity             sh:Violation ;
+                 sh:sourceConstraintComponent  sh:ClassConstraintComponent ;
+                 sh:sourceShape                _:b0 ;
+                 sh:value                      ex:CupTray
+               ]
+] .
+#+END_src
+
+
+#+NAME: sh_jena_shacl_std_validate
+#+BEGIN_SRC sh :results output raw :var data="out/owl/imf-top.owl.ttl" :wrap src ttl
+bin/apache-jena/bin/shacl v --shapes http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl --shapes https://spec.ottr.xyz/wOTTR/0.4.3/core-grammar.shacl.ttl --data $data
+#+END_SRC
+
+#+RESULTS: sh_jena_shacl_std_validate
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+
+*** SPARQL
+
+Query RDF.
+
+#+BEGIN_SRC sh :results output verbatim
+bin/apache-jena/bin/sparql --help
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+sparql --data=<file> --query=<query>
+  Control
+      --explain              Explain and log query execution
+      --repeat=N or N,M      Do N times or N warmup and then M times (use for timing to overcome start up costs of Java)
+      --optimize=            Turn the query optimizer on or off (default: on)
+  Time
+      --time                 Time the operation
+  Query Engine
+      --engine=EngineName    Register another engine factory[ref]
+      --unengine=EngineName   Unregister an engine factory
+  Dataset
+      --data=FILE            Data for the dataset - triple or quad formats
+      --graph=FILE           Graph for default graph of the datset
+      --namedGraph=FILE      Add a graph into the dataset as a named graph
+  Results
+      --results=             Results format (Result set: text, XML, JSON, CSV, TSV; Graph: RDF serialization)
+      --desc=                Assembler description file
+  Query
+      --query, --file        File containing a query
+      --syntax, --in         Syntax of the query
+      --base                 Base URI for the query
+  Symbol definition
+      --set                  Set a configuration symbol to a value
+  General
+      -v   --verbose         Verbose
+      -q   --quiet           Run with minimal output
+      --debug                Output information for debugging
+      --help
+      --version              Version information
+      --strict               Operate in strict SPARQL mode (no extensions of any kind)
+#+end_example
+
+
+#+NAME: sh_jena_sparql
+#+BEGIN_SRC sh :results output :var query="PREFIX imf: <http://ns.imfid.org/imf#> SELECT * {?s ?p ?o} LIMIT 1" :var files="out/owl/imf-top.owl.ttl" :hlines yes :exports both
+echo "$query" > out/temp/.temp-sh_jena_sparql
+bin/apache-jena/bin/sparql --results=text --data=$files --query out/temp/.temp-sh_jena_sparql
+#+END_SRC
+
+#+RESULTS: sh_jena_sparql
+: -----------------------------------------------------------------------------------------------
+: | s                        | p                                             | o                |
+: ===============================================================================================
+: | imf:hierarchicalRelation | <http://www.w3.org/2000/01/rdf-schema#domain> | imf:AspectElement |
+: -----------------------------------------------------------------------------------------------
+
+
+
+** Lutra
+
+Lutra is the reference implementation for working with OTTR templates
+and instances.
+
+This section contains the scripts that are used to expand the OTTR
+instances found in this document.
+
+#+BEGIN_SRC sh 
+cd bin
+wget -O lutra.jar -nc -x http://ottr.xyz/downloads/lutra/lutra-master.jar
+#+END_SRC
+
+#+RESULTS:
+
+#+NAME: lutra-help
+#+BEGIN_SRC sh :results output verbatim
+java -jar bin/lutra.jar --help
+#+END_SRC
+
+#+RESULTS: lutra-help
+#+begin_example
+Usage: lutra [-fhV] [--debugFullTrace] [--debugStackTrace] [--quiet] [--stdout]
+             [-F=<fetchFormat>] [--haltOn=<haltOn>] [-I=<inputFormat>]
+             [-L=<libraryFormat>] [-m=<mode>] [-o=<out>] [-O=<outputFormat>]
+             [-p=<prefixes>] [-e=<extensions>[,<extensions>...]]...
+             [-E=<ignoreExtensions>[,<ignoreExtensions>...]]...
+             [-l=<library>]... [<inputs>...]
+
+DESCRIPTION:
+Reference implementation for OTTR Templates. Use for expanding template
+instances and template definitions, translating between different formats and
+for checking the integrity of template libraries.
+
+PARAMETERS:
+      [<inputs>...]         Files of instances to which operations are to be
+                              applied.
+
+OPTIONS:
+      --debugFullTrace      This enables tracing such that printed messages get
+                              a stack trace giving more information on the
+                              location of the concerned objects. NB! Enabling
+                              this flag will deteriorate performance.
+                            default: false)
+      --debugStackTrace     This enables printing a regular java stack trace
+                              for error messages.Enabling this flag will not
+                              deteriorate performance.
+                            default: false)
+  -e, --extension=<extensions>[,<extensions>...]
+                            File extension of files to use as input to template
+                              library.
+                            (default: [])
+  -E, --ignoreExtension=<ignoreExtensions>[,<ignoreExtensions>...]
+                            File extensions of files to ignore as input to
+                              template library.
+                            (default: [])
+  -f, --fetchMissing        Fetch missing template dependencies. It is here
+                              assumed that templates' definitions are
+                              accessible via their IRI, that is, the IRI is
+                              either a path to a file, a URL, or similar.
+                            (default: false)
+  -F, --fetchFormat=<fetchFormat>
+                            The input format of the templates fetched via the
+                              -f flag.
+  -h, --help                Show this help message and exit.
+      --haltOn=<haltOn>     Halt execution upon receiving messages with a
+                              severity equal to or greater than this value.
+                            (legal values: INFO, WARNING, ERROR, FATAL;
+                              default: ERROR)
+  -I, --inputFormat=<inputFormat>
+                            Input format of instances.
+                            (legal values: wottr, stottr, tabottr, bottr
+                              default: wottr)
+  -l, --library=<library>   Folder containing templates to use as library. Can
+                              be used multiple times for multiple libraries.
+  -L, --libraryFormat=<libraryFormat>
+                            The input format of the libraries. If omitted, all
+                              available formats are attempted.
+                            (legal values: wottr, stottr)
+  -m, --mode=<mode>         The mode of operation to be applied to input.
+                            (legal values: expand, expandLibrary, format,
+                              formatLibrary, lint, checkSyntax, docttrLibrary;
+                              default: expand)
+  -o, --output=<out>        Path for writing output.
+  -O, --outputFormat=<outputFormat>
+                            Output format of output of operation defined by the
+                              mode.
+                            (legal values: wottr, stottr; default: wottr)
+  -p, --prefixes=<prefixes> Path to RDF file containing prefix declarations to
+                              be used when rendering output.    Any other data
+                              in the file is read, but ignored.
+      --quiet               Suppress all messages, including errors and
+                              warnings.
+                            (default: false)
+      --stdout              Print system of operations to standard out.
+                            (default: false)
+  -V, --version             Print version information and exit.
+
+LINKS:
+Website:  https://ottr.xyz
+Primers:  https://primer.ottr.xyz
+Git repo: https://gitlab.com/ottr/lutra/lutra
+#+end_example
+
+#+NAME: lutra-expand
+#+BEGIN_SRC sh :results output verbatim :var in="out/owl/.imf-aspects.owl.wottr.ttl" :var inFormat="wottr" :var out="out/owl/imf-aspects.owl.ttl"
+java -jar bin/lutra.jar -l out/ottr -L stottr -f -p out/.std-prefixes.ttl -I $inFormat -o $in.temp $in 
+rapper -i turtle -o turtle $in.temp > $out
+cat $out
+#+END_SRC
+
+#+RESULTS: lutra-expand
+** RDFVizler with rules
+
+https://rdfvizler.dyreriket.xyz/:
+
+#+BEGIN_QUOTE
+RDFVizler is a simple RDF visualisation software built with the Apache
+Jena Java API and Graphviz visualisation software. It requires Java 8
+and Graphviz to be installed on the system.
+
+RDFVizler visualises RDF graphs by parsing a designated RDFVizler OWL
+vocabulary into Graphviz's DOT language and then straight-forwardly to
+images using the Graphviz software. The RDFVizler vocabulary acts as a
+mere "RDF wrapper language" for the DOT language, all graph, edge and
+node attributes are taken directly from DOT."
+#+END_QUOTE
+
+*** TODO Script calls
+
+TODO: setup download
+
+#+BEGIN_SRC sh :results output verbatim
+java -jar bin/rdfvizler.jar --help
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+RDFVizler: RDF visualisation
+
+Usage:
+java -jar rdfvizler-[version].jar [--help] [--mergeInput] [--skipRules]
+                                  [--version]
+                                  [--inputFormatRDF=<inputFormatRDF>]
+                                  [--outputFormatRDF=<outputFormatRDF>]
+                                  [-i=<outputFormatImage>] [-r=<rules>]
+                                  [-x=<mode>] RDF_FILES...
+
+Description:
+RDFVizler visualises RDF by parsing a designated RDF RDFVizler vocabulary into
+Graphviz syntax and processing this to a graph using Graphviz' dot software.
+For more details, see http://rdfvizler.dyreriket.xyz.
+
+Parameters:
+      RDF_FILES...      Input RDF: URIs or file paths
+
+Options:
+  -x, --executionMode=<mode>
+                        What output to produce. (legal values: rdf, dot, image;
+                          default: image)
+  -r, --rules=<rules>   Input rules: URI or file path (default: http://rdfvizler.
+                          dyreriket.xyz/rules/rdf.jrule)
+      --skipRules       Skip rule application to input? (default: false)
+      --inputFormatRDF=<inputFormatRDF>
+                        Format of RDF input (legal values: rdf, ttl, nt, guess;
+                          default: guess -- by file extension as per jena.util.
+                          FileUtils, then Turtle)
+      --mergeInput      Merge input files to a single model to visualise?
+      --outputFormatRDF=<outputFormatRDF>
+                        Format of RDF output (legal values: rdf, ttl, nt, guess;
+                          default: rdf)
+  -i, --outputFormatImage=<outputFormatImage>
+                        Format of image output (legal values: PNG, SVG,
+                          SVG_STANDALONE, DOT, XDOT, PLAIN, PLAIN_EXT, PS, PS2,
+                          JSON, JSON0, IMAP, CMAPX; default: SVG_STANDALONE)
+      --version         Display version info
+      --help            Display this help message
+#+end_example
+
+
+#+NAME: rdfvizler
+#+BEGIN_SRC sh :results output verbatim :var rules="out/rdfvizler/import-hierarchy.rule" :var data="out/owl/imf-all.owl.ttl" :var output="out/.output-rdfvizler.svg"
+java -jar bin/rdfvizler.jar --rules=$rules $data > $output
+#+END_SRC
+
+#+RESULTS: rdfvizler
+#+begin_example
+Exception in thread "main" picocli.CommandLine$ExecutionException: Error while running command (xyz.dyreriket.rdfvizler.cli.RDFVizlerCLI@66498326): org.apache.jena.shared.RulesetNotFoundException: out/rdfvizler/import-hierarchy.rule
+	at picocli.CommandLine.execute(CommandLine.java:1056)
+	at picocli.CommandLine.access$900(CommandLine.java:142)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:1255)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:1223)
+	at picocli.CommandLine$AbstractParseResultHandler.handleParseResult(CommandLine.java:1131)
+	at picocli.CommandLine.parseWithHandlers(CommandLine.java:1414)
+	at picocli.CommandLine.run(CommandLine.java:1878)
+	at picocli.CommandLine.run(CommandLine.java:1808)
+	at xyz.dyreriket.rdfvizler.cli.RDFVizlerCLI.main(RDFVizlerCLI.java:133)
+Caused by: org.apache.jena.shared.RulesetNotFoundException: out/rdfvizler/import-hierarchy.rule
+	at org.apache.jena.reasoner.rulesys.Rule.rulesFromURL(Rule.java:511)
+	at org.apache.jena.reasoner.rulesys.Rule.rulesFromURL(Rule.java:524)
+	at xyz.dyreriket.rdfvizler.RDFVizler.getRules(RDFVizler.java:39)
+	at xyz.dyreriket.rdfvizler.RDFVizler.getRDFDotModel(RDFVizler.java:72)
+	at xyz.dyreriket.rdfvizler.RDFVizler.writeDotGraph(RDFVizler.java:105)
+	at xyz.dyreriket.rdfvizler.RDFVizler.writeDotGraph(RDFVizler.java:111)
+	at xyz.dyreriket.rdfvizler.RDFVizler.write(RDFVizler.java:99)
+	at xyz.dyreriket.rdfvizler.cli.RDFVizlerCLI.processFile(RDFVizlerCLI.java:156)
+	at xyz.dyreriket.rdfvizler.cli.RDFVizlerCLI.run(RDFVizlerCLI.java:166)
+	at picocli.CommandLine.execute(CommandLine.java:1048)
+	... 8 more
+#+end_example
+
+*** Prefixes                                                       :noexport:
+
+#+NAME: prefixes-rdfvizler
+#+BEGIN_SRC ttl :noweb yes :tangle out/rdfvizler/imf-data.rule :mkdirp yes
+<<prefixes>>
+@prefix rvz:  <http://rdfvizler.dyreriket.xyz/vocabulary/core#> .
+@prefix rvz-a: <http://rdfvizler.dyreriket.xyz/vocabulary/attribute#> .
+@prefix rvz-n: <http://rdfvizler.dyreriket.xyz/vocabulary/attribute-default-node#> .
+@prefix rvz-e: <http://rdfvizler.dyreriket.xyz/vocabulary/attribute-default-edge#> .
+@prefix :      <urn:temp#>
+#+END_SRC
+
+*** IMF data, old                                                  :noexport:
+
+#+BEGIN_SRC ttl :noweb yes :mkdirp yes
+<<prefixes-rdfvizler>>
+
+### GRAPH default settings
+    [init:
+        ->
+        (:graph rdf:type rvz:RootGraph)
+        (:graph rdf:type rvz:DiGraph)
+        (:graph rvz-a:rankdir "LR")
+        (:graph rvz-a:nodesep "1")
+        (:graph rvz-a:ranksep "1")
+        (:graph rvz-a:center "true")
+        (:graph rvz-a:overlap "true")
+        (:graph rvz-a:splines "ortho")
+        // node defaults
+        (:graph rvz-n:fontname "Arial")
+        (:graph rvz-n:fontsize "8px")
+        (:graph rvz-n:height ".3")
+        (:graph rvz-n:width ".3")
+        (:graph rvz-n:fixedsize "true")
+        // edge defaults
+        (:graph rvz-e:fontname "Arial")
+        (:graph rvz-e:fontsize "8px")
+        ]
+
+### SELECTION: This rule selects the triples to be drawn. Selection is
+### done on the basis of predicates. ONLY the nodes and edges selected
+### here appear in the diagram.
+
+    [triples:
+        (?s ?p ?o)
+        equalssome(?p, imf:hasPart, imf:hasTerminal, imf:connectedTo, imf:hasLocation, imf:fulfilledBy, imf:installedAs) 
+        makeSkolem(?edge, ?s, ?p, ?o)
+        ->
+        (:graph rvz:hasEdge ?edge)
+        (?edge :predicate ?p)
+        (:graph rvz:hasNode ?s)
+        (:graph rvz:hasNode ?o)
+        (?edge rvz:hasSource ?s)
+        (?edge rvz:hasTarget ?o)
+        ]
+
+### EDGE FORMATTING
+
+# constraint=false, see https://graphviz.org/docs/attrs/constraint/
+    [imf:no-constraint:
+        (?edge :predicate ?p)
+        equalssome(?p, imf:connectedTo, imf:hasLocation, imf:fulfilledBy, imf:installedAs)
+        ->
+        (?edge rvz-a:constraint "false")
+        ]
+
+    [imf:hasPart:
+        (?edge :predicate imf:hasPart)
+        ->
+        (?edge rvz-a:arrowtail "empty")
+        (?edge rvz-a:dir "back")
+        ]
+        
+    [imf:connectedTo:
+        (?edge :predicate imf:connectedTo)
+        ->
+        (?edge rvz-a:arrowhead "none")
+        (?edge rvz-a:color "gray50")
+        (?edge rvz-a:style "dashed")
+        ]
+    [imf:hasTerminal:
+        (?edge :predicate imf:hasTerminal)
+        ->
+        (?edge rvz-a:arrowhead "none")
+        ]
+
+
+    [imf:hasLocation:
+        (?edge :predicate imf:hasLocation)
+        ->
+        (?edge rvz-a:color "magenta")
+        (?edge rvz-a:arrowhead "none")
+        (?edge rvz-a:style "dashed")
+        ]
+
+    [imf:fullfilledBy:
+        (?edge :predicate imf:fulfilledBy)
+        ->
+        (?edge rvz-a:color "cyan")
+        (?edge rvz-a:arrowhead "none")
+        (?edge rvz-a:style "dashed")
+        ]
+
+    [imf:installedAs:
+        (?edge :predicate imf:installedAs)
+        ->
+        (?edge rvz-a:color "skyblue2")
+        (?edge rvz-a:arrowhead "none")
+        (?edge rvz-a:style "dashed")
+        ]
+
+### NODE FORMATTING
+### labels and URIs
+
+    [Nodes:
+        (:graph rvz:hasNode ?node)
+        shortvalue(?node, ?name)
+        ->
+        //(?node rvz-a:label "")
+        (?node rvz-a:label ?name)
+        (?node rvz-a:style "filled")
+        (?node rvz-a:URL ?node)
+        ]
+
+### Shapes: move these to ontology
+
+    [Transport-shape:
+        (:graph rvz:hasNode ?node)(?node rdf:type imf:Transport)
+        ->
+        (?node rvz-a:shape "hexagon")
+        ]
+
+    [Interface-shape:
+        (:graph rvz:hasNode ?node)(?node rdf:type imf:Interface)
+        ->
+        (?node rvz-a:shape "triangle")
+        (?node rvz-a:orientation "90")
+        ]
+
+    [Terminal-block-shape:
+        (:graph rvz:hasNode ?node)(?node rdf:type imf:Terminal)
+        -> (?node rvz-a:shape "doublecircle")
+        ]
+
+    [System-block-shape:
+        (:graph rvz:hasNode ?node)(?node rdf:type imf:FunctionalBlock)
+        -> (?node rvz-a:shape "square")
+        ]
+
+
+### Colours
+
+    [Aspect-colour:
+        (:graph rvz:hasNode ?node)
+        (?node imf:hasAspect ?aspect)(?aspect imf:color ?color)
+        ->
+        (?node rvz-a:fillcolor ?color)
+        ]
+
+#+END_SRC
+
+*** Ontology import hierarchy
+
+This rule set visualises the owl:imports hierarchy.
+
+#+BEGIN_SRC ttl :noweb yes :tangle out/rdfvizler/ontology-import-hierarchy.rule :mkdirp yes
+<<prefixes-rdfvizler>>
+
+### GRAPH default settings
+    [init:
+        ->
+        (:graph rdf:type rvz:RootGraph)
+        (:graph rdf:type rvz:DiGraph)
+        (:graph rvz-a:rankdir "LR")
+        (:graph rvz-a:center "true")
+        (:graph rvz-a:overlap "true")       
+        // node defaults
+        (:graph rvz-n:fontname "Arial")
+        (:graph rvz-n:fontsize "8px")
+        // edge defaults
+        (:graph rvz-e:fontname "Arial")
+        (:graph rvz-e:fontsize "8px")
+        ]
+
+    [imports:
+        (?ont owl:versionIRI ?iri)
+        (?ont owl:imports ?import)
+        makeSkolem(?_edge, ?iri, ?import)
+        ->
+        (:graph rvz:hasEdge ?_edge)
+        (:graph rvz:hasNode ?iri)
+        (:graph rvz:hasNode ?import)
+        (?_edge rvz:hasSource ?iri)
+        (?_edge rvz:hasTarget ?import)
+        ]
+#+END_SRC
+
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-import-hierarchy.rule", output="out/temp/.ontology-import-hierarchy.svg")
+
+#+RESULTS:
+
+*** Ontology overview
+
+This rule set creates a overview visualisation of an ontology taking
+only the "easy to visualise" structures like classes, subclass
+relations, properties with their domain and range, and instances.
+
+#+BEGIN_SRC ttl :noweb yes :tangle out/rdfvizler/ontology-overview.rule :mkdirp yes
+<<prefixes-rdfvizler>>
+
+    [init-graph:
+        ->
+        (:graph rdf:type rvz:RootGraph)
+        (:graph rdf:type rvz:DiGraph)
+        (:graph rvz-a:rankdir "BT")
+        (:graph rvz-a:center "true")
+        // node defaults
+	(:graph rvz-n:shape "box")
+        (:graph rvz-n:fontname "Arial")
+        (:graph rvz-n:fontsize "8px")
+        // edge defaults
+        (:graph rvz-e:fontname "Arial")
+        (:graph rvz-e:fontsize "8px")
+        ]
+
+    [class:
+        (?s rdf:type owl:Class)
+	notBNode(?s)
+        ->
+        (:graph rvz:hasNode ?s)
+        ]
+
+    [individual:
+        (:graph rvz:hasNode ?s)
+        (?i rdf:type ?s)
+        makeSkolem(?edge, ?i, rdf:type, ?s)
+        ->
+        (:graph rvz:hasNode ?i)
+        (:graph rvz:hasEdge ?edge)
+        (?edge :predicate rdf:type)
+        (?edge rvz-a:style "dotted")
+        (?edge rvz:hasSource ?i)
+        (?edge rvz:hasTarget ?s)
+        ]
+
+    [label-node:
+        (:graph rvz:hasNode ?node)
+        shortvalue(?node ?label)
+        ->
+	(?node rvz-a:label ?label)
+        ]
+
+    [subclass:
+        (?s rdfs:subClassOf ?o)
+        makeSkolem(?edge, ?s, rdfs:subClassOf, ?o)
+        ->
+        (:graph rvz:hasEdge ?edge)
+        (?edge :predicate ?p)
+        (?edge rvz-a:arrowhead "empty")
+        (?edge rvz-a:dir "forward")
+        (:graph rvz:hasNode ?s)
+        (:graph rvz:hasNode ?o)
+        (?edge rvz:hasSource ?s)
+        (?edge rvz:hasTarget ?o)
+        ]
+
+    [property:
+        (?p rdfs:domain ?domain)
+        (?p rdfs:range ?range)
+        shortvalue(?p ?label)
+        makeSkolem(?edge, ?domain, ?p, ?range)
+        ->
+        (:graph rvz:hasEdge ?edge)
+        (:graph rvz:hasNode ?domain)
+        (:graph rvz:hasNode ?range)
+        (?edge :predicate ?p)
+	(?edge rvz-a:label ?label)
+        (?edge rvz:hasSource ?domain)
+        (?edge rvz:hasTarget ?range)
+        ]
+
+    [SubObjectExactCardinality:
+        (?i ottr:of o-owl-ax:SubObjectExactCardinality)
+        (?i ottr:values ?arg1)
+	(?arg1 rdf:first ?domain)
+	(?arg1 rdf:rest ?arg2)
+	(?arg2 rdf:first ?card)
+	(?arg2 rdf:rest ?arg3)
+	(?arg3 rdf:first ?property)
+	(?arg3 rdf:rest ?arg4)
+	(?arg4 rdf:first ?range)
+	shortvalue(?property ?plabel)
+	strConcat(?plabel, " ", ?card, ?label)
+        makeSkolem(?edge, ?domain, ?card, ?property, ?range)
+	->
+        (:graph rvz:hasEdge ?edge)
+        (:graph rvz:hasNode ?domain)
+        (:graph rvz:hasNode ?range)
+        (?edge :predicate ?property)
+	(?edge rvz-a:label ?label)
+        (?edge rvz-a:constraint "false")
+        (?edge rvz-a:dir "forward")
+        (?edge rvz-a:arrowhead "teetee")
+        (?edge rvz:hasSource ?domain)
+        (?edge rvz:hasTarget ?range)
+        ]
+
+    [Blanks:
+	(:graph rvz:hasNode ?node)
+	isBNode(?node)
+	typedvalue(?node, ?label)
+	->
+	(?node rvz-a:label ?label)
+	(?node rvz-a:shape "box")
+	(?node rvz-a:style "filled,dashed")
+	(?node rvz-a:fillcolor "gray90")
+	(?node rvz-a:height ".3")
+	(?node rvz-a:width ".3")
+	]
+#+END_SRC
+
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", output="out/temp/.ontology-overview.svg")
+
+#+RESULTS:
+
+*** TODO IMF data
+
+Work in process. Rule set for visualising IMF data.
+
+#+BEGIN_SRC ttl :noweb yes :tangle out/rdfvizler/imf-data.rule :mkdirp yes
+<<prefixes-rdfvizler>>
+
+### GRAPH default settings
+    [init:
+        ->
+        (:graph rdf:type rvz:RootGraph)
+        (:graph rdf:type rvz:DiGraph)
+        (:graph rvz-a:rankdir "LR")
+        (:graph rvz-a:nodesep "1")
+        (:graph rvz-a:ranksep "1")
+        (:graph rvz-a:center "true")
+        (:graph rvz-a:overlap "true")
+        (:graph rvz-a:splines "ortho")
+        // node defaults
+        (:graph rvz-n:fontname "Arial")
+        (:graph rvz-n:fontsize "8px")
+        (:graph rvz-n:height ".3")
+        (:graph rvz-n:width ".3")
+        (:graph rvz-n:fixedsize "true")
+        // edge defaults
+        (:graph rvz-e:fontname "Arial")
+        (:graph rvz-e:fontsize "8px")
+        ]
+
+### SELECTION: This rule selects the triples to be drawn. Selection is
+### done on the basis of predicates. ONLY the nodes and edges selected
+### here appear in the diagram.
+
+    [triples:
+        (?s ?p ?o)
+        equalssome(?p, imf:hasPart, imf:hasTerminal, imf:connectedTo, imf:hasLocation, imf:fulfilledBy, imf:installedAs) 
+        makeSkolem(?edge, ?s, ?p, ?o)
+        ->
+        (:graph rvz:hasEdge ?edge)
+        (?edge :predicate ?p)
+        (:graph rvz:hasNode ?s)
+        (:graph rvz:hasNode ?o)
+        (?edge rvz:hasSource ?s)
+        (?edge rvz:hasTarget ?o)
+        ]
+
+### EDGE FORMATTING
+
+# constraint=false, see https://graphviz.org/docs/attrs/constraint/
+    [imf:no-constraint:
+        (?edge :predicate ?p)
+        equalssome(?p, imf:connectedTo, imf:hasLocation, imf:fulfilledBy, imf:installedAs)
+        ->
+        (?edge rvz-a:constraint "false")
+        ]
+
+    [edge-attribute
+        (:graph rvz:hasEdge ?edge)
+        (?edge :predicate ?p)
+        (?p ?rvza ?value)
+        namespace(?rvza, "http://rdfvizler.dyreriket.xyz/vocabulary/attribute#")
+        ->
+        (?edge ?rvza ?value)
+        ]
+
+    [node-attribute
+        (:graph rvz:hasNode ?node)
+        (?node rdf:type ?class)
+        (?class ?rvza ?value)
+        namespace(?rvza, "http://rdfvizler.dyreriket.xyz/vocabulary/attribute#")
+        ->
+        (?node ?rvza ?value)
+        ]
+#+END_SRC
+
+** Python code snippets                                            :noexport:
+*** py_ottr_instances
+
+Convert tables to OTTR instances.
+
+#+NAME: py_ottr_instances
+#+BEGIN_SRC python :results raw :wrap src ttl :var template="ex:template" :var table=tbl-aspects :exports none
+output = ""
+
+instance = "[] ottr:of {} ;\n   ottr:values ( {} ) . \n"
+
+## aspects
+for row in table[0:]:
+  args = map(lambda x: 'ottr:none' if not str(x).strip() else x, row)
+  output += instance.format(template, " ".join(f'{w}' for w in args))
+
+return output
+#+END_SRC
+
+#+RESULTS: py_ottr_instances
+#+BEGIN_src ttl
+[] ottr:of ex:template ;
+   ottr:values( imf:FunctionAspect '=' '#FFFF00' ) . 
+[] ottr:of ex:template ;
+   ottr:values( imf:LocationAspect '+' '#FF00FF' ) . 
+[] ottr:of ex:template ;
+   ottr:values( imf:ProductAspect '-' '#00FFFF' ) . 
+[] ottr:of ex:template ;
+   ottr:values( imf:ActivityAspect '>' '#000000' ) . 
+#+END_src
+
+*** py_run_sparql
+
+Run SPARQL queries on RDF data files.
+
+#+NAME: py_run_sparql
+#+BEGIN_SRC python :var query="SELECT ?s ?p ?o {?s ?p ?o} LIMIT 10" :var prefixes="" :var data="out/owl/imf-all.owl.ttl" :results raw
+
+# input: 'query': SPARQL query string
+# input: 'prefixes': a string of prefixes for conveniently appending to the query
+# input: 'data': the RDF dataset to query
+
+import rdflib
+import csv
+
+graph = rdflib.Graph()
+
+# read RDF turtle file:
+graph.parse(data, format="ttl")
+
+# query graph:
+qResult = graph.query(prefixes + query)
+
+output = ""
+
+# handle the results according to the query type
+
+if qResult.type == "SELECT":
+
+  # serialise results to string
+  sResult = qResult.serialize(format="csv").decode('utf-8')
+
+  lines = sResult.splitlines() # split on each new line
+  reader = csv.reader(lines, delimiter=',')
+
+  ## here I format the results into a table in format I use for my
+  ## slides.  Format according to your own needs.
+  line = 1;
+  for row in reader: # split on each new line
+    output += "|"
+    for value in row:
+      if value.startswith("http://"):
+        value = ", ".join(map(graph.namespace_manager.qname, value.split(", ")))
+        #value = graph.namespace_manager.qname(value) # convert urls to qnames
+      if len(value) > 0:
+        output += "~" + ' '.join(value.split()) + "~" # monospace formatting
+      output += "|"
+    output += "\n"
+    if line == 1:
+      output += "|-\n" # hline
+    line += 1
+
+elif qResult.type == "ASK":
+  output = str(bool(qResult))
+
+elif qResult.type == "CONSTRUCT":
+  gResult = rdflib.Graph()
+  gResult.namespace_manager = graph.namespace_manager # copy prefixes from data source
+  for row in qResult:
+    gResult.add(row);
+  output = gResult.serialize(format='turtle').decode('utf-8')
+
+return output
+#+END_SRC
+
+#+RESULTS: py_run_sparql
+| ~s~                                    | ~p~                  | ~o~                                         |
+|----------------------------------------+----------------------+---------------------------------------------|
+| ~ub1bL280C25~                          | ~rdf:type~           | ~owl:Class~                                 |
+| ~imf:hasAspect~                        | ~skos:definition~    | ~Relates an aspect object with its aspect.~ |
+| ~ns1:imf-top~                          | ~skos:altLabel~      | ~IMF top ontology~                          |
+| ~ub1bL305C9~                           | ~owl:onProperty~     | ~imf:hasAspect~                             |
+| ~ns1:imf~                              | ~owl:imports~        | ~ns2:imf-top~                               |
+| ~f72435ec3bb9048bdbed94ab20fc43eb2b19~ | ~rdf:rest~           | ~f72435ec3bb9048bdbed94ab20fc43eb2b20~      |
+| ~imf:isPartOf~                        | ~rdfs:subPropertyOf~ | ~imf:hierarchicalRelation~                  |
+| ~imf:associativeRelation~              | ~rdf:type~           | ~owl:ObjectProperty~                        |
+| ~ns1:imf~                              | ~owl:imports~        | ~ns2:imf-aspects~                           |
+| ~imf:isPartOf~                        | ~rdfs:subPropertyOf~ | ~skos:broader~                              |
+
+
+
+*** py_parse-ttl-file: Parse source block
+
+Parses an ttl file and outputs a turtle source block.
+
+#+NAME: py_parse-ttl-file
+#+BEGIN_SRC python :var file="out/owl/imf-top.owl.ttl"
+from rdflib import Graph
+
+g = Graph()
+g.parse(file, format="text/turtle")
+
+return g.serialize(format='turtle').decode('utf-8')
+#+END_SRC
+
+#+RESULTS: py_parse-ttl-file
+
+*** py_parse-ttl-block: Parse source block
+
+Parses and outputs a turtle source block. Prefixes are given as input.
+
+#+NAME: py_parse-ttl-block
+#+BEGIN_SRC python :var prefixes=prefixes :var block=owl-top-ontology
+from rdflib import Graph
+
+g = Graph()
+rdf = prefixes + "\n" + block
+g.parse(data=rdf, format="text/turtle")
+
+return g.serialize(format='turtle').decode('utf-8')
+#+END_SRC
+
+*** Output
+
+#+NAME: py_output
+#+BEGIN_SRC python :var file="out/owl/imf-top.owl.ttl" :var s="None" :var p="RDF.type"
+from rdflib import Graph, RDF
+
+g = Graph()
+g.parse(file, format="text/turtle")
+
+output = ""
+
+for s, p, o in g.triples((s,  p, None)):
+    output += f"{o}"
+
+return output
+#+END_SRC
+
+#+RESULTS: py_output
+
+
+*** Lists                                                          :noexport:
+
+#+NAME: prefixlist
+ - xsd :: http://www.w3.org/2001/XMLSchema#
+ - rdf :: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+ - rdfs :: http://www.w3.org/2000/01/rdf-schema#
+ - owl :: http://www.w3.org/2002/07/owl#
+ - skos :: http://www.w3.org/2004/02/skos/core#
+ - imf :: http://ns.imfid.org/imf#
+
+#+NAME: py_functions
+#+BEGIN_SRC python
+
+## converts a org-mode definition list into a python dict
+def deflist2dict(list):
+  newlist={}
+  for row in list:
+    newrow = row[0].split(' :: ')
+    newlist[newrow[0]] = newrow[1]
+
+  return newlist
+
+from rdflib import Graph, Namespace, URIRef
+
+def getURIRef(prefixdict, qname):
+  prefix, localname = qname.split(':')
+  return URIRef(prefixdict[prefix] + localname)
+
+def getGraph(prefixdict):
+  graph = Graph()
+  for key, value in prefixdict.items():
+    ns = Namespace(value)
+    graph.bind(key, ns)
+  return graph
+#+END_SRC
+
+#+RESULTS: py_functions
+: None
+
+#+NAME: py_prefixlist2ttl
+#+BEGIN_SRC python :noweb yes :var list=prefixlist 
+<<py_functions>>
+
+output = ""
+for key, value in deflist2dict(list).items():
+  output += '@prefix ' + key + ':\t<' + value + '> .\n'
+return output
+#+END_SRC
+
+#+RESULTS: py_prefixlist2ttl
+: @prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+: @prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+: @prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+: @prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+: @prefix imf:	<http://ns.imfid.org/imf#> .
+
+#+CALL: py_prefixlist2ttl[:wrap src ttl](list=prefixlist)
+* Setup                                                            :noexport:
+
+Include stderr in source block output:
+
+#+PROPERTY: header-args:sh :prologue "exec 2>&1" :epilogue ":"
+
+** Folders
+
+#+BEGIN_SRC ttl :tangle out/temp/.folder :mkdirp yes
+#+END_SRC
+
+#+BEGIN_SRC ttl :tangle bin/.folder :mkdirp yes
+#+END_SRC
+
+#+BEGIN_SRC ttl :tangle out/img/.folder :mkdirp yes
+
+#+END_SRC
+
+** Global tangle includes
+
+*** Graphviz 
+#+NAME: graphviz-style
+#+BEGIN_SRC dot :file out/img/.dummy-graphiz
+ node [shape=box, fontname="Arial", style="filled"];
+ edge [fontname="Arial"];
+#+END_SRC
+
+
+*** PlantUML
+
+#+NAME: plantuml-style
+#+BEGIN_SRC plantuml :file out/img/.dummy-plantuml
+hide empty members
+
+skinparam class {
+ BackgroundColor HoneyDew
+ BackgroundColor<< RDL >> SeaShell
+ BackgroundColor<< Type >> LightCyan
+}
+
+
+#+END_SRC
+

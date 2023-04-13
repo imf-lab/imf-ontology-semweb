@@ -1,0 +1,762 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+TITLE: IMF v3: Vocabulary and Abstract Data Model
+#+AUTHOR: Editor: Martin G. Skjæveland
+#+DATE: \today
+#+EMAIL:
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 27.1 (Org mode 9.1.14)
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [12pt]
+#+LATEX_HEADER: \usepackage{fullpage,parskip,times}
+#+LATEX_HEADER: \usepackage{xcolor}
+
+#+LATEX_HEADER: \newcommand{\kw}[1]{\textcolor{orange}{\textsc{#1}}}
+#+LATEX_HEADER: \newcommand{\term}[1]{\setlength{\fboxsep}{0pt}\colorbox{yellow!10}{\ensuremath{\operatorname{\mathsf{#1}}}}}
+#+LATEX_HEADER: \usepackage[zerostyle=d]{newtxtt} %% Various versions of zeros available. See documentation for details
+
+#+LATEX_HEADER_EXTRA:
+#+DESCRIPTION:
+#+KEYWORDS:
+#+SUBTITLE:
+#+LATEX_COMPILER: pdflatex
+
+* TODOs [1/5]                                                      :noexport:
+
+ - [ ] Currently only the diagrams for the structural
+   specification/abstract meta model are updated, while the
+   accompanying text is not.
+ - [ ] Make IMF style for latex
+   - [ ] define latex commands for MUST, ...
+   - [ ] define command for language terms
+ - [X] +Check out iso704 for defintion of relations and basic things.+
+ - [ ] define
+   - [ ] types
+   - [ ] attributes
+   - [ ] model - should it be part of the language? then we also need
+     a relation between a model and its "components"
+ - [ ] Make examples to all definitions?
+
+* Discussions [0/7]
+** TODO BiTerminals
+
+ Comment: 25
+
+ 1. A terminal has exactly/max one direction: in, out, both. in must
+    be connected to out (and vise versa), both must be connected to
+    both. A terminal can be connected to a terminal. What is the
+    difference between a terminal and a BiTerminal?
+
+I functions-aspected har du ikke biterminaler.
+
+** TODO Interface point/connections
+
+ Comment: 105, 11, 26, 27, 49, 21, 134
+
+ Connection
+  - hasInput -> OutTerminal
+  - hasOutput -> InTerminal
+
+  - inv(hasInput) o hasOutput -> isConnectedTo : OutTerminal -> InTerminal
+
+ - Can a InterfacePoint be related to a Terminal (without direction)
+
+ - Can a InterfacePoint be a block? What *is* an InterfacePoint, and
+   why is it not a Block? Depending on the granularity level, an
+   object can be a block or an interfacepoint, e.g,. mechanical
+   connection.
+
+ - Suggestion: ConnectionPoint -> Block with 1 InTerminal and 1
+   OutTerminal
+
+ - InTerminal <-> OutTerminal
+
+** TODO partOf
+
+ Comment: 28, 47, 46, 115
+
+ - is partOf only allowed between blocks?
+
+** TODO fullfilledBy
+
+ Comment: 107, 33, 74, 109, 110, 111
+
+ In v2: def says that fulfilledBy is between Blocks, but Table 9 also specifies between Terminals.
+** TODO Attributes
+** TODO Models
+** TODO Types
+
+ Comment: 52, 51, 155
+
+* Introduction
+
+This specification establishes and defines the formal vocabulary and
+abstract data model of the Information Modelling Framework (IMF). The
+purpose of this specification is to provide a format and
+implementation independent specification of the IMF language, and with
+that provide a common basis and language for specifying concrete
+serialization formats, applications, and services for the IMF.
+
+The IMF vocabulary is defined with textual definitions and a
+restricted version of UML class diagrams.
+
+The keywords \kw{must}, \kw{must not}, \kw{required}, \kw{should}, \kw{should not},
+\kw{recommended}, \kw{may}, and \kw{optional} in this specification are to be
+interpreted as described in \cite{RFC2119}.
+
+ : Reference to other specs: semantic web representation, visualisation
+
+* Preliminaries
+** Definitions
+
+ : Define terms from other specs and standards, e.g., Aspect.
+
+ - System :: ??
+ - Aspect :: ??
+
+** Diagrams
+
+The specification consists of a series of partially overlapping
+diagrams. The combined diagram is presented in Figure ...
+
+The diagrams are UML class diagrams are drawn using [[https://plantuml.com/][PlantUML]]
+restricted to the following elements:
+
+ - UML classes, marked with the icon "C".
+ - Abstract UML classes, marked with an icon "A", are UML classes that
+   are not intended to be instantiated.
+ - Enumerations, marked with the icon "E", are used to represent UML
+   classes with a limited list of instantiations and where the
+   instantiations are defined in the IMF language.
+ - Subclass relationships between classes, directed relations with an
+   open arrow.
+ - Directed associations (relations) between classes, which are marked
+   with a name and possibly a cardinality. If no cardinality is given,
+   then the cardinality is 0--many.
+
+ Here is an example:
+
+#+NAME: structural-spec-diagram-legend
+#+BEGIN_SRC plantuml :noweb yes :file out/img/plantuml-legend.png
+<<plantuml-style>>
+
+abstract class AbstractConcept1
+
+AbstractConcept1 <|-- Concept2
+Concept2 <|-- SubConcept3
+
+Concept2 -left-> Concept4 : 1..* hasRelationA
+
+enum EnumeratedConcept5 {
+ element1
+ element2
+}
+
+Concept2 -right-> EnumeratedConcept5 : 1 hasRelationB
+#+END_SRC
+
+#+RESULTS: structural-spec-diagram-legend
+[[file:out/img/plantuml-legend.png]]
+
+Note: The structural specification is described by a series of
+diagrams, each focus on a specific part. In the case that a class is
+used in multiple diagrams, only one diagram contains the full
+specification of the class, while the other diagrams only contain the
+class name. The diagram that contains the complete specification
+combines all diagrams and contains all information.
+
+* Design principles                                             :informative:
+
+When we construct the IMF language, we need to define a set of
+elements that constitutes the vocabulary and grammar rules conforming
+to the relevant objectives given in Section 1.2:
+
+ - The language shall be made so that the SMEs themselves are users of
+   the framework. This means that the IMF language must:
+   - Contain a limited set of elements (vocabulary) and grammar rules
+     such that it is easy to learn and simple to use.
+
+ - The language shall provide incremental value. This means that the
+   IMF language must be:
+   - Designed such that one can have an incremental approach and model
+     fragment by fragment.
+
+ - The language shall be scalable across disciplines, work processes,
+   and the value chain. This means that the IMF language must:
+   - Enable SMEs from a range of disciplines to fully express their
+     design using the same modelling principles.
+   - Enable the SMEs to express different levels of precision in their
+     design.
+   - Enable use in different phases of a project (concept, detail
+     engineering, manufacturing, etc.).
+
+ - The language shall have the precision of machine interpretation to
+   allow automated verification. This means that the IMF language
+   must:
+
+   - Be precise and unambiguous.
+
+   - Allow translation into an ontology language that can use
+     automated reasoning techniques in combination with information in
+     the RDL for verification.
+
+* Vocabulary                                                      :normative:
+
+The presentation of the vocabulary is split into different sections:
+
+ - Fundamentals :: explains the building blocks with which the IMF
+                   language is defined: classes, objects, ...
+ - Core :: introduces the core concepts of the IMF language:
+ - Structure :: introduces the concepts used for representing the
+                graph structure of the model.
+ - Aspects :: introduce the different aspects that are explictlity
+              defined in this specification and how different aspect
+              element may interact.
+ - Metadata :: specifies the metadata that is expected(?) to be set
+               for Elements.
+ - Attributes :: specifies how Attributes are defined.
+ - Types :: specifies how Types are defined.
+
+** Fundamentals
+
+ Categories
+
+ - Classes, Relations, Objects, Values.
+ - Model
+ - Type?
+
+#+BEGIN_EXAMPLE
+Look to OWL and Ontology for how Model and Type can be defined.
+#+END_EXAMPLE
+
+** Core
+
+		    
+#+NAME: structural-spec-instances
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-instances.png
+
+<<plantuml-style>>
+
+''' Data
+
+
+class Element
+''class Group
+class Block
+class Terminal
+class InTerminal
+class OutTerminal
+
+''Element "1..*" -left-> "*" Group : memberOf
+''Group "*" --> "*" Group : subclassOf
+
+' subclasses
+Element <|-- Block
+Element <|-- Terminal
+''Element <|-- BreakdownPoint
+''Element <|-- ConnectionPoint
+
+Terminal <|-- InTerminal
+Terminal <|-- OutTerminal
+
+' relations
+Block "1" -left-> "*" Terminal : hasTerminal
+
+Element "1" --> "*" Element : hasPart
+(Element, Element) .. BreakdownPoint
+
+Terminal "1" --> "1" Terminal : connectedTo
+(Terminal, Terminal) .. ConnectionPoint
+
+
+Terminal --> "1" Medium
+''Terminal --> "0..1" Direction
+
+enum Medium {
+
+}
+
+''enum Direction {
+''  in
+''  out
+''}
+
+
+#+END_SRC
+
+
+#+RESULTS: structural-spec-instances
+[[file:out/img/imf-structural-spec-instances.png]]
+
+
+#+BEGIN_COMMENT
+ - \term{Group} :: A \term{Group} is a set of \term{Element}s, and
+                   represents some convenient grouping of
+                   \term{Elements}. 
+
+ - \term{memberOf} :: \term{memberOf} is a relation between an
+      \term{Element} and a \term{Group}, such that $\term{memberOf}(E,
+      G)$ specifies that the \term{Element} $E$ is a member of the
+      \term{Group} $G$.  An \term{Element} \kw{may} be member of any
+      number of \term{Group}s. A \term{Group} \kw{must} have at least
+      one \term{Element} as member and \kw{may} have many members.
+
+ - \term{subclassOf} :: \term{subclassOf} is a relation between two
+      Groups, such that $\term{subclassOf}(G1, G2)$ expresses that
+      $G1$ is a subclass of $G2$.
+
+ - \term{InterfacePoint} :: An \term{InterfacePoint} is an
+      \term{Element} that represents the connection, interface, or
+      point of interaction between two \term{Block}s through a give
+      \term{Terminal} of each of the \term{Block}s. We sometimes say
+      that the \term{InterfacePoint} "connects" the two \term{Block}s and
+      the two \term{Terminal}s, respectively.
+
+#+END_COMMENT
+
+ - \term{Element} :: An \term{Element} is an object for which
+                     requirements are expressed. Requirements are
+                     specified in the form of attributes set on the
+                     \term{Element}, and/or through relationships to
+                     other \term{Element}s.
+
+ - \term{Block}  :: A \term{Block} is an \term{Element} that may
+                    recieve and/or produce output. 
+
+ - \term{Terminal} :: A \term{Terminal} is an \term{Element} that
+      specifies the input and/or output to a \term{Block}.
+
+      A \term{Terminal} \kw{may} have one \term{direction} (\term{in}
+      or \term{out}) that indicates if the \term{Terminal} is a
+      specification of input only or of output only. If no
+      \term{direction} is specified, then the \term{Terminal} may be
+      used for both input and output.
+
+      A \term{Terminal} \kw{may} specify one \term{medium} which
+      indicates the form of the \term{Terminal}'s input/output.
+
+ - \term{hasTerminal} :: \term{hasTerminal} is a relation between a
+      \term{Block} and a \term{Terminal}, such that
+      $\term{hasTerminal}(B, T)$ states that \term{Terminal} $T$
+      belongs to the \term{Block} $B$.
+
+      A \term{Terminal} \kw{must} belong to exactly one
+      \term{Block}. We sometimes refer to the \term{Block} a
+      \term{Terminal} belongs to as "the \term{Terminal}'s
+      \term{Block}".
+
+ - \term{InputTerminal} :: An \term{InputTerminal} is a
+      \term{Terminal} with \term{direction} \term{in}.
+
+ - \term{OutputTerminal} :: An \term{OutputTerminal} is a
+      \term{Terminal} with \term{direction} \term{out}.
+
+
+ - \term{connectedTo} :: \term{connectedTo} is a relation between two \term{Terminal}.
+
+      The connected \term{Terminal}s \kw{must} be
+      compatible, that is, the \term{medium} of the \term{Terminal}s
+      \kw{must} be equal, and, if both \term{Terminal}s have a
+      \term{direction}, it \kw{must not} be equal (An
+      \term{InTerminal} \kw{must not} be connected to an
+      \term{InTerminal}, and an \term{OutTerminal} \kw{must not} be
+      connected to an \term{OutTerminal}).
+
+ - \term{partOf} :: \term{partOf} is a relation between two
+                    \term{Element}s, such that $\term{partOf}(E1, E2)$
+                    states that the \term{Element} $E1$ is a part of
+                    \term{Element} $E2$. \term{hasPart} is the inverse
+                    relation of \term{partOf}---which means that
+                    $\term{partOf}(E1, E2)$ is the same as
+                    $\term{hasPart}(E2, E1)$. \term{partOf} is
+                    functional, which means that an \term{Element}
+                    \kw{must not} be part of more than one
+                    \term{Element}. \term{partOf} \kw{must} be
+                    non-cyclic, which means that an \term{Element}
+                    \kw{must not}, directly or indirectly, be part of
+                    itself.
+
+		    We sometimes refer to the "parts of an element";
+                    this is exactly the set of \term{Element}s that
+                    are related with the given element through the
+                    \term{partOf} relation: "the parts of $E1$" is the
+                    set $\{ E2 \;\vert\; \term{partOf}(E1, E2) \}$.
+
+		    The parts of a \term{Block} \kw{must} be \term{Block}s. 
+                    The parts of a \term{Terminal} \kw{must} be \term{Terminal}s.
+
+*** \term{partOf} hierarchy 
+
+The \term{partOf} relation indirectly specifies "layers" or "strata"
+of \term{Element}s. Other relations \kw{must not} cross multiple
+strata in an uncontrolled manner.
+		    
+** Aspects
+
+ - \term{Aspect} :: An \term{Aspect} is a specific perspective for
+                    expressing requirements on \term{Element}s.
+
+		    There are currently specified four \term{Aspect}s:
+                    \term{functionAspect}, \term{productAspect},
+                    \term{locationAspect}, and \term{installedAspect}.
+
+ - \term{hasAspect} :: \term{hasAspect} is a relation between an
+      \term{Element} and an \term{Aspect}, such that
+      $\term{hasAspect}(E, A)$ states that the \term{Element} $E$ has
+      the \term{Aspect} $A$. 
+
+      If $\term{hasAspect}(E, A)$ holds true, then we may say that
+      "\term{Element} $E$ has \term{Aspect} $A$" or that
+      "\term{Element} $E$ is of (the) (\term{Aspect}) $A$".
+
+ - \term{AspectElement} :: An \term{AspectElement} is an
+      \term{Element} with exactly one \term{Aspect}. All requirements
+      expressed for an \term{AspectElement} are hence expressed from
+      the perspective of the stated \term{Aspect}.
+      
+ - \term{functionAspect} :: The \term{functionAspect} is an
+      \term{Aspect} for expressing requirements to the intended
+      activity of an \term{Element}.
+
+ - \term{productAspect} :: The \term{productAspect} is an
+      \term{Aspect} for expressing requirements to the product
+      specification of an \term{Element}.
+
+ - \term{locationAspect} :: The \term{locationAspect} is an
+      \term{Aspect} for expressing requirements to the spatial
+      extension of an \term{Element}.
+
+ - \term{installedAspect} ::  The \term{installedAspect} is an \term{Aspect} for expressing
+      requirements to the installed artifact of an \term{Element}.
+
+
+ : intro
+
+Some relations over \term{AspectElements} may only relate
+\term{AspectElements} of the same or different \term{Aspect}s.
+
+ - \term{intraAspectRelation} :: \term{intraAspectRelation} is a
+      relation between \term{AspectElement}s of the same \term{Aspect}, that
+      is, if $\term{intraAspectRelation(E1, E2)}$ holds true, then
+      \term{AspectElement} $E1$ and \term{AspectElement} $E2$ \kw{must} have the
+      same \term{Aspect}.
+
+ - \term{interAspectRelation} :: \term{interAspectRelation} is a
+      relation between \term{AspectElement}s of the different
+      \term{Aspect}s, that is, if $\term{interAspectRelation(E1, E2)}$
+      holds true, 
+      then \term{AspectElement} $E1$ and \term{AspectElement} $E2$ \kw{must not} have the
+      same \term{Aspect}.
+
+The following relations are \term{intraAspectRelation} when restricted
+to \term{AspectElement}s:
+ - \term{hasPart}
+ - \term{hasTerminal}
+ - \term{connectedTo}
+
+The following relations are \term{interAspectRelation}s:
+ - \term{fullfilledby}
+
+
+
+It is convenient to introduce concepts for specific subtypes of
+\term{Element} and \term{Aspect} of an \term{AspectElement}s. To this
+end we introduce the following definitions according to this schema:
+
+#+BEGIN_QUOTE
+A \term{[Aspect][SubType]} is a \term{[SubType]} and an \term{AspectElement} of the \term{[Aspect]}.
+#+END_QUOTE
+
+#+begin_src python :results list :exports none
+output = []
+for aspect in ("Function", "Product", "Location", "Installed"): 
+  for type in ("Block", "Terminal", "ConnectionPoint"): 
+    output.append("\\term{"+aspect + type+"} '::' A \\term{"+aspect + type+"} is a \\term{"+type+"} and an \\term{AspectElement} of the \\term{"+aspect.lower()+"Aspect}.")
+return output
+#+end_src
+
+- \term{FunctionBlock} :: A \term{FunctionBlock} is a \term{Block} and an \term{AspectElement} of the \term{functionAspect}.
+- \term{FunctionTerminal} :: A \term{FunctionTerminal} is a \term{Terminal} and an \term{AspectElement} of the \term{functionAspect}.
+- \term{FunctionConnectionPoint} :: A \term{FunctionConnectionPoint} is a \term{ConnectionPoint} and an \term{AspectElement} of the \term{functionAspect}.
+- \term{ProductBlock} :: A \term{ProductBlock} is a \term{Block} and an \term{AspectElement} of the \term{productAspect}.
+- \term{ProductTerminal} :: A \term{ProductTerminal} is a \term{Terminal} and an \term{AspectElement} of the \term{productAspect}.
+- \term{ProductConnectionPoint} :: A \term{ProductConnectionPoint} is a \term{ConnectionPoint} and an \term{AspectElement} of the \term{productAspect}.
+- \term{LocationBlock} :: A \term{LocationBlock} is a \term{Block} and an \term{AspectElement} of the \term{locationAspect}.
+- \term{LocationTerminal} :: A \term{LocationTerminal} is a \term{Terminal} and an \term{AspectElement} of the \term{locationAspect}.
+- \term{LocationConnectionPoint} :: A \term{LocationConnectionPoint} is a \term{ConnectionPoint} and an \term{AspectElement} of the \term{locationAspect}.
+- \term{InstalledBlock} :: A \term{InstalledBlock} is a \term{Block} and an \term{AspectElement} of the \term{installedAspect}.
+- \term{InstalledTerminal} :: A \term{InstalledTerminal} is a \term{Terminal} and an \term{AspectElement} of the \term{installedAspect}.
+- \term{InstalledConnectionPoint} :: A \term{InstalledConnectionPoint} is a \term{ConnectionPoint} and an \term{AspectElement} of the \term{installedAspect}.
+
+
+
+#+NAME: structural-spec-topelements
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-topelements.png
+<<plantuml-style>>
+
+class AspectElement
+
+class Element
+
+enum Aspect {
+  Function
+  Location
+  Product
+  Installed
+}
+
+AspectElement "*" --> "1" Aspect : hasAspect
+
+'ModelElement  <|-- AspectElement
+Element <|-- AspectElement
+
+''AspectElement --> AspectElement : interAspectRelation
+''
+AspectElement --> AspectElement : intraAspectRelation
+
+#+END_SRC
+
+#+RESULTS: structural-spec-topelements
+[[file:out/img/imf-structural-spec-topelements.png]]
+
+
+** Metadata
+:PROPERTIES:
+:Effort:
+:END:
+
+ - identifiers: which categories have identifiers
+ - annotations: which annotations do we expect?
+
+
+Entity is the most general construct in the structural
+specification. Everything is an entity. No fields or attributes are
+required for Entity, e.g., an Entity is not required to have in id.
+
+An AnnotatedEntity is an Entity that has an identifier and additional
+metadata and provenace data as specified by the diagram. An Entity
+that is not an AnnotatedEntity may only exist through some relation to
+an AnnotatedEntity.
+
+A Model is a collection of AnnotatedEntities and their dependent
+entities. These AnnotatedEntities may be called
+ModelElements. ModelElements are Entities that can occur in Models and
+are hence those AnnotatedEntities that may be exchanged as part of a
+Model.
+
+Note: most subclass relationships to Entity are not depicted in
+diagrams as this make them difficult to read.
+
+#+NAME: structural-spec-model-versioning
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-model-versioning.png
+<<plantuml-style>>
+
+abstract class Entity
+
+abstract class AnnotatedEntity {
+ id : 
+ name : string
+ description : string
+.. provenance ..
+ version : string
+ created : date
+ createdBy : string
+ lastUpdated : date
+ updatedBy : string
+}
+
+class Model
+abstract class ModelElement
+
+Model -left-> ModelElement : contains
+
+Entity <|-- AnnotatedEntity
+AnnotatedEntity <|-- ModelElement
+AnnotatedEntity <|-- Model
+#+END_SRC
+
+
+#+RESULTS: structural-spec-model-versioning
+[[file:out/img/imf-structural-spec-model-versioning.png]]
+
+
+** Attributes
+
+An Attribute is a specification of Datums. An Attribute must specify a
+quality, and may specify a value with an accociated unit of measure
+(uom). An Attribute may be classified at most one of each of the
+Attribute classifiers Provenance, Range, Regularity and Scope.
+
+A Datum is an instantiation of an Attribute and must specify a value
+and a unit of measure as according to the Attribute specification.
+
+Note: The specification of Attributes is currently basic. A more
+thorough analysis of requirements for expressing Attribute is planned
+for future releases.
+
+#+NAME: structural-spec-datum
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-datum.png
+<<plantuml-style>>
+
+abstract class Attribute {
+ property : 1
+ value : 0 .. 1
+ uom : 0 .. 1
+}
+
+Attribute <|-- Datum
+
+Attribute --> Provenance : 0..1
+Attribute --> Range : 0..1
+Attribute --> Regularity : 0..1
+Attribute --> Scope : 0..1
+
+''' Quantity Datum Classifiers
+
+enum Provenance {
+  calculated
+  measured
+  specified
+}
+enum Range {
+  average
+  maximum
+  minimum
+  nominal
+  normal
+}
+enum Regularity {
+  absolute
+  continuous
+}
+enum Scope {
+  design
+  operating
+}
+#+END_SRC
+
+#+RESULTS: structural-spec-datum
+[[file:out/img/imf-structural-spec-datum.png]]
+
+
+** Types
+
+
+
+Types define a blueprint from which SystemElements are created. There
+two kinds of Types: BlockType and TerminalType each representing
+blueprints for Blocks and Terminals, respectively. Types specify
+fields and relationships that must also hold for its instances. A
+BlockType may specify fields such as RDS string, purpose and symbol
+and Terminals by relationships to TerminalTypes. A TerminalType
+specifies a direction and a Medium.
+
+A Type may include multiple AttributeGroups. An AttributeGroup is a
+collection of AttributeTypes.
+
+An AttributeType is an Attribute with additional constraints
+associated. These constraints may specify premissible values for the
+Attribute in different ways, e.g., by specifying a list of legal
+values, a range of values (in the case of a numerical values), legal
+datatype, regular expression, and so on. The expressivity of
+constraints for AttributeTypes will be defined upon a thorough analysis
+including both requirements from SMEs, application developers and the
+expressivity of suitable constraint languages.
+
+An AttributeGroup is an AnnotatedEntity that is used to collect
+Attributes that naturally belong together to support ease of reuse. An
+AttributeGroup also serves the purpose of grouping together Attributes
+for presentational purposes, similarly as document sections in a data
+sheet do.
+
+Instances may be created from types in at least two ways:
+
+ 1. An instance is created from a copy of the type, hence the instance
+    will explicitly contain the fields and relationships specified by
+    its type.
+ 2. An instance is created by referring to its type with a specified
+    relationship that captures the semantics of the instantiation. 
+
+Both cases exibit different issues with regards to synchronisation and
+versioning. For case 1. an instance may evolve independently of its
+type, i.e., any updates to the instance will not affect the type (and
+vise versa) unless specific measures to avoid this is specified. For
+case 2, updates to a type will also affect all its instances. 
+
+#+NAME: structural-spec-types
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-structural-spec-types.png
+<<plantuml-style>>
+
+AnnotatedEntity <|-- Type
+AnnotatedEntity <|-- AttributeTypeGroup
+
+abstract class Type {
+}
+
+Type -left-> Aspect : 0 .. 1 hasAspect 
+BlockType -left-> TerminalType : hasTerminal
+
+class BlockType {
+  RDS : 0 .. 1 string
+  purpose : rdl id
+  symbol
+}
+class TerminalType {
+  direction : in/out
+}
+
+enum Medium 
+
+TerminalType --> Medium : 0 .. 1 hasMedium 
+
+class AttributeTypeGroup
+
+class AttributeType {
+.. constraints ..
+ legal values
+ legal value range
+ number of required values
+ datatype
+ regex
+}
+
+Type <|-- BlockType
+Type <|-- TerminalType
+'Type <|-- InterfacePointType
+
+BlockType <-- Block : 1 instanceOf
+TerminalType <-- Terminal : 1 instanceOf
+
+Type --> AttributeTypeGroup
+AttributeTypeGroup --> AttributeType
+Attribute <|-- AttributeType
+#+END_SRC
+
+#+RESULTS: structural-spec-types
+[[file:out/img/imf-structural-spec-types.png]]
+
+
+* References
+* Setup                                                            :noexport:
+** Global tangle includes
+
+#+NAME: graphviz-style
+#+BEGIN_SRC dot :file out/img/.dummy-graphiz
+ node [shape=box, fontname="Arial", style="filled"];
+ edge [fontname="Arial"];
+#+END_SRC
+
+
+#+NAME: plantuml-style
+#+BEGIN_SRC plantuml :file out/img/.dummy-plantuml
+hide empty members
+
+skinparam class {
+ BackgroundColor White
+}
+#+END_SRC

@@ -1,0 +1,177 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: <http://example.com/P14#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:Aspect
+    a owl:Class .
+
+imf:AttributeGroup
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:AttributeGroupType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:AttributeGroupType
+    a owl:Class ;
+    rdfs:subClassOf imf:Type ;
+    skos:prefLabel "Attribute Group Type" .
+
+imf:AttributeType
+    a owl:Class ;
+    rdfs:subClassOf imf:Type ;
+    skos:prefLabel "Attribute Type" .
+
+imf:AttributeValue
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:AttributeType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:Block
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:BlockType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:BlockType
+    a owl:Class ;
+    rdfs:subClassOf imf:ElementType ;
+    skos:prefLabel "Block Type" .
+
+imf:Direction
+    a owl:Class .
+
+imf:Element
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:ElementType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:ElementType
+    a owl:Class ;
+    rdfs:subClassOf imf:Type, [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange rdfs:Literal ;
+        owl:onProperty imf:symbol
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange rdfs:Literal ;
+        owl:onProperty skos:notation
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect
+    ] ;
+    skos:prefLabel "Element Type" .
+
+imf:Terminal
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:TerminalType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:TerminalType
+    a owl:Class ;
+    rdfs:subClassOf imf:ElementType, [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass owl:Thing ;
+        owl:onProperty imf:hasMedium
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Direction ;
+        owl:onProperty imf:hasDirection
+    ] ;
+    skos:prefLabel "Terminal Type" .
+
+imf:Type
+    a owl:Class ;
+    skos:prefLabel "Type" .
+
+imf:TypeConstraint
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange xsd:integer ;
+        owl:onProperty imf:maxCount
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange xsd:integer ;
+        owl:onProperty imf:minCount
+    ] .
+
+imf:hasAspect
+    a owl:ObjectProperty .
+
+imf:hasDirection
+    a owl:ObjectProperty .
+
+imf:hasMedium
+    a owl:ObjectProperty .
+
+imf:hasTerminalType
+    a owl:ObjectProperty ;
+    rdfs:domain imf:BlockType ;
+    rdfs:range imf:TerminalType .
+
+imf:instanceOf
+    a owl:ObjectProperty ;
+    rdfs:range imf:Type ;
+    skos:prefLabel "instance of" .
+
+imf:maxCount
+    a owl:DatatypeProperty .
+
+imf:minCount
+    a owl:DatatypeProperty .
+
+imf:symbol
+    a owl:DatatypeProperty .
+
+<http://ns.imfid.org/imf-types>
+    a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
+    skos:altLabel "IMF types ontology" ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:scopeNote """
+
+    """ .
+
+rdfs:Literal
+    a rdfs:Datatype .
+
+xsd:integer
+    a rdfs:Datatype .
+
+owl:Thing
+    a owl:Class .
+
+skos:notation
+    a owl:DatatypeProperty .
+

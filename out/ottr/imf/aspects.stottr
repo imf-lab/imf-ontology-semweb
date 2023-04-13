@@ -12,24 +12,32 @@
 @prefix p14:    <http://example.com/P14#> .
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
 @prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
 @prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 
+## This creates an individual for each of the aspects in the table.
 o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?symbol, xsd:string ?color] :: {
   o-rdf:Type(?aspect, imf:Aspect) ,
   ottr:Triple(?aspect, imf:prefix, ?symbol),
   ottr:Triple(?aspect, imf:color, ?color)
 } .
 
-o-imf:AspectElementClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
+o-imf:AspectClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
   o-owl-ax:SubClassOf(?class, imf:AspectElement),  
   o-owl-ax:EquivObjectHasValue(?class, imf:hasAspect, ?aspect)
-  # o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class)
+  o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class)
 } .
 
-o-imf:SystemElementAspectClass [owl:Class ?class, owl:Class ?aspectClass, owl:Class ?systemElementClass] :: {
+o-imf:AspectElementClass [owl:Class ?class, owl:Class ?aspectClass, owl:Class ?elementClass] :: {
   o-owl-ax:SubClassOf(?class, ?aspectClass),  
-  o-owl-ax:SubClassOf(?class, ?systemElementClass)
+  o-owl-ax:SubClassOf(?class, ?elementClass)
+} .
+
+o-imf:InterAspectRelation [owl:ObjectProperty ?property, owl:Class ?aspectClass] :: {
+  o-rdf:Type(?property, owl:ObjectProperty),
+  o-owl-ax:SubPropertyOf(?property, imf:InterAspectRelation),  
+  o-rdfs:Range(?property, ?aspectClass)
 } .

@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-11-18 fr. 15:56 -->
+<!-- 2023-04-13 to. 11:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>IMF and Semantic Technologies</title>
+<title>IMF Language v2.1</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -228,174 +228,234 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">IMF and Semantic Technologies</h1>
+<h1 class="title">IMF Language v2.1</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb7a1488">1. TODOs</a>
+<li><a href="#orgd726f4d">1. TODOs <code>[10/27]</code></a>
 <ul>
-<li><a href="#org82a3be7">1.1. Notes: IMF vocabulary</a>
+<li><a href="#org4d9940d">1.1. TODOs from v2.0</a>
 <ul>
-<li><a href="#orgedaf300">1.1.1. From Mimir</a></li>
+<li><a href="#orgbbbf26d">1.1.1. Notes: IMF vocabulary</a>
+<ul>
+<li><a href="#orgd3cfb9f">1.1.1.1. From Mimir</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org1165297">2. Introduction</a>
+</ul>
+</li>
+<li><a href="#org3c96505">2. Structural Specification</a>
 <ul>
-<li><a href="#orgc7d7f37">2.1. <span class="todo TODO">TODO</span> IMF IT Specification Document Overview</a></li>
-<li><a href="#org8097cbd">2.2. <span class="todo TODO">TODO</span> W3C technology</a>
+<li><a href="#orga3e63d5">2.1. Introduction</a></li>
+<li><a href="#org46f143d">2.2. Diagram legend</a></li>
+<li><a href="#orge0566ed">2.3. Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></a></li>
+<li><a href="#orgae99b66">2.4. Elements</a>
 <ul>
-<li><a href="#org6129f56">2.2.1. RDF</a></li>
+<li><a href="#org29bd549">2.4.1. &#x2026; with reified relations</a></li>
+</ul>
+</li>
+<li><a href="#orgf051b16">2.5. Aspects and Aspect Elements</a>
+<ul>
+<li><a href="#org64806f0">2.5.1. Inter aspect Relations</a></li>
+<li><a href="#org7755b9a">2.5.2. Convenient AspectElement specialisations</a></li>
+</ul>
+</li>
+<li><a href="#org6b38e15">2.6. Attribute Values (aka Datums)</a></li>
+<li><a href="#org8dc2b65">2.7. Types</a></li>
+<li><a href="#org64f5f7f">2.8. Complete Specification</a></li>
+</ul>
+</li>
+<li><a href="#org6e61694">3. Vocabulary: OWL Ontology</a>
+<ul>
+<li><a href="#orgfedf691">3.1. Main ontology</a>
+<ul>
+<li><a href="#org3d18651">3.1.1. Import hierarchy</a></li>
+</ul>
+</li>
+<li><a href="#orga4982ac">3.2. Elements Sub-Ontology</a>
+<ul>
+<li><a href="#org8f4852e">3.2.1. Header</a></li>
+<li><a href="#org31fc38c">3.2.2. <code>Element</code></a></li>
+<li><a href="#org1ac643a">3.2.3. <code>partOf</code> / <code>hasPart</code></a></li>
+<li><a href="#org787e582">3.2.4. <code>hasClassifier</code></a></li>
+<li><a href="#orgd000a83">3.2.5. Element data properties</a></li>
+<li><a href="#orgf41bb51">3.2.6. <code>Block</code></a></li>
+<li><a href="#org67c02ba">3.2.7. <code>Terminal</code></a></li>
+<li><a href="#orga4f8267">3.2.8. <code>hasMedium</code></a></li>
+<li><a href="#orga764826">3.2.9. <code>connectedTo</code></a></li>
+<li><a href="#org1aaebad">3.2.10. Terminal Direction + <code>hasDirection</code></a></li>
+<li><a href="#orgb2e89e6">3.2.11. Input/OutputTerminal</a></li>
+<li><a href="#orgf25ed8e">3.2.12. <code>BreakdownPoint</code></a></li>
+<li><a href="#org428966e">3.2.13. <code>ConnectionPoint</code></a></li>
+</ul>
+</li>
+<li><a href="#org8cb5b88">3.3. Aspects Sub-Ontology</a>
+<ul>
+<li><a href="#org607e0fa">3.3.1. Overview</a></li>
+<li><a href="#org8688944">3.3.2. Ontology source</a>
+<ul>
+<li><a href="#org2ff7dc5">3.3.2.1. Header</a></li>
+<li><a href="#org2892242">3.3.2.2. <code>AspectElement</code></a></li>
+<li><a href="#org3fecc15">3.3.2.3. <code>Aspect</code></a></li>
+<li><a href="#orgf4ecb7d">3.3.2.4. Aspects</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org69670d3">3. Namespace and identifiers and filenames</a></li>
-<li><a href="#orgb1b9231">4. IMF Formal Specification</a>
+<li><a href="#orgac694cf">3.4. Attributes Sub-Ontology</a>
 <ul>
-<li><a href="#org00fd92b">4.1. TODOs <code>[5/6]</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todos">todos</span></span></a></li>
-<li><a href="#org44cbc50">4.2. Core components</a>
-<ul>
-<li><a href="#org663ed54">4.2.1. ??</a></li>
+<li><a href="#org5f1fd7c">3.4.1. Header</a></li>
+<li><a href="#org809fbbf">3.4.2. <code>AttributeValue</code></a></li>
+<li><a href="#org4164398">3.4.3. <code>AttributeGroup</code></a></li>
+<li><a href="#org83a0bd3">3.4.4. <code>DatumQualifier</code></a></li>
+<li><a href="#orgf9b0ea7">3.4.5. DatumQualifiers</a></li>
 </ul>
 </li>
-<li><a href="#orgbf96745">4.3. Aspects</a></li>
-<li><a href="#org2028ad0">4.4. System elements</a>
+<li><a href="#orgae92b20">3.5. Types Sub-Ontology</a>
 <ul>
-<li><a href="#orgc1cbd61">4.4.1. Block</a></li>
-<li><a href="#orgb66246d">4.4.2. Terminal</a></li>
-<li><a href="#org5b50bf8">4.4.3. Interface point</a></li>
-</ul>
-</li>
-<li><a href="#orgcf62913">4.5. Relationships between system elements</a>
+<li><a href="#orge25614f">3.5.1. Overview</a></li>
+<li><a href="#org18afa3c">3.5.2. Ontology source</a>
 <ul>
-<li><a href="#org46a254c">4.5.1. hasTerminal</a></li>
-<li><a href="#org1985b3c">4.5.2. hasPart</a></li>
-<li><a href="#org412f53e">4.5.3. connectedTo</a></li>
-<li><a href="#orgaf52f6a">4.5.4. fulfilledBy</a></li>
+<li><a href="#orgb8bf10c">3.5.2.1. Header</a></li>
+<li><a href="#orgee6d7a8">3.5.2.2. Types</a></li>
+<li><a href="#orgaf9a63e">3.5.2.3. Type constraint</a></li>
+<li><a href="#org0f63cff">3.5.2.4. Relation constraints</a></li>
+<li><a href="#orge124b01">3.5.2.5. instanceOf</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org8a03d3a">5. IMF Structural Specification</a>
-<ul>
-<li><a href="#orgfe8b5ec">5.1. Diagram legend</a></li>
-<li><a href="#org455843e">5.2. Model</a>
-<ul>
-<li><a href="#org0128e7b">5.2.1. TODOs <code>[0/1]</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todos">todos</span></span></a></li>
+<li><a href="#org49afa0d">3.6. All IMF Ontologies combined</a></li>
 </ul>
 </li>
-<li><a href="#orgcbbabfe">5.3. System Elements</a></li>
-<li><a href="#org614a5d1">5.4. Attribute</a>
+<li><a href="#orgc404c25">4. Prefixes</a>
 <ul>
-<li><a href="#orgf82cee3">5.4.1. TODOs <code>[0/2]</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todos">todos</span></span></a></li>
-</ul>
-</li>
-<li><a href="#org7305e4b">5.5. Types</a></li>
-<li><a href="#org0730688">5.6. Instances</a></li>
-<li><a href="#org2e29a62">5.7. Complete Specification</a></li>
-</ul>
-</li>
-<li><a href="#org4f8b996">6. <span class="todo TODO">TODO</span> IMF Vocabulary: OWL Ontology</a>
-<ul>
-<li><a href="#org28cc472">6.1. Ontology source</a></li>
-<li><a href="#orgae77a01">6.2. Import hierarchy</a></li>
-<li><a href="#orgd507cdd">6.3. IMF Top Sub-Ontology</a>
-<ul>
-<li><a href="#orgc9ce75c">6.3.1. Header</a></li>
-<li><a href="#orga88167e">6.3.2. <code>System</code></a></li>
-<li><a href="#org9aa7f62">6.3.3. <code>SystemElement</code></a></li>
-<li><a href="#orgda50b0a">6.3.4. <code>AspectElement</code></a></li>
-<li><a href="#org1d3c185">6.3.5. <code>Aspect</code></a></li>
-<li><a href="#orgce8b9c1">6.3.6. Additional axioms</a></li>
-<li><a href="#org0ee79dc">6.3.7. Structural relations</a></li>
-</ul>
-</li>
-<li><a href="#org3a30bf3">6.4. IMF System Element Sub-Ontology</a>
-<ul>
-<li><a href="#org962b4d6">6.4.1. Header</a></li>
-<li><a href="#orga3c8d39">6.4.2. <code>SystemElement</code></a></li>
-<li><a href="#org7e944ab">6.4.3. <code>Block</code></a></li>
-<li><a href="#orgf0e7372">6.4.4. <code>Terminal</code></a></li>
-<li><a href="#org0d7d801">6.4.5. <code>InterfacePoint</code></a></li>
-<li><a href="#org814664c">6.4.6. <code>isPartOf</code> / <code>hasPart</code></a></li>
-<li><a href="#orgbb26a60">6.4.7. <code>isConnectedTo</code></a></li>
-</ul>
-</li>
-<li><a href="#orgc485224">6.5. IMF Aspects Sub-Ontology</a>
-<ul>
-<li><a href="#org268d5b6">6.5.1. Overview</a></li>
-<li><a href="#org2081926">6.5.2. Ontology source</a>
-<ul>
-<li><a href="#org0d0c5bc">6.5.2.1. Header</a></li>
-<li><a href="#orge5c919e">6.5.2.2. <code>Aspect</code></a></li>
-<li><a href="#org5c73409">6.5.2.3. Aspects</a></li>
-<li><a href="#org5398d9b">6.5.2.4. <code>fulfilledBy</code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org6f49f5d">6.6. Altogehter</a></li>
-</ul>
-</li>
-<li><a href="#orgab441f0">7. <span class="todo TODO">TODO</span> IMF Modelling Patterns: OTTR</a>
-<ul>
-<li><a href="#orgf084848">7.1. IMF Type patterns</a></li>
-<li><a href="#org43fd805">7.2. IMF Data patterns</a></li>
-</ul>
-</li>
-<li><a href="#org92793ee">8. Examples</a>
-<ul>
-<li><a href="#orgdcc8d30">8.1. Pumping Use Case</a>
-<ul>
-<li><a href="#orgb5277db">8.1.1. Types</a></li>
-<li><a href="#org9a7053c">8.1.2. Data</a></li>
-<li><a href="#orgbd6df03">8.1.3. Expand</a>
-<ul>
-<li><a href="#org79f21e8">8.1.3.1. Types</a></li>
-<li><a href="#orgfda0d99">8.1.3.2. Data</a></li>
-</ul>
-</li>
-<li><a href="#org06f46d4">8.1.4. Validate</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org3a0dcf8">9. Prefixes</a>
-<ul>
-<li><a href="#org170186a">9.1. Standard vocabulary prefixes</a></li>
-<li><a href="#org8d6579b">9.2. IMF prefixes</a></li>
-<li><a href="#orgb09105c">9.3. OTTR template prefixes</a></li>
-</ul>
-</li>
-<li><a href="#org534eb9d">10. Discussion</a>
-<ul>
-<li><a href="#orgd37e721">10.1. IMF Type representation formats: Pros and Cons</a>
-<ul>
-<li><a href="#org18c48ed">10.1.1. Requirements</a></li>
-<li><a href="#org87e95e2">10.1.2. Implementation possibilities</a>
-<ul>
-<li><a href="#orgfe81b8c">10.1.2.1. Metadata = RDF</a></li>
-<li><a href="#orgc7ca6fe">10.1.2.2. Attributes</a></li>
-</ul>
-</li>
-<li><a href="#orgfcaca79">10.1.3. RDF</a></li>
-<li><a href="#org6d6227a">10.1.4. SHACL</a></li>
-<li><a href="#org5684ab9">10.1.5. OWL</a></li>
-<li><a href="#org3e93d93">10.1.6. OTTR</a></li>
-</ul>
-</li>
+<li><a href="#orgffa98d7">4.1. Standard vocabulary prefixes</a></li>
+<li><a href="#orgdbf22f8">4.2. IMF prefixes</a></li>
+<li><a href="#org8424595">4.3. OTTR template prefixes</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgb7a1488" class="outline-2">
-<h2 id="orgb7a1488"><span class="section-number-2">1</span> TODOs</h2>
+<div id="outline-container-orgd726f4d" class="outline-2">
+<h2 id="orgd726f4d"><span class="section-number-2">1</span> TODOs <code>[10/27]</code></h2>
 <div class="outline-text-2" id="text-1">
+<p>
+Fundamentals:
+</p>
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> Are BreakdownPoints and ConnectionPoints also Elements? Perhaps
+not: If Elements may be broken down, ie. related by partOf, then we
+can breakdown a breakdown point, which does not seem correct.</li>
+<li class="off"><code>[&#xa0;]</code> Block and ConnectionPoints should be broken down to
+Graphs. Terminals might not be Elements (if elements are things
+that can be broken down to graphs).</li>
+<li class="off"><code>[&#xa0;]</code> Can an Element be member of many Models? What is the name of
+the relation between an Element and a Model.</li>
+</ul>
+
+<p>
+Structural spec:
+</p>
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Which fields should be set for
+<ul class="org-ul">
+<li class="on"><code>[X]</code> elements?
+<ul class="org-ul">
+<li class="on"><code>[X]</code> nomenclature</li>
+</ul></li>
+<li class="on"><code>[X]</code> types?</li>
+<li class="on"><code>[X]</code> identifiedEntities</li>
+</ul></li>
+<li class="on"><code>[X]</code> Which entities should be IdentifiedEntities?</li>
+<li class="off"><code>[&#xa0;]</code> Include reifiedRelationships? Could include, but not implement?</li>
+<li class="on"><code>[X]</code> Describe Model</li>
+<li class="on"><code>[X]</code> Medium</li>
+<li class="on"><code>[X]</code> Introduce stereotypes: Identified, Type,</li>
+</ul>
+
+<p>
+Ontology:
+</p>
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> problem with direction-less connectedTo and the names theInput
+and theOutput.</li>
+<li class="off"><code>[&#xa0;]</code> replace subproperty of inter/intra-aspectrelation to class
+axioms on AspectElement.
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> also FunctionElement and so on, do this in Template</li>
+</ul></li>
+</ul>
+
+<p>
+Documentation:
+</p>
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> Maturity: Experimental</li>
+<li class="off"><code>[&#xa0;]</code> Make example</li>
+<li class="off"><code>[&#xa0;]</code> Define instanceOf
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> annotation to identify properties on types that are to be
+copied. -&gt; don't copy stereotype attributes</li>
+</ul></li>
+</ul>
+
+<p>
+Process:
+</p>
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> Diagrams</li>
+<li class="off"><code>[&#xa0;]</code> Definitions</li>
+<li class="off"><code>[&#xa0;]</code> OWL ontology for RDF data model</li>
+<li class="off"><code>[&#xa0;]</code> SHACL shapes for RDF data model</li>
+<li class="off"><code>[&#xa0;]</code> OTTR templates to instantiate datamodel</li>
+<li class="off"><code>[&#xa0;]</code> bOTTR (SHACL + OTTR) over data model to
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> OWL class,</li>
+<li class="off"><code>[&#xa0;]</code> SHACL shapes</li>
+</ul></li>
+<li class="off"><code>[&#xa0;]</code> Visualisation of RDF data model
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> Instance data</li>
+<li class="off"><code>[&#xa0;]</code> Type data</li>
+</ul></li>
+</ul>
+
+<p>
+Diagrams:
+</p>
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Cardinalities</li>
+<li class="on"><code>[X]</code> relation names</li>
+<li class="on"><code>[X]</code> Use stereotypes for
+<ul class="org-ul">
+<li>identified element</li>
+<li>reified relation</li>
+</ul></li>
+<li class="on"><code>[X]</code> only datatype properties are represented using fields in the UML classes</li>
+<li class="on"><code>[X]</code> color UML classes differently
+<ul class="org-ul">
+<li>Instance</li>
+<li>Type</li>
+<li>External RDL</li>
+</ul></li>
+</ul>
+
+<p>
+Styling:
+</p>
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> size of images</li>
+</ul>
+</div>
+
+<div id="outline-container-org4d9940d" class="outline-3">
+<h3 id="org4d9940d"><span class="section-number-3">1.1</span> TODOs from v2.0</h3>
+<div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Input to this document <code>[0/5]</code>
 <ul class="org-ul">
@@ -470,13 +530,13 @@ semantic validation of the type wrt. to an RDL)</li>
 </div>
 
 
-<div id="outline-container-org82a3be7" class="outline-3">
-<h3 id="org82a3be7"><span class="section-number-3">1.1</span> Notes: IMF vocabulary</h3>
-<div class="outline-text-3" id="text-1-1">
-</div>
-<div id="outline-container-orgedaf300" class="outline-4">
-<h4 id="orgedaf300"><span class="section-number-4">1.1.1</span> From Mimir</h4>
+<div id="outline-container-orgbbbf26d" class="outline-4">
+<h4 id="orgbbbf26d"><span class="section-number-4">1.1.1</span> Notes: IMF vocabulary</h4>
 <div class="outline-text-4" id="text-1-1-1">
+</div>
+<div id="outline-container-orgd3cfb9f" class="outline-5">
+<h5 id="orgd3cfb9f"><span class="section-number-5">1.1.1.1</span> From Mimir</h5>
+<div class="outline-text-5" id="text-1-1-1-1">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> created -  date -&gt; pav:createdOn</li>
 <li class="off"><code>[&#xa0;]</code> createdBy - string? -&gt; pav:createdBy</li>
@@ -502,418 +562,16 @@ construct". Rather use pav:version?</li>
 </div>
 </div>
 </div>
+</div>
 
-<div id="outline-container-org1165297" class="outline-2">
-<h2 id="org1165297"><span class="section-number-2">2</span> Introduction</h2>
+
+<div id="outline-container-org3c96505" class="outline-2">
+<h2 id="org3c96505"><span class="section-number-2">2</span> Structural Specification</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgc7d7f37" class="outline-3">
-<h3 id="orgc7d7f37"><span class="section-number-3">2.1</span> <span class="todo TODO">TODO</span> IMF IT Specification Document Overview</h3>
+<div id="outline-container-orga3e63d5" class="outline-3">
+<h3 id="orga3e63d5"><span class="section-number-3">2.1</span> Introduction</h3>
 <div class="outline-text-3" id="text-2-1">
-<p>
-Todos:
-</p>
-<ul class="org-ul">
-<li>collapse data and types whereever approprioate</li>
-</ul>
-
-<p>
-<i>This is loosely inspired by the OWL 2 Web Ontology Language Document Overview <a href="https://www.w3.org/TR/2012/REC-owl2-overview-20121211/">https://www.w3.org/TR/2012/REC-owl2-overview-20121211/</a>.</i>
-</p>
-
-
-<p>
-This document defines the following:
-</p>
-
-<ul class="org-ul">
-<li>A structural specification of IMF, or IMF datamodel, including IMF
-Data (2) and IMF Types (3) based on the formal abstract
-specification of IMF (1).</li>
-<li>The IMF Vocabulary (9) and IMF Grammar (10) are an implementation
-of (parts of) the Structural specification (2+3).</li>
-<li>IMF Data (2) is represented in different forms:
-<ul class="org-ul">
-<li>The IMF Data exchange format (7) is RDF as specified by the IMF
-grammar (10), specified in the form of a set of SHACL shapes, and
-uses the IMF vocabulary (9), specified in the form of an OWL
-ontology.</li>
-<li>OTTR templates represent an implementation of the structural
-specification of IMF Data, and may be used to generate the IMF
-Data exchange format (7) and OWL instances as according to the
-ISO 15926-14 ontology (11).</li>
-</ul></li>
-<li>IMF types (3) are represented in different formats:
-<ul class="org-ul">
-<li>An exchange format for IMF types (6) should be specified.</li>
-<li>SHACL shapes (8) capture the constraint nature of IMF types and
-may be used validate the IMF Data Exchange format (7).</li>
-<li>OWL class definitions (12) following the ISO 15926-14 OWL ontology
-capture the semantics of the types and may be used for semantic
-validation of the types and their instances.</li>
-<li>OTTR templates (5) represent an implementation of the structural
-specification of types, and allow for a succinct definition of
-the translation into SHACL shapes (8) and OWL class definitions
-(12).</li>
-<li>It should be possible to define a grammar (10b) for IMF Type
-SHACL constraints, in the form of a subset or dialect of the
-SHACL standard.</li>
-</ul></li>
-</ul>
-
-<p>
-The (generated) diagram below illustrates the main relations between
-the parts of the specification. Green boxes indicates a single
-"schematic" specifications. Blue boxes indicate specification of
-multiple multiple occurrences.
-</p>
-
-
-<div class="figure">
-<p><img src="out/img/overview-specifications.png" alt="overview-specifications.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org8097cbd" class="outline-3">
-<h3 id="org8097cbd"><span class="section-number-3">2.2</span> <span class="todo TODO">TODO</span> W3C technology</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-[Explain and motivate the use of semantic technologies?]
-</p>
-</div>
-
-<div id="outline-container-org6129f56" class="outline-4">
-<h4 id="org6129f56"><span class="section-number-4">2.2.1</span> RDF</h4>
-<div class="outline-text-4" id="text-2-2-1">
-<p>
-RDF is an abstract data model defined as an open standard by the W3C.
-</p>
-
-<p>
-RDF may be serialised in different serialisation formats such as
-RDF/XML (based on XML), JSON-LD (based on JSON), Turtle (a favorite
-amongst many familiar with RDF due to its ease of reading and
-writing), or N-Triples (a very simple format only appropriate for
-software).
-</p>
-</div>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org69670d3" class="outline-2">
-<h2 id="org69670d3"><span class="section-number-2">3</span> Namespace and identifiers and filenames</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-The namespace for resources used by the formalisation of the IMF using
-semantic technologies for publicly available and shared resources
-should be:
-</p>
-
-<pre class="example">
-http://ns.imfid.org/imf#
-
-</pre>
-
-<p>
-Suggestion for an identifier schema for different IMF ontology versions:
-</p>
-
-<pre class="example">
-http://ns.imfid.org/ontology/[yyyy-mm-dd]/[ontology-name]
-
-</pre>
-
-<p>
-The ontology will be published at their address. The resources
-(classes, properties, individuals) are made resolvable by publishing a
-merged ontology of all ontology files at the <code>imf</code> namespace address.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgb1b9231" class="outline-2">
-<h2 id="orgb1b9231"><span class="section-number-2">4</span> IMF Formal Specification</h2>
-<div class="outline-text-2" id="text-4">
-<p>
-<i>Note: This section is excerpts taken from the ongoing work on the IMF
-manual (16/11) and may be out of sync.</i>
-</p>
-</div>
-
-<div id="outline-container-org00fd92b" class="outline-3">
-<h3 id="org00fd92b"><span class="section-number-3">4.1</span> TODOs <code>[5/6]</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todos">todos</span></span></h3>
-<div class="outline-text-3" id="text-4-1">
-<ul class="org-ul">
-<li class="on"><code>[X]</code> ?? drop System element categories definition</li>
-<li class="on"><code>[X]</code> ?? add something like, in the definition of System element: "A
-system element is either a (System) Block, Terminal or Interface
-point."</li>
-<li class="off"><code>[&#xa0;]</code> "A system element scheme is a blueprint from which (instances
-of) system elements may be created. A system element created from a
-system element scheme gets the aspect and the attributes as
-required by the system element scheme specification".</li>
-<li class="on" id="FB"><code>[X]</code> A function block is a block with the aspect function. A
-function block holds requirements to purpose.</li>
-<li class="on"><code>[X]</code> "The purpose of a system or a system element is specified by
-the activities that the system performs or achieves. The IMF relies
-on external reference data libraries of the definition of these
-activities."</li>
-<li class="on"><code>[X]</code> <del>include "Breakdown" in partOf?</del></li>
-</ul>
-</div>
-</div>
-
-
-<div id="outline-container-org44cbc50" class="outline-3">
-<h3 id="org44cbc50"><span class="section-number-3">4.2</span> Core components</h3>
-<div class="outline-text-3" id="text-4-2">
-<dl class="org-dl">
-<dt>System</dt><dd>Combination of interacting elements organized to achieve
-one or more stated purpose.</dd>
-<dt>System Element</dt><dd>Member of a set of elements that constitute a
-system. A System Element is is either a System
-Block, a Terminal or an Interface point.</dd>
-<dt>Purpose</dt><dd>The purpose of a system or a system element is specified
-by the activities that the system performs or
-achieves. IMF relies on external reference data
-libraries of the definition of these activities.</dd>
-<dt>Breakdown</dt><dd>A breakdown is a rule by which a system element can be
-divided into parts according to a given perspective.</dd>
-<dt>Aspect</dt><dd>An aspect is a system perspective that provides guideline
-for specifying a breakdown relation on system element and
-properties to the elements in the breakdown relation. An
-aspect is a particular way of viewing a facility
-asset. Different aspects have no overlap in information.</dd>
-<dt>Aspect element</dt><dd>An Aspect element is a System Element with
-exactly one accociated Aspect.</dd>
-</dl>
-</div>
-
-
-<div id="outline-container-org663ed54" class="outline-4">
-<h4 id="org663ed54"><span class="section-number-4">4.2.1</span> ??</h4>
-<div class="outline-text-4" id="text-4-2-1">
-<dl class="org-dl">
-<dt>System element categories</dt><dd>A system element category is a scheme
-used as a blueprint to instantiate System element schemes. There
-are three system element categories: Block, Terminal, Interface
-point.</dd>
-<dt>System element scheme</dt><dd>A System element scheme is an instance of
-a system element category with a defined set of attributes,
-including an attribute which defines a unique aspect.</dd>
-</dl>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orgbf96745" class="outline-3">
-<h3 id="orgbf96745"><span class="section-number-3">4.3</span> Aspects</h3>
-<div class="outline-text-3" id="text-4-3">
-<dl class="org-dl">
-<dt>Function aspect</dt><dd>The Function aspect is an aspect with the
-activity perspective on breakdown, providing information about
-required activity, performance, and function.</dd>
-<dt>Product aspect</dt><dd>The Product aspect is an aspect with the
-artifact, or assembly, perspective on
-breakdown. It is about the specification of a
-solution that is intended to perform the
-activity.</dd>
-<dt>Location aspect</dt><dd>The Location aspect is an aspect with the
-spatial perspective on breakdown. It is about the spatial
-envelope, the size and shape, of the specified pump and the
-requirements imposed by the location.</dd>
-<dt>Installed aspect</dt><dd>The Installed aspect is an aspect with the
-installed artifact, or installed assembly, perspective on
-breakdown. It is about information about the actual pump,
-e.g., serial number, run hours, and status.</dd>
-</dl>
-</div>
-</div>
-
-<div id="outline-container-org2028ad0" class="outline-3">
-<h3 id="org2028ad0"><span class="section-number-3">4.4</span> System elements</h3>
-<div class="outline-text-3" id="text-4-4">
-</div>
-<div id="outline-container-orgc1cbd61" class="outline-4">
-<h4 id="orgc1cbd61"><span class="section-number-4">4.4.1</span> Block</h4>
-<div class="outline-text-4" id="text-4-4-1">
-<dl class="org-dl">
-<dt>System Block</dt><dd>A System Block (or just Block) B is an object
-with a collection of attributes used to describe
-an entity.</dd>
-<dt>Function Block</dt><dd></dd>
-
-<dt>Product Block</dt><dd></dd>
-
-<dt>Location Block</dt><dd></dd>
-
-<dt>Installed Block</dt><dd></dd>
-</dl>
-</div>
-</div>
-
-
-<div id="outline-container-orgb66246d" class="outline-4">
-<h4 id="orgb66246d"><span class="section-number-4">4.4.2</span> Terminal</h4>
-<div class="outline-text-4" id="text-4-4-2">
-<dl class="org-dl">
-<dt>Terminal</dt><dd>A Terminal is an object with a collection of
-attributes used to describe the input or output of a
-Block, and hence its boundaries.</dd>
-
-<dt>Function Terminal</dt><dd></dd>
-
-<dt>Product Terminal</dt><dd></dd>
-
-<dt>Location Terminal</dt><dd><i>Not used</i></dd>
-<dt>Installed Terminal</dt><dd></dd>
-</dl>
-</div>
-</div>
-
-<div id="outline-container-org5b50bf8" class="outline-4">
-<h4 id="org5b50bf8"><span class="section-number-4">4.4.3</span> Interface point</h4>
-<div class="outline-text-4" id="text-4-4-3">
-<dl class="org-dl">
-<dt>Interface point</dt><dd>An Interface Point is an object with a
-collection of attributes used to specify the condition for
-connecting one Block B1 and its Terminal T1, to another Block
-B2 and its Terminal T2.</dd>
-
-<dt>Function Interface Point</dt><dd></dd>
-
-<dt>Product Interface Point</dt><dd></dd>
-
-<dt>Location Interface Point</dt><dd><i>Not used</i></dd>
-<dt>Installed Interface Point</dt><dd></dd>
-</dl>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgcf62913" class="outline-3">
-<h3 id="orgcf62913"><span class="section-number-3">4.5</span> Relationships between system elements</h3>
-<div class="outline-text-3" id="text-4-5">
-</div>
-<div id="outline-container-org46a254c" class="outline-4">
-<h4 id="org46a254c"><span class="section-number-4">4.5.1</span> hasTerminal</h4>
-<div class="outline-text-4" id="text-4-5-1">
-<p>
-The hasTerminal relation is a specification of a connection between a
-block and a terminal of the same aspect.
-</p>
-
-<dl class="org-dl">
-<dt>FB-&gt;FT</dt><dd>hasTerminal(FB,FT) is a specification to the effect
-that the stream state of FT is the input/output of the
-purpose activity of FB.</dd>
-<dt>PB-&gt;PT</dt><dd>hasTerminal(PB,PT) is a specification to the effect
-that the artifactterminal of PT is an input/output
-terminal of the artifact of PB.</dd>
-<dt>LB-&gt;LT</dt><dd>hasTerminal(LB,LT) is a specification to the effect
-that the spatial position of the terminal is placed on
-the spatial extension of the artifact.</dd>
-<dt>IB-&gt;IT</dt><dd>hasTerminal(IB,IT) documents that the installed
-artifact terminal IT is an input/output terminal of the
-installed artifact PB.</dd>
-</dl>
-</div>
-</div>
-
-<div id="outline-container-org1985b3c" class="outline-4">
-<h4 id="org1985b3c"><span class="section-number-4">4.5.2</span> hasPart</h4>
-<div class="outline-text-4" id="text-4-5-2">
-<p>
-hasPart is a specification of a connection between two blocks of the
-same aspects.
-</p>
-
-<dl class="org-dl">
-<dt>FB-&gt;FB</dt><dd>hasPart(FB1,FB2) is a specification to the effect that
-purpose activity of FB2 is a sub-activity of that of
-FB1.</dd>
-<dt>PB-&gt;PB</dt><dd>hasPart(PB1,PB2) is a specification to the effect that
-the artifact of PB2 is a sub-assembly of the artifact
-of PB1.</dd>
-<dt>LB-&gt;LB</dt><dd>hasPart(LB1,LB2) is a specification to the effect that
-the location of LB2 is located in the location of LB1.</dd>
-<dt>IB-&gt;IB</dt><dd>hasPart(IB1,IB2) documents that the installed artifact
-IB2 is sub-assembly of the installed artifact IB1.</dd>
-</dl>
-</div>
-</div>
-
-<div id="outline-container-org412f53e" class="outline-4">
-<h4 id="org412f53e"><span class="section-number-4">4.5.3</span> connectedTo</h4>
-<div class="outline-text-4" id="text-4-5-3">
-<p>
-The connectedTo relation is a specification of a connection between
-two terminals of the same aspect.
-</p>
-
-<dl class="org-dl">
-<dt>FT-(FIP)-FT</dt><dd>connectedTo(FT1,FT2,FIP) is a specification to the
-effect that the stream state of FT1 is equal to
-that of FT2 and satisfies the requirement in FIP.</dd>
-<dt>PT-(PIP)-PT</dt><dd>connectedTo(PT1,PT2,PIP) is a specification to the
-effect that the artifact terminal of PT1 is
-physically connected to the artifact terminal of
-PT2 and satisfies the requirement in PIP.</dd>
-<dt>LT-(LIP)-LT</dt><dd>connectedTo(LT1,LT2,LIP) is a specification to the
-effect that the location of the terminal of LT1
-matches the location of the terminal of LT2 and
-satisfies the requirement in LIP.</dd>
-<dt>IT-IT</dt><dd>connectedTo(IT1,IT2) documents that IT1 is physically
-connected to IT2.</dd>
-</dl>
-</div>
-</div>
-
-
-<div id="outline-container-orgaf52f6a" class="outline-4">
-<h4 id="orgaf52f6a"><span class="section-number-4">4.5.4</span> fulfilledBy</h4>
-<div class="outline-text-4" id="text-4-5-4">
-<p>
-The fulfilledBy relation is a specification of a connection between
-two blocks (or two terminals) of different aspects.
-</p>
-
-<dl class="org-dl">
-<dt>FB-&gt;PB</dt><dd>fulfilledBy(FB,PB)is a specification to the effect that
-the artifact of PB fulfills the purpose of FB.</dd>
-<dt>FT-&gt;PT</dt><dd>fulfilledBy(FT,PT)is a specification to the effect that
-the artifact terminal of PT contains the stream state
-of FT.</dd>
-<dt>LB-&gt;PB</dt><dd>PB artifact fulfills the location requirements of
-LB. fulfilledBy(LB,PB) is a specification to the effect
-that the artifact of PB fulfills the location
-requirements of LB.</dd>
-<dt>LT-&gt;PT</dt><dd>fulfilledBy(LT,PT) is a specification to the effect
-that the artifact terminal of LT fulfills the location
-requirements of PT.</dd>
-<dt>PB-&gt;IB</dt><dd>fulfilledBy(PB,IB) is a specification to the effect
-that the installed artifact IB fulfills the artifact
-specification PB. fulfilledBy(PB,IB) is a specification
-to the effect that the installed artifact of IB
-fulfills the artifact specifications of PB.</dd>
-<dt>PT-&gt;IT</dt><dd>fulfilledBy(PT,IT) is a specification to the effect
-that the installed artifact terminal IT fulfills the
-terminal specifications of PT.</dd>
-</dl>
-</div>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org8a03d3a" class="outline-2">
-<h2 id="org8a03d3a"><span class="section-number-2">5</span> IMF Structural Specification</h2>
-<div class="outline-text-2" id="text-5">
 <p>
 The structural specification is a format and application independent
 data model specification of the formal specification of IMF. The
@@ -926,10 +584,11 @@ format for developing concrete serialisation formats for IMF and serve
 as documentation for application developers.
 </p>
 </div>
+</div>
 
-<div id="outline-container-orgfe8b5ec" class="outline-3">
-<h3 id="orgfe8b5ec"><span class="section-number-3">5.1</span> Diagram legend</h3>
-<div class="outline-text-3" id="text-5-1">
+<div id="outline-container-org46f143d" class="outline-3">
+<h3 id="org46f143d"><span class="section-number-3">2.2</span> Diagram legend</h3>
+<div class="outline-text-3" id="text-2-2">
 <p>
 The specification consists of a series of partially overlapping
 diagrams. The combined diagram is presented in Figure &#x2026;
@@ -941,17 +600,31 @@ restricted to the following elements:
 </p>
 
 <ul class="org-ul">
-<li>UML classes, marked with the icon "C".</li>
-<li>Abstract UML classes, marked with an icon "A", are UML classes that
-are not intended to be instantiated.</li>
+<li>Classes, marked with the icon "C". Classes may have "fields" that
+can hold values, fields are not used to represent relationships.</li>
+<li>Abstract classes, marked with an icon "A", are classes that are not
+intended to be instantiated.</li>
 <li>Enumerations, marked with the icon "E", are used to represent UML
 classes with a limited list of instantiations and where the
 instantiations are defined in the IMF language.</li>
-<li>Subclass relationships between classes, directed relations with an
-open arrow.</li>
+<li>Stereotypes, marked with an icon "S" are used to represent a class
+structure that is not intended to be explictly represented in the
+language, but represents a tag and a convenient repetative
+structure. Classes that use stereotypes indicate this with <code>&lt;&lt; stereotype &gt;&gt;</code> above the class name.</li>
+<li>Subclass relationships between classes, which are drawn using
+directed relations with an open arrow.</li>
 <li>Directed associations (relations) between classes, which are marked
 with a name and possibly a cardinality. If no cardinality is given,
 then the cardinality is 0&#x2013;many.</li>
+<li>Composition relations, drawn with a filled diamond as arrow,
+indicates a strong dependency to the target of the relationship;
+the target is considered as a part of the source and cannot exist
+independently of the source of the relationship.</li>
+<li>Composition relations, drawn with a open diamond as arrow,
+indicates a weak dependency to the target of the relationship than
+to that of a composition relation, the target is considered as part
+of the sourec but can exist independently of the source of the
+relationship.</li>
 </ul>
 
 <p>
@@ -975,171 +648,99 @@ combines all diagrams and contains all information.
 </div>
 </div>
 
-<div id="outline-container-org455843e" class="outline-3">
-<h3 id="org455843e"><span class="section-number-3">5.2</span> Model</h3>
-<div class="outline-text-3" id="text-5-2">
-<p>
-Entity is the most general construct in the structural
-specification. Everything is an entity. No fields or attributes are
-required for Entity, e.g., an Entity is not required to have in id.
-</p>
-
-<p>
-An AnnotatedEntity is an Entity that has an identifier and additional
-metadata and provenace data as specified by the diagram. An Entity
-that is not an AnnotatedEntity may only exist through some relation to
-an AnnotatedEntity.
-</p>
-
-<p>
-A Model is a collection of AnnotatedEntities and their dependent
-entities. These AnnotatedEntities may be called
-ModelElements. ModelElements are Entities that can occur in Models and
-are hence those AnnotatedEntities that may be exchanged as part of a
-Model.
-</p>
-
-<p>
-Note: most subclass relationships to Entity are not depicted in
-diagrams as this make them difficult to read.
-</p>
-
+<div id="outline-container-orge0566ed" class="outline-3">
+<h3 id="orge0566ed"><span class="section-number-3">2.3</span> Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></h3>
+<div class="outline-text-3" id="text-2-3">
 
 <div class="figure">
 <p><img src="out/img/imf-structural-spec-model-versioning.png" alt="imf-structural-spec-model-versioning.png" />
 </p>
 </div>
 </div>
-
-<div id="outline-container-org0128e7b" class="outline-4">
-<h4 id="org0128e7b"><span class="section-number-4">5.2.1</span> TODOs <code>[0/1]</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todos">todos</span></span></h4>
-<div class="outline-text-4" id="text-5-2-1">
-<ul class="org-ul">
-<li class="off"><code>[&#xa0;]</code> Decide on required and/or useful set of provenance fields.</li>
-</ul>
-</div>
-</div>
 </div>
 
-<div id="outline-container-orgcbbabfe" class="outline-3">
-<h3 id="orgcbbabfe"><span class="section-number-3">5.3</span> System Elements</h3>
-<div class="outline-text-3" id="text-5-3">
-<p>
-Every AspectElement has exacty one Aspect.
-</p>
 
-<p>
-Every SystemElement is a AspectElement. 
-A SystemElement is associated 0&#x2013;many Datums. 
-The structure of Datums is described below.
-</p>
-
+<div id="outline-container-orgae99b66" class="outline-3">
+<h3 id="orgae99b66"><span class="section-number-3">2.4</span> Elements</h3>
+<div class="outline-text-3" id="text-2-4">
 
 <div class="figure">
-<p><img src="out/img/imf-structural-spec-topelements.png" alt="imf-structural-spec-topelements.png" />
+<p><img src="out/img/imf-structural-spec-instances.png" alt="imf-structural-spec-instances.png" />
+</p>
+</div>
+
+<p>
+Notes:
+</p>
+
+<ul class="org-ul">
+<li>Use classifier for purpose?</li>
+</ul>
+</div>
+
+<div id="outline-container-org29bd549" class="outline-4">
+<h4 id="org29bd549"><span class="section-number-4">2.4.1</span> &#x2026; with reified relations</h4>
+<div class="outline-text-4" id="text-2-4-1">
+
+<div class="figure">
+<p><img src="out/img/imf-structural-spec-instances-w-reified.png" alt="imf-structural-spec-instances-w-reified.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgf051b16" class="outline-3">
+<h3 id="orgf051b16"><span class="section-number-3">2.5</span> Aspects and Aspect Elements</h3>
+<div class="outline-text-3" id="text-2-5">
+
+<div class="figure">
+<p><img src="out/img/imf-structural-spec-aspect-element.png" alt="imf-structural-spec-aspect-element.png" />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org64806f0" class="outline-4">
+<h4 id="org64806f0"><span class="section-number-4">2.5.1</span> Inter aspect Relations</h4>
+<div class="outline-text-4" id="text-2-5-1">
+
+<div class="figure">
+<p><img src="out/img/structural-spec-aspect-element-interaspect.png" alt="structural-spec-aspect-element-interaspect.png" />
 </p>
 </div>
 </div>
 </div>
 
 
-<div id="outline-container-org614a5d1" class="outline-3">
-<h3 id="org614a5d1"><span class="section-number-3">5.4</span> Attribute</h3>
-<div class="outline-text-3" id="text-5-4">
-<p>
-An Attribute is a specification of Datums. An Attribute must specify a
-quality, and may specify a value with an accociated unit of measure
-(uom). An Attribute may be classified at most one of each of the
-Attribute classifiers Provenance, Range, Regularity and Scope.
-</p>
+<div id="outline-container-org7755b9a" class="outline-4">
+<h4 id="org7755b9a"><span class="section-number-4">2.5.2</span> Convenient AspectElement specialisations</h4>
+<div class="outline-text-4" id="text-2-5-2">
 
-<p>
-A Datum is an instantiation of an Attribute and must specify a value
-and a unit of measure as according to the Attribute specification.
+<div class="figure">
+<p><img src="out/img/imf-structural-spec-aspect-element-subs.png" alt="imf-structural-spec-aspect-element-subs.png" />
 </p>
+</div>
+</div>
+</div>
+</div>
 
-<p>
-Note: The specification of Attributes is currently basic. A more
-thorough analysis of requirements for expressing Attribute is planned
-for future releases.
-</p>
 
+<div id="outline-container-org6b38e15" class="outline-3">
+<h3 id="org6b38e15"><span class="section-number-3">2.6</span> Attribute Values (aka Datums)</h3>
+<div class="outline-text-3" id="text-2-6">
 
 <div class="figure">
 <p><img src="out/img/imf-structural-spec-datum.png" alt="imf-structural-spec-datum.png" />
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgf82cee3" class="outline-4">
-<h4 id="orgf82cee3"><span class="section-number-4">5.4.1</span> TODOs <code>[0/2]</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todos">todos</span></span></h4>
-<div class="outline-text-4" id="text-5-4-1">
-<ul class="org-ul">
-<li class="off"><code>[&#xa0;]</code> Is this a good way of modelling attributes and datums?</li>
-<li class="off"><code>[&#xa0;]</code> Does a datum copy the attribute values or refer to the
-attribute (similar discussion applies to types in general).</li>
-</ul>
-</div>
-</div>
 </div>
 
-<div id="outline-container-org7305e4b" class="outline-3">
-<h3 id="org7305e4b"><span class="section-number-3">5.5</span> Types</h3>
-<div class="outline-text-3" id="text-5-5">
-<p>
-Types define a blueprint from which SystemElements are created. There
-two kinds of Types: BlockType and TerminalType each representing
-blueprints for Blocks and Terminals, respectively. Types specify
-fields and relationships that must also hold for its instances. A
-BlockType may specify fields such as RDS string, purpose and symbol
-and Terminals by relationships to TerminalTypes. A TerminalType
-specifies a direction and a Medium.
-</p>
-
-<p>
-A Type may include multiple AttributeGroups. An AttributeGroup is a
-collection of AttributeTypes.
-</p>
-
-<p>
-An AttributeType is an Attribute with additional constraints
-associated. These constraints may specify premissible values for the
-Attribute in different ways, e.g., by specifying a list of legal
-values, a range of values (in the case of a numerical values), legal
-datatype, regular expression, and so on. The expressivity of
-constraints for AttributeTypes will be defined upon a thorough analysis
-including both requirements from SMEs, application developers and the
-expressivity of suitable constraint languages.
-</p>
-
-<p>
-An AttributeGroup is an AnnotatedEntity that is used to collect
-Attributes that naturally belong together to support ease of reuse. An
-AttributeGroup also serves the purpose of grouping together Attributes
-for presentational purposes, similarly as document sections in a data
-sheet does.
-</p>
-
-<p>
-Instances may be created from types in at least two ways:
-</p>
-
-<ol class="org-ol">
-<li>An instance is created from a copy of the type, hence the instance
-will explicitly contain the fields and relationships specified by
-its type.</li>
-<li>An instance is created by referring to its type with a specified
-relationship that captures the semantics of the instantiation.</li>
-</ol>
-
-<p>
-Both cases exibit different issues with regards to synchronisation and
-versioning. For case 1. an instance may evolve independently of its
-type, i.e., any updates to the instance will not affect the type (and
-vise versa) unless specific measures to avoid this is specified. For
-case 2, updates to a type will also affect all its instances. 
-</p>
-
+<div id="outline-container-org8dc2b65" class="outline-3">
+<h3 id="org8dc2b65"><span class="section-number-3">2.7</span> Types</h3>
+<div class="outline-text-3" id="text-2-7">
 
 <div class="figure">
 <p><img src="out/img/imf-structural-spec-types.png" alt="imf-structural-spec-types.png" />
@@ -1148,33 +749,9 @@ case 2, updates to a type will also affect all its instances.
 </div>
 </div>
 
-<div id="outline-container-org0730688" class="outline-3">
-<h3 id="org0730688"><span class="section-number-3">5.6</span> Instances</h3>
-<div class="outline-text-3" id="text-5-6">
-<p>
-The strucutral specification of the different SystemElements closely
-follow the formal specification.
-</p>
-
-<p>
-The connectedTo relation between InTerminal and OutTerminal may either
-be a binary relationship between an InTerminal and an OutTerminal, or
-a ternary relationsship between an InTerminal, an OutTerminal and an
-InterfacePoint. The latter form is represented in the diagram with a
-diamond.
-</p>
-
-
-<div class="figure">
-<p><img src="out/img/imf-structural-spec-instances.png" alt="imf-structural-spec-instances.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org2e29a62" class="outline-3">
-<h3 id="org2e29a62"><span class="section-number-3">5.7</span> Complete Specification</h3>
-<div class="outline-text-3" id="text-5-7">
+<div id="outline-container-org64f5f7f" class="outline-3">
+<h3 id="org64f5f7f"><span class="section-number-3">2.8</span> Complete Specification</h3>
+<div class="outline-text-3" id="text-2-8">
 
 <div class="figure">
 <p><img src="out/img/imf-structural-spec.png" alt="imf-structural-spec.png" />
@@ -1184,9 +761,9 @@ diamond.
 </div>
 </div>
 
-<div id="outline-container-org4f8b996" class="outline-2">
-<h2 id="org4f8b996"><span class="section-number-2">6</span> <span class="todo TODO">TODO</span> IMF Vocabulary: OWL Ontology</h2>
-<div class="outline-text-2" id="text-6">
+<div id="outline-container-org6e61694" class="outline-2">
+<h2 id="org6e61694"><span class="section-number-2">3</span> Vocabulary: OWL Ontology</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 The IMF vocabulary is defined by an OWL ontology, also called the IMF
 ontology.
@@ -1206,46 +783,13 @@ information.
 </p>
 </div>
 
-<div id="outline-container-org28cc472" class="outline-3">
-<h3 id="org28cc472"><span class="section-number-3">6.1</span> Ontology source</h3>
-<div class="outline-text-3" id="text-6-1">
-<div class="org-src-container">
-<pre class="src src-ttl" id="orgc50e2cc">
-
-&lt;http://ns.imfid.org/imf&gt; a owl:Ontology ;
-    owl:versionIRI &lt;http://ns.imfid.org/20221118/imf&gt; ;
-    owl:imports 
-      &lt;http://ns.imfid.org/20221118/imf-top&gt; ,
-      &lt;http://ns.imfid.org/20221118/imf-systemelements&gt; ,
-      &lt;http://ns.imfid.org/20221118/imf-aspects&gt; ;
-    skos:prefLabel "Information Modelling Framework Ontology " ;
-    skos:altLabel "IMF ontology" ;
-    skos:scopeNote """
-
-      This is the main IMF ontology and its main point of entry.  This
-      ontology document imports all other IMF sub-ontology documents, each
-      of which focus on one particular part of the ontology:
-
-      1. IMF Top defines the very high-level classes and properties of
-      the IMF ontology.
-
-      2. IMF Metamodel defines the metamodel for system elements and
-      their permissible properties.
-
-      3. IMF Aspects defines the aspects that are available to aspect
-      elements.
-
-    """;
-
-    .
-</pre>
+<div id="outline-container-orgfedf691" class="outline-3">
+<h3 id="orgfedf691"><span class="section-number-3">3.1</span> Main ontology</h3>
+<div class="outline-text-3" id="text-3-1">
 </div>
-</div>
-</div>
-
-<div id="outline-container-orgae77a01" class="outline-3">
-<h3 id="orgae77a01"><span class="section-number-3">6.2</span> Import hierarchy</h3>
-<div class="outline-text-3" id="text-6-2">
+<div id="outline-container-org3d18651" class="outline-4">
+<h4 id="org3d18651"><span class="section-number-4">3.1.1</span> Import hierarchy</h4>
+<div class="outline-text-4" id="text-3-1-1">
 <p>
 The diagram displays the different ontology documents that the IMF
 ontology consists of and the import relations that exist between
@@ -1260,89 +804,356 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 </div>
+</div>
 
 
-<div id="outline-container-orgd507cdd" class="outline-3">
-<h3 id="orgd507cdd"><span class="section-number-3">6.3</span> IMF Top Sub-Ontology</h3>
-<div class="outline-text-3" id="text-6-3">
+<div id="outline-container-orga4982ac" class="outline-3">
+<h3 id="orga4982ac"><span class="section-number-3">3.2</span> Elements Sub-Ontology</h3>
+<div class="outline-text-3" id="text-3-2">
 
 <div class="figure">
-<p><object type="image/svg+xml" data="./out/owl/imf-top-overview.svg" class="org-svg">
+<p><object type="image/svg+xml" data="./out/owl/imf-elements-overview.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
 </div>
 </div>
 
-
-<div id="outline-container-orgc9ce75c" class="outline-4">
-<h4 id="orgc9ce75c"><span class="section-number-4">6.3.1</span> Header</h4>
-<div class="outline-text-4" id="text-6-3-1">
+<div id="outline-container-org8f4852e" class="outline-4">
+<h4 id="org8f4852e"><span class="section-number-4">3.2.1</span> Header</h4>
+<div class="outline-text-4" id="text-3-2-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgae70ed9">
+<pre class="src src-ttl" id="org4cea543">
 
-&lt;http://ns.imfid.org/imf-top&gt; a owl:Ontology ;
-    owl:versionIRI &lt;http://ns.imfid.org/20221118/imf-top&gt; ;
-    # owl:imports &lt;http://www.w3.org/2004/02/skos/core&gt; ;
-    skos:prefLabel "Information Modelling Framework Ontology: Top Ontology " ;
-    skos:altLabel "IMF top ontology" ;
+&lt;http://ns.imfid.org/imf-elements&gt; a owl:Ontology ;
+    owl:versionIRI &lt;http://ns.imfid.org/20230331/imf-elements&gt; ;
+    ## owl:imports &lt;http://ns.imfid.org/20230331/imf-top&gt; ;
+    skos:prefLabel "Information Modelling Framework Ontology: Elements " ;
     skos:scopeNote """
 
-      This ontology defines the very core classes and relations of the
-      Information Modelling Framework (IMF) to provide a structure for
-      ontologies that extend this ontology.
-
-    """;
-
+    """ ;
     .
 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orga88167e" class="outline-4">
-<h4 id="orga88167e"><span class="section-number-4">6.3.2</span> <code>System</code></h4>
-<div class="outline-text-4" id="text-6-3-2">
+<div id="outline-container-org31fc38c" class="outline-4">
+<h4 id="org31fc38c"><span class="section-number-4">3.2.2</span> <code>Element</code></h4>
+<div class="outline-text-4" id="text-3-2-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org7e335b9">imf:System a owl:Class ;
-  skos:prefLabel "System" 
-.
+<pre class="src src-ttl" id="orgbb44013">imf:Element a owl:Class .
+
+[] ottr:of o-owl-ma:ClassPartition ;
+   ottr:values ( imf:Element ( imf:Block imf:Terminal ) ) .
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org9aa7f62" class="outline-4">
-<h4 id="org9aa7f62"><span class="section-number-4">6.3.3</span> <code>SystemElement</code></h4>
-<div class="outline-text-4" id="text-6-3-3">
+<div id="outline-container-org1ac643a" class="outline-4">
+<h4 id="org1ac643a"><span class="section-number-4">3.2.3</span> <code>partOf</code> / <code>hasPart</code></h4>
+<div class="outline-text-4" id="text-3-2-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orga2a8b68">imf:SystemElement a owl:Class ;
-  rdfs:subClassOf imf:AspectElement ;
-  skos:prefLabel "System Element" 
-.
+<pre class="src src-ttl" id="org0c1ce9b">imf:partOf a owl:ObjectProperty;
+  a owl:FunctionalProperty ;
+  a owl:IrreflexiveProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  skos:prefLabel "is part of" ;
+  skos:altLabel "has parent" ;
+  .
 
-imf:memberOf a owl:ObjectProperty , owl:FunctionalProperty ;
-  rdfs:domain imf:SystemElement ;
-  rdfs:range imf:System .
-
-[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
-   ottr:values ( imf:SystemElement imf:memberOf imf:System ) .
+imf:hasPart a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
+  owl:inverseOf imf:partOf ;
+  skos:prefLabel "has part";
+  skos:altLabel "has child";
+  .
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgda50b0a" class="outline-4">
-<h4 id="orgda50b0a"><span class="section-number-4">6.3.4</span> <code>AspectElement</code></h4>
-<div class="outline-text-4" id="text-6-3-4">
+<div id="outline-container-org787e582" class="outline-4">
+<h4 id="org787e582"><span class="section-number-4">3.2.4</span> <code>hasClassifier</code></h4>
+<div class="outline-text-4" id="text-3-2-4">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org369621c">imf:AspectElement a owl:Class ;
+<pre class="src src-ttl" id="org7424318">imf:hasClassifier a owl:ObjectProperty .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd000a83" class="outline-4">
+<h4 id="orgd000a83"><span class="section-number-4">3.2.5</span> Element data properties</h4>
+<div class="outline-text-4" id="text-3-2-5">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org30e9390"># skos:notation
+imf:symbol a owl:DatatypeProperty .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf41bb51" class="outline-4">
+<h4 id="orgf41bb51"><span class="section-number-4">3.2.6</span> <code>Block</code></h4>
+<div class="outline-text-4" id="text-3-2-6">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org5df101b">imf:Block a owl:Class ;
+  rdfs:subClassOf imf:Element ;
+  skos:prefLabel "Block" ;
+  .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Block imf:partOf imf:Block) .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org67c02ba" class="outline-4">
+<h4 id="org67c02ba"><span class="section-number-4">3.2.7</span> <code>Terminal</code></h4>
+<div class="outline-text-4" id="text-3-2-7">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org1361585">imf:Terminal a owl:Class ;
+  rdfs:subClassOf imf:Element ;
+  skos:prefLabel "Terminal" ;
+  skos:altLabel "Port", "Channel", "Input/Output" ;
+  .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Terminal imf:partOf imf:Terminal) .
+
+imf:hasTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  rdfs:domain imf:Block ;
+  rdfs:range imf:Terminal ;
+  skos:prefLabel "has terminal" ;
+  skos:definition "The relation between a block and its terminals.";
+  .
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga4f8267" class="outline-4">
+<h4 id="orga4f8267"><span class="section-number-4">3.2.8</span> <code>hasMedium</code></h4>
+<div class="outline-text-4" id="text-3-2-8">
+<div class="org-src-container">
+<pre class="src src-ttl" id="orgb696322">imf:hasMedium a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasClassifier ;
+  rdfs:domain imf:Terminal .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga764826" class="outline-4">
+<h4 id="orga764826"><span class="section-number-4">3.2.9</span> <code>connectedTo</code></h4>
+<div class="outline-text-4" id="text-3-2-9">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org3dcd4e5">imf:connectedTo a owl:ObjectProperty ;
+  a owl:FunctionalProperty ;
+  a owl:IrreflexiveProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  skos:prefLabel "connected to" ;
+  rdfs:domain imf:Terminal ;
+  rdfs:range imf:Terminal ;
+  .
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org1aaebad" class="outline-4">
+<h4 id="org1aaebad"><span class="section-number-4">3.2.10</span> Terminal Direction + <code>hasDirection</code></h4>
+<div class="outline-text-4" id="text-3-2-10">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org6c7ac28">imf:TerminalDirection a owl:Class .
+
+imf:inDirection  a owl:NamedIndividual, imf:TerminalDirection .
+imf:outDirection a owl:NamedIndividual, imf:TerminalDirection. 
+
+imf:hasDirection a owl:ObjectProperty ;
+  rdfs:domain imf:Terminal ;
+  rdfs:range imf:TerminalDirection .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb2e89e6" class="outline-4">
+<h4 id="orgb2e89e6"><span class="section-number-4">3.2.11</span> Input/OutputTerminal</h4>
+<div class="outline-text-4" id="text-3-2-11">
+<div class="org-src-container">
+<pre class="src src-ttl" id="orga0c0024">imf:InputTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Input Terminal" ;
+  skos:altLabel "Input" ;
+  .
+
+[] ottr:of o-owl-ax:EquivHasValue ;
+   ottr:values ( imf:InputTerminal imf:hasDirection imf:inDirection ) .
+
+imf:OutputTerminal a owl:Class ;
+  rdfs:subClassOf imf:Terminal ;
+  skos:prefLabel "Output Terminal" ;
+  skos:altLabel "Output" ;
+  .
+
+[] ottr:of o-owl-ax:EquivHasValue ;
+   ottr:values ( imf:OutputTerminal imf:hasDirection imf:outDirection ) .
+
+[] ottr:of o-owl-ma:ClassPartition ;
+   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
+
+imf:hasInputTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has input terminal" ;
+  rdfs:range imf:InputTerminal ;
+  skos:definition "The relation between a block and its input terminals.";
+  .
+
+imf:hasOutputTerminal a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasTerminal ;
+  skos:prefLabel "has output terminal" ;
+  rdfs:range imf:OutputTerminal ;
+  skos:definition "The relation between a block and its output terminals.";
+  .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf25ed8e" class="outline-4">
+<h4 id="orgf25ed8e"><span class="section-number-4">3.2.12</span> <code>BreakdownPoint</code></h4>
+<div class="outline-text-4" id="text-3-2-12">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org1fe32c3">
+imf:BreakdownPoint a owl:Class ;
+  # rdfs:subClassOf 
+  skos:prefLabel "Breakdown Point" ;
+  # skos:altLabel
+  .
+
+imf:thePart a owl:ObjectProperty ;
+  rdfs:domain imf:BreakdownPoint ;
+  rdfs:range imf:Element .
+
+imf:theWhole a owl:ObjectProperty ;
+  rdfs:domain imf:BreakdownPoint ;
+  rdfs:range imf:Element .
+
+imf:partOf a owl:ObjectProperty ;
+  owl:propertyChainAxiom ( [ owl:inverseOf imf:thePart ] imf:theWhole ) .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org428966e" class="outline-4">
+<h4 id="org428966e"><span class="section-number-4">3.2.13</span> <code>ConnectionPoint</code></h4>
+<div class="outline-text-4" id="text-3-2-13">
+<div class="org-src-container">
+<pre class="src src-ttl" id="orgb245cb8">
+imf:ConnectionPoint a owl:Class ;
+  # rdfs:subClassOf 
+  skos:prefLabel "Connection Point" ;
+  # skos:altLabel
+  .
+
+imf:theInput a owl:ObjectProperty ;
+  rdfs:domain imf:ConnectionPoint ;
+  rdfs:range imf:Terminal . # imf:OutputTerminal  
+
+imf:theOutput a owl:ObjectProperty ;
+  rdfs:domain imf:ConnectionPoint ;
+  rdfs:range imf:Terminal . # imf:InputTerminal  
+
+imf:connectedTo a owl:ObjectProperty ;
+  owl:propertyChainAxiom ( imf:theOutput [ owl:inverseOf imf:theInput ] ) .
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org8cb5b88" class="outline-3">
+<h3 id="org8cb5b88"><span class="section-number-3">3.3</span> Aspects Sub-Ontology</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-org607e0fa" class="outline-4">
+<h4 id="org607e0fa"><span class="section-number-4">3.3.1</span> Overview</h4>
+<div class="outline-text-4" id="text-3-3-1">
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./out/owl/imf-aspects-overview.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8688944" class="outline-4">
+<h4 id="org8688944"><span class="section-number-4">3.3.2</span> Ontology source</h4>
+<div class="outline-text-4" id="text-3-3-2">
+</div>
+<div id="outline-container-org2ff7dc5" class="outline-5">
+<h5 id="org2ff7dc5"><span class="section-number-5">3.3.2.1</span> Header</h5>
+<div class="outline-text-5" id="text-3-3-2-1">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org96280de">
+
+&lt;http://ns.imfid.org/imf-aspects&gt; a owl:Ontology ;
+    owl:versionIRI &lt;http://ns.imfid.org/20230331/imf-aspects&gt; ;
+    ## owl:imports &lt;http://ns.imfid.org/20230331/imf-top&gt; ;
+    skos:prefLabel "Information Modelling Framework Ontology: Aspects " ;
+    skos:altLabel "IMF aspects ontology" ;
+    skos:scopeNote """
+
+      This ontology defines IMF's central aspects.
+
+    """;
+    .
+
+
+
+
+
+
+# imf:LocationTerminal        rdfs:subClassOf owl:Nothing .
+# imf:LocationInterfacePoint  rdfs:subClassOf owl:Nothing .
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2892242" class="outline-5">
+<h5 id="org2892242"><span class="section-number-5">3.3.2.2</span> <code>AspectElement</code></h5>
+<div class="outline-text-5" id="text-3-3-2-2">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org8f8b1c8">imf:AspectElement a owl:Class ;
+  rdfs:subclassOf imf:Element ;
   skos:prefLabel "Aspect Element";
   .
 
@@ -1358,342 +1169,46 @@ imf:hasAspect a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org1d3c185" class="outline-4">
-<h4 id="org1d3c185"><span class="section-number-4">6.3.5</span> <code>Aspect</code></h4>
-<div class="outline-text-4" id="text-6-3-5">
+<div id="outline-container-org3fecc15" class="outline-5">
+<h5 id="org3fecc15"><span class="section-number-5">3.3.2.3</span> <code>Aspect</code></h5>
+<div class="outline-text-5" id="text-3-3-2-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org673e300">imf:Aspect a owl:Class ;
-  skos:prefLabel "Aspect";
-.
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgce8b9c1" class="outline-4">
-<h4 id="orgce8b9c1"><span class="section-number-4">6.3.6</span> Additional axioms</h4>
-<div class="outline-text-4" id="text-6-3-6">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org810bc6a">
-[] ottr:of o-owl-ax:DisjointClasses ;
-   ottr:values( ( imf:Aspect imf:AspectElement imf:System ) ) .
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org0ee79dc" class="outline-4">
-<h4 id="org0ee79dc"><span class="section-number-4">6.3.7</span> Structural relations</h4>
-<div class="outline-text-4" id="text-6-3-7">
-<p>
-The following scope note is put on all following top-level relations:
-</p>
-<div class="org-src-container">
-<pre class="src src-ttl" id="org87cdb1e">skos:scopeNote """
-
-  This relation is used to enforce that subproperties respect this
-  relation's definition. This must be enforced by introducing
-  class axioms that locally further restrict the domain and range
-  of the relation.
-  
-"""
+<pre class="src src-ttl" id="orgae89c9d">imf:Aspect a owl:Class .
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgb985d34">imf:intraAspectRelation a owl:ObjectProperty ;
+<pre class="src src-ttl" id="org2e6381c">imf:intraAspectRelation a owl:ObjectProperty ;
     skos:prefLabel "intra-aspect relation";
     rdfs:subPropertyOf skos:semanticRelation ;
-    rdfs:domain imf:AspectElement ;
-    rdfs:range imf:AspectElement ;
-    skos:definition "A generic relation between aspect objects of the same aspect" ;
-    
+    #rdfs:domain imf:AspectElement ;
+    #rdfs:range imf:AspectElement ;
+    skos:definition "A generic relation between aspect objects of the same aspect" 
     .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AspectElement imf:intraAspectRelation imf:AspectElement ) .
 
 imf:interAspectRelation a owl:ObjectProperty ;
     skos:prefLabel "inter-aspect relation";
     rdfs:domain imf:AspectElement ;
     rdfs:range imf:AspectElement ;
-    rdfs:subPropertyOf skos:related ;
+    rdfs:subPropertyOf skos:related
     # owl:propertyDisjointWith imf:intraAspectRelation ; ## An error occurred during reasoning: Non-simple property or its inverse appears in disjoint properties axiom.
-    
-    .
-
-imf:hierarchicalRelation a owl:ObjectProperty ;
-    a owl:IrreflexiveProperty ;
-    skos:prefLabel "hierarchical relation";
-    rdfs:subPropertyOf skos:semanticRelation ;
-    rdfs:domain imf:AspectElement ;
-    rdfs:range imf:AspectElement ;
-    skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
-    
-    .
-
-imf:associativeRelation a owl:ObjectProperty ;
-    skos:prefLabel "associative relation";
-    rdfs:subPropertyOf skos:related ;
-    owl:propertyDisjointWith imf:hierachicalRelation ;
-    rdfs:domain imf:AspectElement ;
-    rdfs:range imf:AspectElement ;
-    skos:definition "A generic associative relation." ;
-    
     .
 </pre>
 </div>
 </div>
 </div>
-</div>
 
-<div id="outline-container-org3a30bf3" class="outline-3">
-<h3 id="org3a30bf3"><span class="section-number-3">6.4</span> IMF System Element Sub-Ontology</h3>
-<div class="outline-text-3" id="text-6-4">
-
-<div class="figure">
-<p><object type="image/svg+xml" data="./out/owl/imf-systemelements-overview.svg" class="org-svg">
-Sorry, your browser does not support SVG.</object>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org962b4d6" class="outline-4">
-<h4 id="org962b4d6"><span class="section-number-4">6.4.1</span> Header</h4>
-<div class="outline-text-4" id="text-6-4-1">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org9886824">
-
-&lt;http://ns.imfid.org/imf-systemelements&gt; a owl:Ontology ;
-    owl:versionIRI &lt;http://ns.imfid.org/20221118/imf-systemelements&gt; ;
-    owl:imports &lt;http://ns.imfid.org/20221118/imf-top&gt; ;
-    skos:prefLabel "Information Modelling Framework Ontology: System Elements " ;
-    skos:altLabel "IMF metamodel ontology" ;
-    skos:scopeNote """
-
-      This ontology defines IMF's meta model which defines how
-      IMF models are represented.
-
-    """ ;
-    .
-
-
-
-
-
-
-
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orga3c8d39" class="outline-4">
-<h4 id="orga3c8d39"><span class="section-number-4">6.4.2</span> <code>SystemElement</code></h4>
-<div class="outline-text-4" id="text-6-4-2">
-<div class="org-src-container">
-<pre class="src src-ttl" id="orgd8077cf">imf:SystemElement a owl:Class .
-
-[] ottr:of o-owl-ma:ClassPartition ;
-   ottr:values ( imf:SystemElement ( imf:Block imf:Terminal imf:InterfacePoint ) ) .
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org7e944ab" class="outline-4">
-<h4 id="org7e944ab"><span class="section-number-4">6.4.3</span> <code>Block</code></h4>
-<div class="outline-text-4" id="text-6-4-3">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org25c7c1b">imf:Block a owl:Class ;
-  rdfs:subClassOf imf:SystemElement ;
-  skos:prefLabel "Block" ;
-  .
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgf0e7372" class="outline-4">
-<h4 id="orgf0e7372"><span class="section-number-4">6.4.4</span> <code>Terminal</code></h4>
-<div class="outline-text-4" id="text-6-4-4">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org46aa48b">imf:Terminal a owl:Class ;
-  rdfs:subClassOf imf:SystemElement ;
-  skos:prefLabel "Terminal" ;
-  skos:altLabel "Port", "Channel", "Input/Output" ;
-  .
-
-imf:InputTerminal a owl:Class ;
-  rdfs:subClassOf imf:Terminal ;
-  skos:prefLabel "Input Terminal" ;
-  skos:altLabel "Input" ;
-  .
-
-imf:OutputTerminal a owl:Class ;
-  rdfs:subClassOf imf:Terminal ;
-  skos:prefLabel "Output Terminal" ;
-  skos:altLabel "Output" ;
-  .
-
-[] ottr:of o-owl-ma:ClassPartition ;
-   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
-
-imf:hasTerminal a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
-  rdfs:domain imf:Block ;
-  rdfs:range imf:Terminal ;
-  skos:prefLabel "has terminal" ;
-  skos:definition "The relation between a system and its terminals.";
-  .
-
-imf:hasInputTerminal a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:hasTerminal ;
-  skos:prefLabel "has input terminal" ;
-  rdfs:range imf:InputTerminal ;
-  skos:definition "The relation between a system and its input terminals.";
-  .
-
-imf:hasOutputTerminal a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:hasTerminal ;
-  skos:prefLabel "has output terminal" ;
-  rdfs:range imf:OutputTerminal ;
-  skos:definition "The relation between a system and its output terminals.";
-  .
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org0d7d801" class="outline-4">
-<h4 id="org0d7d801"><span class="section-number-4">6.4.5</span> <code>InterfacePoint</code></h4>
-<div class="outline-text-4" id="text-6-4-5">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org3952549">imf:InterfacePoint a owl:Class ;
-  rdfs:subClassOf imf:SystemElement ;
-  skos:prefLabel "Interface Point" ;  
-  skos:altLabel "Connection", "Junction" , "Transport" ;
-  .
-
-imf:theInput a owl:ObjectProperty , owl:FunctionalProperty ;
-  rdfs:domain imf:InterfacePoint ;
-  rdfs:range imf:InputTerminal ;
-  .
-
-imf:theOutput a owl:ObjectProperty , owl:FunctionalProperty ;
-  rdfs:domain imf:InterfacePoint ;
-  rdfs:range imf:OutputTerminal ;
-  .
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org814664c" class="outline-4">
-<h4 id="org814664c"><span class="section-number-4">6.4.6</span> <code>isPartOf</code> / <code>hasPart</code></h4>
-<div class="outline-text-4" id="text-6-4-6">
-<div class="org-src-container">
-<pre class="src src-ttl" id="orgfba1c39">imf:isPartOf a owl:ObjectProperty;
-  a owl:FunctionalProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
-  rdfs:domain imf:Block ;
-  rdfs:range imf:Block ;
-  skos:prefLabel "is part of" ;
-  skos:altLabel "has parent" ;
-  .
-
-imf:hasPart a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
-  owl:inverseOf imf:isPartOf ;
-  skos:prefLabel "has part";
-  skos:altLabel "has child";
-  .
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgbb26a60" class="outline-4">
-<h4 id="orgbb26a60"><span class="section-number-4">6.4.7</span> <code>isConnectedTo</code></h4>
-<div class="outline-text-4" id="text-6-4-7">
-<div class="org-src-container">
-<pre class="src src-ttl" id="orgd537f4e">imf:isConnectedTo a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
-  owl:propertyChainAxiom ( imf:theInput [ owl:inverseOf imf:theOutput ] ) ;
-  skos:prefLabel "is connected to" ;
-  rdfs:domain imf:OutputTerminal ;
-  rdfs:range imf:InputTerminal ;
-  .
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orgc485224" class="outline-3">
-<h3 id="orgc485224"><span class="section-number-3">6.5</span> IMF Aspects Sub-Ontology</h3>
-<div class="outline-text-3" id="text-6-5">
-</div>
-<div id="outline-container-org268d5b6" class="outline-4">
-<h4 id="org268d5b6"><span class="section-number-4">6.5.1</span> Overview</h4>
-<div class="outline-text-4" id="text-6-5-1">
-
-<div class="figure">
-<p><object type="image/svg+xml" data="./out/owl/imf-aspects-overview.svg" class="org-svg">
-Sorry, your browser does not support SVG.</object>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org2081926" class="outline-4">
-<h4 id="org2081926"><span class="section-number-4">6.5.2</span> Ontology source</h4>
-<div class="outline-text-4" id="text-6-5-2">
-</div>
-<div id="outline-container-org0d0c5bc" class="outline-5">
-<h5 id="org0d0c5bc"><span class="section-number-5">6.5.2.1</span> Header</h5>
-<div class="outline-text-5" id="text-6-5-2-1">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org749a9c3">
-
-&lt;http://ns.imfid.org/imf-aspects&gt; a owl:Ontology ;
-    owl:versionIRI &lt;http://ns.imfid.org/20221118/imf-aspects&gt; ;
-    owl:imports &lt;http://ns.imfid.org/20221118/imf-top&gt; ;
-    skos:prefLabel "Information Modelling Framework Ontology: Aspects " ;
-    skos:altLabel "IMF aspects ontology" ;
-    skos:scopeNote """
-
-      This ontology defines IMF's central aspects.
-
-    """;
-    .
-
-
-
-
-
-imf:LocationTerminal        rdfs:subClassOf owl:Nothing .
-imf:LocationInterfacePoint  rdfs:subClassOf owl:Nothing .
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge5c919e" class="outline-5">
-<h5 id="orge5c919e"><span class="section-number-5">6.5.2.2</span> <code>Aspect</code></h5>
-<div class="outline-text-5" id="text-6-5-2-2">
-<div class="org-src-container">
-<pre class="src src-ttl" id="orga1cd27a">imf:Aspect a owl:Class .
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-org5c73409" class="outline-5">
-<h5 id="org5c73409"><span class="section-number-5">6.5.2.3</span> Aspects</h5>
-<div class="outline-text-5" id="text-6-5-2-3">
+<div id="outline-container-orgf4ecb7d" class="outline-5">
+<h5 id="orgf4ecb7d"><span class="section-number-5">3.3.2.4</span> Aspects</h5>
+<div class="outline-text-5" id="text-3-3-2-4">
 <p>
 This is the current list of aspects:
 </p>
 
-<table id="orgbf3ffba" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgd2dd653" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1732,7 +1247,7 @@ This is the current list of aspects:
 <tr>
 <td class="org-left">imf:InstalledAspect</td>
 <td class="org-left">'::'</td>
-<td class="org-left">'#FFFFFF'</td>
+<td class="org-left">'#0000FF'</td>
 </tr>
 </tbody>
 </table>
@@ -1740,516 +1255,369 @@ This is the current list of aspects:
 <div class="org-src-container">
 <pre class="src src-ttl">
 
+## This creates an individual for each of the aspects in the table.
 o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?symbol, xsd:string ?color] :: {
   o-rdf:Type(?aspect, imf:Aspect) ,
   ottr:Triple(?aspect, imf:prefix, ?symbol),
   ottr:Triple(?aspect, imf:color, ?color)
 } .
 
-o-imf:AspectElementClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
+o-imf:AspectClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
   o-owl-ax:SubClassOf(?class, imf:AspectElement),  
   o-owl-ax:EquivObjectHasValue(?class, imf:hasAspect, ?aspect)
-  # o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class)
+  o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class)
 } .
 
-o-imf:SystemElementAspectClass [owl:Class ?class, owl:Class ?aspectClass, owl:Class ?systemElementClass] :: {
+o-imf:AspectElementClass [owl:Class ?class, owl:Class ?aspectClass, owl:Class ?elementClass] :: {
   o-owl-ax:SubClassOf(?class, ?aspectClass),  
-  o-owl-ax:SubClassOf(?class, ?systemElementClass)
+  o-owl-ax:SubClassOf(?class, ?elementClass)
 } .
 
-
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-ttl">
-
-o-imf:InterAspectRelation[owl:ObjectProperty ?relation, owl:Class ?domain, owl:Class ?range] :: {
-  o-owl-ax:SubObjectPropertyOf(?relation, imf:interAspectRelation),
-  #o-owl-rstr:ObjectUnionOf(_:domain, ?domain),  
-  #o-owl-rstr:ObjectUnionOf(_:range, ?range),
-  o-owl-ma:DomainRange(?relation, ?domain, ?range)
+o-imf:InterAspectRelation [owl:ObjectProperty ?property, owl:Class ?aspectClass] :: {
+  o-rdf:Type(?property, owl:ObjectProperty),
+  o-owl-ax:SubPropertyOf(?property, imf:InterAspectRelation),  
+  o-rdfs:Range(?property, ?aspectClass)
 } .
 </pre>
 </div>
 </div>
 </div>
-
-
-<div id="outline-container-org5398d9b" class="outline-5">
-<h5 id="org5398d9b"><span class="section-number-5">6.5.2.4</span> <code>fulfilledBy</code></h5>
-<div class="outline-text-5" id="text-6-5-2-4">
-<div class="org-src-container">
-<pre class="src src-ttl" id="orgd4630d1">imf:fulfilledBy a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:InterAspectRelation ;
-  owl:inverseOf imf:fulfills ;
-  rdfs:domain imf:AspectElement ;
-  rdfs:range imf:AspectElement ;
-.
-</pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 
-
-<div id="outline-container-org6f49f5d" class="outline-3">
-<h3 id="org6f49f5d"><span class="section-number-3">6.6</span> Altogehter</h3>
-<div class="outline-text-3" id="text-6-6">
-<pre class="example">
-15:56:10 INFO  riot            :: File: out/owl/imf.owl.ttl
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.19 sec : 8 Triples : 41.24 per second
-15:56:10 INFO  riot            :: File: out/owl/imf-aspects.owl.ttl
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-aspects.owl.ttl : 0.02 sec : 89 Triples : 3,708.33 per second
-15:56:10 INFO  riot            :: File: out/owl/imf-systemelements.owl.ttl
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-systemelements.owl.ttl : 0.02 sec : 113 Triples : 6,647.06 per second
-15:56:10 INFO  riot            :: File: out/owl/imf-top.owl.ttl
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-top.owl.ttl : 0.01 sec : 64 Triples : 5,818.18 per second
-Total           : 0.25 sec : 274 Triples : 1,113.82 per second
-
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgab441f0" class="outline-2">
-<h2 id="orgab441f0"><span class="section-number-2">7</span> <span class="todo TODO">TODO</span> IMF Modelling Patterns: OTTR</h2>
-<div class="outline-text-2" id="text-7">
-</div>
-<div id="outline-container-orgf084848" class="outline-3">
-<h3 id="orgf084848"><span class="section-number-3">7.1</span> IMF Type patterns</h3>
-<div class="outline-text-3" id="text-7-1">
-<div class="org-src-container">
-<pre class="src src-ttl">
-
-o-imf:Type[
-  ottr:IRI ?id,
-  ottr:IRI ?class,
-  ottr:IRI ?aspect
-] :: {
-  o-rdf:Type(?id, sh:NodeShape),
-  o-rdf:Type(?id, imf:Type),
-  ottr:Triple(?id, sh:targetClass, ?id),	
-  o-imf:ShaclPropertyValueShape(?id, imf:hasAspect, ?aspect)
-} .
-
-
-o-imf:AttributeType[
-     ottr:IRI ?type,
-  !  ottr:IRI ?classifier,         # Purpose, Supplimentary, ???
-  !  ottr:IRI ?quality,            # Example: pressure
-  !? ottr:IRI ?provenance,         # Required, Specified, Design, Calculated, Measured, Estimated, Set
-  !? ottr:IRI ?range,              # Nominal, Normal, Average, Maximum, Minimum, Actual
-  !? ottr:IRI ?regularity,         # Continuous, Absolute 
-  !? ottr:IRI ?scope,              # Design, Operating, Test
-   ? rdfs:Literal ?value,      
-   ? ottr:IRI ?uom
-] :: {
-  o-imf:ShaclPropertyValueShape(?type, (imf:hasAttribute, rdf:type), ?classifier),
-  o-imf:ShaclPropertyValueShape(?type, (imf:hasAttribute, rdf:type), ?quality),
-  o-imf:ShaclPropertyValueShape(?type, (imf:hasAttribute, p14:hasDatum, rdf:type), ?provenance),
-  o-imf:ShaclPropertyValueShape(?type, (imf:hasAttribute, p14:hasDatum, rdf:type), ?range),
-  o-imf:ShaclPropertyValueShape(?type, (imf:hasAttribute, p14:hasDatum, rdf:type), ?regularity),
-  o-imf:ShaclPropertyValueShape(?type, (imf:hasAttribute, p14:hasDatum, rdf:type), ?scope),
-  o-imf:ShaclPropertyValueShape(?type, (imf:hasAttribute, p14:hasDatum, p14:datumValue), ?value),
-  o-imf:ShaclPropertyValueShape(?type, (imf:hasAttribute, p14:hasDatum, p14:datumUOM), ?uom)
-} .
-
-o-imf:ShaclPropertyValueShape[
-  ottr:IRI ?nodeshape, 
-  ?path,
-  ?value
-] :: {
-  ottr:Triple(?nodeshape, sh:property, _:P) ,
-  ottr:Triple(_:P, sh:path, ?path),
-  ottr:Triple(_:P, sh:hasValue, ?value)
-} .
-
-
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-org43fd805" class="outline-3">
-<h3 id="org43fd805"><span class="section-number-3">7.2</span> IMF Data patterns</h3>
-<div class="outline-text-3" id="text-7-2">
-<div class="org-src-container">
-<pre class="src src-ttl">
-
-o-imf:System[
-  ottr:IRI ?id,
-  ottr:IRI ?type,
-  ottr:IRI ?aspect
-] :: {
-  o-rdf:Type(?id, imf:System),
-  o-rdf:Type(?id, ?type),
-  ottr:Triple(?id, imf:hasAspect, ?aspect)
-} .
-
-o-imf:Terminal[
-  ottr:IRI ?id,
-  ottr:IRI ?type,
-  ottr:IRI ?aspect,
-  ottr:IRI ?system
-] :: {
-  o-rdf:Type(?id, imf:System),
-  o-rdf:Type(?id, ?type),
-  ottr:Triple(?id, imf:hasAspect, ?aspect),
-  ottr:Triple(?system, imf:hasTerminal, ?id)
-} .
-
-o-imf:Attribute[
-     ottr:IRI ?id,
-  !  ottr:IRI ?classifier,         # Purpose, Supplimentary, ???
-  !  ottr:IRI ?quality,            # Example: pressure
-  !? ottr:IRI ?provenance,         # Required, Specified, Design, Calculated, Measured, Estimated, Set
-  !? ottr:IRI ?range,              # Nominal, Normal, Average, Maximum, Minimum, Actual
-  !? ottr:IRI ?regularity,         # Continuous, Absolute 
-  !? ottr:IRI ?scope,              # Design, Operating, Test
-     rdfs:Literal ?value,      
-     ottr:IRI ?uom
-] :: {
-  ottr:Triple(?id, imf:hasAttribute, _:attr),
-  o-rdf:Type(_:attr, ?classifier),
-  o-rdf:Type(_:attr, ?quality),
-  ottr:Triple(_:attr, p14:hasDatum, _:datum),	
-  o-rdf:Type(_:datum, ?provenance),
-  o-rdf:Type(_:datum, ?range),
-  o-rdf:Type(_:datum, ?regularity),
-  o-rdf:Type(_:datum, ?scope),
-  ottr:Triple(_:datum, p14:datumValue, ?value),
-  ottr:Triple(_:datum, p14:datumUOM, ?uom)
-} .
-
-
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-
-
-
-
-<div id="outline-container-org92793ee" class="outline-2">
-<h2 id="org92793ee"><span class="section-number-2">8</span> Examples</h2>
-<div class="outline-text-2" id="text-8">
-</div>
-<div id="outline-container-orgdcc8d30" class="outline-3">
-<h3 id="orgdcc8d30"><span class="section-number-3">8.1</span> Pumping Use Case</h3>
-<div class="outline-text-3" id="text-8-1">
-<p>
-The example is currently just a proof of concept of how patterns of
-types and data can be used to produce SHACL that can validate the RDF
-data.
-</p>
-
-<p>
-The example is inspired by the following diagram:
-</p>
-
+<div id="outline-container-orgac694cf" class="outline-3">
+<h3 id="orgac694cf"><span class="section-number-3">3.4</span> Attributes Sub-Ontology</h3>
+<div class="outline-text-3" id="text-3-4">
 
 <div class="figure">
-<p><img src="./img/pumpingFunction.png" alt="pumpingFunction.png" />
+<p><object type="image/svg+xml" data="./out/owl/imf-attributes-overview.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgb5277db" class="outline-4">
-<h4 id="orgb5277db"><span class="section-number-4">8.1.1</span> Types</h4>
-<div class="outline-text-4" id="text-8-1-1">
+<div id="outline-container-org5f1fd7c" class="outline-4">
+<h4 id="org5f1fd7c"><span class="section-number-4">3.4.1</span> Header</h4>
+<div class="outline-text-4" id="text-3-4-1">
+<div class="org-src-container">
+<pre class="src src-ttl" id="orgef96dfa">
+
+&lt;http://ns.imfid.org/imf-attributes&gt; a owl:Ontology ;
+    owl:versionIRI &lt;http://ns.imfid.org/20230331/imf-attributes&gt; ;
+    ## owl:imports &lt;http://ns.imfid.org/20230331/imf-top&gt; ;
+    skos:prefLabel "Information Modelling Framework Ontology: Attributes " ;
+    skos:scopeNote """
+
+    """ ;
+    .
+
+
+
+
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org809fbbf" class="outline-4">
+<h4 id="org809fbbf"><span class="section-number-4">3.4.2</span> <code>AttributeValue</code></h4>
+<div class="outline-text-4" id="text-3-4-2">
+<div class="org-src-container">
+<pre class="src src-ttl" id="orge7180ce">imf:AttributeValue a owl:Class .
+
+imf:hasAttributeValue a owl:ObjectProperty ;
+  rdfs:range  imf:AttributeValue .
+
+imf:hasProperty a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasClassifier ;
+  rdfs:domain imf:AttributeValue .
+
+imf:hasUOM a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:hasClassifier ;
+  rdfs:domain imf:AttributeValue .
+
+imf:hasValue a owl:DatatypeProperty ;
+  rdfs:domain imf:AttributeValue .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4164398" class="outline-4">
+<h4 id="org4164398"><span class="section-number-4">3.4.3</span> <code>AttributeGroup</code></h4>
+<div class="outline-text-4" id="text-3-4-3">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org7d44b68">
+imf:AttributeGroup a owl:Class .
+
+imf:hasAttributeGroup a owl:ObjectProperty ;
+  rdfs:range  imf:AttributeGroup .
+
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org83a0bd3" class="outline-4">
+<h4 id="org83a0bd3"><span class="section-number-4">3.4.4</span> <code>DatumQualifier</code></h4>
+<div class="outline-text-4" id="text-3-4-4">
+<div class="org-src-container">
+<pre class="src src-ttl" id="orgf75b906">imf:DatumQualifier a owl:Class .
+
+imf:hasDatumQualifier a owl:ObjectProperty ;
+  rdfs:domain imf:AttributeValue ;
+  rdfs:range  imf:DatumQualifier .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf9b0ea7" class="outline-4">
+<h4 id="orgf9b0ea7"><span class="section-number-4">3.4.5</span> DatumQualifiers</h4>
+<div class="outline-text-4" id="text-3-4-5">
+<table id="orge0b28d6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Qualifier</th>
+<th scope="col" class="org-left">Instance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">imf:Provenance</td>
+<td class="org-left">imf:calculated</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Provenance</td>
+<td class="org-left">imf:measured</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Provenance</td>
+<td class="org-left">imf:specified</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Range</td>
+<td class="org-left">imf:average</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Range</td>
+<td class="org-left">imf:maximum</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Range</td>
+<td class="org-left">imf:minimum</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Range</td>
+<td class="org-left">imf:nominal</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Range</td>
+<td class="org-left">imf:normal</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Regularity</td>
+<td class="org-left">imf:absolute</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Regularity</td>
+<td class="org-left">imf:continuous</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Scope</td>
+<td class="org-left">imf:design</td>
+</tr>
+
+<tr>
+<td class="org-left">imf:Scope</td>
+<td class="org-left">imf:operating</td>
+</tr>
+</tbody>
+</table>
+
 <div class="org-src-container">
 <pre class="src src-ttl">
 
-o-imf:Type(ex:PumpingType, imf:Block, imf:Function) .
-o-imf:AttributeType(ex:myPumpingType, imf:Purpose, p14:Pressure, none, none, none, none, none, none).
-
-o-imf:Type(ex:PumpingOutTerminalType, imf:Terminal, imf:Function) .
-o-imf:AttributeType(ex:PumpingOutTerminalType, imf:Purpose, p14:Topsx, none, none, none, none, none, p14:cm).
-o-imf:AttributeType(ex:PumpingOutTerminalType, imf:Purpose, p14:Topsy, none, none, none, none, none, p14:cm).
+o-imf:DatumQualifier [owl:Class ?qualifierClass, NEList&lt;owl:NamedIndividual&gt; ?qualifierInstances] :: {
+  o-rdf:Type(?qualifierClass, owl:Class) ,
+  o-owl-ax:SubClassOf(?qualifierClass, imf:DatumQualifier) ,
+  o-owl-ax:SubObjectMaxCardinality(imf:AttributeValue, "1"^^xsd:nonNegativeInteger, imf:hasDatumQualifier, ?qualifierClass),
+  cross | o-rdf:Type(++?qualifierInstances, ?qualifierClass),
+  o-owl-ax:EquivObjectOneOf(?qualifierClass, ?qualifierInstances),
+  o-owl-ax:DifferentIndividuals(?qualifierInstances)
+} .
 </pre>
 </div>
 </div>
 </div>
+</div>
 
-<div id="outline-container-org9a7053c" class="outline-4">
-<h4 id="org9a7053c"><span class="section-number-4">8.1.2</span> Data</h4>
-<div class="outline-text-4" id="text-8-1-2">
+<div id="outline-container-orgae92b20" class="outline-3">
+<h3 id="orgae92b20"><span class="section-number-3">3.5</span> Types Sub-Ontology</h3>
+<div class="outline-text-3" id="text-3-5">
+</div>
+<div id="outline-container-orge25614f" class="outline-4">
+<h4 id="orge25614f"><span class="section-number-4">3.5.1</span> Overview</h4>
+<div class="outline-text-4" id="text-3-5-1">
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./out/owl/imf-types-overview.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org18afa3c" class="outline-4">
+<h4 id="org18afa3c"><span class="section-number-4">3.5.2</span> Ontology source</h4>
+<div class="outline-text-4" id="text-3-5-2">
+</div>
+<div id="outline-container-orgb8bf10c" class="outline-5">
+<h5 id="orgb8bf10c"><span class="section-number-5">3.5.2.1</span> Header</h5>
+<div class="outline-text-5" id="text-3-5-2-1">
 <div class="org-src-container">
-<pre class="src src-ttl">
+<pre class="src src-ttl" id="org1f1f6ee">
 
-o-imf:System(ex:myPumping, ex:PumpingType, imf:Function) .
-o-imf:Attribute(ex:myPumping, imf:Purpose, p14:Pressure, p14:Calculated, p14:Maximum, p14:Absolute, p14:Operating, 120, p14:barg).
+&lt;http://ns.imfid.org/imf-types&gt; a owl:Ontology ;
+    owl:versionIRI &lt;http://ns.imfid.org/20230331/imf-types&gt; ;
+    ## owl:imports &lt;http://ns.imfid.org/20230331/imf-top&gt; ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:altLabel "IMF types ontology" ;
+    skos:scopeNote """
 
-o-imf:Terminal(ex:myPumpingOutTerminal, ex:PumpingOutTerminalType, imf:Function, ex:myPumping) .
-o-imf:Attribute(ex:myPumpingOutTerminal, imf:Purpose, p14:Topsx, p14:Calculated, p14:Maximum, p14:Absolute, p14:Operating, 12, p14:mm).
-o-imf:Attribute(ex:myPumpingOutTerminal, imf:Purpose, p14:Topsy, p14:Calculated, p14:Minimum, p14:Absolute, p14:Operating, 2, p14:mm).
-</pre>
-</div>
-</div>
-</div>
+    """;
+    .
 
-<div id="outline-container-orgbd6df03" class="outline-4">
-<h4 id="orgbd6df03"><span class="section-number-4">8.1.3</span> Expand</h4>
-<div class="outline-text-4" id="text-8-1-3">
-</div>
-<div id="outline-container-org79f21e8" class="outline-5">
-<h5 id="org79f21e8"><span class="section-number-5">8.1.3.1</span> Types</h5>
-<div class="outline-text-5" id="text-8-1-3-1">
-<p>
-The type pattern instances expand to SHACL shape definitions.
-</p>
 
-<pre class="example">
-SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
 
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
 
-# [INFO] Fetched template: http://tpl.ottr.xyz/rdf/0.1/Type
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectHasValue
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/EquivalentClass
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubPropertyOf
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/restriction/0.1/ObjectHasValue
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/restriction/0.1/HasValue
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
-
-# [WARNING] Unused parameter in template http://ns.imfid.org/templates/Type. The template has a parameter ?class : ottr:IRI (arg no. 2) which does not occur in the pattern of the template.
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/example/pumping/types.stottr.temp with parser turtle
-rapper: Serializing with serializer turtle
-rapper: Parsing returned 72 triples
-@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix imf: &lt;http://ns.imfid.org/imf#&gt; .
-@prefix pav: &lt;http://purl.org/pav/&gt; .
-@prefix o-rdf: &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
-@prefix o-owl-rstr: &lt;http://tpl.ottr.xyz/owl/restriction/0.1/&gt; .
-@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
-@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
-@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
-@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix p14: &lt;http://example.com/P14#&gt; .
-@prefix ex: &lt;http://example.com#&gt; .
-@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .
-@prefix o-imf: &lt;http://ns.imfid.org/templates/&gt; .
-@prefix ottr: &lt;http://ns.ottr.xyz/0.4/&gt; .
-@prefix o-owl-ma: &lt;http://tpl.ottr.xyz/owl/macro/0.1/&gt; .
-@prefix o-owl-ax: &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
-@prefix shsh: &lt;http://www.w3.org/ns/shacl-shacl#&gt; .
-
-ex:PumpingOutTerminalType
-    a imf:Type, sh:NodeShape ;
-    sh:property [
-        sh:hasValue p14:Topsx ;
-        sh:path (imf:hasAttribute
-            rdf:type
-        )
-    ], [
-        sh:hasValue imf:Purpose ;
-        sh:path (imf:hasAttribute
-            rdf:type
-        )
-    ], [
-        sh:hasValue p14:cm ;
-        sh:path (imf:hasAttribute
-            p14:hasDatum
-            p14:datumUOM
-        )
-    ], [
-        sh:hasValue p14:Topsy ;
-        sh:path (imf:hasAttribute
-            rdf:type
-        )
-    ], [
-        sh:hasValue imf:Purpose ;
-        sh:path (imf:hasAttribute
-            rdf:type
-        )
-    ], [
-        sh:hasValue imf:Function ;
-        sh:path imf:hasAspect
-    ], [
-        sh:hasValue p14:cm ;
-        sh:path (imf:hasAttribute
-            p14:hasDatum
-            p14:datumUOM
-        )
-    ] ;
-    sh:targetClass ex:PumpingOutTerminalType .
-
-ex:PumpingType
-    a imf:Type, sh:NodeShape ;
-    sh:property [
-        sh:hasValue imf:Function ;
-        sh:path imf:hasAspect
-    ] ;
-    sh:targetClass ex:PumpingType .
-
-ex:myPumpingType
-    sh:property [
-        sh:hasValue p14:Pressure ;
-        sh:path (imf:hasAttribute
-            rdf:type
-        )
-    ], [
-        sh:hasValue imf:Purpose ;
-        sh:path (imf:hasAttribute
-            rdf:type
-        )
-    ] .
-
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgfda0d99" class="outline-5">
-<h5 id="orgfda0d99"><span class="section-number-5">8.1.3.2</span> Data</h5>
-<div class="outline-text-5" id="text-8-1-3-2">
-<p>
-The data pattern instances expand to RDF.
-</p>
-
-<pre class="example">
-SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
-SLF4J: Defaulting to no-operation (NOP) logger implementation
-SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubClassOf
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/macro/0.1/DomainRange
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/rdf/0.1/Type
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/EquivObjectHasValue
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubObjectPropertyOf
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/EquivalentClass
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/axiom/0.1/SubPropertyOf
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/restriction/0.1/ObjectHasValue
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/restriction/0.1/HasValue
-
-# [INFO] Fetched template: http://tpl.ottr.xyz/owl/util/0.1/ValueRestriction
-
-# [WARNING] Unused parameter in template http://ns.imfid.org/templates/Type. The template has a parameter ?class : ottr:IRI (arg no. 2) which does not occur in the pattern of the template.
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/example/pumping/data.stottr.temp with parser turtle
-rapper: Serializing with serializer turtle
-rapper: Parsing returned 37 triples
-@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix imf: &lt;http://ns.imfid.org/imf#&gt; .
-@prefix pav: &lt;http://purl.org/pav/&gt; .
-@prefix o-rdf: &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
-@prefix o-owl-rstr: &lt;http://tpl.ottr.xyz/owl/restriction/0.1/&gt; .
-@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
-@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
-@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
-@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix p14: &lt;http://example.com/P14#&gt; .
-@prefix ex: &lt;http://example.com#&gt; .
-@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .
-@prefix o-imf: &lt;http://ns.imfid.org/templates/&gt; .
-@prefix ottr: &lt;http://ns.ottr.xyz/0.4/&gt; .
-@prefix o-owl-ma: &lt;http://tpl.ottr.xyz/owl/macro/0.1/&gt; .
-@prefix o-owl-ax: &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
-@prefix shsh: &lt;http://www.w3.org/ns/shacl-shacl#&gt; .
-
-ex:myPumping
-    imf:hasAspect imf:Function ;
-    imf:hasAttribute [
-        p14:hasDatum [
-            p14:datumUOM p14:barg ;
-            p14:datumValue 120 ;
-            a p14:Absolute, p14:Calculated, p14:Maximum, p14:Operating
-        ] ;
-        a p14:Pressure, imf:Purpose
-    ] ;
-    imf:hasTerminal ex:myPumpingOutTerminal ;
-    a ex:PumpingType, imf:System .
-
-ex:myPumpingOutTerminal
-    imf:hasAspect imf:Function ;
-    imf:hasAttribute [
-        p14:hasDatum [
-            p14:datumUOM p14:mm ;
-            p14:datumValue 12 ;
-            a p14:Absolute, p14:Calculated, p14:Maximum, p14:Operating
-        ] ;
-        a p14:Topsx, imf:Purpose
-    ], [
-        p14:hasDatum [
-            p14:datumUOM p14:mm ;
-            p14:datumValue 2 ;
-            a p14:Absolute, p14:Calculated, p14:Minimum, p14:Operating
-        ] ;
-        a p14:Topsy, imf:Purpose
-    ] ;
-    a ex:PumpingOutTerminalType, imf:System .
 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org06f46d4" class="outline-4">
-<h4 id="org06f46d4"><span class="section-number-4">8.1.4</span> Validate</h4>
-<div class="outline-text-4" id="text-8-1-4">
-<p>
-We can validate the IMF RDF data against the IMF type SHACL shapes.
-</p>
-
+<div id="outline-container-orgee6d7a8" class="outline-5">
+<h5 id="orgee6d7a8"><span class="section-number-5">3.5.2.2</span> Types</h5>
+<div class="outline-text-5" id="text-3-5-2-2">
 <div class="org-src-container">
-<pre class="src src-ttl">@prefix ex:         &lt;http://example.com#&gt; .
-@prefix imf:        &lt;http://ns.imfid.org/imf#&gt; .
-@prefix o-imf:      &lt;http://ns.imfid.org/templates/&gt; .
-@prefix o-owl-ax:   &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
-@prefix o-owl-ma:   &lt;http://tpl.ottr.xyz/owl/macro/0.1/&gt; .
-@prefix o-owl-rstr: &lt;http://tpl.ottr.xyz/owl/restriction/0.1/&gt; .
-@prefix o-rdf:      &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
-@prefix ottr:       &lt;http://ns.ottr.xyz/0.4/&gt; .
-@prefix owl:        &lt;http://www.w3.org/2002/07/owl#&gt; .
-@prefix p14:        &lt;http://example.com/P14#&gt; .
-@prefix pav:        &lt;http://purl.org/pav/&gt; .
-@prefix rdf:        &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix rdfs:       &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix sh:         &lt;http://www.w3.org/ns/shacl#&gt; .
-@prefix shsh:       &lt;http://www.w3.org/ns/shacl-shacl#&gt; .
-@prefix skos:       &lt;http://www.w3.org/2004/02/skos/core#&gt; .
-@prefix xsd:        &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+<pre class="src src-ttl" id="org8239e30">imf:Type a owl:Class ;
+  skos:prefLabel "Type";
+  .
 
-[ rdf:type     sh:ValidationReport ;
-  sh:conforms  false ;
-  sh:result    [ rdf:type                      sh:ValidationResult ;
-                 sh:focusNode                  ex:myPumpingOutTerminal ;
-                 sh:resultMessage              "HasValueConstraint[http://example.com/P14#cm] : No value &lt;http://example.com/P14#cm&gt; in [http://example.com/P14#mm]" ;
-                 sh:resultPath                 ( ( imf:hasAttribute p14:hasDatum ) p14:datumUOM ) ;
-                 sh:resultSeverity             sh:Violation ;
-                 sh:sourceConstraintComponent  sh:HasValueConstraintComponent ;
-                 sh:sourceShape                [] 
-               ] ;
-  sh:result    [ rdf:type                      sh:ValidationResult ;
-                 sh:focusNode                  ex:myPumpingOutTerminal ;
-                 sh:resultMessage              "HasValueConstraint[http://example.com/P14#cm] : No value &lt;http://example.com/P14#cm&gt; in [http://example.com/P14#mm]" ;
-                 sh:resultPath                 ( ( imf:hasAttribute p14:hasDatum ) p14:datumUOM ) ;
-                 sh:resultSeverity             sh:Violation ;
-                 sh:sourceConstraintComponent  sh:HasValueConstraintComponent ;
-                 sh:sourceShape                [] 
-               ]
-] .
+imf:ElementType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Element Type";
+  .
+
+imf:BlockType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Block Type";
+  .
+
+imf:TerminalType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Terminal Type";
+  .
+
+imf:AttributeType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Type";
+  .
+
+imf:AttributeGroupType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Group Type";
+  .
+
+imf:hasTerminalType a owl:ObjectProperty ;
+  rdfs:domain imf:BlockType ;
+  rdfs:range imf:TerminalType ;
+  .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaf9a63e" class="outline-5">
+<h5 id="orgaf9a63e"><span class="section-number-5">3.5.2.3</span> Type constraint</h5>
+<div class="outline-text-5" id="text-3-5-2-3">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org1f435d5">imf:TypeConstraint a owl:Class .
+
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0f63cff" class="outline-5">
+<h5 id="org0f63cff"><span class="section-number-5">3.5.2.4</span> Relation constraints</h5>
+<div class="outline-text-5" id="text-3-5-2-4">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org0b8e1f4">[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
+
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge124b01" class="outline-5">
+<h5 id="orge124b01"><span class="section-number-5">3.5.2.5</span> instanceOf</h5>
+<div class="outline-text-5" id="text-3-5-2-5">
+<div class="org-src-container">
+<pre class="src src-ttl" id="orge6f7922">
+imf:instanceOf a owl:ObjectProperty ;
+  skos:prefLabel "instance of" ;
+  rdfs:range imf:Type .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeValue imf:instanceOf imf:AttributeType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
 </pre>
 </div>
 </div>
@@ -2257,19 +1625,38 @@ We can validate the IMF RDF data against the IMF type SHACL shapes.
 </div>
 </div>
 
-<div id="outline-container-org3a0dcf8" class="outline-2">
-<h2 id="org3a0dcf8"><span class="section-number-2">9</span> Prefixes</h2>
-<div class="outline-text-2" id="text-9">
+<div id="outline-container-org49afa0d" class="outline-3">
+<h3 id="org49afa0d"><span class="section-number-3">3.6</span> All IMF Ontologies combined</h3>
+<div class="outline-text-3" id="text-3-6">
+<pre class="example">
+11:04:28 INFO  riot            :: File: out/owl/imf.owl.ttl
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.23 sec : 23 Triples : 99.14 per second
+11:04:28 INFO  riot            :: File: out/owl/imf-aspects.owl.ttl
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-aspects.owl.ttl : 0.03 sec : 121 Triples : 3,903.23 per second
+11:04:28 INFO  riot            :: File: out/owl/imf-attributes.owl.ttl
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-attributes.owl.ttl : 0.02 sec : 140 Triples : 6,363.64 per second
+11:04:28 INFO  riot            :: File: out/owl/imf-types.owl.ttl
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.02 sec : 96 Triples : 5,052.63 per second
+Total           : 0.30 sec : 380 Triples : 1,250.00 per second
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc404c25" class="outline-2">
+<h2 id="orgc404c25"><span class="section-number-2">4</span> Prefixes</h2>
+<div class="outline-text-2" id="text-4">
 <p>
 This section contains the prefixes used throughout this document.
 </p>
 </div>
 
-<div id="outline-container-org170186a" class="outline-3">
-<h3 id="org170186a"><span class="section-number-3">9.1</span> Standard vocabulary prefixes</h3>
-<div class="outline-text-3" id="text-9-1">
+<div id="outline-container-orgffa98d7" class="outline-3">
+<h3 id="orgffa98d7"><span class="section-number-3">4.1</span> Standard vocabulary prefixes</h3>
+<div class="outline-text-3" id="text-4-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org9d2473c">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
+<pre class="src src-ttl" id="org69e5279">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs:	&lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix owl:    &lt;http://www.w3.org/2002/07/owl#&gt; .
@@ -2283,11 +1670,11 @@ This section contains the prefixes used throughout this document.
 </div>
 </div>
 
-<div id="outline-container-org8d6579b" class="outline-3">
-<h3 id="org8d6579b"><span class="section-number-3">9.2</span> IMF prefixes</h3>
-<div class="outline-text-3" id="text-9-2">
+<div id="outline-container-orgdbf22f8" class="outline-3">
+<h3 id="orgdbf22f8"><span class="section-number-3">4.2</span> IMF prefixes</h3>
+<div class="outline-text-3" id="text-4-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgc998d5b">@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
+<pre class="src src-ttl" id="orgd1b89f8">@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
 
 @prefix p14:    &lt;http://example.com/P14#&gt; .
 </pre>
@@ -2295,12 +1682,13 @@ This section contains the prefixes used throughout this document.
 </div>
 </div>
 
-<div id="outline-container-orgb09105c" class="outline-3">
-<h3 id="orgb09105c"><span class="section-number-3">9.3</span> OTTR template prefixes</h3>
-<div class="outline-text-3" id="text-9-3">
+<div id="outline-container-org8424595" class="outline-3">
+<h3 id="org8424595"><span class="section-number-3">4.3</span> OTTR template prefixes</h3>
+<div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org93a17c2">@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
+<pre class="src src-ttl" id="org01f46fe">@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
 @prefix o-rdf:       &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
+@prefix o-rdfs:       &lt;http://tpl.ottr.xyz/rdfs/0.2/&gt; .
 @prefix o-owl-ax:    &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
 @prefix o-owl-ma:    &lt;http://tpl.ottr.xyz/owl/macro/0.1/&gt; .
 @prefix o-owl-rstr:  &lt;http://tpl.ottr.xyz/owl/restriction/0.1/&gt; .
@@ -2310,368 +1698,10 @@ This section contains the prefixes used throughout this document.
 </div>
 </div>
 </div>
-
-<div id="outline-container-org534eb9d" class="outline-2">
-<h2 id="org534eb9d"><span class="section-number-2">10</span> Discussion</h2>
-<div class="outline-text-2" id="text-10">
-</div>
-<div id="outline-container-orgd37e721" class="outline-3">
-<h3 id="orgd37e721"><span class="section-number-3">10.1</span> IMF Type representation formats: Pros and Cons</h3>
-<div class="outline-text-3" id="text-10-1">
-</div>
-<div id="outline-container-org18c48ed" class="outline-4">
-<h4 id="org18c48ed"><span class="section-number-4">10.1.1</span> Requirements</h4>
-<div class="outline-text-4" id="text-10-1-1">
-<p>
-Informally, the high-level requirement of an IMF type is that is
-should define a small typical IMF data building block that may be used
-for creating multiple instances of the type. The type states some
-requirements of what attributes and values that need to be set by each
-of the instances of the type, some of there requirements are
-optional. A type may also state attributes and values about itself,
-i.e., that do not state requirements about its instances, such as
-metadata about the type.
-</p>
-
-<p>
-A type should essentially specify three things:
-</p>
-<ul class="org-ul">
-<li>its own data, e.g., metadata, like its own name</li>
-<li>requirements to its instances' data in the form of
-<ul class="org-ul">
-<li>concrete values (e.g., aspect: function)</li>
-<li>ranges of permissible values (e.g., permissible operating
-temperature between 0&#x2013;10 C)</li>
-</ul></li>
-</ul>
-
-<p>
-Example: the image below contains an informal specification of a type
-with the purpose Pumping, in this text we call it the "Pumping
-type". This type has references to types that specify different
-terminal types, named T1, T2, T3. In its yellow box, the Pumping type
-contains attributes that are metadata, like its name, and attibute
-that should hold for all its instances, e.g., all instances of the
-type should have the aspect Function. Additionally, the type specifies
-<i>Purpose attributes</i>&#x2014;these are mandatory attributes. One such
-attribute is here called "Pressure, UoM". This indicates that
-instances of the type need to specify an attibute "Pressure" and
-assign a value to it which is specified with a unit of measure. The
-text in blue that is linked to this attribute illustrates one possible
-instantiation of this attribute: "120, barg,
-Calculated/Operating/Maximum/Absolute". Although this example does not
-illustrate it, it is reasonable to expect types to also specify a
-range of possible values for an attribute, e.g, that the permissible
-values for the Pressure attribute should be within the range [0, 120]
-and/or a list of permissible unit of measures.
-</p>
-
-
-<div class="figure">
-<p><img src="./img/pumpingFunction.png" alt="pumpingFunction.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org87e95e2" class="outline-4">
-<h4 id="org87e95e2"><span class="section-number-4">10.1.2</span> Implementation possibilities</h4>
-<div class="outline-text-4" id="text-10-1-2">
-<p>
-An IMF type may be implemented using different semantic
-technologies. Here we explore different options and discuss their pros
-and cons.
-</p>
-
-<p>
-A type should be able to express three things:
-</p>
-<ol class="org-ol">
-<li>Data about the type, metadata</li>
-<li>Required attribute with specific values, here called "blueprint"</li>
-<li>Mandatory and optional attributes with a range of permissible
-values</li>
-</ol>
-
-<p>
-Note that point 2 can be considered a special case of point 3, where
-the attribute is mandatory and the range of permissible values is a
-single value. Therefore we these two points at the same time, under
-the heading "Attributes" below.
-</p>
-</div>
-
-<div id="outline-container-orgfe81b8c" class="outline-5">
-<h5 id="orgfe81b8c"><span class="section-number-5">10.1.2.1</span> Metadata = RDF</h5>
-<div class="outline-text-5" id="text-10-1-2-1">
-<p>
-Type metadata is expressed using RDF following the IMF grammar. This
-is the only natural option.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgc7ca6fe" class="outline-5">
-<h5 id="orgc7ca6fe"><span class="section-number-5">10.1.2.2</span> Attributes</h5>
-<div class="outline-text-5" id="text-10-1-2-2">
-<p>
-We exemplify the different approches by representing the following
-small example type data:
-</p>
-
-<ul class="org-ul">
-<li>Purpose: Pumping</li>
-<li>Fluid: Water</li>
-<li>Pressure: [0, 120] UoM</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgfcaca79" class="outline-4">
-<h4 id="orgfcaca79"><span class="section-number-4">10.1.3</span> RDF</h4>
-<div class="outline-text-4" id="text-10-1-3">
-<p>
-Attribute values can be written in RDF using the grammar for IMF data
-elements. The intended semantics can be implemented in (at least) two
-ways:
-</p>
-
-<ol class="org-ol">
-<li>Instances must contain a copy of all attrbutes and values.</li>
-<li>Instances do not contain a copy of the attritbutes and values, but
-the instance contains a reference to the type, e.g.,
-<code>imf:instanceOf</code> that indicates a "virtual" copy of the attributes
-and values</li>
-</ol>
-
-<p>
-However, RDF cannot also support expressing ranges of permissible
-values (unless the IMF grammar is extended).
-</p>
-
-<p>
-Pros: 
-</p>
-<ul class="org-ul">
-<li>The format of the blueprint is identical to the IMF data format,
-and should therefore be easy to read and write.</li>
-<li>The representation format is simple and "direct" in that it is
-specified using data.</li>
-</ul>
-
-<p>
-Cons:
-</p>
-<ul class="org-ul">
-<li>This approach is nonstandard. Tools would need to make sure that
-either (1) a copy is made or (2) that the reference to the type is
-considered whenever the instance is used/transformed. When the
-instance is updated, one needs to make sure that the type
-information is respected.</li>
-<li>Does not support attributes with ranges. This must be implemented
-with a different language or by extending the IMF RDF grammer and
-implementing.</li>
-</ul>
-
-<p>
-Example:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-ttl"># Type
-:PumpingType a :Type ;
-  :purpose :Pumping ;
-  :fluid :Water ;
-  # cannot represent pressure accurately
-  :pressure [ ] . # use a blank node to indicate that *some* value is required. 
-
-# Instance, approach 1: copy of type data:
-:MyPumping a :AspectElement ;
-  :instanceOf :PumpingType ; # keep a reference to type object.
-  :purpose :Pumping ;
-  :fluid :Water ;
-  :pressure [ :datumValue 99; :datumUoM :Uom1 ]. # give a concrete value
-
-# Instance, approach 2: reference to type:
-:MyPumping a :AspectElement ;
-  :instanceOf :PumpingType ;
-  :pressure [ :datumValue 99; :datumUoM :Uom1 ] . # give a concrete value only unspecified type attributes.
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org6d6227a" class="outline-4">
-<h4 id="org6d6227a"><span class="section-number-4">10.1.4</span> SHACL</h4>
-<div class="outline-text-4" id="text-10-1-4">
-<p>
-Attributes can be implemented using SHACL Shape expressions that
-specify that the instances must contain the attributes and values,
-including ranges of allowable values.
-</p>
-
-
-<p>
-Pros: 
-</p>
-<ul class="org-ul">
-<li>Standard approach. Validation is available by existing SHACL
-validators.</li>
-<li>Supports both 2) and 3) expressions.</li>
-</ul>
-
-<p>
-Cons: 
-</p>
-<ul class="org-ul">
-<li>SHACL shape expressions are more difficult to read than the RDF
-blueprint approach. This can be remedied using OTTR templates to
-create the SHACL shapes.</li>
-</ul>
-
-<p>
-Notes: 
-</p>
-<ul class="org-ul">
-<li>The SHACL shape can be "triggered" for instances of the type by
-adding a reference to the type (as a SHACL shape) from each
-instance using <code>rdf:type</code> and <code>sh:targetClass</code>. If one uses a
-different property than <code>rdf:type</code> then it seems the target must be
-expressed using SPARQL targets which is outside the core SHACL
-standards. Not all tools, e.g,. Jena, implement this extension.</li>
-</ul>
-
-<p>
-Example:
-</p>
-<div class="org-src-container">
-<pre class="src src-ttl"># Type
-:PumpingType
-    a :Type, sh:NodeShape ;
-    sh:targetClass ex:PumpingType ;
-
-    sh:property       
-      [
-        # purpose must have the value Pumping
-        sh:path :purpose ;
-        sh:hasValue :Pumping
-      ] ,
-      [
-        # fluid must have the value Water
-        sh:path :fluid ;
-        sh:hasValue :Water
-      ] ,
-      [
-        # pressure -&gt; datumValue must between 0--120
-        sh:path ( :pressure :datumValue ) ;
-        sh:minInclusive 0 ;
-	sh:maxInclusive 120 
-      ] ,
-      [
-        # pressure -&gt; datumUoM must be one of the given values (this
-        # is not part of the original example)
-        sh:path ( :pressure :datumUoM ) ;
-        sh:in ( :Uom1 :UoM2 ) ;
-      ] .
-
-# Instance
-:MyPumping a :AspectElement ;
-  rdf:type :PumpingType ;
-  :pressure [ :datumValue 99; :datumUoM :Uom1 ] .
-</pre>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-org5684ab9" class="outline-4">
-<h4 id="org5684ab9"><span class="section-number-4">10.1.5</span> OWL</h4>
-<div class="outline-text-4" id="text-10-1-5">
-<p>
-Attributes can be implemented in OWL by representing the type as an
-OWL class and using constructions like functional properies to closed
-classes, and referring to the OWL class from the instance using
-<code>rdf:type</code>.
-</p>
-
-<p>
-Pros: 
-</p>
-<ul class="org-ul">
-<li>Standard approach.</li>
-<li>OWL can be used for both 2) and 3)</li>
-</ul>
-
-<p>
-Cons:
-</p>
-<ul class="org-ul">
-<li>The open world semantics of OWL require that tools need to
-understand the OWL semantics. (This case is similar to the RDF
-blueprint approach with a reference to the type).</li>
-</ul>
-
-<p>
-Example:
-</p>
-</div>
-</div>
-
-
-
-<div id="outline-container-org3e93d93" class="outline-4">
-<h4 id="org3e93d93"><span class="section-number-4">10.1.6</span> OTTR</h4>
-<div class="outline-text-4" id="text-10-1-6">
-<p>
-Attributes can be implemented by OTTR so that it creates a copy of the
-fixed attribute values and the unspecified values become input
-parameters to the OTTR template.
-</p>
-
-<p>
-Pros: 
-</p>
-<ul class="org-ul">
-<li>OTTR closely represents the intended semantics of a type.</li>
-<li>Can be used for both 2) and 3).</li>
-</ul>
-
-<p>
-Cons:
-</p>
-<ul class="org-ul">
-<li>OTTR is not a standard yet, and has limited tool support.</li>
-<li>OTTR cannot express the constraints, like pressure value in the
-range [0, 120]</li>
-</ul>
-
-<p>
-Example: 
-</p>
-
-<div class="org-src-container">
-<pre class="src src-ttl"># Type
-:PumpingTypeInstance[ ottr:IRI ?id, xsd:integer ?pressureValue, ottr:IRI ?pressureUom ] :: {
-  o-rdf:Type(?id, AspectElement),
-  o-rdf:Type(?id, :PumpingType),
-  ottr:Triple(?id, ?pressure, _:datum),
-  ottr:Triple(_:datum, :datumValue, ?pressureValue),
-  ottr:Triple(_:datum, :datumUoM, ?pressureUom)
-} .
-
-# Instance
-:PumpingTypeInstance(:MyPumping, 99, :Uom1) .
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2022-11-18 fr. 15:56</p>
+<p class="date">Date: Editor: Martin G. Skjæveland</p>
+<p class="date">Created: 2023-04-13 to. 11:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

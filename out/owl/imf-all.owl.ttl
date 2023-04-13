@@ -1,274 +1,380 @@
 <http://ns.imfid.org/imf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
-<http://ns.imfid.org/imf> <http://www.w3.org/2002/07/owl#versionIRI> <http://ns.imfid.org/20221118/imf> .
-<http://ns.imfid.org/imf> <http://www.w3.org/2002/07/owl#imports> <http://ns.imfid.org/20221118/imf-top> .
-<http://ns.imfid.org/imf> <http://www.w3.org/2002/07/owl#imports> <http://ns.imfid.org/20221118/imf-systemelements> .
-<http://ns.imfid.org/imf> <http://www.w3.org/2002/07/owl#imports> <http://ns.imfid.org/20221118/imf-aspects> .
+<http://ns.imfid.org/imf> <http://www.w3.org/2002/07/owl#versionIRI> <http://ns.imfid.org/20230331/imf> .
+<http://ns.imfid.org/imf> <http://www.w3.org/2002/07/owl#imports> <http://ns.imfid.org/20230331/imf-elements> .
+<http://ns.imfid.org/imf> <http://www.w3.org/2002/07/owl#imports> <http://ns.imfid.org/20230331/imf-aspects> .
+<http://ns.imfid.org/imf> <http://www.w3.org/2002/07/owl#imports> <http://ns.imfid.org/20230331/imf-attributes> .
+<http://ns.imfid.org/imf> <http://www.w3.org/2002/07/owl#imports> <http://ns.imfid.org/20230331/imf-types> .
 <http://ns.imfid.org/imf> <http://www.w3.org/2004/02/skos/core#prefLabel> "Information Modelling Framework Ontology " .
 <http://ns.imfid.org/imf> <http://www.w3.org/2004/02/skos/core#altLabel> "IMF ontology" .
-<http://ns.imfid.org/imf> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n\n      This is the main IMF ontology and its main point of entry.  This\n      ontology document imports all other IMF sub-ontology documents, each\n      of which focus on one particular part of the ontology:\n\n      1. IMF Top defines the very high-level classes and properties of\n      the IMF ontology.\n\n      2. IMF Metamodel defines the metamodel for system elements and\n      their permissible properties.\n\n      3. IMF Aspects defines the aspects that are available to aspect\n      elements.\n\n    " .
+<http://ns.imfid.org/imf> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n\n      This is the main IMF ontology and its main point of entry.  This\n      ontology document imports all other IMF sub-ontology documents, each\n      of which focus on one particular part of the ontology.\n\n    " .
+<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#IrreflexiveProperty> .
+<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2004/02/skos/core#prefLabel> "hierarchical relation" .
+<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/2004/02/skos/core#semanticRelation> .
+<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AspectElement> .
+<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#AspectElement> .
+<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2004/02/skos/core#definition> "A generic hierachical relation that may be used to represent a breakdown structure." .
+<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2004/02/skos/core#prefLabel> "associative relation" .
+<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/2004/02/skos/core#related> .
+<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2002/07/owl#propertyDisjointWith> <http://ns.imfid.org/imf#hierachicalRelation> .
+<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AspectElement> .
+<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#AspectElement> .
+<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2004/02/skos/core#definition> "A generic associative relation." .
 <http://ns.imfid.org/imf#Aspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#AspectElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:B9e28835786cb5de1b2969b476e8e3d64 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B9e28835786cb5de1b2969b476e8e3d64 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#AspectElement> .
+_:B9e28835786cb5de1b2969b476e8e3d64 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#intraAspectRelation> .
+<http://ns.imfid.org/imf#AspectElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B9e28835786cb5de1b2969b476e8e3d64 .
+<http://ns.imfid.org/imf#AspectElement> <http://www.w3.org/2000/01/rdf-schema#subclassOf> <http://ns.imfid.org/imf#Element> .
+<http://ns.imfid.org/imf#AspectElement> <http://www.w3.org/2004/02/skos/core#prefLabel> "Aspect Element" .
 <http://ns.imfid.org/imf#FunctionAspect> <http://ns.imfid.org/imf#color> "#FFFF00" .
 <http://ns.imfid.org/imf#FunctionAspect> <http://ns.imfid.org/imf#prefix> "=" .
 <http://ns.imfid.org/imf#FunctionAspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Aspect> .
-<http://ns.imfid.org/imf#FunctionAspectElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#FunctionAspectElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#AspectElement> .
-_:B0f10a995b8c992a0639704eec7a68d3f <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:B0f10a995b8c992a0639704eec7a68d3f <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:B0f10a995b8c992a0639704eec7a68d3f <http://www.w3.org/2002/07/owl#hasValue> <http://ns.imfid.org/imf#FunctionAspect> .
-_:B0f10a995b8c992a0639704eec7a68d3f <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasAspect> .
-<http://ns.imfid.org/imf#FunctionAspectElement> <http://www.w3.org/2002/07/owl#equivalentClass> _:B0f10a995b8c992a0639704eec7a68d3f .
 <http://ns.imfid.org/imf#FunctionBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Block> .
-<http://ns.imfid.org/imf#FunctionBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#FunctionAspectElement> .
-<http://ns.imfid.org/imf#FunctionInterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#FunctionAspectElement> .
-<http://ns.imfid.org/imf#FunctionInterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#InterfacePoint> .
-<http://ns.imfid.org/imf#FunctionTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#FunctionAspectElement> .
+<http://ns.imfid.org/imf#FunctionBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#FunctionElement> .
+<http://ns.imfid.org/imf#FunctionElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#FunctionElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#AspectElement> .
+_:Bf45607e53c5c2152a73cd96a27a063d7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Bf45607e53c5c2152a73cd96a27a063d7 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#FunctionElement> .
+_:Bf45607e53c5c2152a73cd96a27a063d7 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#intraAspectRelation> .
+<http://ns.imfid.org/imf#FunctionElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Bf45607e53c5c2152a73cd96a27a063d7 .
+_:Bc2e6c356aa1041ed5557bb8baaa7da33 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:Bc2e6c356aa1041ed5557bb8baaa7da33 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Bc2e6c356aa1041ed5557bb8baaa7da33 <http://www.w3.org/2002/07/owl#hasValue> <http://ns.imfid.org/imf#FunctionAspect> .
+_:Bc2e6c356aa1041ed5557bb8baaa7da33 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasAspect> .
+<http://ns.imfid.org/imf#FunctionElement> <http://www.w3.org/2002/07/owl#equivalentClass> _:Bc2e6c356aa1041ed5557bb8baaa7da33 .
+<http://ns.imfid.org/imf#FunctionTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#FunctionElement> .
 <http://ns.imfid.org/imf#FunctionTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Terminal> .
-<http://ns.imfid.org/imf#InstalledAspect> <http://ns.imfid.org/imf#color> "#FFFFFF" .
+<http://ns.imfid.org/imf#InstalledAspect> <http://ns.imfid.org/imf#color> "#0000FF" .
 <http://ns.imfid.org/imf#InstalledAspect> <http://ns.imfid.org/imf#prefix> "::" .
 <http://ns.imfid.org/imf#InstalledAspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Aspect> .
-<http://ns.imfid.org/imf#InstalledAspectElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#InstalledAspectElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#AspectElement> .
-_:B97b22482a4be5eb0f03dc961eed7936d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:B97b22482a4be5eb0f03dc961eed7936d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:B97b22482a4be5eb0f03dc961eed7936d <http://www.w3.org/2002/07/owl#hasValue> <http://ns.imfid.org/imf#InstalledAspect> .
-_:B97b22482a4be5eb0f03dc961eed7936d <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasAspect> .
-<http://ns.imfid.org/imf#InstalledAspectElement> <http://www.w3.org/2002/07/owl#equivalentClass> _:B97b22482a4be5eb0f03dc961eed7936d .
 <http://ns.imfid.org/imf#InstalledBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Block> .
-<http://ns.imfid.org/imf#InstalledBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#InstalledAspectElement> .
-<http://ns.imfid.org/imf#InstalledInterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#InstalledAspectElement> .
-<http://ns.imfid.org/imf#InstalledInterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#InterfacePoint> .
-<http://ns.imfid.org/imf#InstalledTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#InstalledAspectElement> .
+<http://ns.imfid.org/imf#InstalledBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#InstalledElement> .
+<http://ns.imfid.org/imf#InstalledElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#InstalledElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#AspectElement> .
+_:B1856aa64bf7a4ab351b326321dd72c4a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B1856aa64bf7a4ab351b326321dd72c4a <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#InstalledElement> .
+_:B1856aa64bf7a4ab351b326321dd72c4a <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#intraAspectRelation> .
+<http://ns.imfid.org/imf#InstalledElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B1856aa64bf7a4ab351b326321dd72c4a .
+_:B55efd6274743121fb099f98d526b33a5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:B55efd6274743121fb099f98d526b33a5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B55efd6274743121fb099f98d526b33a5 <http://www.w3.org/2002/07/owl#hasValue> <http://ns.imfid.org/imf#InstalledAspect> .
+_:B55efd6274743121fb099f98d526b33a5 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasAspect> .
+<http://ns.imfid.org/imf#InstalledElement> <http://www.w3.org/2002/07/owl#equivalentClass> _:B55efd6274743121fb099f98d526b33a5 .
+<http://ns.imfid.org/imf#InstalledTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#InstalledElement> .
 <http://ns.imfid.org/imf#InstalledTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Terminal> .
 <http://ns.imfid.org/imf#LocationAspect> <http://ns.imfid.org/imf#color> "#FF00FF" .
 <http://ns.imfid.org/imf#LocationAspect> <http://ns.imfid.org/imf#prefix> "+" .
 <http://ns.imfid.org/imf#LocationAspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Aspect> .
-<http://ns.imfid.org/imf#LocationAspectElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#LocationAspectElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#AspectElement> .
-_:B5f7c0cf78720956784728edbdaf9fa2e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:B5f7c0cf78720956784728edbdaf9fa2e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:B5f7c0cf78720956784728edbdaf9fa2e <http://www.w3.org/2002/07/owl#hasValue> <http://ns.imfid.org/imf#LocationAspect> .
-_:B5f7c0cf78720956784728edbdaf9fa2e <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasAspect> .
-<http://ns.imfid.org/imf#LocationAspectElement> <http://www.w3.org/2002/07/owl#equivalentClass> _:B5f7c0cf78720956784728edbdaf9fa2e .
 <http://ns.imfid.org/imf#LocationBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Block> .
-<http://ns.imfid.org/imf#LocationBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#LocationAspectElement> .
-<http://ns.imfid.org/imf#LocationInterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#InterfacePoint> .
-<http://ns.imfid.org/imf#LocationInterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#LocationAspectElement> .
-<http://ns.imfid.org/imf#LocationInterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/2002/07/owl#Nothing> .
-<http://ns.imfid.org/imf#LocationTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#LocationAspectElement> .
+<http://ns.imfid.org/imf#LocationBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#LocationElement> .
+<http://ns.imfid.org/imf#LocationElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#LocationElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#AspectElement> .
+_:B01474f38cf90ff1c30442962c43f28b3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B01474f38cf90ff1c30442962c43f28b3 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#LocationElement> .
+_:B01474f38cf90ff1c30442962c43f28b3 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#intraAspectRelation> .
+<http://ns.imfid.org/imf#LocationElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B01474f38cf90ff1c30442962c43f28b3 .
+_:B7782577dc6da6183cbf98773e240ade9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:B7782577dc6da6183cbf98773e240ade9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B7782577dc6da6183cbf98773e240ade9 <http://www.w3.org/2002/07/owl#hasValue> <http://ns.imfid.org/imf#LocationAspect> .
+_:B7782577dc6da6183cbf98773e240ade9 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasAspect> .
+<http://ns.imfid.org/imf#LocationElement> <http://www.w3.org/2002/07/owl#equivalentClass> _:B7782577dc6da6183cbf98773e240ade9 .
+<http://ns.imfid.org/imf#LocationTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#LocationElement> .
 <http://ns.imfid.org/imf#LocationTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Terminal> .
-<http://ns.imfid.org/imf#LocationTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/2002/07/owl#Nothing> .
 <http://ns.imfid.org/imf#ProductAspect> <http://ns.imfid.org/imf#color> "#00FFFF" .
 <http://ns.imfid.org/imf#ProductAspect> <http://ns.imfid.org/imf#prefix> "-" .
 <http://ns.imfid.org/imf#ProductAspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Aspect> .
-<http://ns.imfid.org/imf#ProductAspectElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#ProductAspectElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#AspectElement> .
-_:B0258b822e6bb6810a603aebf23a52c94 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:B0258b822e6bb6810a603aebf23a52c94 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:B0258b822e6bb6810a603aebf23a52c94 <http://www.w3.org/2002/07/owl#hasValue> <http://ns.imfid.org/imf#ProductAspect> .
-_:B0258b822e6bb6810a603aebf23a52c94 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasAspect> .
-<http://ns.imfid.org/imf#ProductAspectElement> <http://www.w3.org/2002/07/owl#equivalentClass> _:B0258b822e6bb6810a603aebf23a52c94 .
 <http://ns.imfid.org/imf#ProductBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Block> .
-<http://ns.imfid.org/imf#ProductBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#ProductAspectElement> .
-<http://ns.imfid.org/imf#ProductInterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#InterfacePoint> .
-<http://ns.imfid.org/imf#ProductInterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#ProductAspectElement> .
-<http://ns.imfid.org/imf#ProductTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#ProductAspectElement> .
+<http://ns.imfid.org/imf#ProductBlock> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#ProductElement> .
+<http://ns.imfid.org/imf#ProductElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#ProductElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#AspectElement> .
+_:B7561e6fdd31250f5329f93f99947a6bd <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B7561e6fdd31250f5329f93f99947a6bd <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#ProductElement> .
+_:B7561e6fdd31250f5329f93f99947a6bd <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#intraAspectRelation> .
+<http://ns.imfid.org/imf#ProductElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B7561e6fdd31250f5329f93f99947a6bd .
+_:Bbfd06ce13733a60281df30f0d1071d14 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:Bbfd06ce13733a60281df30f0d1071d14 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Bbfd06ce13733a60281df30f0d1071d14 <http://www.w3.org/2002/07/owl#hasValue> <http://ns.imfid.org/imf#ProductAspect> .
+_:Bbfd06ce13733a60281df30f0d1071d14 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasAspect> .
+<http://ns.imfid.org/imf#ProductElement> <http://www.w3.org/2002/07/owl#equivalentClass> _:Bbfd06ce13733a60281df30f0d1071d14 .
+<http://ns.imfid.org/imf#ProductTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#ProductElement> .
 <http://ns.imfid.org/imf#ProductTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Terminal> .
-<http://ns.imfid.org/imf#fulfilledBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#fulfilledBy> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AspectElement> .
-<http://ns.imfid.org/imf#fulfilledBy> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#AspectElement> .
-<http://ns.imfid.org/imf#fulfilledBy> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#InterAspectRelation> .
-<http://ns.imfid.org/imf#fulfilledBy> <http://www.w3.org/2002/07/owl#inverseOf> <http://ns.imfid.org/imf#fulfills> .
-<http://ns.imfid.org/imf#hasAspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf-aspects> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
-<http://ns.imfid.org/imf-aspects> <http://www.w3.org/2002/07/owl#imports> <http://ns.imfid.org/20221118/imf-top> .
-<http://ns.imfid.org/imf-aspects> <http://www.w3.org/2002/07/owl#versionIRI> <http://ns.imfid.org/20221118/imf-aspects> .
-<http://ns.imfid.org/imf-aspects> <http://www.w3.org/2004/02/skos/core#altLabel> "IMF aspects ontology" .
-<http://ns.imfid.org/imf-aspects> <http://www.w3.org/2004/02/skos/core#prefLabel> "Information Modelling Framework Ontology: Aspects " .
-<http://ns.imfid.org/imf-aspects> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n\n      This ontology defines IMF's central aspects.\n\n    " .
-_:Bec94fdef9506f086c25db18a2f60c161 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDifferent> .
-_:Bbf67dd26X2Db4e0X2D4f49X2Da8f7X2D3cf6f2f38b18 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#FunctionAspect> .
-_:Bbf67dd26X2Db4e0X2D4f49X2Da8f7X2D3cf6f2f38b18 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B70596d87X2D5bd6X2D4c46X2D98f1X2D2c3296457c64 .
-_:B70596d87X2D5bd6X2D4c46X2D98f1X2D2c3296457c64 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#LocationAspect> .
-_:B70596d87X2D5bd6X2D4c46X2D98f1X2D2c3296457c64 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Bf9d304c0X2D7c11X2D4b46X2D9f16X2D7657dcd37560 .
-_:Bf9d304c0X2D7c11X2D4b46X2D9f16X2D7657dcd37560 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#ProductAspect> .
-_:Bf9d304c0X2D7c11X2D4b46X2D9f16X2D7657dcd37560 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B0a3a4305X2D4f76X2D44d9X2D94b0X2D4ef0a2093356 .
-_:B0a3a4305X2D4f76X2D44d9X2D94b0X2D4ef0a2093356 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#InstalledAspect> .
-_:B0a3a4305X2D4f76X2D44d9X2D94b0X2D4ef0a2093356 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:Bec94fdef9506f086c25db18a2f60c161 <http://www.w3.org/2002/07/owl#members> _:Bbf67dd26X2Db4e0X2D4f49X2Da8f7X2D3cf6f2f38b18 .
-<http://ns.imfid.org/imf#Block> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#Block> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#SystemElement> .
-<http://ns.imfid.org/imf#Block> <http://www.w3.org/2004/02/skos/core#prefLabel> "Block" .
-<http://ns.imfid.org/imf#InputTerminal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#InputTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Terminal> .
-<http://ns.imfid.org/imf#InputTerminal> <http://www.w3.org/2004/02/skos/core#altLabel> "Input" .
-<http://ns.imfid.org/imf#InputTerminal> <http://www.w3.org/2004/02/skos/core#prefLabel> "Input Terminal" .
-<http://ns.imfid.org/imf#InterfacePoint> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#InterfacePoint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#SystemElement> .
-<http://ns.imfid.org/imf#InterfacePoint> <http://www.w3.org/2004/02/skos/core#altLabel> "Connection" .
-<http://ns.imfid.org/imf#InterfacePoint> <http://www.w3.org/2004/02/skos/core#altLabel> "Junction" .
-<http://ns.imfid.org/imf#InterfacePoint> <http://www.w3.org/2004/02/skos/core#altLabel> "Transport" .
-<http://ns.imfid.org/imf#InterfacePoint> <http://www.w3.org/2004/02/skos/core#prefLabel> "Interface Point" .
-<http://ns.imfid.org/imf#OutputTerminal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#OutputTerminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Terminal> .
-<http://ns.imfid.org/imf#OutputTerminal> <http://www.w3.org/2004/02/skos/core#altLabel> "Output" .
-<http://ns.imfid.org/imf#OutputTerminal> <http://www.w3.org/2004/02/skos/core#prefLabel> "Output Terminal" .
-<http://ns.imfid.org/imf#SystemElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:B152bf761f51e2bf3488eba4dfd7bb9de <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:B1ccf7d66X2D2396X2D41f3X2D9a91X2D27a354931713 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#Block> .
-_:B1ccf7d66X2D2396X2D41f3X2D9a91X2D27a354931713 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B76b02132X2D2384X2D4dd5X2Dbc0aX2Df7c74ae51536 .
-_:B76b02132X2D2384X2D4dd5X2Dbc0aX2Df7c74ae51536 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#Terminal> .
-_:B76b02132X2D2384X2D4dd5X2Dbc0aX2Df7c74ae51536 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B3c372836X2D0a09X2D424aX2DacdfX2D81027bf39608 .
-_:B3c372836X2D0a09X2D424aX2DacdfX2D81027bf39608 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#InterfacePoint> .
-_:B3c372836X2D0a09X2D424aX2DacdfX2D81027bf39608 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:B152bf761f51e2bf3488eba4dfd7bb9de <http://www.w3.org/2002/07/owl#unionOf> _:B1ccf7d66X2D2396X2D41f3X2D9a91X2D27a354931713 .
-<http://ns.imfid.org/imf#SystemElement> <http://www.w3.org/2002/07/owl#equivalentClass> _:B152bf761f51e2bf3488eba4dfd7bb9de .
-<http://ns.imfid.org/imf#Terminal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#Terminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#SystemElement> .
-_:B5077567a090e7d74889c159285cb41ed <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:Ba8a94606X2Da76fX2D4af1X2Db195X2D29c5f558a8b7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#InputTerminal> .
-_:Ba8a94606X2Da76fX2D4af1X2Db195X2D29c5f558a8b7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Ba8ed6c10X2Dc2c6X2D41e3X2D98c6X2D0c7a3054caff .
-_:Ba8ed6c10X2Dc2c6X2D41e3X2D98c6X2D0c7a3054caff <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#OutputTerminal> .
-_:Ba8ed6c10X2Dc2c6X2D41e3X2D98c6X2D0c7a3054caff <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:B5077567a090e7d74889c159285cb41ed <http://www.w3.org/2002/07/owl#unionOf> _:Ba8a94606X2Da76fX2D4af1X2Db195X2D29c5f558a8b7 .
-<http://ns.imfid.org/imf#Terminal> <http://www.w3.org/2002/07/owl#equivalentClass> _:B5077567a090e7d74889c159285cb41ed .
-<http://ns.imfid.org/imf#Terminal> <http://www.w3.org/2004/02/skos/core#altLabel> "Channel" .
-<http://ns.imfid.org/imf#Terminal> <http://www.w3.org/2004/02/skos/core#altLabel> "Input/Output" .
-<http://ns.imfid.org/imf#Terminal> <http://www.w3.org/2004/02/skos/core#altLabel> "Port" .
-<http://ns.imfid.org/imf#Terminal> <http://www.w3.org/2004/02/skos/core#prefLabel> "Terminal" .
-<http://ns.imfid.org/imf#hasInputTerminal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#hasInputTerminal> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#InputTerminal> .
-<http://ns.imfid.org/imf#hasInputTerminal> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#hasTerminal> .
-<http://ns.imfid.org/imf#hasInputTerminal> <http://www.w3.org/2004/02/skos/core#definition> "The relation between a system and its input terminals." .
-<http://ns.imfid.org/imf#hasInputTerminal> <http://www.w3.org/2004/02/skos/core#prefLabel> "has input terminal" .
-<http://ns.imfid.org/imf#hasOutputTerminal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#hasOutputTerminal> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#OutputTerminal> .
-<http://ns.imfid.org/imf#hasOutputTerminal> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#hasTerminal> .
-<http://ns.imfid.org/imf#hasOutputTerminal> <http://www.w3.org/2004/02/skos/core#definition> "The relation between a system and its output terminals." .
-<http://ns.imfid.org/imf#hasOutputTerminal> <http://www.w3.org/2004/02/skos/core#prefLabel> "has output terminal" .
-<http://ns.imfid.org/imf#hasPart> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#hasPart> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#hierarchicalRelation> .
-<http://ns.imfid.org/imf#hasPart> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#intraAspectRelation> .
-<http://ns.imfid.org/imf#hasPart> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/2004/02/skos/core#narrower> .
-<http://ns.imfid.org/imf#hasPart> <http://www.w3.org/2002/07/owl#inverseOf> <http://ns.imfid.org/imf#isPartOf> .
-<http://ns.imfid.org/imf#hasPart> <http://www.w3.org/2004/02/skos/core#altLabel> "has child" .
-<http://ns.imfid.org/imf#hasPart> <http://www.w3.org/2004/02/skos/core#prefLabel> "has part" .
-<http://ns.imfid.org/imf#hasTerminal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#hasTerminal> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#Block> .
-<http://ns.imfid.org/imf#hasTerminal> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#Terminal> .
-<http://ns.imfid.org/imf#hasTerminal> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#associativeRelation> .
-<http://ns.imfid.org/imf#hasTerminal> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#intraAspectRelation> .
-<http://ns.imfid.org/imf#hasTerminal> <http://www.w3.org/2004/02/skos/core#definition> "The relation between a system and its terminals." .
-<http://ns.imfid.org/imf#hasTerminal> <http://www.w3.org/2004/02/skos/core#prefLabel> "has terminal" .
-<http://ns.imfid.org/imf#isConnectedTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#isConnectedTo> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#OutputTerminal> .
-<http://ns.imfid.org/imf#isConnectedTo> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#InputTerminal> .
-<http://ns.imfid.org/imf#isConnectedTo> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#associativeRelation> .
-<http://ns.imfid.org/imf#isConnectedTo> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#intraAspectRelation> .
-_:Bde882c3fX2D878fX2D4d36X2D924dX2D59693771e2ab <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#theInput> .
-_:Bc19e265523ff686972d3c45431907187 <http://www.w3.org/2002/07/owl#inverseOf> <http://ns.imfid.org/imf#theOutput> .
-_:Bde882c3fX2D878fX2D4d36X2D924dX2D59693771e2ab <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B65df9a9aX2D9081X2D473fX2Dabe0X2Deba07c043b23 .
-_:B65df9a9aX2D9081X2D473fX2Dabe0X2Deba07c043b23 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:Bc19e265523ff686972d3c45431907187 .
-_:B65df9a9aX2D9081X2D473fX2Dabe0X2Deba07c043b23 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-<http://ns.imfid.org/imf#isConnectedTo> <http://www.w3.org/2002/07/owl#propertyChainAxiom> _:Bde882c3fX2D878fX2D4d36X2D924dX2D59693771e2ab .
-<http://ns.imfid.org/imf#isConnectedTo> <http://www.w3.org/2004/02/skos/core#prefLabel> "is connected to" .
-<http://ns.imfid.org/imf#isPartOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
-<http://ns.imfid.org/imf#isPartOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#isPartOf> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#Block> .
-<http://ns.imfid.org/imf#isPartOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#Block> .
-<http://ns.imfid.org/imf#isPartOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#hierarchicalRelation> .
-<http://ns.imfid.org/imf#isPartOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#intraAspectRelation> .
-<http://ns.imfid.org/imf#isPartOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/2004/02/skos/core#broader> .
-<http://ns.imfid.org/imf#isPartOf> <http://www.w3.org/2004/02/skos/core#altLabel> "has parent" .
-<http://ns.imfid.org/imf#isPartOf> <http://www.w3.org/2004/02/skos/core#prefLabel> "is part of" .
-<http://ns.imfid.org/imf#theInput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
-<http://ns.imfid.org/imf#theInput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#theInput> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#InterfacePoint> .
-<http://ns.imfid.org/imf#theInput> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#InputTerminal> .
-<http://ns.imfid.org/imf#theOutput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
-<http://ns.imfid.org/imf#theOutput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#theOutput> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#InterfacePoint> .
-<http://ns.imfid.org/imf#theOutput> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#OutputTerminal> .
-<http://ns.imfid.org/imf-systemelements> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
-<http://ns.imfid.org/imf-systemelements> <http://www.w3.org/2002/07/owl#imports> <http://ns.imfid.org/20221118/imf-top> .
-<http://ns.imfid.org/imf-systemelements> <http://www.w3.org/2002/07/owl#versionIRI> <http://ns.imfid.org/20221118/imf-systemelements> .
-<http://ns.imfid.org/imf-systemelements> <http://www.w3.org/2004/02/skos/core#altLabel> "IMF metamodel ontology" .
-<http://ns.imfid.org/imf-systemelements> <http://www.w3.org/2004/02/skos/core#prefLabel> "Information Modelling Framework Ontology: System Elements " .
-<http://ns.imfid.org/imf-systemelements> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n\n      This ontology defines IMF's meta model which defines how\n      IMF models are represented.\n\n    " .
-_:B52c0e045e8ad9ad23e34cdddec01bbae <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDisjointClasses> .
-_:B67e75bb6X2D566bX2D4712X2Da5d8X2D2a1afc2e832c <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#Block> .
-_:B67e75bb6X2D566bX2D4712X2Da5d8X2D2a1afc2e832c <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B89367336X2D715bX2D4b83X2D8509X2D3a365e5d149e .
-_:B89367336X2D715bX2D4b83X2D8509X2D3a365e5d149e <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#Terminal> .
-_:B89367336X2D715bX2D4b83X2D8509X2D3a365e5d149e <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Bd23b0e44X2D8334X2D4f46X2D9e0bX2D3ef66d62b5a5 .
-_:Bd23b0e44X2D8334X2D4f46X2D9e0bX2D3ef66d62b5a5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#InterfacePoint> .
-_:Bd23b0e44X2D8334X2D4f46X2D9e0bX2D3ef66d62b5a5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:B52c0e045e8ad9ad23e34cdddec01bbae <http://www.w3.org/2002/07/owl#members> _:B67e75bb6X2D566bX2D4712X2Da5d8X2D2a1afc2e832c .
-_:Bec4b7acd35515b4abde1bc286ac8fd93 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDisjointClasses> .
-_:B8f431989X2D4111X2D463dX2Da84eX2D343e48673b2d <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#InputTerminal> .
-_:B8f431989X2D4111X2D463dX2Da84eX2D343e48673b2d <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B04154d98X2D9311X2D4dccX2D99faX2D67d5e7c19390 .
-_:B04154d98X2D9311X2D4dccX2D99faX2D67d5e7c19390 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#OutputTerminal> .
-_:B04154d98X2D9311X2D4dccX2D99faX2D67d5e7c19390 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:Bec4b7acd35515b4abde1bc286ac8fd93 <http://www.w3.org/2002/07/owl#members> _:B8f431989X2D4111X2D463dX2Da84eX2D343e48673b2d .
-<http://ns.imfid.org/imf#Aspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#Aspect> <http://www.w3.org/2004/02/skos/core#prefLabel> "Aspect" .
-<http://ns.imfid.org/imf#AspectElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#AspectElement> <http://www.w3.org/2004/02/skos/core#prefLabel> "Aspect Element" .
-<http://ns.imfid.org/imf#System> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#System> <http://www.w3.org/2004/02/skos/core#prefLabel> "System" .
-<http://ns.imfid.org/imf#SystemElement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://ns.imfid.org/imf#SystemElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#AspectElement> .
-_:B06f35b64d3ef9b1788bec9bd074d9d22 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:B06f35b64d3ef9b1788bec9bd074d9d22 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#memberOf> .
-_:B06f35b64d3ef9b1788bec9bd074d9d22 <http://www.w3.org/2002/07/owl#someValuesFrom> <http://ns.imfid.org/imf#System> .
-<http://ns.imfid.org/imf#SystemElement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B06f35b64d3ef9b1788bec9bd074d9d22 .
-<http://ns.imfid.org/imf#SystemElement> <http://www.w3.org/2004/02/skos/core#prefLabel> "System Element" .
-<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AspectElement> .
-<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#AspectElement> .
-<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/2004/02/skos/core#related> .
-<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2002/07/owl#propertyDisjointWith> <http://ns.imfid.org/imf#hierachicalRelation> .
-<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2004/02/skos/core#definition> "A generic associative relation." .
-<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2004/02/skos/core#prefLabel> "associative relation" .
-<http://ns.imfid.org/imf#associativeRelation> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n    \n      This relation is used to enforce that subproperties respect this\n      relation's definition. This must be enforced by introducing\n      class axioms that locally further restrict the domain and range\n      of the relation.\n      \n    " .
+<http://ns.imfid.org/imf#asFunction> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#asFunction> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#FunctionElement> .
+<http://ns.imfid.org/imf#asFunction> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#InterAspectRelation> .
+<http://ns.imfid.org/imf#asInstalled> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#asInstalled> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#InstalledElement> .
+<http://ns.imfid.org/imf#asInstalled> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#InterAspectRelation> .
+<http://ns.imfid.org/imf#asLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#asLocation> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#LocationElement> .
+<http://ns.imfid.org/imf#asLocation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#InterAspectRelation> .
+<http://ns.imfid.org/imf#asProduct> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#asProduct> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#ProductElement> .
+<http://ns.imfid.org/imf#asProduct> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#InterAspectRelation> .
 <http://ns.imfid.org/imf#hasAspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
 <http://ns.imfid.org/imf#hasAspect> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AspectElement> .
 <http://ns.imfid.org/imf#hasAspect> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#Aspect> .
 <http://ns.imfid.org/imf#hasAspect> <http://www.w3.org/2004/02/skos/core#definition> "Relates an Aspect Element to its Aspect." .
 <http://ns.imfid.org/imf#hasAspect> <http://www.w3.org/2004/02/skos/core#prefLabel> "has aspect" .
-<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#IrreflexiveProperty> .
-<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AspectElement> .
-<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#AspectElement> .
-<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/2004/02/skos/core#semanticRelation> .
-<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2004/02/skos/core#definition> "A generic hierachical relation that may be used to represent a breakdown structure." .
-<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2004/02/skos/core#prefLabel> "hierarchical relation" .
-<http://ns.imfid.org/imf#hierarchicalRelation> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n    \n      This relation is used to enforce that subproperties respect this\n      relation's definition. This must be enforced by introducing\n      class axioms that locally further restrict the domain and range\n      of the relation.\n      \n    " .
 <http://ns.imfid.org/imf#interAspectRelation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
 <http://ns.imfid.org/imf#interAspectRelation> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AspectElement> .
 <http://ns.imfid.org/imf#interAspectRelation> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#AspectElement> .
 <http://ns.imfid.org/imf#interAspectRelation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/2004/02/skos/core#related> .
 <http://ns.imfid.org/imf#interAspectRelation> <http://www.w3.org/2004/02/skos/core#prefLabel> "inter-aspect relation" .
-<http://ns.imfid.org/imf#interAspectRelation> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n    \n      This relation is used to enforce that subproperties respect this\n      relation's definition. This must be enforced by introducing\n      class axioms that locally further restrict the domain and range\n      of the relation.\n      \n    " .
 <http://ns.imfid.org/imf#intraAspectRelation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#intraAspectRelation> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AspectElement> .
-<http://ns.imfid.org/imf#intraAspectRelation> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#AspectElement> .
 <http://ns.imfid.org/imf#intraAspectRelation> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/2004/02/skos/core#semanticRelation> .
 <http://ns.imfid.org/imf#intraAspectRelation> <http://www.w3.org/2004/02/skos/core#definition> "A generic relation between aspect objects of the same aspect" .
 <http://ns.imfid.org/imf#intraAspectRelation> <http://www.w3.org/2004/02/skos/core#prefLabel> "intra-aspect relation" .
-<http://ns.imfid.org/imf#intraAspectRelation> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n    \n      This relation is used to enforce that subproperties respect this\n      relation's definition. This must be enforced by introducing\n      class axioms that locally further restrict the domain and range\n      of the relation.\n      \n    " .
-<http://ns.imfid.org/imf#memberOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
-<http://ns.imfid.org/imf#memberOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://ns.imfid.org/imf#memberOf> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#SystemElement> .
-<http://ns.imfid.org/imf#memberOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#System> .
-<http://ns.imfid.org/imf-top> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
-<http://ns.imfid.org/imf-top> <http://www.w3.org/2002/07/owl#versionIRI> <http://ns.imfid.org/20221118/imf-top> .
-<http://ns.imfid.org/imf-top> <http://www.w3.org/2004/02/skos/core#altLabel> "IMF top ontology" .
-<http://ns.imfid.org/imf-top> <http://www.w3.org/2004/02/skos/core#prefLabel> "Information Modelling Framework Ontology: Top Ontology " .
-<http://ns.imfid.org/imf-top> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n\n      This ontology defines the very core classes and relations of the\n      Information Modelling Framework (IMF) to provide a structure for\n      ontologies that extend this ontology.\n\n    " .
-_:B6be772a290fe084420538cb4493b9c50 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDisjointClasses> .
-_:B729cb1d1X2Da6a5X2D4cebX2DadfdX2D2cb85e03ced8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#Aspect> .
-_:B729cb1d1X2Da6a5X2D4cebX2DadfdX2D2cb85e03ced8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B8f229aefX2D5aa3X2D4f2cX2D91bcX2D98064d971d07 .
-_:B8f229aefX2D5aa3X2D4f2cX2D91bcX2D98064d971d07 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#AspectElement> .
-_:B8f229aefX2D5aa3X2D4f2cX2D91bcX2D98064d971d07 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Bd1efbbdfX2Dbb1cX2D4eb6X2Dbc1fX2D2856ba8ed3d1 .
-_:Bd1efbbdfX2Dbb1cX2D4eb6X2Dbc1fX2D2856ba8ed3d1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#System> .
-_:Bd1efbbdfX2Dbb1cX2D4eb6X2Dbc1fX2D2856ba8ed3d1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:B6be772a290fe084420538cb4493b9c50 <http://www.w3.org/2002/07/owl#members> _:B729cb1d1X2Da6a5X2D4cebX2DadfdX2D2cb85e03ced8 .
+<http://ns.imfid.org/imf-aspects> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
+<http://ns.imfid.org/imf-aspects> <http://www.w3.org/2002/07/owl#versionIRI> <http://ns.imfid.org/20230331/imf-aspects> .
+<http://ns.imfid.org/imf-aspects> <http://www.w3.org/2004/02/skos/core#altLabel> "IMF aspects ontology" .
+<http://ns.imfid.org/imf-aspects> <http://www.w3.org/2004/02/skos/core#prefLabel> "Information Modelling Framework Ontology: Aspects " .
+<http://ns.imfid.org/imf-aspects> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n\n      This ontology defines IMF's central aspects.\n\n    " .
+_:B60c77994c765f7f0764442b21586ff9a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDifferent> .
+_:B07dcd94aX2D455fX2D4968X2D845dX2Dff588b623c3f <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#FunctionAspect> .
+_:B07dcd94aX2D455fX2D4968X2D845dX2Dff588b623c3f <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Bc1879952X2Dad27X2D4ffdX2Dbd98X2D3687874a2648 .
+_:Bc1879952X2Dad27X2D4ffdX2Dbd98X2D3687874a2648 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#LocationAspect> .
+_:Bc1879952X2Dad27X2D4ffdX2Dbd98X2D3687874a2648 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B925a9919X2Df481X2D432dX2Db43dX2Dd6b77759e946 .
+_:B925a9919X2Df481X2D432dX2Db43dX2Dd6b77759e946 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#ProductAspect> .
+_:B925a9919X2Df481X2D432dX2Db43dX2Dd6b77759e946 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B3bb6dc87X2D670bX2D4a1dX2D8ef7X2D36e344b1009a .
+_:B3bb6dc87X2D670bX2D4a1dX2D8ef7X2D36e344b1009a <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#InstalledAspect> .
+_:B3bb6dc87X2D670bX2D4a1dX2D8ef7X2D36e344b1009a <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:B60c77994c765f7f0764442b21586ff9a <http://www.w3.org/2002/07/owl#members> _:B07dcd94aX2D455fX2D4968X2D845dX2Dff588b623c3f .
+<http://ns.imfid.org/imf#AttributeGroup> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#AttributeValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:B72f37234453524db60cbe225d108e75e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B72f37234453524db60cbe225d108e75e <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:B72f37234453524db60cbe225d108e75e <http://www.w3.org/2002/07/owl#onClass> <http://ns.imfid.org/imf#Range> .
+_:B72f37234453524db60cbe225d108e75e <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasDatumQualifier> .
+<http://ns.imfid.org/imf#AttributeValue> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B72f37234453524db60cbe225d108e75e .
+_:B3c7b6bf60faf596ac1075f620a33f891 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B3c7b6bf60faf596ac1075f620a33f891 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:B3c7b6bf60faf596ac1075f620a33f891 <http://www.w3.org/2002/07/owl#onClass> <http://ns.imfid.org/imf#Regularity> .
+_:B3c7b6bf60faf596ac1075f620a33f891 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasDatumQualifier> .
+<http://ns.imfid.org/imf#AttributeValue> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B3c7b6bf60faf596ac1075f620a33f891 .
+_:B80769f1bab8368829438121f5437815b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B80769f1bab8368829438121f5437815b <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:B80769f1bab8368829438121f5437815b <http://www.w3.org/2002/07/owl#onClass> <http://ns.imfid.org/imf#Scope> .
+_:B80769f1bab8368829438121f5437815b <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasDatumQualifier> .
+<http://ns.imfid.org/imf#AttributeValue> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B80769f1bab8368829438121f5437815b .
+_:Bb8eead658cecd4846d01d90ea58be8ce <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Bb8eead658cecd4846d01d90ea58be8ce <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:Bb8eead658cecd4846d01d90ea58be8ce <http://www.w3.org/2002/07/owl#onClass> <http://ns.imfid.org/imf#Provenance> .
+_:Bb8eead658cecd4846d01d90ea58be8ce <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasDatumQualifier> .
+<http://ns.imfid.org/imf#AttributeValue> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Bb8eead658cecd4846d01d90ea58be8ce .
+<http://ns.imfid.org/imf#DatumQualifier> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#Provenance> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#Provenance> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#DatumQualifier> .
+_:B5ac402b47836b98e8d26b5561c2b61fd <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:B6f32943fX2Dbdb9X2D40a6X2Db503X2D77acebf06b5c <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#calculated> .
+_:B6f32943fX2Dbdb9X2D40a6X2Db503X2D77acebf06b5c <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B7e585fd1X2D244cX2D4b01X2D86e7X2Da075fd076114 .
+_:B7e585fd1X2D244cX2D4b01X2D86e7X2Da075fd076114 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#measured> .
+_:B7e585fd1X2D244cX2D4b01X2D86e7X2Da075fd076114 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B411307fdX2D6eddX2D430cX2D9262X2D905d38094f12 .
+_:B411307fdX2D6eddX2D430cX2D9262X2D905d38094f12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#specified> .
+_:B411307fdX2D6eddX2D430cX2D9262X2D905d38094f12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:B5ac402b47836b98e8d26b5561c2b61fd <http://www.w3.org/2002/07/owl#oneOf> _:B6f32943fX2Dbdb9X2D40a6X2Db503X2D77acebf06b5c .
+<http://ns.imfid.org/imf#Provenance> <http://www.w3.org/2002/07/owl#equivalentClass> _:B5ac402b47836b98e8d26b5561c2b61fd .
+<http://ns.imfid.org/imf#Range> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#Range> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#DatumQualifier> .
+_:B91d0b232cb215431c205a9fc5278d0d9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:Bd1ac2dd7X2Da509X2D408dX2Dbe60X2D696700b492d0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#average> .
+_:Bd1ac2dd7X2Da509X2D408dX2Dbe60X2D696700b492d0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B98f38ff3X2Dae9dX2D4ea8X2Db643X2D3a8b329072c8 .
+_:B98f38ff3X2Dae9dX2D4ea8X2Db643X2D3a8b329072c8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#maximum> .
+_:B98f38ff3X2Dae9dX2D4ea8X2Db643X2D3a8b329072c8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B1bdba1afX2D88e0X2D46e8X2Dab0bX2D73ce2515be90 .
+_:B1bdba1afX2D88e0X2D46e8X2Dab0bX2D73ce2515be90 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#minimum> .
+_:B1bdba1afX2D88e0X2D46e8X2Dab0bX2D73ce2515be90 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B37d0ba41X2D1b8dX2D4f4dX2D9facX2Dd98f0de539f6 .
+_:B37d0ba41X2D1b8dX2D4f4dX2D9facX2Dd98f0de539f6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#nominal> .
+_:B37d0ba41X2D1b8dX2D4f4dX2D9facX2Dd98f0de539f6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B0bb673a3X2Daa8dX2D4139X2D8764X2D91fe57a8116a .
+_:B0bb673a3X2Daa8dX2D4139X2D8764X2D91fe57a8116a <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#normal> .
+_:B0bb673a3X2Daa8dX2D4139X2D8764X2D91fe57a8116a <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:B91d0b232cb215431c205a9fc5278d0d9 <http://www.w3.org/2002/07/owl#oneOf> _:Bd1ac2dd7X2Da509X2D408dX2Dbe60X2D696700b492d0 .
+<http://ns.imfid.org/imf#Range> <http://www.w3.org/2002/07/owl#equivalentClass> _:B91d0b232cb215431c205a9fc5278d0d9 .
+<http://ns.imfid.org/imf#Regularity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#Regularity> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#DatumQualifier> .
+_:B5f0c2c3f447c66693eeddaf77daf6c04 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:B6173b660X2D1cb1X2D4595X2Db9e8X2D186b0f1bb05b <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#absolute> .
+_:B6173b660X2D1cb1X2D4595X2Db9e8X2D186b0f1bb05b <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Bc02580d6X2Dc648X2D4022X2D84aeX2D119d5949b3cb .
+_:Bc02580d6X2Dc648X2D4022X2D84aeX2D119d5949b3cb <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#continuous> .
+_:Bc02580d6X2Dc648X2D4022X2D84aeX2D119d5949b3cb <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:B5f0c2c3f447c66693eeddaf77daf6c04 <http://www.w3.org/2002/07/owl#oneOf> _:B6173b660X2D1cb1X2D4595X2Db9e8X2D186b0f1bb05b .
+<http://ns.imfid.org/imf#Regularity> <http://www.w3.org/2002/07/owl#equivalentClass> _:B5f0c2c3f447c66693eeddaf77daf6c04 .
+<http://ns.imfid.org/imf#Scope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#Scope> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#DatumQualifier> .
+_:B4b282b96b7394bee1a18b27e0bfaa6a7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:Bcddaf5bfX2D3b75X2D441cX2Da1b0X2Db11cbd0daeb2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#design> .
+_:Bcddaf5bfX2D3b75X2D441cX2Da1b0X2Db11cbd0daeb2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Bba345f60X2Dc68cX2D4c1dX2Dad57X2D1591c0fbc963 .
+_:Bba345f60X2Dc68cX2D4c1dX2Dad57X2D1591c0fbc963 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#operating> .
+_:Bba345f60X2Dc68cX2D4c1dX2Dad57X2D1591c0fbc963 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:B4b282b96b7394bee1a18b27e0bfaa6a7 <http://www.w3.org/2002/07/owl#oneOf> _:Bcddaf5bfX2D3b75X2D441cX2Da1b0X2Db11cbd0daeb2 .
+<http://ns.imfid.org/imf#Scope> <http://www.w3.org/2002/07/owl#equivalentClass> _:B4b282b96b7394bee1a18b27e0bfaa6a7 .
+<http://ns.imfid.org/imf#absolute> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Regularity> .
+<http://ns.imfid.org/imf#average> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Range> .
+<http://ns.imfid.org/imf#calculated> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Provenance> .
+<http://ns.imfid.org/imf#continuous> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Regularity> .
+<http://ns.imfid.org/imf#design> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Scope> .
+<http://ns.imfid.org/imf#hasAttributeGroup> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hasAttributeGroup> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#AttributeGroup> .
+<http://ns.imfid.org/imf#hasAttributeValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hasAttributeValue> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#AttributeValue> .
+<http://ns.imfid.org/imf#hasDatumQualifier> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hasDatumQualifier> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AttributeValue> .
+<http://ns.imfid.org/imf#hasDatumQualifier> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#DatumQualifier> .
+<http://ns.imfid.org/imf#hasProperty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hasProperty> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AttributeValue> .
+<http://ns.imfid.org/imf#hasProperty> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#hasClassifier> .
+<http://ns.imfid.org/imf#hasUOM> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hasUOM> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AttributeValue> .
+<http://ns.imfid.org/imf#hasUOM> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://ns.imfid.org/imf#hasClassifier> .
+<http://ns.imfid.org/imf#hasValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://ns.imfid.org/imf#hasValue> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#AttributeValue> .
+<http://ns.imfid.org/imf#maximum> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Range> .
+<http://ns.imfid.org/imf#measured> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Provenance> .
+<http://ns.imfid.org/imf#minimum> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Range> .
+<http://ns.imfid.org/imf#nominal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Range> .
+<http://ns.imfid.org/imf#normal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Range> .
+<http://ns.imfid.org/imf#operating> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Scope> .
+<http://ns.imfid.org/imf#specified> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ns.imfid.org/imf#Provenance> .
+<http://ns.imfid.org/imf-attributes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
+<http://ns.imfid.org/imf-attributes> <http://www.w3.org/2002/07/owl#versionIRI> <http://ns.imfid.org/20230331/imf-attributes> .
+<http://ns.imfid.org/imf-attributes> <http://www.w3.org/2004/02/skos/core#prefLabel> "Information Modelling Framework Ontology: Attributes " .
+<http://ns.imfid.org/imf-attributes> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n\n    " .
+_:B8cd9ab746f988a379fba07b5e44dcb56 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDifferent> .
+_:B0fd664f4X2D2bcdX2D4e26X2Dafe4X2Df23627cf7cd1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#average> .
+_:B0fd664f4X2D2bcdX2D4e26X2Dafe4X2Df23627cf7cd1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Bdf0b2631X2D1df8X2D4201X2D9ac4X2D667b43cfe24b .
+_:Bdf0b2631X2D1df8X2D4201X2D9ac4X2D667b43cfe24b <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#maximum> .
+_:Bdf0b2631X2D1df8X2D4201X2D9ac4X2D667b43cfe24b <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B24738818X2D9553X2D48aeX2Daf81X2D21d94374ef77 .
+_:B24738818X2D9553X2D48aeX2Daf81X2D21d94374ef77 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#minimum> .
+_:B24738818X2D9553X2D48aeX2Daf81X2D21d94374ef77 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B7918ec73X2D732dX2D4c80X2DadfeX2De8a48fe8d9af .
+_:B7918ec73X2D732dX2D4c80X2DadfeX2De8a48fe8d9af <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#nominal> .
+_:B7918ec73X2D732dX2D4c80X2DadfeX2De8a48fe8d9af <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B34290d93X2Dbf91X2D4276X2D9f8aX2D953d9b43b621 .
+_:B34290d93X2Dbf91X2D4276X2D9f8aX2D953d9b43b621 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#normal> .
+_:B34290d93X2Dbf91X2D4276X2D9f8aX2D953d9b43b621 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:B8cd9ab746f988a379fba07b5e44dcb56 <http://www.w3.org/2002/07/owl#members> _:B0fd664f4X2D2bcdX2D4e26X2Dafe4X2Df23627cf7cd1 .
+_:Bc95eba5086d40c79850ff04711494057 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDifferent> .
+_:B5ef32166X2D4e3eX2D404cX2Dbd27X2D7b1f83c1581b <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#absolute> .
+_:B5ef32166X2D4e3eX2D404cX2Dbd27X2D7b1f83c1581b <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Ba86ec34eX2D4517X2D4bdaX2D8e1fX2Ddd7cb7f6a82d .
+_:Ba86ec34eX2D4517X2D4bdaX2D8e1fX2Ddd7cb7f6a82d <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#continuous> .
+_:Ba86ec34eX2D4517X2D4bdaX2D8e1fX2Ddd7cb7f6a82d <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:Bc95eba5086d40c79850ff04711494057 <http://www.w3.org/2002/07/owl#members> _:B5ef32166X2D4e3eX2D404cX2Dbd27X2D7b1f83c1581b .
+_:B8ac3389492bd93ddc207706bf3086874 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDisjointClasses> .
+_:Ba507a427X2D9640X2D4736X2D8f93X2D749edc4b36bd <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#Scope> .
+_:Ba507a427X2D9640X2D4736X2D8f93X2D749edc4b36bd <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B8a71af61X2D568cX2D4cf5X2Dbdb7X2Dddeb94b82fd9 .
+_:B8a71af61X2D568cX2D4cf5X2Dbdb7X2Dddeb94b82fd9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#Range> .
+_:B8a71af61X2D568cX2D4cf5X2Dbdb7X2Dddeb94b82fd9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B6b27f2e0X2D5000X2D45b7X2Db330X2D04d75768adab .
+_:B6b27f2e0X2D5000X2D45b7X2Db330X2D04d75768adab <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#Regularity> .
+_:B6b27f2e0X2D5000X2D45b7X2Db330X2D04d75768adab <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Be6d1b9edX2D19b8X2D4bcfX2D9ef1X2D1a666b7da654 .
+_:Be6d1b9edX2D19b8X2D4bcfX2D9ef1X2D1a666b7da654 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#Provenance> .
+_:Be6d1b9edX2D19b8X2D4bcfX2D9ef1X2D1a666b7da654 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:B8ac3389492bd93ddc207706bf3086874 <http://www.w3.org/2002/07/owl#members> _:Ba507a427X2D9640X2D4736X2D8f93X2D749edc4b36bd .
+_:Bb8b936b959ae858f92c95890c53bee1a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDifferent> .
+_:B7dc24eb7X2D6f6aX2D43e5X2Da4c4X2D59c0d8246a41 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#design> .
+_:B7dc24eb7X2D6f6aX2D43e5X2Da4c4X2D59c0d8246a41 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B97bd8c30X2D46feX2D4c2dX2Db63dX2Db7d498e8879c .
+_:B97bd8c30X2D46feX2D4c2dX2Db63dX2Db7d498e8879c <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#operating> .
+_:B97bd8c30X2D46feX2D4c2dX2Db63dX2Db7d498e8879c <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:Bb8b936b959ae858f92c95890c53bee1a <http://www.w3.org/2002/07/owl#members> _:B7dc24eb7X2D6f6aX2D43e5X2Da4c4X2D59c0d8246a41 .
+_:B1ff8bc4062f8211db5f83d8b601ec635 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AllDifferent> .
+_:Beb85b42bX2Daf38X2D444fX2D8bedX2Df06740b8ce12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#calculated> .
+_:Beb85b42bX2Daf38X2D444fX2D8bedX2Df06740b8ce12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:B8f8cd7b4X2D6d5dX2D4cb9X2D8da2X2D52a33b8d5bdb .
+_:B8f8cd7b4X2D6d5dX2D4cb9X2D8da2X2D52a33b8d5bdb <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#measured> .
+_:B8f8cd7b4X2D6d5dX2D4cb9X2D8da2X2D52a33b8d5bdb <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Bbac08263X2Dff6bX2D428dX2Db355X2D357216962585 .
+_:Bbac08263X2Dff6bX2D428dX2Db355X2D357216962585 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://ns.imfid.org/imf#specified> .
+_:Bbac08263X2Dff6bX2D428dX2Db355X2D357216962585 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:B1ff8bc4062f8211db5f83d8b601ec635 <http://www.w3.org/2002/07/owl#members> _:Beb85b42bX2Daf38X2D444fX2D8bedX2Df06740b8ce12 .
+<http://ns.imfid.org/imf#Aspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:Bff8a6aaba3218369246f3a63b3858023 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Bff8a6aaba3218369246f3a63b3858023 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#AttributeGroupType> .
+_:Bff8a6aaba3218369246f3a63b3858023 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#instanceOf> .
+<http://ns.imfid.org/imf#AttributeGroup> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Bff8a6aaba3218369246f3a63b3858023 .
+<http://ns.imfid.org/imf#AttributeGroupType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#AttributeGroupType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Type> .
+<http://ns.imfid.org/imf#AttributeGroupType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Attribute Group Type" .
+<http://ns.imfid.org/imf#AttributeType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#AttributeType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Type> .
+<http://ns.imfid.org/imf#AttributeType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Attribute Type" .
+_:Ba65f022a44d6f44dd2b022bf4d994caa <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Ba65f022a44d6f44dd2b022bf4d994caa <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#AttributeType> .
+_:Ba65f022a44d6f44dd2b022bf4d994caa <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#instanceOf> .
+<http://ns.imfid.org/imf#AttributeValue> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Ba65f022a44d6f44dd2b022bf4d994caa .
+_:B5556f82bc01e951cd404d1ce01965e4c <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B5556f82bc01e951cd404d1ce01965e4c <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#BlockType> .
+_:B5556f82bc01e951cd404d1ce01965e4c <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#instanceOf> .
+<http://ns.imfid.org/imf#Block> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B5556f82bc01e951cd404d1ce01965e4c .
+<http://ns.imfid.org/imf#BlockType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#BlockType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#ElementType> .
+<http://ns.imfid.org/imf#BlockType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Block Type" .
+<http://ns.imfid.org/imf#Direction> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:B5d857ecc5741b345527bcc2c29cf425f <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B5d857ecc5741b345527bcc2c29cf425f <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#ElementType> .
+_:B5d857ecc5741b345527bcc2c29cf425f <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#instanceOf> .
+<http://ns.imfid.org/imf#Element> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B5d857ecc5741b345527bcc2c29cf425f .
+<http://ns.imfid.org/imf#ElementType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#ElementType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#Type> .
+_:B577b15dd7331dc20f0d59beed0d71f0a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B577b15dd7331dc20f0d59beed0d71f0a <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:B577b15dd7331dc20f0d59beed0d71f0a <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2000/01/rdf-schema#Literal> .
+_:B577b15dd7331dc20f0d59beed0d71f0a <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#symbol> .
+<http://ns.imfid.org/imf#ElementType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B577b15dd7331dc20f0d59beed0d71f0a .
+_:B0d3cd834da474ff467cf8ea82627eb7d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B0d3cd834da474ff467cf8ea82627eb7d <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:B0d3cd834da474ff467cf8ea82627eb7d <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2000/01/rdf-schema#Literal> .
+_:B0d3cd834da474ff467cf8ea82627eb7d <http://www.w3.org/2002/07/owl#onProperty> <http://www.w3.org/2004/02/skos/core#notation> .
+<http://ns.imfid.org/imf#ElementType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B0d3cd834da474ff467cf8ea82627eb7d .
+_:B7d37e71529f27c1b4b4a7e205a63e9d6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B7d37e71529f27c1b4b4a7e205a63e9d6 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:B7d37e71529f27c1b4b4a7e205a63e9d6 <http://www.w3.org/2002/07/owl#onClass> <http://ns.imfid.org/imf#Aspect> .
+_:B7d37e71529f27c1b4b4a7e205a63e9d6 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasAspect> .
+<http://ns.imfid.org/imf#ElementType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B7d37e71529f27c1b4b4a7e205a63e9d6 .
+<http://ns.imfid.org/imf#ElementType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Element Type" .
+_:B417fec3ab50e2a47df76c8761c535e3d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B417fec3ab50e2a47df76c8761c535e3d <http://www.w3.org/2002/07/owl#allValuesFrom> <http://ns.imfid.org/imf#TerminalType> .
+_:B417fec3ab50e2a47df76c8761c535e3d <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#instanceOf> .
+<http://ns.imfid.org/imf#Terminal> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B417fec3ab50e2a47df76c8761c535e3d .
+<http://ns.imfid.org/imf#TerminalType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#TerminalType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ns.imfid.org/imf#ElementType> .
+_:Baae971f264dfb1876388543a35615d22 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Baae971f264dfb1876388543a35615d22 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:Baae971f264dfb1876388543a35615d22 <http://www.w3.org/2002/07/owl#onClass> <http://www.w3.org/2002/07/owl#Thing> .
+_:Baae971f264dfb1876388543a35615d22 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasMedium> .
+<http://ns.imfid.org/imf#TerminalType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Baae971f264dfb1876388543a35615d22 .
+_:B4d736ea54e40c0b19d38369b20e80f59 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B4d736ea54e40c0b19d38369b20e80f59 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:B4d736ea54e40c0b19d38369b20e80f59 <http://www.w3.org/2002/07/owl#onClass> <http://ns.imfid.org/imf#Direction> .
+_:B4d736ea54e40c0b19d38369b20e80f59 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#hasDirection> .
+<http://ns.imfid.org/imf#TerminalType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B4d736ea54e40c0b19d38369b20e80f59 .
+<http://ns.imfid.org/imf#TerminalType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Terminal Type" .
+<http://ns.imfid.org/imf#Type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://ns.imfid.org/imf#Type> <http://www.w3.org/2004/02/skos/core#prefLabel> "Type" .
+<http://ns.imfid.org/imf#TypeConstraint> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:B1abe402dc3549353e069d10a9b30e33e <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B1abe402dc3549353e069d10a9b30e33e <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:B1abe402dc3549353e069d10a9b30e33e <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#integer> .
+_:B1abe402dc3549353e069d10a9b30e33e <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#maxCount> .
+<http://ns.imfid.org/imf#TypeConstraint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B1abe402dc3549353e069d10a9b30e33e .
+_:B297f8cc5f87e033fab790d22769fd155 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:B297f8cc5f87e033fab790d22769fd155 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:B297f8cc5f87e033fab790d22769fd155 <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#integer> .
+_:B297f8cc5f87e033fab790d22769fd155 <http://www.w3.org/2002/07/owl#onProperty> <http://ns.imfid.org/imf#minCount> .
+<http://ns.imfid.org/imf#TypeConstraint> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:B297f8cc5f87e033fab790d22769fd155 .
+<http://ns.imfid.org/imf#hasAspect> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hasDirection> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hasMedium> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hasTerminalType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#hasTerminalType> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ns.imfid.org/imf#BlockType> .
+<http://ns.imfid.org/imf#hasTerminalType> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#TerminalType> .
+<http://ns.imfid.org/imf#instanceOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://ns.imfid.org/imf#instanceOf> <http://www.w3.org/2000/01/rdf-schema#range> <http://ns.imfid.org/imf#Type> .
+<http://ns.imfid.org/imf#instanceOf> <http://www.w3.org/2004/02/skos/core#prefLabel> "instance of" .
+<http://ns.imfid.org/imf#maxCount> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://ns.imfid.org/imf#minCount> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://ns.imfid.org/imf#symbol> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://ns.imfid.org/imf-types> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
+<http://ns.imfid.org/imf-types> <http://www.w3.org/2002/07/owl#versionIRI> <http://ns.imfid.org/20230331/imf-types> .
+<http://ns.imfid.org/imf-types> <http://www.w3.org/2004/02/skos/core#altLabel> "IMF types ontology" .
+<http://ns.imfid.org/imf-types> <http://www.w3.org/2004/02/skos/core#prefLabel> "Information Modelling Framework Ontology: Types " .
+<http://ns.imfid.org/imf-types> <http://www.w3.org/2004/02/skos/core#scopeNote> "\n\n    " .
+<http://www.w3.org/2000/01/rdf-schema#Literal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<http://www.w3.org/2001/XMLSchema#integer> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<http://www.w3.org/2002/07/owl#Thing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.w3.org/2004/02/skos/core#notation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .

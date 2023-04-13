@@ -12,34 +12,47 @@
 @prefix p14:    <http://example.com/P14#> .
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
 @prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
 @prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 
 <http://ns.imfid.org/imf> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/20221118/imf> ;
-    owl:imports 
-      <http://ns.imfid.org/20221118/imf-top> ,
-      <http://ns.imfid.org/20221118/imf-systemelements> ,
-      <http://ns.imfid.org/20221118/imf-aspects> ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf> ;
+    owl:imports
+      <http://ns.imfid.org/20230331/imf-elements> ,
+      <http://ns.imfid.org/20230331/imf-aspects> ,
+      <http://ns.imfid.org/20230331/imf-attributes> ,
+      <http://ns.imfid.org/20230331/imf-types> ;
     skos:prefLabel "Information Modelling Framework Ontology " ;
     skos:altLabel "IMF ontology" ;
     skos:scopeNote """
 
       This is the main IMF ontology and its main point of entry.  This
       ontology document imports all other IMF sub-ontology documents, each
-      of which focus on one particular part of the ontology:
-
-      1. IMF Top defines the very high-level classes and properties of
-      the IMF ontology.
-
-      2. IMF Metamodel defines the metamodel for system elements and
-      their permissible properties.
-
-      3. IMF Aspects defines the aspects that are available to aspect
-      elements.
+      of which focus on one particular part of the ontology.
 
     """;
 
+    .
+
+imf:hierarchicalRelation a owl:ObjectProperty ;
+    a owl:IrreflexiveProperty ;
+    skos:prefLabel "hierarchical relation";
+    rdfs:subPropertyOf skos:semanticRelation ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    skos:definition "A generic hierachical relation that may be used to represent a breakdown structure." ;
+    
+    .
+
+imf:associativeRelation a owl:ObjectProperty ;
+    skos:prefLabel "associative relation";
+    rdfs:subPropertyOf skos:related ;
+    owl:propertyDisjointWith imf:hierachicalRelation ;
+    rdfs:domain imf:AspectElement ;
+    rdfs:range imf:AspectElement ;
+    skos:definition "A generic associative relation." ;
+    
     .

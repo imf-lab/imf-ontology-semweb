@@ -1,0 +1,200 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: <http://example.com/P14#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:AttributeGroup
+    a owl:Class .
+
+imf:AttributeValue
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Range ;
+        owl:onProperty imf:hasDatumQualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Regularity ;
+        owl:onProperty imf:hasDatumQualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Scope ;
+        owl:onProperty imf:hasDatumQualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Provenance ;
+        owl:onProperty imf:hasDatumQualifier
+    ] .
+
+imf:DatumQualifier
+    a owl:Class .
+
+imf:Provenance
+    a owl:Class ;
+    rdfs:subClassOf imf:DatumQualifier ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (imf:calculated
+            imf:measured
+            imf:specified
+        )
+    ] .
+
+imf:Range
+    a owl:Class ;
+    rdfs:subClassOf imf:DatumQualifier ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (imf:average
+            imf:maximum
+            imf:minimum
+            imf:nominal
+            imf:normal
+        )
+    ] .
+
+imf:Regularity
+    a owl:Class ;
+    rdfs:subClassOf imf:DatumQualifier ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (imf:absolute
+            imf:continuous
+        )
+    ] .
+
+imf:Scope
+    a owl:Class ;
+    rdfs:subClassOf imf:DatumQualifier ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (imf:design
+            imf:operating
+        )
+    ] .
+
+imf:absolute
+    a imf:Regularity .
+
+imf:average
+    a imf:Range .
+
+imf:calculated
+    a imf:Provenance .
+
+imf:continuous
+    a imf:Regularity .
+
+imf:design
+    a imf:Scope .
+
+imf:hasAttributeGroup
+    a owl:ObjectProperty ;
+    rdfs:range imf:AttributeGroup .
+
+imf:hasAttributeValue
+    a owl:ObjectProperty ;
+    rdfs:range imf:AttributeValue .
+
+imf:hasDatumQualifier
+    a owl:ObjectProperty ;
+    rdfs:domain imf:AttributeValue ;
+    rdfs:range imf:DatumQualifier .
+
+imf:hasProperty
+    a owl:ObjectProperty ;
+    rdfs:domain imf:AttributeValue ;
+    rdfs:subPropertyOf imf:hasClassifier .
+
+imf:hasUOM
+    a owl:ObjectProperty ;
+    rdfs:domain imf:AttributeValue ;
+    rdfs:subPropertyOf imf:hasClassifier .
+
+imf:hasValue
+    a owl:DatatypeProperty ;
+    rdfs:domain imf:AttributeValue .
+
+imf:maximum
+    a imf:Range .
+
+imf:measured
+    a imf:Provenance .
+
+imf:minimum
+    a imf:Range .
+
+imf:nominal
+    a imf:Range .
+
+imf:normal
+    a imf:Range .
+
+imf:operating
+    a imf:Scope .
+
+imf:specified
+    a imf:Provenance .
+
+<http://ns.imfid.org/imf-attributes>
+    a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-attributes> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Attributes " ;
+    skos:scopeNote """
+
+    """ .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:average
+        imf:maximum
+        imf:minimum
+        imf:nominal
+        imf:normal
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:absolute
+        imf:continuous
+    ) .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:Scope
+        imf:Range
+        imf:Regularity
+        imf:Provenance
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:design
+        imf:operating
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:calculated
+        imf:measured
+        imf:specified
+    ) .
+
