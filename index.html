@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-13 to. 11:04 -->
+<!-- 2023-04-13 to. 11:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>IMF Language v2.1</title>
@@ -233,116 +233,122 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd726f4d">1. TODOs <code>[10/27]</code></a>
+<li><a href="#org74231b1">1. TODOs <code>[10/27]</code></a>
 <ul>
-<li><a href="#org4d9940d">1.1. TODOs from v2.0</a>
+<li><a href="#org7ae1efe">1.1. TODOs from v2.0</a>
 <ul>
-<li><a href="#orgbbbf26d">1.1.1. Notes: IMF vocabulary</a>
+<li><a href="#orga653cee">1.1.1. Notes: IMF vocabulary</a>
 <ul>
-<li><a href="#orgd3cfb9f">1.1.1.1. From Mimir</a></li>
+<li><a href="#org678c916">1.1.1.1. From Mimir</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org3c96505">2. Structural Specification</a>
+<li><a href="#orgadc2a61">2. Structural Specification</a>
 <ul>
-<li><a href="#orga3e63d5">2.1. Introduction</a></li>
-<li><a href="#org46f143d">2.2. Diagram legend</a></li>
-<li><a href="#orge0566ed">2.3. Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></a></li>
-<li><a href="#orgae99b66">2.4. Elements</a>
+<li><a href="#orgceebc43">2.1. Introduction</a></li>
+<li><a href="#org8393971">2.2. Diagram legend</a></li>
+<li><a href="#org92722eb">2.3. Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></a></li>
+<li><a href="#org1351907">2.4. Elements</a>
 <ul>
-<li><a href="#org29bd549">2.4.1. &#x2026; with reified relations</a></li>
+<li><a href="#org8783f85">2.4.1. &#x2026; with reified relations</a></li>
 </ul>
 </li>
-<li><a href="#orgf051b16">2.5. Aspects and Aspect Elements</a>
+<li><a href="#org0458898">2.5. Aspects and Aspect Elements</a>
 <ul>
-<li><a href="#org64806f0">2.5.1. Inter aspect Relations</a></li>
-<li><a href="#org7755b9a">2.5.2. Convenient AspectElement specialisations</a></li>
+<li><a href="#org14f2bef">2.5.1. Inter aspect Relations</a></li>
+<li><a href="#orga218de8">2.5.2. Convenient AspectElement specialisations</a></li>
 </ul>
 </li>
-<li><a href="#org6b38e15">2.6. Attribute Values (aka Datums)</a></li>
-<li><a href="#org8dc2b65">2.7. Types</a></li>
-<li><a href="#org64f5f7f">2.8. Complete Specification</a></li>
+<li><a href="#org686d179">2.6. Attribute Values (aka Datums)</a></li>
+<li><a href="#org446a910">2.7. Types</a></li>
+<li><a href="#org1983f10">2.8. Complete Specification</a></li>
 </ul>
 </li>
-<li><a href="#org6e61694">3. Vocabulary: OWL Ontology</a>
+<li><a href="#org46cccb9">3. Vocabulary: OWL Ontology</a>
 <ul>
-<li><a href="#orgfedf691">3.1. Main ontology</a>
+<li><a href="#org4c1158c">3.1. Main ontology</a>
 <ul>
-<li><a href="#org3d18651">3.1.1. Import hierarchy</a></li>
+<li><a href="#org23208b8">3.1.1. Import hierarchy</a></li>
 </ul>
 </li>
-<li><a href="#orga4982ac">3.2. Elements Sub-Ontology</a>
+<li><a href="#org22692d7">3.2. Elements Sub-Ontology</a>
 <ul>
-<li><a href="#org8f4852e">3.2.1. Header</a></li>
-<li><a href="#org31fc38c">3.2.2. <code>Element</code></a></li>
-<li><a href="#org1ac643a">3.2.3. <code>partOf</code> / <code>hasPart</code></a></li>
-<li><a href="#org787e582">3.2.4. <code>hasClassifier</code></a></li>
-<li><a href="#orgd000a83">3.2.5. Element data properties</a></li>
-<li><a href="#orgf41bb51">3.2.6. <code>Block</code></a></li>
-<li><a href="#org67c02ba">3.2.7. <code>Terminal</code></a></li>
-<li><a href="#orga4f8267">3.2.8. <code>hasMedium</code></a></li>
-<li><a href="#orga764826">3.2.9. <code>connectedTo</code></a></li>
-<li><a href="#org1aaebad">3.2.10. Terminal Direction + <code>hasDirection</code></a></li>
-<li><a href="#orgb2e89e6">3.2.11. Input/OutputTerminal</a></li>
-<li><a href="#orgf25ed8e">3.2.12. <code>BreakdownPoint</code></a></li>
-<li><a href="#org428966e">3.2.13. <code>ConnectionPoint</code></a></li>
+<li><a href="#orgfb2d8f0">3.2.1. Header</a></li>
+<li><a href="#org93fd37f">3.2.2. <code>Element</code></a></li>
+<li><a href="#org2c7d45b">3.2.3. <code>partOf</code> / <code>hasPart</code></a></li>
+<li><a href="#org950ed0f">3.2.4. <code>hasClassifier</code></a></li>
+<li><a href="#org181f854">3.2.5. Element data properties</a></li>
+<li><a href="#org2e95719">3.2.6. <code>Block</code></a></li>
+<li><a href="#org07f7a7e">3.2.7. <code>Terminal</code></a></li>
+<li><a href="#orgff21ba8">3.2.8. <code>hasMedium</code></a></li>
+<li><a href="#orge224473">3.2.9. <code>connectedTo</code></a></li>
+<li><a href="#orgcb9e1ad">3.2.10. Terminal Direction + <code>hasDirection</code></a></li>
+<li><a href="#org4817f62">3.2.11. Input/OutputTerminal</a></li>
+<li><a href="#org5240aeb">3.2.12. <code>BreakdownPoint</code></a></li>
+<li><a href="#orgd1ce15e">3.2.13. <code>ConnectionPoint</code></a></li>
 </ul>
 </li>
-<li><a href="#org8cb5b88">3.3. Aspects Sub-Ontology</a>
+<li><a href="#orga0e75aa">3.3. Aspects Sub-Ontology</a>
 <ul>
-<li><a href="#org607e0fa">3.3.1. Overview</a></li>
-<li><a href="#org8688944">3.3.2. Ontology source</a>
+<li><a href="#org4367698">3.3.1. Overview</a></li>
+<li><a href="#org0b8342f">3.3.2. Ontology source</a>
 <ul>
-<li><a href="#org2ff7dc5">3.3.2.1. Header</a></li>
-<li><a href="#org2892242">3.3.2.2. <code>AspectElement</code></a></li>
-<li><a href="#org3fecc15">3.3.2.3. <code>Aspect</code></a></li>
-<li><a href="#orgf4ecb7d">3.3.2.4. Aspects</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#orgac694cf">3.4. Attributes Sub-Ontology</a>
-<ul>
-<li><a href="#org5f1fd7c">3.4.1. Header</a></li>
-<li><a href="#org809fbbf">3.4.2. <code>AttributeValue</code></a></li>
-<li><a href="#org4164398">3.4.3. <code>AttributeGroup</code></a></li>
-<li><a href="#org83a0bd3">3.4.4. <code>DatumQualifier</code></a></li>
-<li><a href="#orgf9b0ea7">3.4.5. DatumQualifiers</a></li>
-</ul>
-</li>
-<li><a href="#orgae92b20">3.5. Types Sub-Ontology</a>
-<ul>
-<li><a href="#orge25614f">3.5.1. Overview</a></li>
-<li><a href="#org18afa3c">3.5.2. Ontology source</a>
-<ul>
-<li><a href="#orgb8bf10c">3.5.2.1. Header</a></li>
-<li><a href="#orgee6d7a8">3.5.2.2. Types</a></li>
-<li><a href="#orgaf9a63e">3.5.2.3. Type constraint</a></li>
-<li><a href="#org0f63cff">3.5.2.4. Relation constraints</a></li>
-<li><a href="#orge124b01">3.5.2.5. instanceOf</a></li>
+<li><a href="#org3c0b39c">3.3.2.1. Header</a></li>
+<li><a href="#org4576921">3.3.2.2. <code>AspectElement</code></a></li>
+<li><a href="#org10ba116">3.3.2.3. <code>Aspect</code></a></li>
+<li><a href="#org6e10abe">3.3.2.4. Aspects</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org49afa0d">3.6. All IMF Ontologies combined</a></li>
+<li><a href="#org959df95">3.4. Attributes Sub-Ontology</a>
+<ul>
+<li><a href="#orgd118801">3.4.1. Header</a></li>
+<li><a href="#org5874c07">3.4.2. <code>AttributeValue</code></a></li>
+<li><a href="#orgab1cf46">3.4.3. <code>AttributeGroup</code></a></li>
+<li><a href="#org8202f35">3.4.4. <code>DatumQualifier</code></a></li>
+<li><a href="#org115dfa6">3.4.5. DatumQualifiers</a></li>
 </ul>
 </li>
-<li><a href="#orgc404c25">4. Prefixes</a>
+<li><a href="#orgec8fb84">3.5. Types Sub-Ontology</a>
 <ul>
-<li><a href="#orgffa98d7">4.1. Standard vocabulary prefixes</a></li>
-<li><a href="#orgdbf22f8">4.2. IMF prefixes</a></li>
-<li><a href="#org8424595">4.3. OTTR template prefixes</a></li>
+<li><a href="#org0c59d41">3.5.1. Overview</a></li>
+<li><a href="#org7f0135b">3.5.2. Ontology source</a>
+<ul>
+<li><a href="#orgec184ad">3.5.2.1. Header</a></li>
+<li><a href="#orgf5910f3">3.5.2.2. Types</a></li>
+<li><a href="#org7fbe315">3.5.2.3. Type constraint</a></li>
+<li><a href="#org20dea78">3.5.2.4. Relation constraints</a></li>
+<li><a href="#org958f803">3.5.2.5. instanceOf</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgab575c4">3.6. All IMF Ontologies combined</a></li>
+</ul>
+</li>
+<li><a href="#org9bac9f2">4. Example</a>
+<ul>
+<li><a href="#org2e8e5d2">4.1. Type</a></li>
+<li><a href="#orgc2116db">4.2. Instance</a></li>
+</ul>
+</li>
+<li><a href="#orgb6e141b">5. Prefixes</a>
+<ul>
+<li><a href="#org6b807f2">5.1. Standard vocabulary prefixes</a></li>
+<li><a href="#org544e49c">5.2. IMF prefixes</a></li>
+<li><a href="#org1c5615b">5.3. OTTR template prefixes</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd726f4d" class="outline-2">
-<h2 id="orgd726f4d"><span class="section-number-2">1</span> TODOs <code>[10/27]</code></h2>
+<div id="outline-container-org74231b1" class="outline-2">
+<h2 id="org74231b1"><span class="section-number-2">1</span> TODOs <code>[10/27]</code></h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Fundamentals:
@@ -453,8 +459,8 @@ Styling:
 </ul>
 </div>
 
-<div id="outline-container-org4d9940d" class="outline-3">
-<h3 id="org4d9940d"><span class="section-number-3">1.1</span> TODOs from v2.0</h3>
+<div id="outline-container-org7ae1efe" class="outline-3">
+<h3 id="org7ae1efe"><span class="section-number-3">1.1</span> TODOs from v2.0</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Input to this document <code>[0/5]</code>
@@ -530,12 +536,12 @@ semantic validation of the type wrt. to an RDL)</li>
 </div>
 
 
-<div id="outline-container-orgbbbf26d" class="outline-4">
-<h4 id="orgbbbf26d"><span class="section-number-4">1.1.1</span> Notes: IMF vocabulary</h4>
+<div id="outline-container-orga653cee" class="outline-4">
+<h4 id="orga653cee"><span class="section-number-4">1.1.1</span> Notes: IMF vocabulary</h4>
 <div class="outline-text-4" id="text-1-1-1">
 </div>
-<div id="outline-container-orgd3cfb9f" class="outline-5">
-<h5 id="orgd3cfb9f"><span class="section-number-5">1.1.1.1</span> From Mimir</h5>
+<div id="outline-container-org678c916" class="outline-5">
+<h5 id="org678c916"><span class="section-number-5">1.1.1.1</span> From Mimir</h5>
 <div class="outline-text-5" id="text-1-1-1-1">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> created -  date -&gt; pav:createdOn</li>
@@ -565,12 +571,12 @@ construct". Rather use pav:version?</li>
 </div>
 
 
-<div id="outline-container-org3c96505" class="outline-2">
-<h2 id="org3c96505"><span class="section-number-2">2</span> Structural Specification</h2>
+<div id="outline-container-orgadc2a61" class="outline-2">
+<h2 id="orgadc2a61"><span class="section-number-2">2</span> Structural Specification</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orga3e63d5" class="outline-3">
-<h3 id="orga3e63d5"><span class="section-number-3">2.1</span> Introduction</h3>
+<div id="outline-container-orgceebc43" class="outline-3">
+<h3 id="orgceebc43"><span class="section-number-3">2.1</span> Introduction</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 The structural specification is a format and application independent
@@ -586,8 +592,8 @@ as documentation for application developers.
 </div>
 </div>
 
-<div id="outline-container-org46f143d" class="outline-3">
-<h3 id="org46f143d"><span class="section-number-3">2.2</span> Diagram legend</h3>
+<div id="outline-container-org8393971" class="outline-3">
+<h3 id="org8393971"><span class="section-number-3">2.2</span> Diagram legend</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 The specification consists of a series of partially overlapping
@@ -648,8 +654,8 @@ combines all diagrams and contains all information.
 </div>
 </div>
 
-<div id="outline-container-orge0566ed" class="outline-3">
-<h3 id="orge0566ed"><span class="section-number-3">2.3</span> Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></h3>
+<div id="outline-container-org92722eb" class="outline-3">
+<h3 id="org92722eb"><span class="section-number-3">2.3</span> Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></h3>
 <div class="outline-text-3" id="text-2-3">
 
 <div class="figure">
@@ -660,8 +666,8 @@ combines all diagrams and contains all information.
 </div>
 
 
-<div id="outline-container-orgae99b66" class="outline-3">
-<h3 id="orgae99b66"><span class="section-number-3">2.4</span> Elements</h3>
+<div id="outline-container-org1351907" class="outline-3">
+<h3 id="org1351907"><span class="section-number-3">2.4</span> Elements</h3>
 <div class="outline-text-3" id="text-2-4">
 
 <div class="figure">
@@ -678,8 +684,8 @@ Notes:
 </ul>
 </div>
 
-<div id="outline-container-org29bd549" class="outline-4">
-<h4 id="org29bd549"><span class="section-number-4">2.4.1</span> &#x2026; with reified relations</h4>
+<div id="outline-container-org8783f85" class="outline-4">
+<h4 id="org8783f85"><span class="section-number-4">2.4.1</span> &#x2026; with reified relations</h4>
 <div class="outline-text-4" id="text-2-4-1">
 
 <div class="figure">
@@ -692,8 +698,8 @@ Notes:
 
 
 
-<div id="outline-container-orgf051b16" class="outline-3">
-<h3 id="orgf051b16"><span class="section-number-3">2.5</span> Aspects and Aspect Elements</h3>
+<div id="outline-container-org0458898" class="outline-3">
+<h3 id="org0458898"><span class="section-number-3">2.5</span> Aspects and Aspect Elements</h3>
 <div class="outline-text-3" id="text-2-5">
 
 <div class="figure">
@@ -702,8 +708,8 @@ Notes:
 </div>
 </div>
 
-<div id="outline-container-org64806f0" class="outline-4">
-<h4 id="org64806f0"><span class="section-number-4">2.5.1</span> Inter aspect Relations</h4>
+<div id="outline-container-org14f2bef" class="outline-4">
+<h4 id="org14f2bef"><span class="section-number-4">2.5.1</span> Inter aspect Relations</h4>
 <div class="outline-text-4" id="text-2-5-1">
 
 <div class="figure">
@@ -714,8 +720,8 @@ Notes:
 </div>
 
 
-<div id="outline-container-org7755b9a" class="outline-4">
-<h4 id="org7755b9a"><span class="section-number-4">2.5.2</span> Convenient AspectElement specialisations</h4>
+<div id="outline-container-orga218de8" class="outline-4">
+<h4 id="orga218de8"><span class="section-number-4">2.5.2</span> Convenient AspectElement specialisations</h4>
 <div class="outline-text-4" id="text-2-5-2">
 
 <div class="figure">
@@ -727,8 +733,8 @@ Notes:
 </div>
 
 
-<div id="outline-container-org6b38e15" class="outline-3">
-<h3 id="org6b38e15"><span class="section-number-3">2.6</span> Attribute Values (aka Datums)</h3>
+<div id="outline-container-org686d179" class="outline-3">
+<h3 id="org686d179"><span class="section-number-3">2.6</span> Attribute Values (aka Datums)</h3>
 <div class="outline-text-3" id="text-2-6">
 
 <div class="figure">
@@ -738,8 +744,8 @@ Notes:
 </div>
 </div>
 
-<div id="outline-container-org8dc2b65" class="outline-3">
-<h3 id="org8dc2b65"><span class="section-number-3">2.7</span> Types</h3>
+<div id="outline-container-org446a910" class="outline-3">
+<h3 id="org446a910"><span class="section-number-3">2.7</span> Types</h3>
 <div class="outline-text-3" id="text-2-7">
 
 <div class="figure">
@@ -749,8 +755,8 @@ Notes:
 </div>
 </div>
 
-<div id="outline-container-org64f5f7f" class="outline-3">
-<h3 id="org64f5f7f"><span class="section-number-3">2.8</span> Complete Specification</h3>
+<div id="outline-container-org1983f10" class="outline-3">
+<h3 id="org1983f10"><span class="section-number-3">2.8</span> Complete Specification</h3>
 <div class="outline-text-3" id="text-2-8">
 
 <div class="figure">
@@ -761,8 +767,8 @@ Notes:
 </div>
 </div>
 
-<div id="outline-container-org6e61694" class="outline-2">
-<h2 id="org6e61694"><span class="section-number-2">3</span> Vocabulary: OWL Ontology</h2>
+<div id="outline-container-org46cccb9" class="outline-2">
+<h2 id="org46cccb9"><span class="section-number-2">3</span> Vocabulary: OWL Ontology</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The IMF vocabulary is defined by an OWL ontology, also called the IMF
@@ -783,12 +789,12 @@ information.
 </p>
 </div>
 
-<div id="outline-container-orgfedf691" class="outline-3">
-<h3 id="orgfedf691"><span class="section-number-3">3.1</span> Main ontology</h3>
+<div id="outline-container-org4c1158c" class="outline-3">
+<h3 id="org4c1158c"><span class="section-number-3">3.1</span> Main ontology</h3>
 <div class="outline-text-3" id="text-3-1">
 </div>
-<div id="outline-container-org3d18651" class="outline-4">
-<h4 id="org3d18651"><span class="section-number-4">3.1.1</span> Import hierarchy</h4>
+<div id="outline-container-org23208b8" class="outline-4">
+<h4 id="org23208b8"><span class="section-number-4">3.1.1</span> Import hierarchy</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 The diagram displays the different ontology documents that the IMF
@@ -807,8 +813,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="outline-container-orga4982ac" class="outline-3">
-<h3 id="orga4982ac"><span class="section-number-3">3.2</span> Elements Sub-Ontology</h3>
+<div id="outline-container-org22692d7" class="outline-3">
+<h3 id="org22692d7"><span class="section-number-3">3.2</span> Elements Sub-Ontology</h3>
 <div class="outline-text-3" id="text-3-2">
 
 <div class="figure">
@@ -818,11 +824,11 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org8f4852e" class="outline-4">
-<h4 id="org8f4852e"><span class="section-number-4">3.2.1</span> Header</h4>
+<div id="outline-container-orgfb2d8f0" class="outline-4">
+<h4 id="orgfb2d8f0"><span class="section-number-4">3.2.1</span> Header</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org4cea543">
+<pre class="src src-ttl" id="orgc816eb6">
 
 &lt;http://ns.imfid.org/imf-elements&gt; a owl:Ontology ;
     owl:versionIRI &lt;http://ns.imfid.org/20230331/imf-elements&gt; ;
@@ -852,11 +858,11 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org31fc38c" class="outline-4">
-<h4 id="org31fc38c"><span class="section-number-4">3.2.2</span> <code>Element</code></h4>
+<div id="outline-container-org93fd37f" class="outline-4">
+<h4 id="org93fd37f"><span class="section-number-4">3.2.2</span> <code>Element</code></h4>
 <div class="outline-text-4" id="text-3-2-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgbb44013">imf:Element a owl:Class .
+<pre class="src src-ttl" id="org368e31b">imf:Element a owl:Class .
 
 [] ottr:of o-owl-ma:ClassPartition ;
    ottr:values ( imf:Element ( imf:Block imf:Terminal ) ) .
@@ -865,11 +871,11 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org1ac643a" class="outline-4">
-<h4 id="org1ac643a"><span class="section-number-4">3.2.3</span> <code>partOf</code> / <code>hasPart</code></h4>
+<div id="outline-container-org2c7d45b" class="outline-4">
+<h4 id="org2c7d45b"><span class="section-number-4">3.2.3</span> <code>partOf</code> / <code>hasPart</code></h4>
 <div class="outline-text-4" id="text-3-2-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org0c1ce9b">imf:partOf a owl:ObjectProperty;
+<pre class="src src-ttl" id="org17543c0">imf:partOf a owl:ObjectProperty;
   a owl:FunctionalProperty ;
   a owl:IrreflexiveProperty ;
   rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
@@ -890,32 +896,32 @@ imf:hasPart a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org787e582" class="outline-4">
-<h4 id="org787e582"><span class="section-number-4">3.2.4</span> <code>hasClassifier</code></h4>
+<div id="outline-container-org950ed0f" class="outline-4">
+<h4 id="org950ed0f"><span class="section-number-4">3.2.4</span> <code>hasClassifier</code></h4>
 <div class="outline-text-4" id="text-3-2-4">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org7424318">imf:hasClassifier a owl:ObjectProperty .
+<pre class="src src-ttl" id="org1946015">imf:hasClassifier a owl:ObjectProperty .
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgd000a83" class="outline-4">
-<h4 id="orgd000a83"><span class="section-number-4">3.2.5</span> Element data properties</h4>
+<div id="outline-container-org181f854" class="outline-4">
+<h4 id="org181f854"><span class="section-number-4">3.2.5</span> Element data properties</h4>
 <div class="outline-text-4" id="text-3-2-5">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org30e9390"># skos:notation
+<pre class="src src-ttl" id="orgde718b9"># skos:notation
 imf:symbol a owl:DatatypeProperty .
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgf41bb51" class="outline-4">
-<h4 id="orgf41bb51"><span class="section-number-4">3.2.6</span> <code>Block</code></h4>
+<div id="outline-container-org2e95719" class="outline-4">
+<h4 id="org2e95719"><span class="section-number-4">3.2.6</span> <code>Block</code></h4>
 <div class="outline-text-4" id="text-3-2-6">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org5df101b">imf:Block a owl:Class ;
+<pre class="src src-ttl" id="org3b7cfc9">imf:Block a owl:Class ;
   rdfs:subClassOf imf:Element ;
   skos:prefLabel "Block" ;
   .
@@ -927,11 +933,11 @@ imf:symbol a owl:DatatypeProperty .
 </div>
 </div>
 
-<div id="outline-container-org67c02ba" class="outline-4">
-<h4 id="org67c02ba"><span class="section-number-4">3.2.7</span> <code>Terminal</code></h4>
+<div id="outline-container-org07f7a7e" class="outline-4">
+<h4 id="org07f7a7e"><span class="section-number-4">3.2.7</span> <code>Terminal</code></h4>
 <div class="outline-text-4" id="text-3-2-7">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org1361585">imf:Terminal a owl:Class ;
+<pre class="src src-ttl" id="org24872e1">imf:Terminal a owl:Class ;
   rdfs:subClassOf imf:Element ;
   skos:prefLabel "Terminal" ;
   skos:altLabel "Port", "Channel", "Input/Output" ;
@@ -953,11 +959,11 @@ imf:hasTerminal a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orga4f8267" class="outline-4">
-<h4 id="orga4f8267"><span class="section-number-4">3.2.8</span> <code>hasMedium</code></h4>
+<div id="outline-container-orgff21ba8" class="outline-4">
+<h4 id="orgff21ba8"><span class="section-number-4">3.2.8</span> <code>hasMedium</code></h4>
 <div class="outline-text-4" id="text-3-2-8">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgb696322">imf:hasMedium a owl:ObjectProperty ;
+<pre class="src src-ttl" id="org13e3d9d">imf:hasMedium a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:hasClassifier ;
   rdfs:domain imf:Terminal .
 </pre>
@@ -965,11 +971,11 @@ imf:hasTerminal a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orga764826" class="outline-4">
-<h4 id="orga764826"><span class="section-number-4">3.2.9</span> <code>connectedTo</code></h4>
+<div id="outline-container-orge224473" class="outline-4">
+<h4 id="orge224473"><span class="section-number-4">3.2.9</span> <code>connectedTo</code></h4>
 <div class="outline-text-4" id="text-3-2-9">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org3dcd4e5">imf:connectedTo a owl:ObjectProperty ;
+<pre class="src src-ttl" id="org93f058a">imf:connectedTo a owl:ObjectProperty ;
   a owl:FunctionalProperty ;
   a owl:IrreflexiveProperty ;
   rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
@@ -983,11 +989,11 @@ imf:hasTerminal a owl:ObjectProperty ;
 </div>
 
 
-<div id="outline-container-org1aaebad" class="outline-4">
-<h4 id="org1aaebad"><span class="section-number-4">3.2.10</span> Terminal Direction + <code>hasDirection</code></h4>
+<div id="outline-container-orgcb9e1ad" class="outline-4">
+<h4 id="orgcb9e1ad"><span class="section-number-4">3.2.10</span> Terminal Direction + <code>hasDirection</code></h4>
 <div class="outline-text-4" id="text-3-2-10">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org6c7ac28">imf:TerminalDirection a owl:Class .
+<pre class="src src-ttl" id="org63596eb">imf:TerminalDirection a owl:Class .
 
 imf:inDirection  a owl:NamedIndividual, imf:TerminalDirection .
 imf:outDirection a owl:NamedIndividual, imf:TerminalDirection. 
@@ -1000,11 +1006,11 @@ imf:hasDirection a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgb2e89e6" class="outline-4">
-<h4 id="orgb2e89e6"><span class="section-number-4">3.2.11</span> Input/OutputTerminal</h4>
+<div id="outline-container-org4817f62" class="outline-4">
+<h4 id="org4817f62"><span class="section-number-4">3.2.11</span> Input/OutputTerminal</h4>
 <div class="outline-text-4" id="text-3-2-11">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orga0c0024">imf:InputTerminal a owl:Class ;
+<pre class="src src-ttl" id="org82ffbfe">imf:InputTerminal a owl:Class ;
   rdfs:subClassOf imf:Terminal ;
   skos:prefLabel "Input Terminal" ;
   skos:altLabel "Input" ;
@@ -1043,11 +1049,11 @@ imf:hasOutputTerminal a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgf25ed8e" class="outline-4">
-<h4 id="orgf25ed8e"><span class="section-number-4">3.2.12</span> <code>BreakdownPoint</code></h4>
+<div id="outline-container-org5240aeb" class="outline-4">
+<h4 id="org5240aeb"><span class="section-number-4">3.2.12</span> <code>BreakdownPoint</code></h4>
 <div class="outline-text-4" id="text-3-2-12">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org1fe32c3">
+<pre class="src src-ttl" id="org85ae163">
 imf:BreakdownPoint a owl:Class ;
   # rdfs:subClassOf 
   skos:prefLabel "Breakdown Point" ;
@@ -1069,11 +1075,11 @@ imf:partOf a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org428966e" class="outline-4">
-<h4 id="org428966e"><span class="section-number-4">3.2.13</span> <code>ConnectionPoint</code></h4>
+<div id="outline-container-orgd1ce15e" class="outline-4">
+<h4 id="orgd1ce15e"><span class="section-number-4">3.2.13</span> <code>ConnectionPoint</code></h4>
 <div class="outline-text-4" id="text-3-2-13">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgb245cb8">
+<pre class="src src-ttl" id="orga61d919">
 imf:ConnectionPoint a owl:Class ;
   # rdfs:subClassOf 
   skos:prefLabel "Connection Point" ;
@@ -1097,12 +1103,12 @@ imf:connectedTo a owl:ObjectProperty ;
 </div>
 
 
-<div id="outline-container-org8cb5b88" class="outline-3">
-<h3 id="org8cb5b88"><span class="section-number-3">3.3</span> Aspects Sub-Ontology</h3>
+<div id="outline-container-orga0e75aa" class="outline-3">
+<h3 id="orga0e75aa"><span class="section-number-3">3.3</span> Aspects Sub-Ontology</h3>
 <div class="outline-text-3" id="text-3-3">
 </div>
-<div id="outline-container-org607e0fa" class="outline-4">
-<h4 id="org607e0fa"><span class="section-number-4">3.3.1</span> Overview</h4>
+<div id="outline-container-org4367698" class="outline-4">
+<h4 id="org4367698"><span class="section-number-4">3.3.1</span> Overview</h4>
 <div class="outline-text-4" id="text-3-3-1">
 
 <div class="figure">
@@ -1113,15 +1119,15 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org8688944" class="outline-4">
-<h4 id="org8688944"><span class="section-number-4">3.3.2</span> Ontology source</h4>
+<div id="outline-container-org0b8342f" class="outline-4">
+<h4 id="org0b8342f"><span class="section-number-4">3.3.2</span> Ontology source</h4>
 <div class="outline-text-4" id="text-3-3-2">
 </div>
-<div id="outline-container-org2ff7dc5" class="outline-5">
-<h5 id="org2ff7dc5"><span class="section-number-5">3.3.2.1</span> Header</h5>
+<div id="outline-container-org3c0b39c" class="outline-5">
+<h5 id="org3c0b39c"><span class="section-number-5">3.3.2.1</span> Header</h5>
 <div class="outline-text-5" id="text-3-3-2-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org96280de">
+<pre class="src src-ttl" id="orgea673d6">
 
 &lt;http://ns.imfid.org/imf-aspects&gt; a owl:Ontology ;
     owl:versionIRI &lt;http://ns.imfid.org/20230331/imf-aspects&gt; ;
@@ -1148,11 +1154,11 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org2892242" class="outline-5">
-<h5 id="org2892242"><span class="section-number-5">3.3.2.2</span> <code>AspectElement</code></h5>
+<div id="outline-container-org4576921" class="outline-5">
+<h5 id="org4576921"><span class="section-number-5">3.3.2.2</span> <code>AspectElement</code></h5>
 <div class="outline-text-5" id="text-3-3-2-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org8f8b1c8">imf:AspectElement a owl:Class ;
+<pre class="src src-ttl" id="org0ad6daf">imf:AspectElement a owl:Class ;
   rdfs:subclassOf imf:Element ;
   skos:prefLabel "Aspect Element";
   .
@@ -1169,16 +1175,16 @@ imf:hasAspect a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org3fecc15" class="outline-5">
-<h5 id="org3fecc15"><span class="section-number-5">3.3.2.3</span> <code>Aspect</code></h5>
+<div id="outline-container-org10ba116" class="outline-5">
+<h5 id="org10ba116"><span class="section-number-5">3.3.2.3</span> <code>Aspect</code></h5>
 <div class="outline-text-5" id="text-3-3-2-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgae89c9d">imf:Aspect a owl:Class .
+<pre class="src src-ttl" id="org39b8324">imf:Aspect a owl:Class .
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="org2e6381c">imf:intraAspectRelation a owl:ObjectProperty ;
+<pre class="src src-ttl" id="orgcb5b8fe">imf:intraAspectRelation a owl:ObjectProperty ;
     skos:prefLabel "intra-aspect relation";
     rdfs:subPropertyOf skos:semanticRelation ;
     #rdfs:domain imf:AspectElement ;
@@ -1201,14 +1207,14 @@ imf:interAspectRelation a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgf4ecb7d" class="outline-5">
-<h5 id="orgf4ecb7d"><span class="section-number-5">3.3.2.4</span> Aspects</h5>
+<div id="outline-container-org6e10abe" class="outline-5">
+<h5 id="org6e10abe"><span class="section-number-5">3.3.2.4</span> Aspects</h5>
 <div class="outline-text-5" id="text-3-3-2-4">
 <p>
 This is the current list of aspects:
 </p>
 
-<table id="orgd2dd653" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgc4461ed" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1285,8 +1291,8 @@ o-imf:InterAspectRelation [owl:ObjectProperty ?property, owl:Class ?aspectClass]
 </div>
 </div>
 
-<div id="outline-container-orgac694cf" class="outline-3">
-<h3 id="orgac694cf"><span class="section-number-3">3.4</span> Attributes Sub-Ontology</h3>
+<div id="outline-container-org959df95" class="outline-3">
+<h3 id="org959df95"><span class="section-number-3">3.4</span> Attributes Sub-Ontology</h3>
 <div class="outline-text-3" id="text-3-4">
 
 <div class="figure">
@@ -1296,11 +1302,11 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org5f1fd7c" class="outline-4">
-<h4 id="org5f1fd7c"><span class="section-number-4">3.4.1</span> Header</h4>
+<div id="outline-container-orgd118801" class="outline-4">
+<h4 id="orgd118801"><span class="section-number-4">3.4.1</span> Header</h4>
 <div class="outline-text-4" id="text-3-4-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgef96dfa">
+<pre class="src src-ttl" id="org87fd3b6">
 
 &lt;http://ns.imfid.org/imf-attributes&gt; a owl:Ontology ;
     owl:versionIRI &lt;http://ns.imfid.org/20230331/imf-attributes&gt; ;
@@ -1320,11 +1326,11 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org809fbbf" class="outline-4">
-<h4 id="org809fbbf"><span class="section-number-4">3.4.2</span> <code>AttributeValue</code></h4>
+<div id="outline-container-org5874c07" class="outline-4">
+<h4 id="org5874c07"><span class="section-number-4">3.4.2</span> <code>AttributeValue</code></h4>
 <div class="outline-text-4" id="text-3-4-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orge7180ce">imf:AttributeValue a owl:Class .
+<pre class="src src-ttl" id="org723a620">imf:AttributeValue a owl:Class .
 
 imf:hasAttributeValue a owl:ObjectProperty ;
   rdfs:range  imf:AttributeValue .
@@ -1344,11 +1350,11 @@ imf:hasValue a owl:DatatypeProperty ;
 </div>
 </div>
 
-<div id="outline-container-org4164398" class="outline-4">
-<h4 id="org4164398"><span class="section-number-4">3.4.3</span> <code>AttributeGroup</code></h4>
+<div id="outline-container-orgab1cf46" class="outline-4">
+<h4 id="orgab1cf46"><span class="section-number-4">3.4.3</span> <code>AttributeGroup</code></h4>
 <div class="outline-text-4" id="text-3-4-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org7d44b68">
+<pre class="src src-ttl" id="org4f3748f">
 imf:AttributeGroup a owl:Class .
 
 imf:hasAttributeGroup a owl:ObjectProperty ;
@@ -1360,11 +1366,11 @@ imf:hasAttributeGroup a owl:ObjectProperty ;
 </div>
 
 
-<div id="outline-container-org83a0bd3" class="outline-4">
-<h4 id="org83a0bd3"><span class="section-number-4">3.4.4</span> <code>DatumQualifier</code></h4>
+<div id="outline-container-org8202f35" class="outline-4">
+<h4 id="org8202f35"><span class="section-number-4">3.4.4</span> <code>DatumQualifier</code></h4>
 <div class="outline-text-4" id="text-3-4-4">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgf75b906">imf:DatumQualifier a owl:Class .
+<pre class="src src-ttl" id="org9475768">imf:DatumQualifier a owl:Class .
 
 imf:hasDatumQualifier a owl:ObjectProperty ;
   rdfs:domain imf:AttributeValue ;
@@ -1374,10 +1380,10 @@ imf:hasDatumQualifier a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgf9b0ea7" class="outline-4">
-<h4 id="orgf9b0ea7"><span class="section-number-4">3.4.5</span> DatumQualifiers</h4>
+<div id="outline-container-org115dfa6" class="outline-4">
+<h4 id="org115dfa6"><span class="section-number-4">3.4.5</span> DatumQualifiers</h4>
 <div class="outline-text-4" id="text-3-4-5">
-<table id="orge0b28d6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="orgf94ad12" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1471,12 +1477,12 @@ o-imf:DatumQualifier [owl:Class ?qualifierClass, NEList&lt;owl:NamedIndividual&g
 </div>
 </div>
 
-<div id="outline-container-orgae92b20" class="outline-3">
-<h3 id="orgae92b20"><span class="section-number-3">3.5</span> Types Sub-Ontology</h3>
+<div id="outline-container-orgec8fb84" class="outline-3">
+<h3 id="orgec8fb84"><span class="section-number-3">3.5</span> Types Sub-Ontology</h3>
 <div class="outline-text-3" id="text-3-5">
 </div>
-<div id="outline-container-orge25614f" class="outline-4">
-<h4 id="orge25614f"><span class="section-number-4">3.5.1</span> Overview</h4>
+<div id="outline-container-org0c59d41" class="outline-4">
+<h4 id="org0c59d41"><span class="section-number-4">3.5.1</span> Overview</h4>
 <div class="outline-text-4" id="text-3-5-1">
 
 <div class="figure">
@@ -1487,15 +1493,15 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org18afa3c" class="outline-4">
-<h4 id="org18afa3c"><span class="section-number-4">3.5.2</span> Ontology source</h4>
+<div id="outline-container-org7f0135b" class="outline-4">
+<h4 id="org7f0135b"><span class="section-number-4">3.5.2</span> Ontology source</h4>
 <div class="outline-text-4" id="text-3-5-2">
 </div>
-<div id="outline-container-orgb8bf10c" class="outline-5">
-<h5 id="orgb8bf10c"><span class="section-number-5">3.5.2.1</span> Header</h5>
+<div id="outline-container-orgec184ad" class="outline-5">
+<h5 id="orgec184ad"><span class="section-number-5">3.5.2.1</span> Header</h5>
 <div class="outline-text-5" id="text-3-5-2-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org1f1f6ee">
+<pre class="src src-ttl" id="orgb0d4661">
 
 &lt;http://ns.imfid.org/imf-types&gt; a owl:Ontology ;
     owl:versionIRI &lt;http://ns.imfid.org/20230331/imf-types&gt; ;
@@ -1517,11 +1523,11 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-orgee6d7a8" class="outline-5">
-<h5 id="orgee6d7a8"><span class="section-number-5">3.5.2.2</span> Types</h5>
+<div id="outline-container-orgf5910f3" class="outline-5">
+<h5 id="orgf5910f3"><span class="section-number-5">3.5.2.2</span> Types</h5>
 <div class="outline-text-5" id="text-3-5-2-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org8239e30">imf:Type a owl:Class ;
+<pre class="src src-ttl" id="org35768d2">imf:Type a owl:Class ;
   skos:prefLabel "Type";
   .
 
@@ -1559,11 +1565,11 @@ imf:hasTerminalType a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgaf9a63e" class="outline-5">
-<h5 id="orgaf9a63e"><span class="section-number-5">3.5.2.3</span> Type constraint</h5>
+<div id="outline-container-org7fbe315" class="outline-5">
+<h5 id="org7fbe315"><span class="section-number-5">3.5.2.3</span> Type constraint</h5>
 <div class="outline-text-5" id="text-3-5-2-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org1f435d5">imf:TypeConstraint a owl:Class .
+<pre class="src src-ttl" id="org87cd451">imf:TypeConstraint a owl:Class .
 
 [] ottr:of o-owl-ax:SubDataMaxCardinality ;
    ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
@@ -1575,11 +1581,11 @@ imf:hasTerminalType a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org0f63cff" class="outline-5">
-<h5 id="org0f63cff"><span class="section-number-5">3.5.2.4</span> Relation constraints</h5>
+<div id="outline-container-org20dea78" class="outline-5">
+<h5 id="org20dea78"><span class="section-number-5">3.5.2.4</span> Relation constraints</h5>
 <div class="outline-text-5" id="text-3-5-2-4">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org0b8e1f4">[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+<pre class="src src-ttl" id="org744b787">[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
    ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
 [] ottr:of o-owl-ax:SubDataMaxCardinality ;
    ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
@@ -1595,11 +1601,11 @@ imf:hasTerminalType a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orge124b01" class="outline-5">
-<h5 id="orge124b01"><span class="section-number-5">3.5.2.5</span> instanceOf</h5>
+<div id="outline-container-org958f803" class="outline-5">
+<h5 id="org958f803"><span class="section-number-5">3.5.2.5</span> instanceOf</h5>
 <div class="outline-text-5" id="text-3-5-2-5">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orge6f7922">
+<pre class="src src-ttl" id="orgd03bc6c">
 imf:instanceOf a owl:ObjectProperty ;
   skos:prefLabel "instance of" ;
   rdfs:range imf:Type .
@@ -1625,38 +1631,127 @@ imf:instanceOf a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org49afa0d" class="outline-3">
-<h3 id="org49afa0d"><span class="section-number-3">3.6</span> All IMF Ontologies combined</h3>
+<div id="outline-container-orgab575c4" class="outline-3">
+<h3 id="orgab575c4"><span class="section-number-3">3.6</span> All IMF Ontologies combined</h3>
 <div class="outline-text-3" id="text-3-6">
 <pre class="example">
-11:04:28 INFO  riot            :: File: out/owl/imf.owl.ttl
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.23 sec : 23 Triples : 99.14 per second
-11:04:28 INFO  riot            :: File: out/owl/imf-aspects.owl.ttl
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-aspects.owl.ttl : 0.03 sec : 121 Triples : 3,903.23 per second
-11:04:28 INFO  riot            :: File: out/owl/imf-attributes.owl.ttl
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-attributes.owl.ttl : 0.02 sec : 140 Triples : 6,363.64 per second
-11:04:28 INFO  riot            :: File: out/owl/imf-types.owl.ttl
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.02 sec : 96 Triples : 5,052.63 per second
-Total           : 0.30 sec : 380 Triples : 1,250.00 per second
+11:50:17 INFO  riot            :: File: out/owl/imf.owl.ttl
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.20 sec : 23 Triples : 116.75 per second
+11:50:17 INFO  riot            :: File: out/owl/imf-aspects.owl.ttl
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-aspects.owl.ttl : 0.03 sec : 121 Triples : 4,840.00 per second
+11:50:17 INFO  riot            :: File: out/owl/imf-attributes.owl.ttl
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-attributes.owl.ttl : 0.02 sec : 140 Triples : 6,666.67 per second
+11:50:17 INFO  riot            :: File: out/owl/imf-types.owl.ttl
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.01 sec : 96 Triples : 7,384.62 per second
+Total           : 0.26 sec : 380 Triples : 1,484.38 per second
 
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgc404c25" class="outline-2">
-<h2 id="orgc404c25"><span class="section-number-2">4</span> Prefixes</h2>
+<div id="outline-container-org9bac9f2" class="outline-2">
+<h2 id="org9bac9f2"><span class="section-number-2">4</span> Example</h2>
 <div class="outline-text-2" id="text-4">
+
+<div class="figure">
+<p><img src="./img/pumpingFunction.png" alt="pumpingFunction.png" />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2e8e5d2" class="outline-3">
+<h3 id="org2e8e5d2"><span class="section-number-3">4.1</span> Type</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+<pre class="src src-ttl">
+ex:XYZ-b001 a imf:BlockType ;
+  rdfs:label "Pumping, liquid velocity" ;
+  imf:classifier rdf:Pumping ;
+  imf:hasAspect imf:FunctionAspect ;
+  imf:symbol ex-img:SP402 ;
+  ## more metadata
+
+  imf:hasTerminalTypeConstraint [
+    imf:minCount 1;
+    imf:maxCount 1;
+    rdfs:label "" ;
+    skos:description "" ;
+    imf:onType ex:XYZ-t003
+  ] ;
+
+  imf:hasAttributeGroupTypeConstraint [
+    imf:minCount 1;
+    imf:maxCount 1;
+    rdfs:label "" ;
+    skos:description "" ;
+    imf:onType ex:XYZ-ag001
+  ] ;
+
+ex:XYZ-ag001 a imf:AttributeGroupType ;
+  rdfs:label "Pumping attributes" ;
+  imf:hasAttributeType ex:XYZ-attr001 , ex:XYZ-attr002 .
+
+## TODO need to specify different types of attributes
+
+ex:XYZ-attr001 a imf:AttributeType ;
+  rdfs:label "Fluid" ;
+  imf:property rdl:Fluid .
+
+ex:XYZ-attr002 a imf:AttributeType ;
+  rdfs:label "Flowrate, vol, UoM" ;
+  imf:property rdl:VolumetricFlowrate .
+  
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc2116db" class="outline-3">
+<h3 id="orgc2116db"><span class="section-number-3">4.2</span> Instance</h3>
+<div class="outline-text-3" id="text-4-2">
+<div class="org-src-container">
+<pre class="src src-ttl">ex:myPumping001 a imf:Block ;
+  imf:instanceOf ex:XYZ-b001 ;
+  ## can/should(?) include all type data?
+
+  imf:hasAttributeGroup [
+    rdfs:label "Purpose attributes" ;
+    imf:instanceOf ex:XYZ-ag001 ;
+
+    imf:hasAttributeValue [
+      imf:instanceOf ex:XYZ-attr001;
+      imf:value rdl:Liquid
+    ] , [
+      imf:instanceOf ex:XYZ-attr002 ;
+      imf:hasUoM rdl:CubicMeterPerHour ;
+      imf:value 3000 ;
+      imf:hasDatumQualifier rdl:specified, rdl:operating, rdl:maximum, rdl:continuous .
+    ] ;
+ 
+  imf:hasTerminal ex:myTerminal003 .
+
+ex:myTerminal003 a img:Terminal .
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb6e141b" class="outline-2">
+<h2 id="orgb6e141b"><span class="section-number-2">5</span> Prefixes</h2>
+<div class="outline-text-2" id="text-5">
 <p>
 This section contains the prefixes used throughout this document.
 </p>
 </div>
 
-<div id="outline-container-orgffa98d7" class="outline-3">
-<h3 id="orgffa98d7"><span class="section-number-3">4.1</span> Standard vocabulary prefixes</h3>
-<div class="outline-text-3" id="text-4-1">
+<div id="outline-container-org6b807f2" class="outline-3">
+<h3 id="org6b807f2"><span class="section-number-3">5.1</span> Standard vocabulary prefixes</h3>
+<div class="outline-text-3" id="text-5-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org69e5279">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
+<pre class="src src-ttl" id="org4ea941a">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs:	&lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix owl:    &lt;http://www.w3.org/2002/07/owl#&gt; .
@@ -1670,11 +1765,11 @@ This section contains the prefixes used throughout this document.
 </div>
 </div>
 
-<div id="outline-container-orgdbf22f8" class="outline-3">
-<h3 id="orgdbf22f8"><span class="section-number-3">4.2</span> IMF prefixes</h3>
-<div class="outline-text-3" id="text-4-2">
+<div id="outline-container-org544e49c" class="outline-3">
+<h3 id="org544e49c"><span class="section-number-3">5.2</span> IMF prefixes</h3>
+<div class="outline-text-3" id="text-5-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgd1b89f8">@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
+<pre class="src src-ttl" id="orgff45b4e">@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
 
 @prefix p14:    &lt;http://example.com/P14#&gt; .
 </pre>
@@ -1682,11 +1777,11 @@ This section contains the prefixes used throughout this document.
 </div>
 </div>
 
-<div id="outline-container-org8424595" class="outline-3">
-<h3 id="org8424595"><span class="section-number-3">4.3</span> OTTR template prefixes</h3>
-<div class="outline-text-3" id="text-4-3">
+<div id="outline-container-org1c5615b" class="outline-3">
+<h3 id="org1c5615b"><span class="section-number-3">5.3</span> OTTR template prefixes</h3>
+<div class="outline-text-3" id="text-5-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org01f46fe">@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
+<pre class="src src-ttl" id="org2f7441c">@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
 @prefix o-rdf:       &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
 @prefix o-rdfs:       &lt;http://tpl.ottr.xyz/rdfs/0.2/&gt; .
 @prefix o-owl-ax:    &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
@@ -1701,7 +1796,7 @@ This section contains the prefixes used throughout this document.
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: Editor: Martin G. Skjæveland</p>
-<p class="date">Created: 2023-04-13 to. 11:04</p>
+<p class="date">Created: 2023-04-13 to. 11:50</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

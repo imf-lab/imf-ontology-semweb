@@ -176,13 +176,13 @@ imf:theWhole
 
 []
     a owl:AllDisjointClasses ;
-    owl:members (imf:InputTerminal
-        imf:OutputTerminal
+    owl:members (imf:Block
+        imf:Terminal
     ) .
 
 []
     a owl:AllDisjointClasses ;
-    owl:members (imf:Block
-        imf:Terminal
+    owl:members (imf:InputTerminal
+        imf:OutputTerminal
     ) .
 

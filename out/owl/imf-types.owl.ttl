@@ -98,13 +98,13 @@ imf:TerminalType
     rdfs:subClassOf imf:ElementType, [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass owl:Thing ;
-        owl:onProperty imf:hasMedium
+        owl:onClass imf:Direction ;
+        owl:onProperty imf:hasDirection
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Direction ;
-        owl:onProperty imf:hasDirection
+        owl:onClass owl:Thing ;
+        owl:onProperty imf:hasMedium
     ] ;
     skos:prefLabel "Terminal Type" .
 

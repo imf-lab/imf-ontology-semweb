@@ -25,12 +25,12 @@ imf:AttributeValue
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Range ;
+        owl:onClass imf:Regularity ;
         owl:onProperty imf:hasDatumQualifier
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Regularity ;
+        owl:onClass imf:Range ;
         owl:onProperty imf:hasDatumQualifier
     ], [
         a owl:Restriction ;
@@ -164,25 +164,17 @@ imf:specified
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:average
-        imf:maximum
-        imf:minimum
-        imf:nominal
-        imf:normal
-    ) .
-
-[]
-    a owl:AllDifferent ;
     owl:members (imf:absolute
         imf:continuous
     ) .
 
 []
-    a owl:AllDisjointClasses ;
-    owl:members (imf:Scope
-        imf:Range
-        imf:Regularity
-        imf:Provenance
+    a owl:AllDifferent ;
+    owl:members (imf:average
+        imf:maximum
+        imf:minimum
+        imf:nominal
+        imf:normal
     ) .
 
 []
@@ -196,5 +188,13 @@ imf:specified
     owl:members (imf:calculated
         imf:measured
         imf:specified
+    ) .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:Scope
+        imf:Range
+        imf:Regularity
+        imf:Provenance
     ) .
 

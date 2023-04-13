@@ -3093,6 +3093,80 @@ imf:instanceOf a owl:ObjectProperty ;
 : file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.00 sec : 5 Triples : 1,250.00 per second
 : Total           : 0.21 sec : 211 Triples : 985.98 per second
 
+* Example
+
+[[./img/pumpingFunction.png]]
+
+** Type
+
+#+BEGIN_SRC ttl
+
+ex:XYZ-b001 a imf:BlockType ;
+  rdfs:label "Pumping, liquid velocity" ;
+  imf:classifier rdf:Pumping ;
+  imf:hasAspect imf:FunctionAspect ;
+  imf:symbol ex-img:SP402 ;
+  ## more metadata
+
+  imf:hasTerminalTypeConstraint [
+    imf:minCount 1;
+    imf:maxCount 1;
+    rdfs:label "" ;
+    skos:description "" ;
+    imf:onType ex:XYZ-t003
+  ] ;
+
+  imf:hasAttributeGroupTypeConstraint [
+    imf:minCount 1;
+    imf:maxCount 1;
+    rdfs:label "" ;
+    skos:description "" ;
+    imf:onType ex:XYZ-ag001
+  ] ;
+
+ex:XYZ-ag001 a imf:AttributeGroupType ;
+  rdfs:label "Pumping attributes" ;
+  imf:hasAttributeType ex:XYZ-attr001 , ex:XYZ-attr002 .
+
+## TODO need to specify different types of attributes
+
+ex:XYZ-attr001 a imf:AttributeType ;
+  rdfs:label "Fluid" ;
+  imf:property rdl:Fluid .
+
+ex:XYZ-attr002 a imf:AttributeType ;
+  rdfs:label "Flowrate, vol, UoM" ;
+  imf:property rdl:VolumetricFlowrate .
+  
+#+END_SRC
+
+** Instance
+
+#+BEGIN_SRC ttl
+ex:myPumping001 a imf:Block ;
+  imf:instanceOf ex:XYZ-b001 ;
+  ## can/should(?) include all type data?
+
+  imf:hasAttributeGroup [
+    rdfs:label "Purpose attributes" ;
+    imf:instanceOf ex:XYZ-ag001 ;
+
+    imf:hasAttributeValue [
+      imf:instanceOf ex:XYZ-attr001;
+      imf:value rdl:Liquid
+    ] , [
+      imf:instanceOf ex:XYZ-attr002 ;
+      imf:hasUoM rdl:CubicMeterPerHour ;
+      imf:value 3000 ;
+      imf:hasDatumQualifier rdl:specified, rdl:operating, rdl:maximum, rdl:continuous .
+    ] ;
+ 
+  imf:hasTerminal ex:myTerminal003 .
+
+ex:myTerminal003 a img:Terminal .
+
+#+END_SRC
+
 * Prefixes
 
 This section contains the prefixes used throughout this document.
