@@ -395,9 +395,6 @@ Model o--> "*" Element
 [[file:out/img/imf-overview-model-versioning.png]]
 
 
-
-
-
 ** Elements
 *** Overview
 
@@ -667,6 +664,9 @@ class ConnectionPoint
 Terminal "1" <-- "1" ConnectionPoint : theInput
 Terminal "1" <-- "1" ConnectionPoint : theOutput
 #+END_SRC
+
+#+RESULTS: overview-instances-w-reified
+[[file:out/img/imf-overview-instances-w-reified.png]]
 
 **** ~BreakdownPoint~
 
