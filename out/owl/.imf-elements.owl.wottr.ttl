@@ -16,7 +16,10 @@
 @prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
+@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+
 
 <http://ns.imfid.org/imf-elements> a owl:Ontology ;
     owl:versionIRI <http://ns.imfid.org/20230331/imf-elements> ;
@@ -55,6 +58,17 @@ imf:hasTerminal a owl:ObjectProperty ;
   skos:definition "The relation between a block and its terminals.";
   .
 
+imf:Direction a owl:Class .
+
+[] ottr:of o-owl-ax:EquivObjectOneOf ;
+   ottr:values ( imf:Direction ( imf:input imf:output ) ) .
+
+[] ottr:of o-owl-ax:DifferentIndividuals ;
+   ottr:values ( ( imf:input imf:output ) ) .
+
+imf:direction a owl:ObjectProperty ;
+  rdfs:domain imf:Terminal ;
+  rdfs:range imf:Direction .
 imf:InputTerminal a owl:Class ;
   rdfs:subClassOf imf:Terminal ;
   skos:prefLabel "Input Terminal" ;
@@ -62,7 +76,7 @@ imf:InputTerminal a owl:Class ;
   .
 
 [] ottr:of o-owl-ax:EquivHasValue ;
-   ottr:values ( imf:InputTerminal imf:hasDirection imf:inDirection ) .
+   ottr:values ( imf:InputTerminal imf:direction imf:input ) .
 
 imf:OutputTerminal a owl:Class ;
   rdfs:subClassOf imf:Terminal ;
@@ -71,10 +85,10 @@ imf:OutputTerminal a owl:Class ;
   .
 
 [] ottr:of o-owl-ax:EquivHasValue ;
-   ottr:values ( imf:OutputTerminal imf:hasDirection imf:outDirection ) .
+   ottr:values ( imf:OutputTerminal imf:direction imf:output ) .
 
-[] ottr:of o-owl-ma:ClassPartition ;
-   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
+##[] ottr:of o-owl-ma:ClassPartition ;
+##   ottr:values ( imf:Terminal ( imf:InputTerminal imf:OutputTerminal ) ) .
 
 imf:hasInputTerminal a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:hasTerminal ;
@@ -91,7 +105,8 @@ imf:hasOutputTerminal a owl:ObjectProperty ;
   .
 
 # skos:notation
-imf:symbol a owl:DatatypeProperty .
+
+imf:symbol a owl:AnnotationProperty .
 
 imf:partOf a owl:ObjectProperty;
   a owl:FunctionalProperty ;
@@ -117,9 +132,10 @@ imf:connectedTo a owl:ObjectProperty ;
   rdfs:domain imf:Terminal ;
   rdfs:range imf:Terminal ;
   .
-imf:hasClassifier a owl:ObjectProperty .
-imf:hasMedium a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:hasClassifier ;
+imf:classifier a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:externalReference .
+imf:medium a owl:ObjectProperty  ;
+  rdfs:subPropertyOf imf:externalReference ;
   rdfs:domain imf:Terminal .
 
 

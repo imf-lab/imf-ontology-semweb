@@ -9,6 +9,7 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix p14: <http://example.com/P14#> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
 @prefix ex: <http://example.com#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix o-imf: <http://ns.imfid.org/templates/> .
@@ -30,13 +31,15 @@ imf:AspectElement
     rdfs:subclassOf imf:Element ;
     skos:prefLabel "Aspect Element" .
 
-imf:FunctionAspect
-    imf:color "#FFFF00" ;
-    imf:prefix "=" ;
-    a imf:Aspect .
-
 imf:FunctionBlock
-    rdfs:subClassOf imf:Block, imf:FunctionElement .
+    a owl:Class ;
+    rdfs:subClassOf imf:Block, imf:FunctionElement ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (imf:FunctionElement
+            imf:Block
+        )
+    ] .
 
 imf:FunctionElement
     a owl:Class ;
@@ -47,20 +50,29 @@ imf:FunctionElement
     ] ;
     owl:equivalentClass [
         a owl:Class, owl:Restriction ;
-        owl:hasValue imf:FunctionAspect ;
-        owl:onProperty imf:hasAspect
+        owl:hasValue imf:functionAspect ;
+        owl:onProperty imf:aspect
     ] .
 
 imf:FunctionTerminal
-    rdfs:subClassOf imf:FunctionElement, imf:Terminal .
-
-imf:InstalledAspect
-    imf:color "#0000FF" ;
-    imf:prefix "::" ;
-    a imf:Aspect .
+    a owl:Class ;
+    rdfs:subClassOf imf:FunctionElement, imf:Terminal ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (imf:FunctionElement
+            imf:Terminal
+        )
+    ] .
 
 imf:InstalledBlock
-    rdfs:subClassOf imf:Block, imf:InstalledElement .
+    a owl:Class ;
+    rdfs:subClassOf imf:Block, imf:InstalledElement ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (imf:InstalledElement
+            imf:Block
+        )
+    ] .
 
 imf:InstalledElement
     a owl:Class ;
@@ -71,20 +83,29 @@ imf:InstalledElement
     ] ;
     owl:equivalentClass [
         a owl:Class, owl:Restriction ;
-        owl:hasValue imf:InstalledAspect ;
-        owl:onProperty imf:hasAspect
+        owl:hasValue imf:installedAspect ;
+        owl:onProperty imf:aspect
     ] .
 
 imf:InstalledTerminal
-    rdfs:subClassOf imf:InstalledElement, imf:Terminal .
-
-imf:LocationAspect
-    imf:color "#FF00FF" ;
-    imf:prefix "+" ;
-    a imf:Aspect .
+    a owl:Class ;
+    rdfs:subClassOf imf:InstalledElement, imf:Terminal ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (imf:InstalledElement
+            imf:Terminal
+        )
+    ] .
 
 imf:LocationBlock
-    rdfs:subClassOf imf:Block, imf:LocationElement .
+    a owl:Class ;
+    rdfs:subClassOf imf:Block, imf:LocationElement ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (imf:LocationElement
+            imf:Block
+        )
+    ] .
 
 imf:LocationElement
     a owl:Class ;
@@ -95,20 +116,29 @@ imf:LocationElement
     ] ;
     owl:equivalentClass [
         a owl:Class, owl:Restriction ;
-        owl:hasValue imf:LocationAspect ;
-        owl:onProperty imf:hasAspect
+        owl:hasValue imf:locationAspect ;
+        owl:onProperty imf:aspect
     ] .
 
 imf:LocationTerminal
-    rdfs:subClassOf imf:LocationElement, imf:Terminal .
-
-imf:ProductAspect
-    imf:color "#00FFFF" ;
-    imf:prefix "-" ;
-    a imf:Aspect .
+    a owl:Class ;
+    rdfs:subClassOf imf:LocationElement, imf:Terminal ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (imf:LocationElement
+            imf:Terminal
+        )
+    ] .
 
 imf:ProductBlock
-    rdfs:subClassOf imf:Block, imf:ProductElement .
+    a owl:Class ;
+    rdfs:subClassOf imf:Block, imf:ProductElement ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (imf:ProductElement
+            imf:Block
+        )
+    ] .
 
 imf:ProductElement
     a owl:Class ;
@@ -119,39 +149,56 @@ imf:ProductElement
     ] ;
     owl:equivalentClass [
         a owl:Class, owl:Restriction ;
-        owl:hasValue imf:ProductAspect ;
-        owl:onProperty imf:hasAspect
+        owl:hasValue imf:productAspect ;
+        owl:onProperty imf:aspect
     ] .
 
 imf:ProductTerminal
-    rdfs:subClassOf imf:ProductElement, imf:Terminal .
+    a owl:Class ;
+    rdfs:subClassOf imf:ProductElement, imf:Terminal ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (imf:ProductElement
+            imf:Terminal
+        )
+    ] .
 
 imf:asFunction
     a owl:ObjectProperty ;
     rdfs:range imf:FunctionElement ;
-    rdfs:subPropertyOf imf:InterAspectRelation .
+    rdfs:subPropertyOf imf:interAspectRelation .
 
 imf:asInstalled
     a owl:ObjectProperty ;
     rdfs:range imf:InstalledElement ;
-    rdfs:subPropertyOf imf:InterAspectRelation .
+    rdfs:subPropertyOf imf:interAspectRelation .
 
 imf:asLocation
     a owl:ObjectProperty ;
     rdfs:range imf:LocationElement ;
-    rdfs:subPropertyOf imf:InterAspectRelation .
+    rdfs:subPropertyOf imf:interAspectRelation .
 
 imf:asProduct
     a owl:ObjectProperty ;
     rdfs:range imf:ProductElement ;
-    rdfs:subPropertyOf imf:InterAspectRelation .
+    rdfs:subPropertyOf imf:interAspectRelation .
 
-imf:hasAspect
+imf:aspect
     a owl:ObjectProperty ;
     rdfs:domain imf:AspectElement ;
     rdfs:range imf:Aspect ;
     skos:definition "Relates an Aspect Element to its Aspect." ;
-    skos:prefLabel "has aspect" .
+    skos:prefLabel "aspect" .
+
+imf:functionAspect
+    imf:color "#FFFF00" ;
+    imf:prefix "=" ;
+    a imf:Aspect .
+
+imf:installedAspect
+    imf:color "#0000FF" ;
+    imf:prefix "::" ;
+    a imf:Aspect .
 
 imf:interAspectRelation
     a owl:ObjectProperty ;
@@ -166,6 +213,16 @@ imf:intraAspectRelation
     skos:definition "A generic relation between aspect objects of the same aspect" ;
     skos:prefLabel "intra-aspect relation" .
 
+imf:locationAspect
+    imf:color "#FF00FF" ;
+    imf:prefix "+" ;
+    a imf:Aspect .
+
+imf:productAspect
+    imf:color "#00FFFF" ;
+    imf:prefix "-" ;
+    a imf:Aspect .
+
 <http://ns.imfid.org/imf-aspects>
     a owl:Ontology ;
     owl:versionIRI <http://ns.imfid.org/20230331/imf-aspects> ;
@@ -179,9 +236,9 @@ imf:intraAspectRelation
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:FunctionAspect
-        imf:LocationAspect
-        imf:ProductAspect
-        imf:InstalledAspect
+    owl:members (imf:functionAspect
+        imf:locationAspect
+        imf:productAspect
+        imf:installedAspect
     ) .
 

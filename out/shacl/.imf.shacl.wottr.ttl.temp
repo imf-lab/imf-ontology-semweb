@@ -1,0 +1,171 @@
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: <http://example.com/P14#> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
+@prefix ex: <http://example.com#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+_:b0    sh:path      imf:qualifier ;
+        sh:minCount  1 ;
+        sh:severity  sh:Warning ;
+        sh:message   "Attribute has no qualifier" .
+
+_:b1    sh:path      imf:uom ;
+        sh:maxCount  1 .
+
+_:b2    sh:path      imf:aspect ;
+        sh:minCount  1 ;
+        sh:maxCount  1 ;
+        sh:class     sh:Aspect .
+
+imf:BlockShape  rdf:type     sh:NodeShape ;
+        sh:targetClass       imf:Block ;
+        sh:targetSubjectsOf  imf:hasTerminal ;
+        sh:property          _:b3 ;
+        sh:property          _:b4 ;
+        sh:property          _:b5 .
+
+_:b6    sh:path      imf:qualifier ;
+        sh:maxCount  1 ;
+        sh:class     imf:Provenence .
+
+_:b7    sh:path      imf:classifier ;
+        sh:minCount  1 ;
+        sh:severity  sh:Warning ;
+        sh:message   "Element has no classifier" .
+
+_:b8    sh:path      imf:direction ;
+        sh:maxCount  1 ;
+        sh:in        _:b9 .
+
+_:b10   sh:path      imf:connectedTo ;
+        sh:maxCount  1 ;
+        sh:class     sh:Terminal .
+
+imf:AttributeGroupShape
+        rdf:type            sh:NodeShape ;
+        sh:targetClass      imf:AttributeGroup ;
+        sh:targetObjectsOf  imf:hasAttributeGroup ;
+        sh:property         _:b11 .
+
+_:b12   sh:path      imf:connectedTo ;
+        sh:minCount  1 ;
+        sh:severity  sh:Warning ;
+        sh:message   "Terminal has no connection (to other Terminal)" .
+
+_:b5    sh:path      imf:partOf ;
+        sh:maxCount  1 ;
+        sh:class     sh:Block .
+
+_:b11   sh:path      imf:hasAttribute ;
+        sh:minCount  1 ;
+        sh:message   "AttributeGroup has no Attributes" .
+
+imf:AttributeShape  sh:targetClass  imf:Attribute ;
+        sh:property          _:b13 ;
+        sh:targetObjectsOf   imf:hasAttribute ;
+        sh:property          _:b14 ;
+        sh:property          _:b1 ;
+        sh:property          _:b0 ;
+        sh:targetSubjectsOf  imf:qualifier ;
+        sh:property          _:b15 ;
+        sh:property          _:b16 ;
+        sh:targetSubjectsOf  imf:property ;
+        sh:targetSubjectsOf  imf:uom ;
+        sh:property          _:b6 ;
+        rdf:type             sh:NodeShape ;
+        sh:property          _:b17 .
+
+_:b14   sh:path      imf:property ;
+        sh:minCount  1 ;
+        sh:maxCount  1 .
+
+_:b15   sh:path      imf:qualifier ;
+        sh:maxCount  1 ;
+        sh:class     imf:Range .
+
+_:b3    sh:path   skos:hasTerminal ;
+        sh:class  sh:Terminal .
+
+_:b18   sh:path      imf:partOf ;
+        sh:maxCount  1 ;
+        sh:class     sh:Terminal .
+
+imf:AspectElementShape
+        rdf:type             sh:NodeShape ;
+        sh:targetClass       imf:AspectElement ;
+        sh:targetSubjectsOf  imf:aspect ;
+        sh:property          _:b2 .
+
+_:b19   rdf:first  imf:output ;
+        rdf:rest   rdf:nil .
+
+_:b9    rdf:first  imf:input ;
+        rdf:rest   _:b19 .
+
+_:b13   sh:path      imf:qualifier ;
+        sh:maxCount  1 ;
+        sh:class     imf:Regularity .
+
+_:b16   sh:path      imf:value ;
+        sh:minCount  1 ;
+        sh:severity  sh:Warning ;
+        sh:message   "Attribute has no value" .
+
+_:b20   sh:path      imf:medium ;
+        sh:minCount  1 ;
+        sh:severity  sh:Warning ;
+        sh:message   "Terminal has no medium" .
+
+imf:TerminalShape  sh:targetClass  imf:InputTerminal ;
+        sh:targetClass       imf:Terminal ;
+        sh:targetObjectsOf   imf:hasTerminal ;
+        sh:property          _:b20 ;
+        sh:targetSubjectsOf  imf:medium ;
+        sh:targetSubjectsOf  imf:direction ;
+        sh:property          _:b12 ;
+        sh:targetClass       imf:OutputTerminal ;
+        sh:targetSubjectsOf  imf:connectedTo ;
+        sh:property          _:b21 ;
+        sh:property          _:b10 ;
+        sh:targetObjectsOf   imf:connectedTo ;
+        rdf:type             sh:NodeShape ;
+        sh:property          _:b18 ;
+        sh:property          _:b8 .
+
+_:b17   sh:path      imf:qualifier ;
+        sh:maxCount  1 ;
+        sh:class     imf:Scope .
+
+_:b4    sh:path      skos:hasTerminal ;
+        sh:minCount  1 ;
+        sh:severity  sh:Warning ;
+        sh:message   "Block has no Terminal" .
+
+_:b21   sh:path      imf:medium ;
+        sh:maxCount  1 .
+
+_:b22   sh:path      skos:prefLabel ;
+        sh:minCount  1 ;
+        sh:severity  sh:Warning ;
+        sh:message   "Element has no prefLabel" .
+
+imf:ElementShape  rdf:type  sh:NodeShape ;
+        sh:targetClass  imf:Element ;
+        sh:targetClass  imf:Block ;
+        sh:targetClass  imf:Terminal ;
+        sh:property     _:b22 ;
+        sh:property     _:b7 .

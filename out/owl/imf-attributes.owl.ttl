@@ -9,6 +9,7 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix p14: <http://example.com/P14#> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
 @prefix ex: <http://example.com#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix o-imf: <http://ns.imfid.org/templates/> .
@@ -17,39 +18,39 @@
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
-imf:AttributeGroup
-    a owl:Class .
-
-imf:AttributeValue
+imf:Attribute
     a owl:Class ;
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Regularity ;
-        owl:onProperty imf:hasDatumQualifier
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Range ;
-        owl:onProperty imf:hasDatumQualifier
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onClass imf:Scope ;
-        owl:onProperty imf:hasDatumQualifier
+        owl:onProperty imf:qualifier
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onClass imf:Provenance ;
-        owl:onProperty imf:hasDatumQualifier
+        owl:onProperty imf:qualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Regularity ;
+        owl:onProperty imf:qualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Range ;
+        owl:onProperty imf:qualifier
     ] .
 
-imf:DatumQualifier
+imf:AttributeGroup
+    a owl:Class .
+
+imf:AttributeQualifier
     a owl:Class .
 
 imf:Provenance
     a owl:Class ;
-    rdfs:subClassOf imf:DatumQualifier ;
+    rdfs:subClassOf imf:AttributeQualifier ;
     owl:equivalentClass [
         a owl:Class ;
         owl:oneOf (imf:calculated
@@ -60,7 +61,7 @@ imf:Provenance
 
 imf:Range
     a owl:Class ;
-    rdfs:subClassOf imf:DatumQualifier ;
+    rdfs:subClassOf imf:AttributeQualifier ;
     owl:equivalentClass [
         a owl:Class ;
         owl:oneOf (imf:average
@@ -73,7 +74,7 @@ imf:Range
 
 imf:Regularity
     a owl:Class ;
-    rdfs:subClassOf imf:DatumQualifier ;
+    rdfs:subClassOf imf:AttributeQualifier ;
     owl:equivalentClass [
         a owl:Class ;
         owl:oneOf (imf:absolute
@@ -83,7 +84,7 @@ imf:Regularity
 
 imf:Scope
     a owl:Class ;
-    rdfs:subClassOf imf:DatumQualifier ;
+    rdfs:subClassOf imf:AttributeQualifier ;
     owl:equivalentClass [
         a owl:Class ;
         owl:oneOf (imf:design
@@ -106,32 +107,13 @@ imf:continuous
 imf:design
     a imf:Scope .
 
+imf:hasAttribute
+    a owl:ObjectProperty ;
+    rdfs:range imf:Attribute .
+
 imf:hasAttributeGroup
     a owl:ObjectProperty ;
     rdfs:range imf:AttributeGroup .
-
-imf:hasAttributeValue
-    a owl:ObjectProperty ;
-    rdfs:range imf:AttributeValue .
-
-imf:hasDatumQualifier
-    a owl:ObjectProperty ;
-    rdfs:domain imf:AttributeValue ;
-    rdfs:range imf:DatumQualifier .
-
-imf:hasProperty
-    a owl:ObjectProperty ;
-    rdfs:domain imf:AttributeValue ;
-    rdfs:subPropertyOf imf:hasClassifier .
-
-imf:hasUOM
-    a owl:ObjectProperty ;
-    rdfs:domain imf:AttributeValue ;
-    rdfs:subPropertyOf imf:hasClassifier .
-
-imf:hasValue
-    a owl:DatatypeProperty ;
-    rdfs:domain imf:AttributeValue .
 
 imf:maximum
     a imf:Range .
@@ -151,8 +133,27 @@ imf:normal
 imf:operating
     a imf:Scope .
 
+imf:property
+    a owl:ObjectProperty ;
+    rdfs:domain imf:Attribute ;
+    rdfs:subPropertyOf imf:classifier .
+
+imf:qualifier
+    a owl:ObjectProperty ;
+    rdfs:domain imf:Attribute ;
+    rdfs:range imf:AttributeQualifier .
+
 imf:specified
     a imf:Provenance .
+
+imf:uom
+    a owl:ObjectProperty ;
+    rdfs:domain imf:Attribute ;
+    rdfs:subPropertyOf imf:externalReference .
+
+imf:value
+    a owl:DatatypeProperty ;
+    rdfs:domain imf:Attribute .
 
 <http://ns.imfid.org/imf-attributes>
     a owl:Ontology ;
@@ -164,12 +165,6 @@ imf:specified
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:absolute
-        imf:continuous
-    ) .
-
-[]
-    a owl:AllDifferent ;
     owl:members (imf:average
         imf:maximum
         imf:minimum
@@ -178,9 +173,11 @@ imf:specified
     ) .
 
 []
-    a owl:AllDifferent ;
-    owl:members (imf:design
-        imf:operating
+    a owl:AllDisjointClasses ;
+    owl:members (imf:Range
+        imf:Provenance
+        imf:Regularity
+        imf:Scope
     ) .
 
 []
@@ -191,10 +188,14 @@ imf:specified
     ) .
 
 []
-    a owl:AllDisjointClasses ;
-    owl:members (imf:Scope
-        imf:Range
-        imf:Regularity
-        imf:Provenance
+    a owl:AllDifferent ;
+    owl:members (imf:absolute
+        imf:continuous
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:design
+        imf:operating
     ) .
 

@@ -19,6 +19,14 @@
 #+LATEX_HEADER: \usepackage{xcolor}
 #+LATEX_HEADER: \usepackage[zerostyle=d]{newtxtt} %% Various versions of zeros available. See documentation for details
 
+* Changelog                                                          :update:
+
+ - names
+ - shacl
+ - owl
+ - types
+ - presentation: removed structural spec section
+
 * Introduction                                                       :update:
 ** TODO IMF IT Document Overview
 
@@ -1688,9 +1696,7 @@ to the different formats.
 
 *** Overview type patterns
 
-The diagram displays the type patterns. The patterns that are directly
-instantiated to create types are marked with C, while the abstract
-patterns, which are not directly instantiated, are marked with A.
+The diagram displays the type patterns. 
 
 Some terms are prefixed with ~sh.~ to indicate that they refer to
 terms that are defined in the SHACL standard:
@@ -1701,54 +1707,42 @@ instances are translated into SHACL.
 #+BEGIN_SRC plantuml :noweb yes :file out/img/imf-overview-types.png
 <<plantuml-style>>
 
-set separator none
-
-abstract class sh.Shape {
+metaclass sh.Shape {
+  id: 1 iri
   sh.name: 0..1 string
   sh.description: 0..1 string
 }
 
-sh.Shape <|-- sh.NodeShape
-sh.Shape <|-- sh.PropertyShape
-
-class sh.NodeShape {
-  sh.target: 1..*
+metaclass sh.NodeShape {
+  sh.targetClass: 0..1 iri
 }
 
-sh.NodeShape -right-> sh.PropertyShape : sh.property
-
-abstract class sh.PropertyShape {
+metaclass sh.PropertyShape {
   sh.path: 1 iri
 }
 
-class SimpleValue {
+metaclass Type {
+  typeClass: 1 iri
+}
+
+metaclass SimpleValue {
   sh.hasValue: 1
 }
-sh.PropertyShape <|-- SimpleValue
 
-
-class SimpleValues {
+metaclass SimpleValues {
   sh.in: 0..*
   sh.class: 0..1 iri
   sh.minCount: 0..1 integer
   sh.maxCount: 0..1 integer
 }
-sh.PropertyShape <|-- SimpleValues
 
-class NodeRef {
+metaclass TypeReference {
   sh.minCount: 0..1 integer
   sh.maxCount: 0..1 integer
 }
-sh.PropertyShape <|-- NodeRef
-NodeRef --> "1" sh.NodeShape : node
 
-class ComplexValues {
-  sh.in: 0..*
-  sh.class: 0..1 iri
+metaclass ComplexValues {
   sh.datatype: 0..1 iri
-
-  sh.minCount: 0..1 integer
-  sh.maxCount: 0..1 integer
 
   sh.minExclusive: 0..1
   sh.minInclusive: 0..1
@@ -1760,7 +1754,21 @@ class ComplexValues {
   sh.pattern: 0..1 string
   sh.flags: 0..1 string
 }
-sh.PropertyShape <|-- ComplexValues
+
+sh.Shape <|-- sh.NodeShape
+sh.Shape <|-- sh.PropertyShape
+
+sh.NodeShape <|-- Type
+
+sh.PropertyShape <|-- SimpleValue
+sh.PropertyShape <|-- SimpleValues
+sh.PropertyShape <|-- TypeReference
+
+SimpleValue <|-- ComplexValues
+SimpleValues <|-- ComplexValues
+
+sh.NodeShape "1" -right-> sh.PropertyShape : sh.property
+TypeReference --> "1" sh.NodeShape : node
 
 #+END_SRC
 
@@ -1769,16 +1777,17 @@ sh.PropertyShape <|-- ComplexValues
 
 **** Short description of the type patterns
 
- - NodeShape :: specifies a collection Property shapes. Used for
-                specifying a BlockType, TerminalType,
-                AttributeGroupType or AttributeType.
+ - Type :: specifies a collection Property shapes, i.e., a Type is a
+           specification of relations to other types and
+           properties. Used for specifying a BlockType, TerminalType,
+           AttributeGroupType or AttributeType.
  - SimpleValue :: specifies a single value for a path. Used for
                   forcing one specific value.
  - SimpleValues :: specifies a range of simple values by listing
                    permissible values or giving a class, also possible
                    to set cardnality (min--max) number of values. Used
                    for specifying a range of values.
- - NodeRef :: specifies a reference to node shape with
+ - TypeReference :: specifies a reference to node shape with
               cardinality. Used for specifying, e.g., that a Block has
               3 Terminals of the same type.
  - ComplexValues :: specifies a value range with a complex set of
@@ -1787,65 +1796,309 @@ sh.PropertyShape <|-- ComplexValues
 
 *** Suggested use of the type patterns
 
-The diagram below displays a suggested use of the type patterns. All
-the class nodes marked with M indicate Type which are represented as
-sh:NodeShape pattern instances. Open arrows represent a specialisation
-dependency. Regular arrows represent a suggested use of the NodeRef
-pattern. The fields in the class boxes represent uses of other
-suggested pattern instances as indicated by the fields.
+The diagram below displays a suggested use of the type patterns.
 
 #+BEGIN_SRC plantuml :noweb yes :file out/img/imf-overview-type-patterns.png
 <<plantuml-style>>
 
-stereotype Type {
-  name
-  description
-}
-
-circle element
-
-element --> Type : instanceOf
-  
-
 metaclass ElementType << Type >> {
+  [metadata]
   aspect: SimpleValue
   notation: SimpleValue
   symbol: SimpleValue/s
 }
 
-metaclass BlockType << Type >> {
+metaclass BlockType << Type >>  {
 
 }
 
-metaclass TerminalType << Type >> {
+metaclass TerminalType << Type >>  {
   direction: SimpleValue
   medium: SimpleValue/s
 }
 
-metaclass AttributeGroupType << Type >> {
+metaclass AttributeGroupType << Type >>  {
 
 }
 
-metaclass AttributeType << Type >> {
+metaclass AttributeType << Type >>  {
   property : SimpleValue/s
   value : ComplexValues
   uom : SimpleValue/s
   qualifier : SimpleValues
 }
 
-
 ElementType <|-- BlockType
 ElementType <|-- TerminalType
 
-ElementType --> AttributeGroupType : NodeRef
-ElementType --> AttributeType : NodeRef
-BlockType --> TerminalType : NodeRef
-AttributeGroupType --> AttributeType : NodeRef
+ElementType --> AttributeGroupType : TypeReference
+ElementType --> AttributeType : TypeReference
+BlockType --> TerminalType : TypeReference
+AttributeGroupType --> AttributeType : TypeReference
+
+circle element
+
+element -left-> ElementType : instanceOf
 
 #+END_SRC
 
 #+RESULTS:
 [[file:out/img/imf-overview-type-patterns.png]]
+
+*** Type pattern implementation with OTTR Template 
+**** SHACL Shape translation
+
+#+BEGIN_SRC ttl :noweb yes :tangle out/ottr/shacl.stottr :mkdirp yes
+<<prefixes>>
+
+o-imf:ShaclShape[
+  ottr:IRI ?id, 
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  ottr:Triple(?id, sh:name, ?name),
+  ottr:Triple(?id, sh:description, ?description)
+} .
+
+
+o-imf:ShaclNodeShape[
+  ottr:IRI ?id, 
+  ? owl:Class ?targetClass,
+  #? xsd:string ?targetSPARQLSelect
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclShape(?id, ?name, ?description),
+  o-rdf:Type(?id, sh:NodeShape),
+  ottr:Triple(?id, sh:targetClass, ?targetClass)
+
+  #ottr:Triple(?id, sh:target, _:SHACLTarget),  
+  #o-rdf:Type(_:SHACLTarget, sh:SHACLTarget),
+  #ottr:Triple(_:SHACLTarget, sh:select, ?targetSPARQLSelect)
+} .
+
+o-imf:ShaclPropertyShape[
+    ottr:IRI ?id,
+    ottr:IRI ?nodeShape, 
+    ottr:IRI ?path,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclShape(?id, ?name, ?description),
+  ottr:Triple(?nodeShape, sh:property, ?id),
+  ottr:Triple(?id, sh:path, ?path)
+} .
+
+#######
+
+o-imf-t-s:Type[
+  ottr:IRI ?id, 
+  owl:Class ?typeClass,
+  ? owl:Class ?targetClass,
+  #? xsd:string ?targetSPARQLSelect
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclNodeShape(?id, ?targetClass, ?name, ?description),
+  o-rdf:Type(?id, ?typeClass)
+} .
+
+#######
+
+o-imf-t-s:TypeReference[
+    ottr:IRI ?id = _:P,
+    ottr:IRI ?typeID, 
+    ottr:IRI ?path, 
+    ottr:IRI ?node,
+    xsd:integer ?minCount = 1,
+    xsd:integer ?maxCount = 1,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+  ottr:Triple(?id, sh:node, ?node),
+  ottr:Triple(?id, sh:minCount, ?minCount),
+  ottr:Triple(?id, sh:maxCount, ?maxCount)
+} .
+
+o-imf-t-s:SimpleValue[
+    ottr:IRI ?id = _:P,
+    ottr:IRI ?typeID, 
+    ottr:IRI ?path, 
+    rdfs:Resource ?value,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+  ottr:Triple(?id, sh:hasValue, ?value)
+} .
+
+o-imf-t-s:SimpleValues[
+    ottr:IRI ?id = _:P,
+    ottr:IRI ?typeID, 
+    ottr:IRI ?path, 
+  ? List<rdfs:Resource> ?in,
+  ? owl:Class ?class,
+    xsd:integer ?minCount = 1, 
+    xsd:integer ?maxCount = 1,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+  ottr:Triple(?id, sh:in, ?in),
+  ottr:Triple(?id, sh:class, ?class),
+  ottr:Triple(?id, sh:minCount, ?minCount),
+  ottr:Triple(?id, sh:maxCount, ?maxCount)
+} .
+
+
+o-imf-t-s:ComplexValues[
+    ottr:IRI ?id = _:P,
+    ottr:IRI ?typeID, 
+    ottr:IRI ?path, 
+  #? xsd:string ?message,   ## add these to all patterns?
+  #? ottr:IRI ?severity,
+  ? rdfs:Resource ?value,
+  ? List<rdfs:Resource> ?in,
+  ? owl:Class ?class,
+  ? ottr:IRI ?datatype,
+    xsd:integer ?minCount = 1,
+    xsd:integer ?maxCount = 1, 
+  ? rdfs:Resource ?minInclusive,
+  ? rdfs:Resource ?minExclusive,
+  ? rdfs:Resource ?maxInclusive,
+  ? rdfs:Resource ?maxExclusive,
+  ? xsd:integer ?minLength,
+  ? xsd:integer ?maxLength,
+  ? xsd:string ?pattern,
+  ? xsd:string ?flags,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  #o-imf:ShaclPropertyShape(?typeID, ?id, ?path),
+  o-imf-t-s:SimpleValue(?id, ?typeID, ?path, ?value, ?name, ?description),
+  o-imf-t-s:SimpleValues(?id, ?typeID, ?path, ?in, ?class, ?minCount, ?maxCount, none, none),
+  #ottr:Triple(?id, sh:message, ?message),
+  #ottr:Triple(?id, sh:severity, ?severity),
+  ottr:Triple(?id, sh:datatype, ?datatype),
+  ottr:Triple(?id, sh:minInclusive, ?minInclusive),
+  ottr:Triple(?id, sh:minExclusive, ?minExclusive),
+  ottr:Triple(?id, sh:maxInclusive, ?maxInclusive),
+  ottr:Triple(?id, sh:maxExclusive, ?maxExclusive),
+  ottr:Triple(?id, sh:minLength, ?minLength),
+  ottr:Triple(?id, sh:maxLength, ?maxLength),
+  ottr:Triple(?id, sh:pattern, ?pattern),
+  ottr:Triple(?id, sh:flags, ?flags)
+} .
+#+END_SRC
+
+**** Expand spreadsheet
+
+#+BEGIN_SRC sh
+java -jar bin/lutra.jar -f -L stottr -l out/ottr/shacl.stottr -I tabottr example-Pumping.xlsx | rapper - -i turtle -o turtle -I 'http://example.com#'
+#+END_SRC
+
+#+RESULTS:
+
+
+**** Type example
+
+#+NAME: tbl-type-pattern-shacl-example-type
+| ID        | TypeClass     | targetClass | name                       | description      |
+|-----------+---------------+-------------+----------------------------+------------------|
+| ex:sB-001 | imf:BlockType | ex:B-001    | 'Pumping, liquid velocity' | 'bla bla bla...' |
+
+#+NAME: tbl-type-pattern-shacl-example-typeRef
+| ID | typeID    | path            | node      | minCount | maxCount |
+|----+-----------+-----------------+-----------+----------+----------|
+|    | ex:sB-001 | imf:hasTerminal | ex:sT-001 |        1 |        1 |
+|    | ex:sB-001 | imf:hasTerminal | ex:sT-002 |        1 |        1 |
+|    | ex:sB-001 | imf:hasTerminal | ex:sT-003 |        1 |        1 |
+
+#+NAME: tbl-type-pattern-shacl-example-simpleValue
+| ID | typeID             | path       | value              |
+|----+--------------------+------------+--------------------|
+|    | ex:BlockType1Shape | imf:aspect | imf:functionAspect |
+|    |                    |            |                    |
+
+#+NAME: tbl-type-pattern-shacl-example-simpleValues
+| ID | typeID             | path       | in                 | class | minCount | maxCount |
+|----+--------------------+------------+--------------------+-------+----------+----------|
+|    | ex:BlockType1Shape | imf:aspect | imf:functionAspect |       |          |          |
+|    |                    |            |                    |       |          |          |
+
+#+NAME: tbl-type-pattern-shacl-example-complexValues
+
+#+NAME: tbl-type-pattern-shacl-example-type
+
+#+NAME: shacl-test-properties
+| NodeShape | path  | message   | severity   | minCount | maxCount | value   | in-values       | node     | class       | datatype     | min= | min | max= | max | minLength | maxLength | pattern   | flags  |
+|-----------+-------+-----------+------------+----------+----------+---------+-----------------+----------+-------------+--------------+------+-----+------+-----+-----------+-----------+-----------+--------|
+| ex:node1  | ex:p1 | 'message' | sh:Warning |        1 |        3 | 'value' | ( ex:c1 ex:c2 ) | ex:node2 | ex:MyClass2 | xsd:datatype |    1 |   2 |    3 |   4 |         5 |         6 | 'pattern' | 'flag' |
+
+#+NAME: shacl-test-property-value
+| NodeShape | path  | value   |
+|-----------+-------+---------|
+| ex:node1  | ex:p1 | 'value' |
+
+#+NAME: shacl-test-property-values
+| NodeShape | path  | message      | minCount | maxCount | value   | in-values       | class       | datatype     |
+|-----------+-------+--------------+----------+----------+---------+-----------------+-------------+--------------|
+| ex:node1  | ex:p1 | 'Error: bla' |        1 |        3 | 'value' | ( ex:c1 ex:c2 ) | ex:MyClass2 | xsd:datatype |
+
+#+NAME: shacl-test-property-node
+| NodeShape | path  | message      | minCount | maxCount | node     |
+|-----------+-------+--------------+----------+----------+----------|
+| ex:node1  | ex:p1 | 'Error: bla' |        1 |        3 | ex:node2 |
+
+This is the result of representing the above tables as OTTR instances.
+
+#+BEGIN_SRC ttl :noweb yes :tangle out/temp/example-shacl-shapes.wottr.ttl :mkdirp yes
+@prefix ex:	<http://example.com#> .
+<<prefixes>>
+
+<<py_ottr_instances(template="o-imf-t-s:Type", table=tbl-type-pattern-shacl-example-type)>>
+<<py_ottr_instances(template="o-imf-t-s:TypeReference", table=tbl-type-pattern-shacl-example-typeRef)>>
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+@prefix ex:	<http://example.com#> .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+
+
+[] ottr:of o-imf-t-s:Type ;
+   ottr:values ( ex:sB-001 imf:BlockType ex:B-001 'Pumping, liquid velocity' 'bla bla bla...' ) . 
+
+[] ottr:of o-imf-t-s:TypeReference ;
+   ottr:values ( ottr:none ex:sB-001 imf:hasTerminal ex:sT-001 1 1 ) . 
+[] ottr:of o-imf-t-s:TypeReference ;
+   ottr:values ( ottr:none ex:sB-001 imf:hasTerminal ex:sT-002 1 1 ) . 
+[] ottr:of o-imf-t-s:TypeReference ;
+   ottr:values ( ottr:none ex:sB-001 imf:hasTerminal ex:sT-003 1 1 ) . 
+#+end_example
+
+#+CALL: lutra-expand(in="out/temp/example-shacl-shapes.wottr.ttl", out="out/temp/example-shacl-shapes.ttl")
 
 ** OLD types                                                       :noexport:
 *** Types
@@ -2609,7 +2862,7 @@ imf:TerminalShape
 : file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.01 sec : 96 Triples : 8,727.27 per second
 : Total           : 0.23 sec : 379 Triples : 1,669.60 per second
 
-* TODO Example
+h* TODO Example                                                       :update:
 
 [[./img/pumpingFunction.png]]
 
@@ -2811,7 +3064,10 @@ This section contains the prefixes used throughout this document.
 @prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
+@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+
 #+END_SRC
 
 *** All prefixes combined                                          :noexport:
@@ -2823,168 +3079,8 @@ This section contains the prefixes used throughout this document.
 <<prefixes-ottr>>
 #+END_SRC
 
-** OTTR templates for SHACL Shapes
-
-OTTR templates and tabular input data are used to specify SHACL
-shapes. The table input format and the corresponding OTTR templates
-are found below.
-
-*** Table templates input schemata                                             
-
-#+NAME: shacl-test-nodes
-| NodeShape | name     | description      | targetClass |
-|-----------+----------+------------------+-------------|
-| ex:node1  | 'myname' | 'my description' | ex:MyClass  |
-
-#+NAME: shacl-test-properties
-| NodeShape | path  | message   | severity   | minCount | maxCount | value   | in-values       | node     | class       | datatype     | min= | min | max= | max | minLength | maxLength | pattern   | flags  |
-|-----------+-------+-----------+------------+----------+----------+---------+-----------------+----------+-------------+--------------+------+-----+------+-----+-----------+-----------+-----------+--------|
-| ex:node1  | ex:p1 | 'message' | sh:Warning |        1 |        3 | 'value' | ( ex:c1 ex:c2 ) | ex:node2 | ex:MyClass2 | xsd:datatype |    1 |   2 |    3 |   4 |         5 |         6 | 'pattern' | 'flag' |
-
-#+NAME: shacl-test-property-value
-| NodeShape | path  | value   |
-|-----------+-------+---------|
-| ex:node1  | ex:p1 | 'value' |
-
-#+NAME: shacl-test-property-values
-| NodeShape | path  | message      | minCount | maxCount | value   | in-values       | class       | datatype     |
-|-----------+-------+--------------+----------+----------+---------+-----------------+-------------+--------------|
-| ex:node1  | ex:p1 | 'Error: bla' |        1 |        3 | 'value' | ( ex:c1 ex:c2 ) | ex:MyClass2 | xsd:datatype |
-
-#+NAME: shacl-test-property-node
-| NodeShape | path  | message      | minCount | maxCount | node     |
-|-----------+-------+--------------+----------+----------+----------|
-| ex:node1  | ex:p1 | 'Error: bla' |        1 |        3 | ex:node2 |
-
-
-*** OTTR templates
-
-#+BEGIN_SRC ttl :noweb yes :tangle out/ottr/shacl.stottr :mkdirp yes
-<<prefixes>>
-
-o-imf:ShaclNodeShape[
-  ottr:IRI ?id, 
-  ? xsd:string ?name, 
-  ? xsd:string ?description, 
-  ? owl:Class ?targetClass
-] :: {
-  o-rdf:Type(?id, sh:NodeShape),
-  ottr:Triple(?id, sh:name, ?name),
-  ottr:Triple(?id, sh:description, ?description),
-  ottr:Triple(?id, sh:targetClass, ?targetClass)
-} .
-
-o-imf:ShaclPropertyShapeValue[
-    ottr:IRI ?nodeshape, 
-    ottr:IRI ?path, 
-    rdfs:Resource ?value
-] :: {
-  ottr:Triple(?nodeshape, sh:property, _:P),
-  ottr:Triple(_:P, sh:path, ?path),
-  ottr:Triple(_:P, sh:hasValue, ?value)
-} .
-
-o-imf:ShaclPropertyShapeValues[
-    ottr:IRI ?nodeshape, 
-    ottr:IRI ?path, 
-  ? xsd:string ?message, 
-  ? xsd:integer ?mincount, 
-  ? xsd:integer ?maxcount, 
-  ? rdfs:Resource ?value,
-  ? List<rdfs:Resource> ?inValues,
-  ? owl:Class ?class,
-  ? ottr:IRI ?datatype
-] :: {
-  ottr:Triple(?nodeshape, sh:property, _:P) ,
-  ottr:Triple(_:P, sh:path, ?path),
-  ottr:Triple(_:P, sh:message, ?message),
-  ottr:Triple(_:P, sh:minCount, ?mincount),
-  ottr:Triple(_:P, sh:maxCount, ?maxcount),
-  ottr:Triple(_:P, sh:class, ?class),
-  ottr:Triple(_:P, sh:datatype, ?datatype),
-  ottr:Triple(_:P, sh:in, ?inValues),
-  ottr:Triple(_:P, sh:hasValue, ?value)
-} .
-
-o-imf:ShaclPropertyShapeNode[
-    ottr:IRI ?nodeshape, 
-    ottr:IRI ?path, 
-  ? xsd:string ?message,
-  ? xsd:integer ?mincount, 
-  ? xsd:integer ?maxcount, 
-  ? ottr:IRI ?node
-] :: {
-  ottr:Triple(?nodeshape, sh:property, _:P) ,
-  ottr:Triple(_:P, sh:path, ?path),
-  ottr:Triple(_:P, sh:message, ?message),
-  ottr:Triple(_:P, sh:minCount, ?mincount),
-  ottr:Triple(_:P, sh:maxCount, ?maxcount),
-  ottr:Triple(_:P, sh:node, ?node)
-} .
-
-o-imf:ShaclPropertyShape[
-    ottr:IRI ?nodeshape, 
-    ottr:IRI ?path, 
-  ? xsd:string ?message, 
-  ? ottr:IRI ?severity,
-  ? xsd:integer ?mincount, 
-  ? xsd:integer ?maxcount, 
-  ? rdfs:Resource ?value,
-  ? List<rdfs:Resource> ?inValues,
-  ? ottr:IRI ?node,
-  ? owl:Class ?class,
-  ? ottr:IRI ?datatype,
-  ? rdfs:Resource ?minInclusive,
-  ? rdfs:Resource ?minExclusive,
-  ? rdfs:Resource ?maxInclusive,
-  ? rdfs:Resource ?maxExclusive,
-  ? xsd:integer ?minLength,
-  ? xsd:integer ?maxLength,
-  ? xsd:string ?pattern,
-  ? xsd:string ?flags
-] :: {
-  ottr:Triple(?nodeshape, sh:property, _:P) ,
-  ottr:Triple(_:P, sh:path, ?path),
-  ottr:Triple(_:P, sh:message, ?message),
-  ottr:Triple(_:P, sh:severity, ?severity),
-  ottr:Triple(_:P, sh:minCount, ?mincount),
-  ottr:Triple(_:P, sh:maxCount, ?maxcount),
-  ottr:Triple(_:P, sh:class, ?class),
-  ottr:Triple(_:P, sh:datatype, ?datatype),
-  ottr:Triple(_:P, sh:node, ?node),
-  ottr:Triple(_:P, sh:in, ?inValues),
-  ottr:Triple(_:P, sh:hasValue, ?value),
-  ottr:Triple(_:P, sh:minInclusive, ?minInclusive),
-  ottr:Triple(_:P, sh:minExclusive, ?minExclusive),
-  ottr:Triple(_:P, sh:maxInclusive, ?maxInclusive),
-  ottr:Triple(_:P, sh:maxExclusive, ?maxExclusive),
-  ottr:Triple(_:P, sh:minLength, ?minLength),
-  ottr:Triple(_:P, sh:maxLength, ?maxLength),
-  ottr:Triple(_:P, sh:pattern, ?pattern),
-  ottr:Triple(_:P, sh:flags, ?flags)
-} .
-#+END_SRC
-
-*** Example
-
-This is the result of representing the above tables as OTTR instances.
-
-#+BEGIN_SRC ttl :noweb yes :tangle out/temp/example-shacl-shapes.wottr.ttl :mkdirp yes
-@prefix ex:	<http://example.com#> .
-<<prefixes>>
-
-<<py_ottr_instances(template="o-imf:ShaclNodeShape", table=shacl-test-nodes)>>
-<<py_ottr_instances(template="o-imf:ShaclPropertyShape", table=shacl-test-properties)>>
-<<py_ottr_instances(template="o-imf:ShaclPropertyShapeValue", table=shacl-test-property-value)>>
-<<py_ottr_instances(template="o-imf:ShaclPropertyShapeValues", table=shacl-test-property-values)>>
-<<py_ottr_instances(template="o-imf:ShaclPropertyShapeNode", table=shacl-test-property-node)>>
-#+END_SRC
-
-
-
-#+RESULTS:
+#+RESULTS: prefixes
 #+begin_example
-@prefix ex:	<http://example.com#> .
 @prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
@@ -3003,104 +3099,10 @@ This is the result of representing the above tables as OTTR instances.
 @prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
-
-[] ottr:of o-imf:ShaclNodeShape ;
-   ottr:values ( ex:Node1 'myname' 'my description' ex:MyClass ) . 
-
-[] ottr:of o-imf:ShaclPropertyShape ;
-   ottr:values ( ex:node1 ex:p1 'message' sh:Warning 1 3 'value' ( ex:c1 ex:c2 ) ex:node2 ex:MyClass2 xsd:datatype 1 2 3 4 5 6 'pattern' 'flag' ) . 
-
-[] ottr:of o-imf:ShaclPropertyShapeValue ;
-   ottr:values ( ex:node1 ex:p1 'value' ) . 
-
-[] ottr:of o-imf:ShaclPropertyShapeValues ;
-   ottr:values ( ex:node1 ex:p1 'Error: bla' 1 3 'value' ( ex:c1 ex:c2 ) ex:MyClass2 xsd:datatype ) . 
-
-[] ottr:of o-imf:ShaclPropertyShapeNode ;
-   ottr:values ( ex:node1 ex:p1 'Error: bla' 1 3 ex:node2 ) . 
+@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
 #+end_example
-
-#+CALL: lutra-expand(in="out/temp/example-shacl-shapes.wottr.ttl", out="out/temp/example-shacl-shapes.ttl")
-
-#+RESULTS:
-#+begin_example
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/temp/example-shacl-shapes.wottr.ttl.temp with parser turtle
-rapper: Serializing with serializer turtle
-rapper: Parsing returned 49 triples
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix imf: <http://ns.imfid.org/imf#> .
-@prefix pav: <http://purl.org/pav/> .
-@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
-@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix p14: <http://example.com/P14#> .
-@prefix ex: <http://example.com#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix o-imf: <http://ns.imfid.org/templates/> .
-@prefix ottr: <http://ns.ottr.xyz/0.4/> .
-@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
-@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
-
-ex:Node1
-    a sh:NodeShape ;
-    sh:description "my description" ;
-    sh:name "myname" ;
-    sh:targetClass ex:MyClass .
-
-ex:node1
-    sh:property [
-        sh:class ex:MyClass2 ;
-        sh:datatype xsd:datatype ;
-        sh:flags "flag" ;
-        sh:hasValue "value" ;
-        sh:in (ex:c1
-            ex:c2
-        ) ;
-        sh:maxCount 3 ;
-        sh:maxExclusive 4 ;
-        sh:maxInclusive 3 ;
-        sh:maxLength 6 ;
-        sh:message "message" ;
-        sh:minCount 1 ;
-        sh:minExclusive 2 ;
-        sh:minInclusive 1 ;
-        sh:minLength 5 ;
-        sh:node ex:node2 ;
-        sh:path ex:p1 ;
-        sh:pattern "pattern" ;
-        sh:severity sh:Warning
-    ], [
-        sh:maxCount 3 ;
-        sh:message "Error: bla" ;
-        sh:minCount 1 ;
-        sh:node ex:node2 ;
-        sh:path ex:p1
-    ], [
-        sh:class ex:MyClass2 ;
-        sh:datatype xsd:datatype ;
-        sh:hasValue "value" ;
-        sh:in (ex:c1
-            ex:c2
-        ) ;
-        sh:maxCount 3 ;
-        sh:message "Error: bla" ;
-        sh:minCount 1 ;
-        sh:path ex:p1
-    ], [
-        sh:hasValue "value" ;
-        sh:path ex:p1
-    ] .
-
-#+end_example
-
-
-
 
 * Media                                                            :noexport:
 

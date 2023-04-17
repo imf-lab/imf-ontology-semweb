@@ -16,7 +16,10 @@
 @prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
+@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+
 
 <http://ns.imfid.org/imf-aspects> a owl:Ontology ;
     owl:versionIRI <http://ns.imfid.org/20230331/imf-aspects> ;
@@ -36,10 +39,8 @@ imf:AspectElement a owl:Class ;
   skos:prefLabel "Aspect Element";
   .
 
-### properties
-
-imf:hasAspect a owl:ObjectProperty ;
-  skos:prefLabel "has aspect" ;
+imf:aspect a owl:ObjectProperty ;
+  skos:prefLabel "aspect" ;
   skos:definition "Relates an Aspect Element to its Aspect.";
   rdfs:domain imf:AspectElement ;
   rdfs:range imf:Aspect .
@@ -62,25 +63,25 @@ imf:interAspectRelation a owl:ObjectProperty ;
     # owl:propertyDisjointWith imf:intraAspectRelation ; ## An error occurred during reasoning: Non-simple property or its inverse appears in disjoint properties axiom.
     .
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:FunctionAspect '=' '#FFFF00' ) . 
+   ottr:values( imf:functionAspect '=' '#FFFF00' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:LocationAspect '+' '#FF00FF' ) . 
+   ottr:values( imf:locationAspect '+' '#FF00FF' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:ProductAspect '-' '#00FFFF' ) . 
+   ottr:values( imf:productAspect '-' '#00FFFF' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:InstalledAspect '::' '#0000FF' ) . 
+   ottr:values( imf:installedAspect '::' '#0000FF' ) . 
 
 [] ottr:of o-owl-ax:DifferentIndividuals ;
-   ottr:values( ( imf:FunctionAspect imf:LocationAspect imf:ProductAspect imf:InstalledAspect ) ) . 
+   ottr:values( ( imf:functionAspect imf:locationAspect imf:productAspect imf:installedAspect ) ) . 
 
 [] ottr:of o-imf:AspectClass ;
-   ottr:values( imf:FunctionElement imf:FunctionAspect ) . 
+   ottr:values( imf:FunctionElement imf:functionAspect ) . 
 [] ottr:of o-imf:AspectClass ;
-   ottr:values( imf:LocationElement imf:LocationAspect ) . 
+   ottr:values( imf:LocationElement imf:locationAspect ) . 
 [] ottr:of o-imf:AspectClass ;
-   ottr:values( imf:ProductElement imf:ProductAspect ) . 
+   ottr:values( imf:ProductElement imf:productAspect ) . 
 [] ottr:of o-imf:AspectClass ;
-   ottr:values( imf:InstalledElement imf:InstalledAspect ) . 
+   ottr:values( imf:InstalledElement imf:installedAspect ) . 
 
 [] ottr:of o-imf:AspectElementClass ;
    ottr:values( imf:FunctionBlock imf:FunctionElement imf:Block ) . 
@@ -100,13 +101,13 @@ imf:interAspectRelation a owl:ObjectProperty ;
    ottr:values( imf:InstalledTerminal imf:InstalledElement imf:Terminal ) . 
 
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:asFunction  imf:FunctionElement ) . 
+   ottr:values( imf:asFunction imf:FunctionElement ) . 
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:asLocation  imf:LocationElement ) . 
+   ottr:values( imf:asLocation imf:LocationElement ) . 
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:asProduct  imf:ProductElement ) . 
+   ottr:values( imf:asProduct imf:ProductElement ) . 
 [] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:asInstalled  imf:InstalledElement ) . 
+   ottr:values( imf:asInstalled imf:InstalledElement ) . 
 
 
 

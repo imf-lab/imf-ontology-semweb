@@ -16,7 +16,10 @@
 @prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
+@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+
 
 <http://ns.imfid.org/imf-attributes> a owl:Ontology ;
     owl:versionIRI <http://ns.imfid.org/20230331/imf-attributes> ;
@@ -27,40 +30,38 @@
     """ ;
     .
 
-imf:AttributeValue a owl:Class .
+imf:Attribute a owl:Class .
 
-imf:hasAttributeValue a owl:ObjectProperty ;
-  rdfs:range  imf:AttributeValue .
+imf:hasAttribute a owl:ObjectProperty ;
+  rdfs:range  imf:Attribute .
 
-imf:hasProperty a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:hasClassifier ;
-  rdfs:domain imf:AttributeValue .
+imf:property a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:classifier ;
+  rdfs:domain imf:Attribute .
 
-imf:hasUOM a owl:ObjectProperty ;
-  rdfs:subPropertyOf imf:hasClassifier ;
-  rdfs:domain imf:AttributeValue .
+imf:uom a owl:ObjectProperty ;
+  rdfs:subPropertyOf imf:externalReference ;
+  rdfs:domain imf:Attribute .
 
-imf:hasValue a owl:DatatypeProperty ;
-  rdfs:domain imf:AttributeValue .
-
+imf:value a owl:DatatypeProperty ;
+  rdfs:domain imf:Attribute .
 imf:AttributeGroup a owl:Class .
 
 imf:hasAttributeGroup a owl:ObjectProperty ;
   rdfs:range  imf:AttributeGroup .
+imf:AttributeQualifier a owl:Class .
 
-imf:DatumQualifier a owl:Class .
-
-imf:hasDatumQualifier a owl:ObjectProperty ;
-  rdfs:domain imf:AttributeValue ;
-  rdfs:range  imf:DatumQualifier .
-[] ottr:of o-imf:DatumQualifier ;
-   ottr:values( imf:Scope (imf:design imf:operating) ) . 
-[] ottr:of o-imf:DatumQualifier ;
+imf:qualifier a owl:ObjectProperty ;
+  rdfs:domain imf:Attribute ;
+  rdfs:range  imf:AttributeQualifier .
+[] ottr:of o-imf:AttributeQualifier ;
    ottr:values( imf:Range (imf:average imf:maximum imf:minimum imf:nominal imf:normal) ) . 
-[] ottr:of o-imf:DatumQualifier ;
-   ottr:values( imf:Regularity (imf:absolute imf:continuous) ) . 
-[] ottr:of o-imf:DatumQualifier ;
+[] ottr:of o-imf:AttributeQualifier ;
    ottr:values( imf:Provenance (imf:calculated imf:measured imf:specified) ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:Regularity (imf:absolute imf:continuous) ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:Scope (imf:design imf:operating) ) . 
 
 [] ottr:of o-owl-ax:DisjointClasses ;
-   ottr:values( ( imf:Scope imf:Range imf:Regularity imf:Provenance ) ) .
+   ottr:values( ( imf:Range imf:Provenance imf:Regularity imf:Scope ) ) .

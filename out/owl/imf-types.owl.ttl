@@ -9,6 +9,7 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix p14: <http://example.com/P14#> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
 @prefix ex: <http://example.com#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix o-imf: <http://ns.imfid.org/templates/> .
@@ -19,6 +20,13 @@
 
 imf:Aspect
     a owl:Class .
+
+imf:Attribute
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:AttributeType ;
+        owl:onProperty imf:instanceOf
+    ] .
 
 imf:AttributeGroup
     rdfs:subClassOf [
@@ -36,13 +44,6 @@ imf:AttributeType
     a owl:Class ;
     rdfs:subClassOf imf:Type ;
     skos:prefLabel "Attribute Type" .
-
-imf:AttributeValue
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:AttributeType ;
-        owl:onProperty imf:instanceOf
-    ] .
 
 imf:Block
     rdfs:subClassOf [
@@ -71,6 +72,11 @@ imf:ElementType
     rdfs:subClassOf imf:Type, [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onDataRange rdfs:Literal ;
         owl:onProperty imf:symbol
     ], [
@@ -78,11 +84,6 @@ imf:ElementType
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onDataRange rdfs:Literal ;
         owl:onProperty skos:notation
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Aspect ;
-        owl:onProperty imf:hasAspect
     ] ;
     skos:prefLabel "Element Type" .
 

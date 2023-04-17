@@ -9,6 +9,7 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix p14: <http://example.com/P14#> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
 @prefix ex: <http://example.com#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix o-imf: <http://ns.imfid.org/templates/> .
@@ -34,6 +35,15 @@ imf:ConnectionPoint
     a owl:Class ;
     skos:prefLabel "Connection Point" .
 
+imf:Direction
+    a owl:Class ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (imf:input
+            imf:output
+        )
+    ] .
+
 imf:Element
     a owl:Class ;
     owl:equivalentClass [
@@ -48,8 +58,8 @@ imf:InputTerminal
     rdfs:subClassOf imf:Terminal ;
     owl:equivalentClass [
         a owl:Class, owl:Restriction ;
-        owl:hasValue imf:inDirection ;
-        owl:onProperty imf:hasDirection
+        owl:hasValue imf:input ;
+        owl:onProperty imf:direction
     ] ;
     skos:altLabel "Input" ;
     skos:prefLabel "Input Terminal" .
@@ -59,8 +69,8 @@ imf:OutputTerminal
     rdfs:subClassOf imf:Terminal ;
     owl:equivalentClass [
         a owl:Class, owl:Restriction ;
-        owl:hasValue imf:outDirection ;
-        owl:onProperty imf:hasDirection
+        owl:hasValue imf:output ;
+        owl:onProperty imf:direction
     ] ;
     skos:altLabel "Output" ;
     skos:prefLabel "Output Terminal" .
@@ -72,14 +82,12 @@ imf:Terminal
         owl:allValuesFrom imf:Terminal ;
         owl:onProperty imf:partOf
     ] ;
-    owl:equivalentClass [
-        a owl:Class ;
-        owl:unionOf (imf:InputTerminal
-            imf:OutputTerminal
-        )
-    ] ;
     skos:altLabel "Channel", "Input/Output", "Port" ;
     skos:prefLabel "Terminal" .
+
+imf:classifier
+    a owl:ObjectProperty ;
+    rdfs:subPropertyOf imf:externalReference .
 
 imf:connectedTo
     a owl:FunctionalProperty, owl:IrreflexiveProperty, owl:ObjectProperty ;
@@ -93,8 +101,10 @@ imf:connectedTo
     ) ;
     skos:prefLabel "connected to" .
 
-imf:hasClassifier
-    a owl:ObjectProperty .
+imf:direction
+    a owl:ObjectProperty ;
+    rdfs:domain imf:Terminal ;
+    rdfs:range imf:Direction .
 
 imf:hasInputTerminal
     a owl:ObjectProperty ;
@@ -102,11 +112,6 @@ imf:hasInputTerminal
     rdfs:subPropertyOf imf:hasTerminal ;
     skos:definition "The relation between a block and its input terminals." ;
     skos:prefLabel "has input terminal" .
-
-imf:hasMedium
-    a owl:ObjectProperty ;
-    rdfs:domain imf:Terminal ;
-    rdfs:subPropertyOf imf:hasClassifier .
 
 imf:hasOutputTerminal
     a owl:ObjectProperty ;
@@ -130,6 +135,11 @@ imf:hasTerminal
     skos:definition "The relation between a block and its terminals." ;
     skos:prefLabel "has terminal" .
 
+imf:medium
+    a owl:ObjectProperty ;
+    rdfs:domain imf:Terminal ;
+    rdfs:subPropertyOf imf:externalReference .
+
 imf:partOf
     a owl:FunctionalProperty, owl:IrreflexiveProperty, owl:ObjectProperty ;
     rdfs:domain imf:Element ;
@@ -144,7 +154,7 @@ imf:partOf
     skos:prefLabel "is part of" .
 
 imf:symbol
-    a owl:DatatypeProperty .
+    a owl:AnnotationProperty .
 
 imf:theInput
     a owl:ObjectProperty ;
@@ -175,14 +185,14 @@ imf:theWhole
     """ .
 
 []
-    a owl:AllDisjointClasses ;
-    owl:members (imf:Block
-        imf:Terminal
+    a owl:AllDifferent ;
+    owl:members (imf:input
+        imf:output
     ) .
 
 []
     a owl:AllDisjointClasses ;
-    owl:members (imf:InputTerminal
-        imf:OutputTerminal
+    owl:members (imf:Block
+        imf:Terminal
     ) .
 
