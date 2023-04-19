@@ -2386,10 +2386,10 @@ sh.Shape <|-- sh.PropertyShape
 
 sh.NodeShape <|-- Type
 
+sh.PropertyShape <|-- SimpleValue
 sh.PropertyShape <|-- SimpleValues
 sh.PropertyShape <|-- TypeReference
 
-SimpleValue <|-- ComplexValues
 SimpleValues <|-- ComplexValues
 
 sh.NodeShape "1" -right-> sh.PropertyShape : sh.property
