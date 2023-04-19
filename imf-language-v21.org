@@ -725,7 +725,7 @@ imf:connectedTo a owl:ObjectProperty ;
 
 *** OWL Ontology
 
-#+NAME: owl-top-ontology
+#+NAME: owl-elements-ontology
 #+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-elements.owl.wottr.ttl :mkdirp yes
 <<prefixes>>
 
@@ -1039,7 +1039,7 @@ AspectElement --> AspectElement : interAspectRelation
 #+NAME: owl-aspects-aspectelement
 #+BEGIN_SRC ttl
 imf:AspectElement a owl:Class ;
-  rdfs:subclassOf imf:Element ;
+  rdfs:subClassOf imf:Element ;
   skos:prefLabel "Aspect Element";
   .
 
@@ -1676,879 +1676,6 @@ return output
 <<py_aspect_ottr_qualifiers()>>
 #+END_SRC
 
-** TODO Types
-
-Types are represented as patterns heavily inspired by the SHACL
-constaint languge for RDF.
-
-A type is represented by instantiating a small set of these
-patterns. The pattern instances, i.e., a Type specification, may in
-turn be translated to different formats:
-
- 1. a set of SHACL shape constraints with with instance of the Type
-    may be validated
- 2. a prototypical RDF graph that represents a minimal starting point
-    for instantiating the type
- 3. an OWL class which classifies the instances of the type
-
-OTTR templates are used to specify the patterns and their translation
-to the different formats.
-
-*** Overview type patterns
-
-The diagram displays the type patterns. 
-
-Some terms are prefixed with ~sh.~ to indicate that they refer to
-terms that are defined in the SHACL standard:
-https://www.w3.org/TR/shacl. This also indicates how the type pattern
-instances are translated into SHACL.
-
-#+NAME: overview-types
-#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-overview-types.png
-<<plantuml-style>>
-
-metaclass sh.Shape {
-  id: 1 iri
-  sh.name: 0..1 string
-  sh.description: 0..1 string
-}
-
-metaclass sh.NodeShape {
-  sh.targetClass: 0..1 iri
-}
-
-metaclass sh.PropertyShape {
-  sh.path: 1 iri
-}
-
-metaclass Type {
-  typeClass: 1 iri
-}
-
-metaclass SimpleValue {
-  sh.hasValue: 1
-}
-
-metaclass SimpleValues {
-  sh.in: 0..*
-  sh.class: 0..1 iri
-  sh.minCount: 0..1 integer
-  sh.maxCount: 0..1 integer
-}
-
-metaclass TypeReference {
-  sh.minCount: 0..1 integer
-  sh.maxCount: 0..1 integer
-}
-
-metaclass ComplexValues {
-  sh.datatype: 0..1 iri
-
-  sh.minExclusive: 0..1
-  sh.minInclusive: 0..1
-  sh.maxExclusive: 0..1
-  sh.maxInclusive: 0..1
-
-  sh.minLenght: 0..1 integer
-  sh.maxLength: 0..1 integer
-  sh.pattern: 0..1 string
-  sh.flags: 0..1 string
-}
-
-sh.Shape <|-- sh.NodeShape
-sh.Shape <|-- sh.PropertyShape
-
-sh.NodeShape <|-- Type
-
-sh.PropertyShape <|-- SimpleValue
-sh.PropertyShape <|-- SimpleValues
-sh.PropertyShape <|-- TypeReference
-
-SimpleValue <|-- ComplexValues
-SimpleValues <|-- ComplexValues
-
-sh.NodeShape "1" -right-> sh.PropertyShape : sh.property
-TypeReference --> "1" sh.NodeShape : node
-
-#+END_SRC
-
-#+RESULTS: overview-types
-[[file:out/img/imf-overview-types.png]]
-
-**** Short description of the type patterns
-
- - Type :: specifies a collection Property shapes, i.e., a Type is a
-           specification of relations to other types and
-           properties. Used for specifying a BlockType, TerminalType,
-           AttributeGroupType or AttributeType.
- - SimpleValue :: specifies a single value for a path. Used for
-                  forcing one specific value.
- - SimpleValues :: specifies a range of simple values by listing
-                   permissible values or giving a class, also possible
-                   to set cardnality (min--max) number of values. Used
-                   for specifying a range of values.
- - TypeReference :: specifies a reference to node shape with
-              cardinality. Used for specifying, e.g., that a Block has
-              3 Terminals of the same type.
- - ComplexValues :: specifies a value range with a complex set of
-                    constraints. Used typically for specifying the
-                    value for an Attribute.
-
-*** Suggested use of the type patterns
-
-The diagram below displays a suggested use of the type patterns.
-
-#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-overview-type-patterns.png
-<<plantuml-style>>
-
-metaclass ElementType << Type >> {
-  [metadata]
-  aspect: SimpleValue
-  notation: SimpleValue
-  symbol: SimpleValue/s
-}
-
-metaclass BlockType << Type >>  {
-
-}
-
-metaclass TerminalType << Type >>  {
-  direction: SimpleValue
-  medium: SimpleValue/s
-}
-
-metaclass AttributeGroupType << Type >>  {
-
-}
-
-metaclass AttributeType << Type >>  {
-  property : SimpleValue/s
-  value : ComplexValues
-  uom : SimpleValue/s
-  qualifier : SimpleValues
-}
-
-ElementType <|-- BlockType
-ElementType <|-- TerminalType
-
-ElementType --> AttributeGroupType : TypeReference
-ElementType --> AttributeType : TypeReference
-BlockType --> TerminalType : TypeReference
-AttributeGroupType --> AttributeType : TypeReference
-
-circle element
-
-element -left-> ElementType : instanceOf
-
-#+END_SRC
-
-#+RESULTS:
-[[file:out/img/imf-overview-type-patterns.png]]
-
-*** Type pattern implementation with OTTR Template 
-**** SHACL Shape translation
-
-#+BEGIN_SRC ttl :noweb yes :tangle out/ottr/shacl.stottr :mkdirp yes
-<<prefixes>>
-
-o-imf:ShaclShape[
-  ottr:IRI ?id, 
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  ottr:Triple(?id, sh:name, ?name),
-  ottr:Triple(?id, sh:description, ?description)
-} .
-
-
-o-imf:ShaclNodeShape[
-  ottr:IRI ?id, 
-  ? owl:Class ?targetClass,
-  #? xsd:string ?targetSPARQLSelect
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclShape(?id, ?name, ?description),
-  o-rdf:Type(?id, sh:NodeShape),
-  ottr:Triple(?id, sh:targetClass, ?targetClass)
-
-  #ottr:Triple(?id, sh:target, _:SHACLTarget),  
-  #o-rdf:Type(_:SHACLTarget, sh:SHACLTarget),
-  #ottr:Triple(_:SHACLTarget, sh:select, ?targetSPARQLSelect)
-} .
-
-o-imf:ShaclPropertyShape[
-    ottr:IRI ?id,
-    ottr:IRI ?nodeShape, 
-    ottr:IRI ?path,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclShape(?id, ?name, ?description),
-  ottr:Triple(?nodeShape, sh:property, ?id),
-  ottr:Triple(?id, sh:path, ?path)
-} .
-
-#######
-
-o-imf-t-s:Type[
-  ottr:IRI ?id, 
-  owl:Class ?typeClass,
-  ? owl:Class ?targetClass,
-  #? xsd:string ?targetSPARQLSelect
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclNodeShape(?id, ?targetClass, ?name, ?description),
-  o-rdf:Type(?id, ?typeClass)
-} .
-
-#######
-
-o-imf-t-s:TypeReference[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
-    ottr:IRI ?path, 
-    ottr:IRI ?node,
-    xsd:integer ?minCount = 1,
-    xsd:integer ?maxCount = 1,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-  ottr:Triple(?id, sh:node, ?node),
-  ottr:Triple(?id, sh:minCount, ?minCount),
-  ottr:Triple(?id, sh:maxCount, ?maxCount)
-} .
-
-o-imf-t-s:SimpleValue[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
-    ottr:IRI ?path, 
-    rdfs:Resource ?value,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-  ottr:Triple(?id, sh:hasValue, ?value)
-} .
-
-o-imf-t-s:SimpleValues[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
-    ottr:IRI ?path, 
-  ? List<rdfs:Resource> ?in,
-  ? owl:Class ?class,
-    xsd:integer ?minCount = 1, 
-    xsd:integer ?maxCount = 1,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-  ottr:Triple(?id, sh:in, ?in),
-  ottr:Triple(?id, sh:class, ?class),
-  ottr:Triple(?id, sh:minCount, ?minCount),
-  ottr:Triple(?id, sh:maxCount, ?maxCount)
-} .
-
-
-o-imf-t-s:ComplexValues[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
-    ottr:IRI ?path, 
-  #? xsd:string ?message,   ## add these to all patterns?
-  #? ottr:IRI ?severity,
-  ? rdfs:Resource ?value,
-  ? List<rdfs:Resource> ?in,
-  ? owl:Class ?class,
-  ? ottr:IRI ?datatype,
-    xsd:integer ?minCount = 1,
-    xsd:integer ?maxCount = 1, 
-  ? rdfs:Resource ?minInclusive,
-  ? rdfs:Resource ?minExclusive,
-  ? rdfs:Resource ?maxInclusive,
-  ? rdfs:Resource ?maxExclusive,
-  ? xsd:integer ?minLength,
-  ? xsd:integer ?maxLength,
-  ? xsd:string ?pattern,
-  ? xsd:string ?flags,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  #o-imf:ShaclPropertyShape(?typeID, ?id, ?path),
-  o-imf-t-s:SimpleValue(?id, ?typeID, ?path, ?value, ?name, ?description),
-  o-imf-t-s:SimpleValues(?id, ?typeID, ?path, ?in, ?class, ?minCount, ?maxCount, none, none),
-  #ottr:Triple(?id, sh:message, ?message),
-  #ottr:Triple(?id, sh:severity, ?severity),
-  ottr:Triple(?id, sh:datatype, ?datatype),
-  ottr:Triple(?id, sh:minInclusive, ?minInclusive),
-  ottr:Triple(?id, sh:minExclusive, ?minExclusive),
-  ottr:Triple(?id, sh:maxInclusive, ?maxInclusive),
-  ottr:Triple(?id, sh:maxExclusive, ?maxExclusive),
-  ottr:Triple(?id, sh:minLength, ?minLength),
-  ottr:Triple(?id, sh:maxLength, ?maxLength),
-  ottr:Triple(?id, sh:pattern, ?pattern),
-  ottr:Triple(?id, sh:flags, ?flags)
-} .
-#+END_SRC
-
-**** Expand spreadsheet
-
-#+BEGIN_SRC sh
-java -jar bin/lutra.jar -f -L stottr -l out/ottr/shacl.stottr -I tabottr example-Pumping.xlsx | rapper - -i turtle -o turtle -I 'http://example.com#'
-#+END_SRC
-
-#+RESULTS:
-
-
-**** Type example
-
-#+NAME: tbl-type-pattern-shacl-example-type
-| ID        | TypeClass     | targetClass | name                       | description      |
-|-----------+---------------+-------------+----------------------------+------------------|
-| ex:sB-001 | imf:BlockType | ex:B-001    | 'Pumping, liquid velocity' | 'bla bla bla...' |
-
-#+NAME: tbl-type-pattern-shacl-example-typeRef
-| ID | typeID    | path            | node      | minCount | maxCount |
-|----+-----------+-----------------+-----------+----------+----------|
-|    | ex:sB-001 | imf:hasTerminal | ex:sT-001 |        1 |        1 |
-|    | ex:sB-001 | imf:hasTerminal | ex:sT-002 |        1 |        1 |
-|    | ex:sB-001 | imf:hasTerminal | ex:sT-003 |        1 |        1 |
-
-#+NAME: tbl-type-pattern-shacl-example-simpleValue
-| ID | typeID             | path       | value              |
-|----+--------------------+------------+--------------------|
-|    | ex:BlockType1Shape | imf:aspect | imf:functionAspect |
-|    |                    |            |                    |
-
-#+NAME: tbl-type-pattern-shacl-example-simpleValues
-| ID | typeID             | path       | in                 | class | minCount | maxCount |
-|----+--------------------+------------+--------------------+-------+----------+----------|
-|    | ex:BlockType1Shape | imf:aspect | imf:functionAspect |       |          |          |
-|    |                    |            |                    |       |          |          |
-
-#+NAME: tbl-type-pattern-shacl-example-complexValues
-
-#+NAME: tbl-type-pattern-shacl-example-type
-
-#+NAME: shacl-test-properties
-| NodeShape | path  | message   | severity   | minCount | maxCount | value   | in-values       | node     | class       | datatype     | min= | min | max= | max | minLength | maxLength | pattern   | flags  |
-|-----------+-------+-----------+------------+----------+----------+---------+-----------------+----------+-------------+--------------+------+-----+------+-----+-----------+-----------+-----------+--------|
-| ex:node1  | ex:p1 | 'message' | sh:Warning |        1 |        3 | 'value' | ( ex:c1 ex:c2 ) | ex:node2 | ex:MyClass2 | xsd:datatype |    1 |   2 |    3 |   4 |         5 |         6 | 'pattern' | 'flag' |
-
-#+NAME: shacl-test-property-value
-| NodeShape | path  | value   |
-|-----------+-------+---------|
-| ex:node1  | ex:p1 | 'value' |
-
-#+NAME: shacl-test-property-values
-| NodeShape | path  | message      | minCount | maxCount | value   | in-values       | class       | datatype     |
-|-----------+-------+--------------+----------+----------+---------+-----------------+-------------+--------------|
-| ex:node1  | ex:p1 | 'Error: bla' |        1 |        3 | 'value' | ( ex:c1 ex:c2 ) | ex:MyClass2 | xsd:datatype |
-
-#+NAME: shacl-test-property-node
-| NodeShape | path  | message      | minCount | maxCount | node     |
-|-----------+-------+--------------+----------+----------+----------|
-| ex:node1  | ex:p1 | 'Error: bla' |        1 |        3 | ex:node2 |
-
-This is the result of representing the above tables as OTTR instances.
-
-#+BEGIN_SRC ttl :noweb yes :tangle out/temp/example-shacl-shapes.wottr.ttl :mkdirp yes
-@prefix ex:	<http://example.com#> .
-<<prefixes>>
-
-<<py_ottr_instances(template="o-imf-t-s:Type", table=tbl-type-pattern-shacl-example-type)>>
-<<py_ottr_instances(template="o-imf-t-s:TypeReference", table=tbl-type-pattern-shacl-example-typeRef)>>
-#+END_SRC
-
-#+RESULTS:
-#+begin_example
-@prefix ex:	<http://example.com#> .
-@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
-@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
-@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
-@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-@prefix ex:	<http://example.com#> .
-@prefix imf:	<http://ns.imfid.org/imf#> .
-
-@prefix p14:    <http://example.com/P14#> .
-@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
-@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
-@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
-@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
-
-@prefix o-imf:	     <http://ns.imfid.org/templates/> .
-@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
-
-
-[] ottr:of o-imf-t-s:Type ;
-   ottr:values ( ex:sB-001 imf:BlockType ex:B-001 'Pumping, liquid velocity' 'bla bla bla...' ) . 
-
-[] ottr:of o-imf-t-s:TypeReference ;
-   ottr:values ( ottr:none ex:sB-001 imf:hasTerminal ex:sT-001 1 1 ) . 
-[] ottr:of o-imf-t-s:TypeReference ;
-   ottr:values ( ottr:none ex:sB-001 imf:hasTerminal ex:sT-002 1 1 ) . 
-[] ottr:of o-imf-t-s:TypeReference ;
-   ottr:values ( ottr:none ex:sB-001 imf:hasTerminal ex:sT-003 1 1 ) . 
-#+end_example
-
-#+CALL: lutra-expand(in="out/temp/example-shacl-shapes.wottr.ttl", out="out/temp/example-shacl-shapes.ttl")
-
-** OLD types                                                       :noexport:
-*** Types
-
-#+NAME: owl-types-type
-#+BEGIN_SRC ttl
-imf:Type a owl:Class ;
-  skos:prefLabel "Type";
-  .
-
-imf:ElementType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Element Type";
-  .
-
-imf:BlockType a owl:Class ;
-  rdfs:subClassOf imf:ElementType ;
-  skos:prefLabel "Block Type";
-  .
-
-imf:TerminalType a owl:Class ;
-  rdfs:subClassOf imf:ElementType ;
-  skos:prefLabel "Terminal Type";
-  .
-
-imf:AttributeType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Attribute Type";
-  .
-
-imf:AttributeGroupType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Attribute Group Type";
-  .
-
-imf:hasTerminalType a owl:ObjectProperty ;
-  rdfs:domain imf:BlockType ;
-  rdfs:range imf:TerminalType ;
-  .
-#+END_SRC
-
-*** Type constraint
-
-#+NAME: owl-types-typeconstraint
-#+BEGIN_SRC ttl
-imf:TypeConstraint a owl:Class .
-
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
-
-#+END_SRC
-
-*** Relation constraints
-
-#+NAME: owl-types-relationconstraints
-#+BEGIN_SRC ttl
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
-
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
-#+END_SRC
-
-*** instanceOf
-
-#+NAME: owl-types-instanceOf
-#+BEGIN_SRC ttl
-
-imf:instanceOf a owl:ObjectProperty ;
-  skos:prefLabel "instance of" ;
-  rdfs:range imf:Type .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Attribute imf:instanceOf imf:AttributeType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
-#+END_SRC
-
-
-
-*** Processing and QA                                                    :QA:
-**** RDF validate tangled file
-
-#+CALL: sh_jena_validate_rdf(files="out/owl/.imf-types.owl.wottr.ttl")
-
-#+RESULTS:
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-types.owl.wottr.ttl : 0.19 sec : 139 Triples : 747.31 per second
-
-**** Expand OTTR instances
-
-#+CALL: lutra-expand(in="out/owl/.imf-types.owl.wottr.ttl", out="out/owl/imf-types.owl.ttl")
-
-#+RESULTS:
-#+begin_example
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-types.owl.wottr.ttl.temp with parser turtle
-rapper: Serializing with serializer turtle
-rapper: Parsing returned 108 triples
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix imf: <http://ns.imfid.org/imf#> .
-@prefix pav: <http://purl.org/pav/> .
-@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
-@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix p14: <http://example.com/P14#> .
-@prefix ex: <http://example.com#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix o-imf: <http://ns.imfid.org/templates/> .
-@prefix ottr: <http://ns.ottr.xyz/0.4/> .
-@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
-@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
-
-imf:Aspect
-    a owl:Class .
-
-imf:AttributeGroup
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:AttributeGroupType ;
-        owl:onProperty imf:instanceOf
-    ] .
-
-imf:AttributeGroupType
-    a owl:Class ;
-    rdfs:subClassOf imf:Type ;
-    skos:prefLabel "Attribute Group Type" .
-
-imf:AttributeType
-    a owl:Class ;
-    rdfs:subClassOf imf:Type ;
-    skos:prefLabel "Attribute Type" .
-
-imf:Attribute
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:AttributeType ;
-        owl:onProperty imf:instanceOf
-    ] .
-
-imf:Block
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:BlockType ;
-        owl:onProperty imf:instanceOf
-    ] .
-
-imf:BlockType
-    a owl:Class ;
-    rdfs:subClassOf imf:ElementType ;
-    skos:prefLabel "Block Type" .
-
-imf:Direction
-    a owl:Class .
-
-imf:Element
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:ElementType ;
-        owl:onProperty imf:instanceOf
-    ] .
-
-imf:ElementType
-    a owl:Class ;
-    rdfs:subClassOf imf:Type, [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onDataRange rdfs:Literal ;
-        owl:onProperty imf:symbol
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Aspect ;
-        owl:onProperty imf:hasAspect
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onDataRange rdfs:Literal ;
-        owl:onProperty skos:notation
-    ] ;
-    skos:prefLabel "Element Type" .
-
-imf:Terminal
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:TerminalType ;
-        owl:onProperty imf:instanceOf
-    ] .
-
-imf:TerminalType
-    a owl:Class ;
-    rdfs:subClassOf imf:ElementType, [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Direction ;
-        owl:onProperty imf:hasDirection
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass owl:Thing ;
-        owl:onProperty imf:hasMedium
-    ] ;
-    skos:prefLabel "Terminal Type" .
-
-imf:Type
-    a owl:Class ;
-    skos:prefLabel "Type" .
-
-imf:TypeConstraint
-    a owl:Class ;
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onDataRange xsd:integer ;
-        owl:onProperty imf:minCount
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onDataRange xsd:integer ;
-        owl:onProperty imf:maxCount
-    ] .
-
-imf:hasAspect
-    a owl:ObjectProperty .
-
-imf:hasDirection
-    a owl:ObjectProperty .
-
-imf:hasMedium
-    a owl:ObjectProperty .
-
-imf:hasTerminalType
-    a owl:ObjectProperty ;
-    rdfs:domain imf:BlockType ;
-    rdfs:range imf:TerminalType .
-
-imf:instanceOf
-    a owl:ObjectProperty ;
-    rdfs:range imf:Type ;
-    skos:prefLabel "instance of" .
-
-imf:maxCount
-    a owl:DatatypeProperty .
-
-imf:minCount
-    a owl:DatatypeProperty .
-
-imf:symbol
-    a owl:DatatypeProperty .
-
-<http://ns.imfid.org/imf-types>
-    a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
-    skos:altLabel "IMF types ontology" ;
-    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
-    skos:scopeNote """
-
-    """ .
-
-rdfs:Literal
-    a rdfs:Datatype .
-
-xsd:integer
-    a rdfs:Datatype .
-
-owl:Thing
-    a owl:Class .
-
-skos:notation
-    a owl:DatatypeProperty .
-
-#+end_example
-
-**** RDF validate final file
-
-#+CALL: sh_jena_validate_rdf(files="out/owl/imf-types.owl.ttl")
-
-#+RESULTS:
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.20 sec : 96 Triples : 477.61 per second
-
-#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-types.owl.ttl")
-
-#+RESULTS:
-#+BEGIN_src ttl
-@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh:   <http://www.w3.org/ns/shacl#> .
-@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
-
-[ rdf:type     sh:ValidationReport ;
-  sh:conforms  true
-] .
-#+END_src
-
-**** Diagram
-
-#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-types.owl.ttl", output="out/owl/imf-types-overview.svg")
-
-#+RESULTS:
-
-[[./out/owl/imf-types-overview.svg]]
-
-*** OWL Ontology
-
-#+NAME: owl-types-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-types.owl.wottr.ttl :mkdirp yes
-<<prefixes>>
-
-<http://ns.imfid.org/imf-types> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
-    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
-    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
-    skos:altLabel "IMF types ontology" ;
-    skos:scopeNote """
-
-    """;
-    .
-
-<<owl-types-type>>
-<<owl-types-instanceOf>>
-<<owl-types-typeconstraint>>
-<<owl-types-relationconstraints>>
-
-#+END_SRC
-
-#+RESULTS: owl-types-ontology
-#+begin_example
-@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
-@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
-@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
-@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-@prefix ex:	<http://example.com#> .
-@prefix imf:	<http://ns.imfid.org/imf#> .
-
-@prefix p14:    <http://example.com/P14#> .
-@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
-@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
-@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
-@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
-@prefix o-imf:	     <http://ns.imfid.org/templates/> .
-
-<http://ns.imfid.org/imf-types> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
-    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
-    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
-    skos:altLabel "IMF types ontology" ;
-    skos:scopeNote """
-
-    """;
-    .
-
-imf:Type a owl:Class ;
-  skos:prefLabel "Type";
-  .
-
-imf:ElementType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Element Type";
-  .
-
-imf:BlockType a owl:Class ;
-  rdfs:subClassOf imf:ElementType ;
-  skos:prefLabel "Block Type";
-  .
-
-imf:TerminalType a owl:Class ;
-  rdfs:subClassOf imf:ElementType ;
-  skos:prefLabel "Terminal Type";
-  .
-
-imf:AttributeType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Attribute Type";
-  .
-
-imf:AttributeGroupType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Attribute Group Type";
-  .
-
-imf:hasTerminalType a owl:ObjectProperty ;
-  rdfs:domain imf:BlockType ;
-  rdfs:range imf:TerminalType ;
-  .
-
-imf:instanceOf a owl:ObjectProperty ;
-  skos:prefLabel "instance of" ;
-  rdfs:range imf:Type .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Attribute imf:instanceOf imf:AttributeType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
-imf:TypeConstraint a owl:Class .
-
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
-
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
-
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
-#+end_example
-
 ** Summary
 *** Overview
 
@@ -2568,6 +1695,221 @@ imf:TypeConstraint a owl:Class .
 #+RESULTS:
 [[file:out/img/imf-overview.png]]
 
+*** Vocabulary
+**** All Elements
+
+#+NAME: sparql_all_iris
+#+BEGIN_SRC ttl
+SELECT DISTINCT ?iri ?type
+{
+  { ?iri ?x1 ?x2 }
+  UNION
+  { ?x3 ?iri ?x4 }
+  UNION
+  { ?x5 ?x5 ?iri }
+FILTER(!isBlank(?iri))
+  OPTIONAL { ?iri a ?type 
+
+  }
+}
+ORDER BY ?type ?iri
+#+END_SRC
+
+#+CALL: py_run_sparql(query=sparql_all_iris)
+
+#+RESULTS:
+| ~iri~                         | ~type~                 |
+|-------------------------------+------------------------|
+| ~ns1:color~                   |                        |
+| ~ns1:prefix~                  |                        |
+| ~rdf:first~                   |                        |
+| ~rdf:rest~                    |                        |
+| ~rdf:type~                    |                        |
+| ~rdfs:domain~                 |                        |
+| ~rdfs:range~                  |                        |
+| ~rdfs:subClassOf~             |                        |
+| ~rdfs:subPropertyOf~          |                        |
+| ~rdfs:subclassOf~             |                        |
+| ~owl:allValuesFrom~           |                        |
+| ~owl:equivalentClass~         |                        |
+| ~owl:hasValue~                |                        |
+| ~owl:imports~                 |                        |
+| ~owl:intersectionOf~          |                        |
+| ~owl:maxQualifiedCardinality~ |                        |
+| ~owl:members~                 |                        |
+| ~owl:onClass~                 |                        |
+| ~owl:onProperty~              |                        |
+| ~owl:oneOf~                   |                        |
+| ~owl:propertyDisjointWith~    |                        |
+| ~owl:versionIRI~              |                        |
+| ~ns2:altLabel~                |                        |
+| ~ns2:definition~              |                        |
+| ~ns2:prefLabel~               |                        |
+| ~ns2:scopeNote~               |                        |
+| ~ns1:functionAspect~          | ~ns1:Aspect~           |
+| ~ns1:installedAspect~         | ~ns1:Aspect~           |
+| ~ns1:locationAspect~          | ~ns1:Aspect~           |
+| ~ns1:productAspect~           | ~ns1:Aspect~           |
+| ~ns1:calculated~              | ~ns1:Provenance~       |
+| ~ns1:measured~                | ~ns1:Provenance~       |
+| ~ns1:specified~               | ~ns1:Provenance~       |
+| ~ns1:average~                 | ~ns1:Range~            |
+| ~ns1:maximum~                 | ~ns1:Range~            |
+| ~ns1:minimum~                 | ~ns1:Range~            |
+| ~ns1:nominal~                 | ~ns1:Range~            |
+| ~ns1:normal~                  | ~ns1:Range~            |
+| ~ns1:absolute~                | ~ns1:Regularity~       |
+| ~ns1:continuous~              | ~ns1:Regularity~       |
+| ~ns1:design~                  | ~ns1:Scope~            |
+| ~ns1:operating~               | ~ns1:Scope~            |
+| ~ns1:Aspect~                  | ~owl:Class~            |
+| ~ns1:AspectElement~           | ~owl:Class~            |
+| ~ns1:Attribute~               | ~owl:Class~            |
+| ~ns1:AttributeGroup~          | ~owl:Class~            |
+| ~ns1:AttributeQualifier~      | ~owl:Class~            |
+| ~ns1:FunctionBlock~           | ~owl:Class~            |
+| ~ns1:FunctionElement~         | ~owl:Class~            |
+| ~ns1:FunctionTerminal~        | ~owl:Class~            |
+| ~ns1:InstalledBlock~          | ~owl:Class~            |
+| ~ns1:InstalledElement~        | ~owl:Class~            |
+| ~ns1:InstalledTerminal~       | ~owl:Class~            |
+| ~ns1:LocationBlock~           | ~owl:Class~            |
+| ~ns1:LocationElement~         | ~owl:Class~            |
+| ~ns1:LocationTerminal~        | ~owl:Class~            |
+| ~ns1:ProductBlock~            | ~owl:Class~            |
+| ~ns1:ProductElement~          | ~owl:Class~            |
+| ~ns1:ProductTerminal~         | ~owl:Class~            |
+| ~ns1:Provenance~              | ~owl:Class~            |
+| ~ns1:Range~                   | ~owl:Class~            |
+| ~ns1:Regularity~              | ~owl:Class~            |
+| ~ns1:Scope~                   | ~owl:Class~            |
+| ~ns1:value~                   | ~owl:DatatypeProperty~ |
+| ~ns1:asFunction~              | ~owl:ObjectProperty~   |
+| ~ns1:asInstalled~             | ~owl:ObjectProperty~   |
+| ~ns1:asLocation~              | ~owl:ObjectProperty~   |
+| ~ns1:asProduct~               | ~owl:ObjectProperty~   |
+| ~ns1:aspect~                  | ~owl:ObjectProperty~   |
+| ~ns1:associativeRelation~     | ~owl:ObjectProperty~   |
+| ~ns1:externalReference~       | ~owl:ObjectProperty~   |
+| ~ns1:hasAttribute~            | ~owl:ObjectProperty~   |
+| ~ns1:hasAttributeGroup~       | ~owl:ObjectProperty~   |
+| ~ns1:hierarchicalRelation~    | ~owl:ObjectProperty~   |
+| ~ns1:interAspectRelation~     | ~owl:ObjectProperty~   |
+| ~ns1:intraAspectRelation~     | ~owl:ObjectProperty~   |
+| ~ns1:property~                | ~owl:ObjectProperty~   |
+| ~ns1:qualifier~               | ~owl:ObjectProperty~   |
+| ~ns1:uom~                     | ~owl:ObjectProperty~   |
+| ~ns3:imf~                     | ~owl:Ontology~         |
+| ~ns3:imf-aspects~             | ~owl:Ontology~         |
+| ~ns3:imf-attributes~          | ~owl:Ontology~         |
+
+
+**** Classes
+
+#+NAME: sparql_class
+#+BEGIN_SRC ttl
+SELECT ?class ?prefLabel ?altLabels ?definition ?superclasses
+{
+  ?class a owl:Class.
+  FILTER (!isBlank(?class))
+
+  OPTIONAL { ?class skos:prefLabel ?prefLabel }
+  OPTIONAL { ?class skos:definition ?definition }
+
+  { SELECT ?class 
+      (GROUP_CONCAT(?superclass; SEPARATOR=", ") AS ?superclasses) 
+      (GROUP_CONCAT(?altLabel; SEPARATOR=", ") AS ?altLabels) 
+    {
+      OPTIONAL { ?class rdfs:subClassOf ?superclass. FILTER (!isBlank(?superclass)) }
+      OPTIONAL { ?class skos:altLabel ?altLabel }
+    } GROUP BY ?class
+  }
+}
+ORDER BY ?class
+#+END_SRC
+
+#+CALL: py_run_sparql(query=sparql_class)
+
+#+RESULTS:
+| ~class~                  | ~prefLabel~      | ~altLabels~ | ~definition~ | ~superclasses~                       |
+|--------------------------+------------------+-------------+--------------+--------------------------------------|
+| ~ns1:Aspect~             |                  |             |              |                                      |
+| ~ns1:AspectElement~      | ~Aspect Element~ |             |              |                                      |
+| ~ns1:Attribute~          |                  |             |              |                                      |
+| ~ns1:AttributeGroup~     |                  |             |              |                                      |
+| ~ns1:AttributeQualifier~ |                  |             |              |                                      |
+| ~ns1:FunctionBlock~      |                  |             |              | ~ns1:Block, ns1:FunctionElement~     |
+| ~ns1:FunctionElement~    |                  |             |              | ~ns1:AspectElement~                  |
+| ~ns1:FunctionTerminal~   |                  |             |              | ~ns1:FunctionElement, ns1:Terminal~  |
+| ~ns1:InstalledBlock~     |                  |             |              | ~ns1:Block, ns1:InstalledElement~    |
+| ~ns1:InstalledElement~   |                  |             |              | ~ns1:AspectElement~                  |
+| ~ns1:InstalledTerminal~  |                  |             |              | ~ns1:InstalledElement, ns1:Terminal~ |
+| ~ns1:LocationBlock~      |                  |             |              | ~ns1:Block, ns1:LocationElement~     |
+| ~ns1:LocationElement~    |                  |             |              | ~ns1:AspectElement~                  |
+| ~ns1:LocationTerminal~   |                  |             |              | ~ns1:LocationElement, ns1:Terminal~  |
+| ~ns1:ProductBlock~       |                  |             |              | ~ns1:Block, ns1:ProductElement~      |
+| ~ns1:ProductElement~     |                  |             |              | ~ns1:AspectElement~                  |
+| ~ns1:ProductTerminal~    |                  |             |              | ~ns1:ProductElement, ns1:Terminal~   |
+| ~ns1:Provenance~         |                  |             |              | ~ns1:AttributeQualifier~             |
+| ~ns1:Range~              |                  |             |              | ~ns1:AttributeQualifier~             |
+| ~ns1:Regularity~         |                  |             |              | ~ns1:AttributeQualifier~             |
+| ~ns1:Scope~              |                  |             |              | ~ns1:AttributeQualifier~             |
+
+**** Properties
+
+#+NAME: sparql_property
+#+BEGIN_SRC ttl
+SELECT ?type ?property ?prefLabel ?altLabels ?definition ?domain ?range ?characteristics ?superproperties
+{
+  ?property a ?type.
+  FILTER (?type = owl:ObjectProperty || ?type = owl:DatatypeProperty || ?type = owl:AnnotationProperty )
+  FILTER (!isBlank(?property))
+
+  OPTIONAL { ?property skos:prefLabel ?prefLabel }
+  OPTIONAL { ?property skos:definition ?definition }
+  OPTIONAL { ?property rdfs:domain ?domain }
+  OPTIONAL { ?property rdfs:range ?range }
+
+  { SELECT ?property 
+      (GROUP_CONCAT(?superproperty; SEPARATOR=", ") AS ?superproperties) 
+      (GROUP_CONCAT(?characteristic; SEPARATOR=", ") AS ?characteristics) 
+      (GROUP_CONCAT(?altLabel; SEPARATOR=", ") AS ?altLabels) 
+    {
+      OPTIONAL { ?property rdfs:subPropertyOf ?superproperty }
+      OPTIONAL { ?property a ?characteristic .
+          FILTER (?characteristic != owl:ObjectProperty && ?characteristic != owl:DatatypeProperty && ?characteristic != owl:AnnotationProperty )
+      }
+      OPTIONAL { ?property skos:altLabel ?altLabel }
+    } GROUP BY ?property
+  }
+  
+}
+ORDER BY ?type ?property
+#+END_SRC
+
+#+CALL: py_run_sparql(query=sparql_property)
+
+#+RESULTS:
+| ~type~                 | ~property~                 | ~prefLabel~             | ~altLabels~ | ~definition~                                                                                                                           | ~domain~            | ~range~                  | ~characteristics~ | ~superproperties~         |
+|------------------------+----------------------------+-------------------------+-------------+----------------------------------------------------------------------------------------------------------------------------------------+---------------------+--------------------------+-------------------+---------------------------|
+| ~owl:DatatypeProperty~ | ~ns1:value~                |                         |             |                                                                                                                                        | ~ns1:Attribute~     |                          |                   |                           |
+| ~owl:ObjectProperty~   | ~ns1:asFunction~           |                         |             |                                                                                                                                        |                     | ~ns1:FunctionElement~    |                   | ~ns1:interAspectRelation~ |
+| ~owl:ObjectProperty~   | ~ns1:asInstalled~          |                         |             |                                                                                                                                        |                     | ~ns1:InstalledElement~   |                   | ~ns1:interAspectRelation~ |
+| ~owl:ObjectProperty~   | ~ns1:asLocation~           |                         |             |                                                                                                                                        |                     | ~ns1:LocationElement~    |                   | ~ns1:interAspectRelation~ |
+| ~owl:ObjectProperty~   | ~ns1:asProduct~            |                         |             |                                                                                                                                        |                     | ~ns1:ProductElement~     |                   | ~ns1:interAspectRelation~ |
+| ~owl:ObjectProperty~   | ~ns1:aspect~               | ~aspect~                |             | ~Relates an Aspect Element to its Aspect.~                                                                                             | ~ns1:AspectElement~ | ~ns1:Aspect~             |                   |                           |
+| ~owl:ObjectProperty~   | ~ns1:associativeRelation~  | ~associative relation~  |             | ~A generic associative relation.~                                                                                                      | ~ns1:AspectElement~ | ~ns1:AspectElement~      |                   | ~ns2:related~             |
+| ~owl:ObjectProperty~   | ~ns1:externalReference~    |                         |             | ~A generic relation that is used to relate elements to external ontologies or reference data library for added semantic descriptions.~ |                     |                          |                   |                           |
+| ~owl:ObjectProperty~   | ~ns1:hasAttribute~         |                         |             |                                                                                                                                        |                     | ~ns1:Attribute~          |                   |                           |
+| ~owl:ObjectProperty~   | ~ns1:hasAttributeGroup~    |                         |             |                                                                                                                                        |                     | ~ns1:AttributeGroup~     |                   |                           |
+| ~owl:ObjectProperty~   | ~ns1:hierarchicalRelation~ | ~hierarchical relation~ |             | ~A generic hierachical relation that may be used to represent a breakdown structure.~                                                  | ~ns1:AspectElement~ | ~ns1:AspectElement~      |                   | ~ns2:semanticRelation~    |
+| ~owl:ObjectProperty~   | ~ns1:interAspectRelation~  | ~inter-aspect relation~ |             |                                                                                                                                        | ~ns1:AspectElement~ | ~ns1:AspectElement~      |                   | ~ns2:related~             |
+| ~owl:ObjectProperty~   | ~ns1:intraAspectRelation~  | ~intra-aspect relation~ |             | ~A generic relation between aspect objects of the same aspect~                                                                         |                     |                          |                   | ~ns2:semanticRelation~    |
+| ~owl:ObjectProperty~   | ~ns1:property~             |                         |             |                                                                                                                                        | ~ns1:Attribute~     |                          |                   | ~ns1:classifier~          |
+| ~owl:ObjectProperty~   | ~ns1:qualifier~            |                         |             |                                                                                                                                        | ~ns1:Attribute~     | ~ns1:AttributeQualifier~ |                   |                           |
+| ~owl:ObjectProperty~   | ~ns1:uom~                  |                         |             |                                                                                                                                        | ~ns1:Attribute~     |                          |                   | ~ns1:externalReference~   |
+
+
 *** Main OWL ontology
 **** Import hierarchy
 
@@ -2583,10 +1925,10 @@ these.
 
 
 
-**** Ontology source                                                 :update:
+**** Ontology source
 
 #+NAME: owl-imf-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/imf.owl.ttl :mkdirp yes
+#+BEGIN_SRC ttl :noweb yes :tangle out/owl/imf.owl.ttl :mkdirp yes
 <<prefixes>>
 
 <http://ns.imfid.org/imf> a owl:Ontology ;
@@ -2634,10 +1976,44 @@ Tests are put here at the start to make it easy to update file names.
 ] .
 #+END_src
 
-*** SHACL Shapes
+*** OWL Ontologies combined
+
+#+CALL: sh_jena_merge(files="out/owl/imf.owl.ttl out/owl/imf-elements.owl.ttl out/owl/imf-aspects.owl.ttl out/owl/imf-attributes.owl.ttl", out="out/owl/imf-all.owl.ttl")
+
+#+RESULTS:
+: 20:47:07 INFO  riot            :: File: out/owl/imf.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.19 sec : 23 Triples : 120.42 per second
+: 20:47:07 INFO  riot            :: File: out/owl/imf-elements.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-elements.owl.ttl : 0.03 sec : 146 Triples : 5,615.38 per second
+: 20:47:07 INFO  riot            :: File: out/owl/imf-aspects.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-aspects.owl.ttl : 0.02 sec : 185 Triples : 10,277.78 per second
+: 20:47:07 INFO  riot            :: File: out/owl/imf-attributes.owl.ttl
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-attributes.owl.ttl : 0.01 sec : 140 Triples : 11,666.67 per second
+: Total           : 0.25 sec : 494 Triples : 2,000.00 per second
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-all.owl.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-all.owl.ttl : 0.23 sec : 494 Triples : 2,129.31 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-all.owl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+*** SHACL Shapes (combined)
 
 #+NAME: owl-top-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/shacl/.imf.shacl.wottr.ttl :mkdirp yes
+#+BEGIN_SRC ttl :noweb yes :tangle out/shacl/.imf.shacl.wottr.ttl :mkdirp yes
 <<prefixes>>
 
 <<shacl-elements-annotations>>
@@ -2647,6 +2023,85 @@ Tests are put here at the start to make it easy to update file names.
 <<shacl-attributes-value>>
 <<shacl-attributes-group>>
 #+END_SRC
+
+#+RESULTS: owl-top-ontology
+#+begin_example
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+
+
+imf:ElementShape a sh:NodeShape ;
+  sh:targetClass imf:Element , imf:Block , imf:Terminal ;
+  sh:property 
+    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no prefLabel" ] ,
+    [ sh:path imf:classifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no classifier" ]
+.
+imf:BlockShape a sh:NodeShape ;
+  sh:targetClass imf:Block ;
+  sh:targetSubjectsOf imf:hasTerminal ;
+  sh:property 
+    [ sh:path skos:hasTerminal ; sh:class sh:Terminal ] ,
+    [ sh:path skos:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Block has no Terminal" ] ,     
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class sh:Block ]
+.
+imf:TerminalShape a sh:NodeShape ;
+  sh:targetClass imf:Terminal , imf:InputTerminal , imf:OutputTerminal ;
+  sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:direction ;
+  sh:targetObjectsOf imf:hasTerminal, imf:connectedTo ;
+  sh:property 
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class sh:Terminal ] ,
+    [ sh:path imf:connectedTo ; sh:maxCount 1 ; sh:class sh:Terminal ] ,
+    [ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Terminal has no connection (to other Terminal)" ] , 
+    [ sh:path imf:direction ; sh:maxCount 1 ; sh:in ( imf:input imf:output ) ] ,
+    [ sh:path imf:medium ; sh:maxCount 1 ]  ,
+    [ sh:path imf:medium ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Terminal has no medium" ]
+.
+imf:AspectElementShape a sh:NodeShape ;
+  sh:targetClass imf:AspectElement ;
+  sh:targetSubjectsOf imf:aspect ;
+  sh:property 
+    [ sh:path imf:aspect ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sh:Aspect ] 
+.
+imf:AttributeShape a sh:NodeShape ;
+  sh:targetClass imf:Attribute ;
+  sh:targetObjectsOf imf:hasAttribute ;
+  sh:targetSubjectsOf imf:property, imf:uom, imf:qualifier ;
+  sh:property 
+    [ sh:path imf:property ; sh:minCount 1 ; sh:maxCount 1 ] ,
+    [ sh:path imf:value ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no value" ] ,
+    [ sh:path imf:uom ; sh:maxCount 1 ] , 
+    [ sh:path imf:qualifier ; sh:maxCount 1 ; sh:class imf:Regularity ] , 
+    [ sh:path imf:qualifier ; sh:maxCount 1 ; sh:class imf:Range ] , 
+    [ sh:path imf:qualifier ; sh:maxCount 1 ; sh:class imf:Provenence ] , 
+    [ sh:path imf:qualifier ; sh:maxCount 1 ; sh:class imf:Scope ] ,
+    [ sh:path imf:qualifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no qualifier" ] 
+.
+imf:AttributeGroupShape a sh:NodeShape ;
+  sh:targetClass imf:AttributeGroup ;
+  sh:targetObjectsOf imf:hasAttributeGroup ;
+  sh:property 
+    [ sh:path imf:hasAttribute ; sh:minCount 1 ; sh:message "AttributeGroup has no Attributes" ]
+.
+#+end_example
 
 **** Processing and QA                                                   :QA:
 ***** RDF validate tangled file
@@ -2847,183 +2302,959 @@ imf:TerminalShape
 
 
 
-*** OWL Ontologies combined
+* TODO Types
 
-#+CALL: sh_jena_merge(files="out/owl/imf.owl.ttl out/owl/imf-aspects.owl.ttl out/owl/imf-attributes.owl.ttl out/owl/imf-types.owl.ttl", out="out/owl/imf-all.owl.ttl")
+Types are represented as patterns heavily inspired by the SHACL
+constaint languge for RDF.
+
+A type is represented by instantiating a small set of these
+patterns. The pattern instances, i.e., a Type specification, may in
+turn be translated to different formats:
+
+ 1. a set of SHACL shape constraints with with instance of the Type
+    may be validated
+ 2. a prototypical RDF graph that represents a minimal starting point
+    for instantiating the type
+ 3. an OWL class which classifies the instances of the type
+
+OTTR templates are used to specify the patterns and their translation
+to the different formats.
+
+** Overview type patterns
+
+The diagram displays the type patterns. 
+
+Some terms are prefixed with ~sh.~ to indicate that they refer to
+terms that are defined in the SHACL standard:
+https://www.w3.org/TR/shacl. This also indicates how the type pattern
+instances are translated into SHACL.
+
+#+NAME: overview-types
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-overview-types.png
+<<plantuml-style>>
+
+metaclass sh.Shape {
+  id: 1 iri
+  sh.name: 0..1 string
+  sh.description: 0..1 string
+}
+
+metaclass sh.NodeShape {
+  sh.targetClass: 0..1 iri
+}
+
+metaclass sh.PropertyShape {
+  sh.path: 1 iri
+}
+
+metaclass Type {
+  typeClass: 1 iri
+}
+
+metaclass SimpleValue {
+  sh.hasValue: 1
+}
+
+metaclass SimpleValues {
+  sh.in: 0..*
+  sh.class: 0..1 iri
+  sh.minCount: 0..1 integer
+  sh.maxCount: 0..1 integer
+}
+
+metaclass TypeReference {
+  sh.minCount: 0..1 integer
+  sh.maxCount: 0..1 integer
+}
+
+metaclass ComplexValues {
+  sh.datatype: 0..1 iri
+
+  sh.minExclusive: 0..1
+  sh.minInclusive: 0..1
+  sh.maxExclusive: 0..1
+  sh.maxInclusive: 0..1
+
+  sh.minLenght: 0..1 integer
+  sh.maxLength: 0..1 integer
+  sh.pattern: 0..1 string
+  sh.flags: 0..1 string
+}
+
+sh.Shape <|-- sh.NodeShape
+sh.Shape <|-- sh.PropertyShape
+
+sh.NodeShape <|-- Type
+
+sh.PropertyShape <|-- SimpleValues
+sh.PropertyShape <|-- TypeReference
+
+SimpleValue <|-- ComplexValues
+SimpleValues <|-- ComplexValues
+
+sh.NodeShape "1" -right-> sh.PropertyShape : sh.property
+TypeReference --> "1" sh.NodeShape : node
+
+#+END_SRC
+
+#+RESULTS: overview-types
+[[file:out/img/imf-overview-types.png]]
+
+*** Short description of the type patterns
+
+ - Type :: specifies a collection Property shapes, i.e., a Type is a
+           specification of relations to other types and
+           properties. Used for specifying a BlockType, TerminalType,
+           AttributeGroupType or AttributeType.
+ - SimpleValue :: specifies a single value for a path. Used for
+                  forcing one specific value.
+ - SimpleValues :: specifies a range of simple values by listing
+                   permissible values or giving a class, also possible
+                   to set cardnality (min--max) number of values. Used
+                   for specifying a range of values.
+ - TypeReference :: specifies a reference to node shape with
+              cardinality. Used for specifying, e.g., that a Block has
+              3 Terminals of the same type.
+ - ComplexValues :: specifies a value range with a complex set of
+                    constraints. Used typically for specifying the
+                    value for an Attribute.
+
+** Suggested use of the type patterns
+
+The diagram below displays a suggested use of the type patterns.
+
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-overview-type-patterns.png
+<<plantuml-style>>
+
+metaclass ElementType << Type >> {
+  [metadata]
+  aspect: SimpleValue
+  notation: SimpleValue
+  symbol: SimpleValue/s
+}
+
+metaclass BlockType << Type >>  {
+
+}
+
+metaclass TerminalType << Type >>  {
+  direction: SimpleValue
+  medium: SimpleValue/s
+}
+
+metaclass AttributeGroupType << Type >>  {
+
+}
+
+metaclass AttributeType << Type >>  {
+  property : SimpleValue/s
+  value : ComplexValues
+  uom : SimpleValue/s
+  qualifier : SimpleValues
+}
+
+ElementType <|-- BlockType
+ElementType <|-- TerminalType
+
+ElementType --> AttributeGroupType : TypeReference
+ElementType --> AttributeType : TypeReference
+BlockType --> TerminalType : TypeReference
+AttributeGroupType --> AttributeType : TypeReference
+
+circle element
+
+element -left-> ElementType : instanceOf
+
+#+END_SRC
 
 #+RESULTS:
-: 18:11:13 INFO  riot            :: File: out/owl/imf.owl.ttl
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.18 sec : 21 Triples : 120.00 per second
-: 18:11:13 INFO  riot            :: File: out/owl/imf-aspects.owl.ttl
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-aspects.owl.ttl : 0.02 sec : 121 Triples : 5,041.67 per second
-: 18:11:13 INFO  riot            :: File: out/owl/imf-attributes.owl.ttl
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-attributes.owl.ttl : 0.02 sec : 141 Triples : 8,294.12 per second
-: 18:11:13 INFO  riot            :: File: out/owl/imf-types.owl.ttl
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.01 sec : 96 Triples : 8,727.27 per second
-: Total           : 0.23 sec : 379 Triples : 1,669.60 per second
+[[file:out/img/imf-overview-type-patterns.png]]
 
-h* TODO Example                                                       :update:
+** Pattern representation to SHACL with OTTR Templates 
 
-[[./img/pumpingFunction.png]]
+#+BEGIN_SRC ttl :noweb yes :tangle out/ottr/shacl.stottr :mkdirp yes
+<<prefixes>>
+
+o-imf:ShaclShape[
+  ottr:IRI ?id, 
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  ottr:Triple(?id, sh:name, ?name),
+  ottr:Triple(?id, sh:description, ?description)
+} .
+
+
+o-imf:ShaclNodeShape[
+  ottr:IRI ?id, 
+  ? owl:Class ?targetClass,
+  #? xsd:string ?targetSPARQLSelect
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclShape(?id, ?name, ?description),
+  o-rdf:Type(?id, sh:NodeShape),
+  ottr:Triple(?id, sh:targetClass, ?targetClass)
+
+  #ottr:Triple(?id, sh:target, _:SHACLTarget),  
+  #o-rdf:Type(_:SHACLTarget, sh:SHACLTarget),
+  #ottr:Triple(_:SHACLTarget, sh:select, ?targetSPARQLSelect)
+} .
+
+o-imf:ShaclPropertyShape[
+    ottr:IRI ?id,
+    ottr:IRI ?nodeShape, 
+    ottr:IRI ?path,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclShape(?id, ?name, ?description),
+  ottr:Triple(?nodeShape, sh:property, ?id),
+  ottr:Triple(?id, sh:path, ?path)
+} .
+
+#######
+
+o-imf-t-s:Type[
+  ottr:IRI ?id, 
+  owl:Class ?typeClass,
+  ? owl:Class ?targetClass,
+  #? xsd:string ?targetSPARQLSelect
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclNodeShape(?id, ?targetClass, ?name, ?description),
+  o-rdf:Type(?id, ?typeClass)
+} .
+
+#######
+
+o-imf-t-s:TypeReference[
+    ottr:IRI ?id = _:P,
+    ottr:IRI ?typeID, 
+    ottr:IRI ?path, 
+    ottr:IRI ?node,
+    xsd:integer ?minCount = 1,
+    xsd:integer ?maxCount = 1,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+  ottr:Triple(?id, sh:node, ?node),
+  ottr:Triple(?id, sh:minCount, ?minCount),
+  ottr:Triple(?id, sh:maxCount, ?maxCount)
+} .
+
+o-imf-t-s:SimpleValue[
+    ottr:IRI ?id = _:P,
+    ottr:IRI ?typeID, 
+    ottr:IRI ?path, 
+    rdfs:Resource ?value,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+  ottr:Triple(?id, sh:hasValue, ?value)
+} .
+
+o-imf-t-s:SimpleValues[
+    ottr:IRI ?id = _:P,
+    ottr:IRI ?typeID, 
+    ottr:IRI ?path, 
+  ? List<rdfs:Resource> ?in,
+  ? owl:Class ?class,
+    xsd:integer ?minCount, 
+    xsd:integer ?maxCount,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+  ottr:Triple(?id, sh:in, ?in),
+  ottr:Triple(?id, sh:class, ?class),
+  ottr:Triple(?id, sh:minCount, ?minCount),
+  ottr:Triple(?id, sh:maxCount, ?maxCount)
+} .
+
+
+o-imf-t-s:ComplexValues[
+    ottr:IRI ?id = _:P,
+    ottr:IRI ?typeID, 
+    ottr:IRI ?path, 
+  #? xsd:string ?message,   ## add these to all patterns?
+  #? ottr:IRI ?severity,
+  #? rdfs:Resource ?value,
+  ? List<rdfs:Resource> ?in,
+  ? owl:Class ?class,
+  ? ottr:IRI ?datatype,
+    xsd:integer ?minCount = 1,
+    xsd:integer ?maxCount = 1, 
+  ? rdfs:Resource ?minInclusive,
+  ? rdfs:Resource ?minExclusive,
+  ? rdfs:Resource ?maxInclusive,
+  ? rdfs:Resource ?maxExclusive,
+  ? xsd:integer ?minLength,
+  ? xsd:integer ?maxLength,
+  ? xsd:string ?pattern,
+  ? xsd:string ?flags,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+] :: {
+  #o-imf:ShaclPropertyShape(?typeID, ?id, ?path),
+  #o-imf-t-s:SimpleValue(?id, ?typeID, ?path, ?value, ?name, ?description),
+  o-imf-t-s:SimpleValues(?id, ?typeID, ?path, ?in, ?class, ?minCount, ?maxCount, ?name, ?description),
+  #ottr:Triple(?id, sh:message, ?message),
+  #ottr:Triple(?id, sh:severity, ?severity),
+  ottr:Triple(?id, sh:datatype, ?datatype),
+  ottr:Triple(?id, sh:minInclusive, ?minInclusive),
+  ottr:Triple(?id, sh:minExclusive, ?minExclusive),
+  ottr:Triple(?id, sh:maxInclusive, ?maxInclusive),
+  ottr:Triple(?id, sh:maxExclusive, ?maxExclusive),
+  ottr:Triple(?id, sh:minLength, ?minLength),
+  ottr:Triple(?id, sh:maxLength, ?maxLength),
+  ottr:Triple(?id, sh:pattern, ?pattern),
+  ottr:Triple(?id, sh:flags, ?flags)
+} .
+#+END_SRC
+
+** Translation to OWL ontology representation
+
+*** OWL Classes
+
+#+NAME: sparql_shaclClass
+#+BEGIN_SRC ttl
+SELECT 
+  ?class 
+  ?imfClass
+  ?name
+  ?description
+  ?severity
+  ?message
+WHERE {
+  OPTIONAL { ?n sh:targetClass ?class }
+  OPTIONAL { ?n a ?imfTypeClass . 
+             FILTER(STRSTARTS(STR(?imfTypeClass), "http://ns.imfid.org"))
+             BIND(IRI(REPLACE(STR(?imfTypeClass), "Type", "")) AS ?imfClass)}
+  OPTIONAL { ?n sh:name ?name }
+  OPTIONAL { ?n sh:description ?description }
+  OPTIONAL { ?n sh:severity ?severity }
+  OPTIONAL { ?n sh:message ?message }
+}
+#+END_SRC
+
+#+BEGIN_SRC ttl
+o-imf-t-o:TypeClass[
+  owl:Class ?id, 
+  ? owl:Class ?imfClass,
+  ? xsd:string ?name, 
+  ? xsd:string ?description
+  ? xsd:string ?severity, 
+  ? xsd:string ?message
+] :: {
+  o-owl-dec:Class(?id, ?name, ?description, none, none),
+  o-owl-ax:SubClassOf(?id, ?imfClass)
+} .
+#+END_SRC
+
+*** OWL Class restrictions
+
+#+NAME: sparql_shaclClassRestriction 
+#+BEGIN_SRC ttl
+SELECT 
+  ?class 
+  ?path 
+  ##?name
+  ##?description
+  ?minCount
+  ?maxCount
+  ?nodeTargetClass
+  ?hasValue
+  ?in
+  ?datatype
+  ?minExclusive
+  ?minInclusive
+  ?maxExclusive
+  ?maxInclusive
+  ?minLength
+  ?maxLength
+  ?pattern
+  ?flags
+WHERE {
+  ?n sh:targetClass ?class .
+  ?n sh:property ?p .
+  ?p sh:path ?path .
+  ##OPTIONAL { ?p sh:name ?name }
+  ##OPTIONAL { ?p sh:description ?description }
+  OPTIONAL { ?p sh:minCount ?minCount }
+  OPTIONAL { ?p sh:maxCount ?maxCount }
+  OPTIONAL { ?p sh:node [ sh:targetClass ?nodeTargetClass ] }
+  OPTIONAL { ?p sh:class ?class }
+  OPTIONAL { ?p sh:hasValue ?hasValue }
+  OPTIONAL { ?p sh:in ?in }
+  OPTIONAL { ?p sh:datatype ?datatype }
+  OPTIONAL { ?p sh:minExclusive ?minExclusive }
+  OPTIONAL { ?p sh:minInclusive ?minInclusive }
+  OPTIONAL { ?p sh:maxExclusive ?maxExclusive }
+  OPTIONAL { ?p sh:maxInclusive ?maxInclusive }
+  OPTIONAL { ?p sh:minLength ?minLength }
+  OPTIONAL { ?p sh:maxLength ?maxLength }
+  OPTIONAL { ?p sh:pattern ?pattern }
+  OPTIONAL { ?p sh:flags ?flags }
+}
+#+END_SRC
+
+#+BEGIN_SRC ttl
+o-imf-t-o:TypeClassRestriction[
+  owl:Class ?class, 
+  ottr:IRI ?path,
+  ? xsd:integer ?minCount,
+  ? xsd:integer ?maxCount,
+  ? owl:Class ?nodeTargetClass,
+  ? ?hasValue,
+  ? List ?in,
+  ? ottr:IRI ?datatype,
+  ? ?minExclusive,
+  ? ?minInclusive,
+  ? ?maxExclusive,
+  ? ?maxInclusive,
+  ? xsd:integer ?minLength,
+  ? xsd:integer ?maxLength,
+  ? xsd:integer ?pattern,
+  ? xsd:integer ?flags
+] :: {
+  o-owl-ax:SubMaxCardinality(?class, ?maxCount, ?path),
+  o-owl-ax:SubMinCardinality(?class, ?minCount, ?path),
+  o-owl-ax:SubAllValuesFrom(?class, ?path, ?nodeTargetClass),
+  o-owl-ax:SubHasValue(?class, ?path, ?hasValue)
+  #o-owl-ax:SubObjectOneOf(?class, ?path, ?in)
+} .
+#+END_SRC
+
+https://stackoverflow.com/questions/36008786/proper-way-to-describe-string-literal-in-owl
+
+* OLD types                                                        :noexport:
+** Types
+
+#+NAME: owl-types-type
+#+BEGIN_SRC ttl
+imf:Type a owl:Class ;
+  skos:prefLabel "Type";
+  .
+
+imf:ElementType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Element Type";
+  .
+
+imf:BlockType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Block Type";
+  .
+
+imf:TerminalType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Terminal Type";
+  .
+
+imf:AttributeType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Type";
+  .
+
+imf:AttributeGroupType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Group Type";
+  .
+
+imf:hasTerminalType a owl:ObjectProperty ;
+  rdfs:domain imf:BlockType ;
+  rdfs:range imf:TerminalType ;
+  .
+#+END_SRC
+
+** Type constraint
+
+#+NAME: owl-types-typeconstraint
+#+BEGIN_SRC ttl
+imf:TypeConstraint a owl:Class .
+
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
+
+#+END_SRC
+
+** Relation constraints
+
+#+NAME: owl-types-relationconstraints
+#+BEGIN_SRC ttl
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
+
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
+#+END_SRC
+
+** instanceOf
+
+#+NAME: owl-types-instanceOf
+#+BEGIN_SRC ttl
+
+imf:instanceOf a owl:ObjectProperty ;
+  skos:prefLabel "instance of" ;
+  rdfs:range imf:Type .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Attribute imf:instanceOf imf:AttributeType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
+#+END_SRC
+
+
+
+** Processing and QA                                                     :QA:
+*** RDF validate tangled file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/.imf-types.owl.wottr.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-types.owl.wottr.ttl : 0.19 sec : 139 Triples : 747.31 per second
+
+*** Expand OTTR instances
+
+#+CALL: lutra-expand(in="out/owl/.imf-types.owl.wottr.ttl", out="out/owl/imf-types.owl.ttl")
+
+#+RESULTS:
+#+begin_example
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/owl/.imf-types.owl.wottr.ttl.temp with parser turtle
+rapper: Serializing with serializer turtle
+rapper: Parsing returned 108 triples
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: <http://example.com/P14#> .
+@prefix ex: <http://example.com#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:Aspect
+    a owl:Class .
+
+imf:AttributeGroup
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:AttributeGroupType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:AttributeGroupType
+    a owl:Class ;
+    rdfs:subClassOf imf:Type ;
+    skos:prefLabel "Attribute Group Type" .
+
+imf:AttributeType
+    a owl:Class ;
+    rdfs:subClassOf imf:Type ;
+    skos:prefLabel "Attribute Type" .
+
+imf:Attribute
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:AttributeType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:Block
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:BlockType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:BlockType
+    a owl:Class ;
+    rdfs:subClassOf imf:ElementType ;
+    skos:prefLabel "Block Type" .
+
+imf:Direction
+    a owl:Class .
+
+imf:Element
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:ElementType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:ElementType
+    a owl:Class ;
+    rdfs:subClassOf imf:Type, [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange rdfs:Literal ;
+        owl:onProperty imf:symbol
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange rdfs:Literal ;
+        owl:onProperty skos:notation
+    ] ;
+    skos:prefLabel "Element Type" .
+
+imf:Terminal
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:allValuesFrom imf:TerminalType ;
+        owl:onProperty imf:instanceOf
+    ] .
+
+imf:TerminalType
+    a owl:Class ;
+    rdfs:subClassOf imf:ElementType, [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Direction ;
+        owl:onProperty imf:hasDirection
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass owl:Thing ;
+        owl:onProperty imf:hasMedium
+    ] ;
+    skos:prefLabel "Terminal Type" .
+
+imf:Type
+    a owl:Class ;
+    skos:prefLabel "Type" .
+
+imf:TypeConstraint
+    a owl:Class ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange xsd:integer ;
+        owl:onProperty imf:minCount
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onDataRange xsd:integer ;
+        owl:onProperty imf:maxCount
+    ] .
+
+imf:hasAspect
+    a owl:ObjectProperty .
+
+imf:hasDirection
+    a owl:ObjectProperty .
+
+imf:hasMedium
+    a owl:ObjectProperty .
+
+imf:hasTerminalType
+    a owl:ObjectProperty ;
+    rdfs:domain imf:BlockType ;
+    rdfs:range imf:TerminalType .
+
+imf:instanceOf
+    a owl:ObjectProperty ;
+    rdfs:range imf:Type ;
+    skos:prefLabel "instance of" .
+
+imf:maxCount
+    a owl:DatatypeProperty .
+
+imf:minCount
+    a owl:DatatypeProperty .
+
+imf:symbol
+    a owl:DatatypeProperty .
+
+<http://ns.imfid.org/imf-types>
+    a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
+    skos:altLabel "IMF types ontology" ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:scopeNote """
+
+    """ .
+
+rdfs:Literal
+    a rdfs:Datatype .
+
+xsd:integer
+    a rdfs:Datatype .
+
+owl:Thing
+    a owl:Class .
+
+skos:notation
+    a owl:DatatypeProperty .
+
+#+end_example
+
+*** RDF validate final file
+
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-types.owl.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.20 sec : 96 Triples : 477.61 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-types.owl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  true
+] .
+#+END_src
+
+*** Diagram
+
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-types.owl.ttl", output="out/owl/imf-types-overview.svg")
+
+#+RESULTS:
+
+[[./out/owl/imf-types-overview.svg]]
+
+** OWL Ontology
+
+#+NAME: owl-types-ontology
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/.imf-types.owl.wottr.ttl :mkdirp yes
+<<prefixes>>
+
+<http://ns.imfid.org/imf-types> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:altLabel "IMF types ontology" ;
+    skos:scopeNote """
+
+    """;
+    .
+
+<<owl-types-type>>
+<<owl-types-instanceOf>>
+<<owl-types-typeconstraint>>
+<<owl-types-relationconstraints>>
+
+#+END_SRC
+
+#+RESULTS: owl-types-ontology
+#+begin_example
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+@prefix ex:	<http://example.com#> .
+@prefix imf:	<http://ns.imfid.org/imf#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+
+<http://ns.imfid.org/imf-types> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:altLabel "IMF types ontology" ;
+    skos:scopeNote """
+
+    """;
+    .
+
+imf:Type a owl:Class ;
+  skos:prefLabel "Type";
+  .
+
+imf:ElementType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Element Type";
+  .
+
+imf:BlockType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Block Type";
+  .
+
+imf:TerminalType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Terminal Type";
+  .
+
+imf:AttributeType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Type";
+  .
+
+imf:AttributeGroupType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Group Type";
+  .
+
+imf:hasTerminalType a owl:ObjectProperty ;
+  rdfs:domain imf:BlockType ;
+  rdfs:range imf:TerminalType ;
+  .
+
+imf:instanceOf a owl:ObjectProperty ;
+  skos:prefLabel "instance of" ;
+  rdfs:range imf:Type .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:Attribute imf:instanceOf imf:AttributeType ) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
+imf:TypeConstraint a owl:Class .
+
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
+
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
+[] ottr:of o-owl-ax:SubDataMaxCardinality ;
+   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
+
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
+[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
+   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
+#+end_example
+
+* Example
+
+[[./example/pumpingFunctionType.png]]
 
 ** Type
 
- [ ] Make generic shapes for elements, blocks ..
- [ ] Make shapes for types?
+The types in the example is represented in the following Excel spreadsheet [[./example/pumpingFunctionType.xlsx]]
 
-#+BEGIN_SRC ttl
+*** Type expansion: SHACL
 
-ex:T-Block001 a imf:BlockType, sh:NodeShape ;
-
-  ## metadata
-  rdfs:label "Pumping, liquid velocity" ;
-
-  ## select all instances of this type
-  sh:target [ a sh:SHACLTarget; sh:select "SELECT ?this { ?this imf:instanceOf ex:X-Block001 }" ] ;
-
-  # values
-  sh:property [ sh:path imf:classifier ; sh:hasValue rdl:Pumping ] ;
-  sh:property [ sh:path imf:aspect ;     sh:hasValue imf:FunctionAspect ] ;
-  sh:property [ sh:path imf:symbol ;     sh:hasValue ex-img:SP402 ] ;
-
-  # terminals
-  sh:property [
-    sh:path imf:hasTerminal ;
-    sh:node ex:T-Terminal003 ;
-    sh:name "" ; # name of the constraint
-    sh:description "" ; # explanation of the constraint
-    sh:minCount 1;
-    sh:maxCount 1;
-  ]
-
-  # attribute groups
-  sh:property [
-    sh:path imf:hasAttributeGroup ;
-    sh:node ex:T-AttributeGroup001 ;
-    sh:name "" ;
-    sh:description "" ;
-    sh:minCount 1;
-    sh:maxCount 1;
-  ]
-
-.
-
-#####
-
-ex:T-Terminal003 a imf:TerminalType, sh:NodeShape ;
-
-  # values
-  sh:property 
-    [ sh:path imf:classifier ;    sh:hasValue rdl:NN123 ] ,
-    [ sh:path imf:hasAspect ;     sh:hasValue rdl:FunctionAspect ] ,
-    [ sh:path imf:hasDirection ;  sh:hasValue imf:Output ] ,
-    [ sh:path imf:hasMedia ;      sh:hasValue rdl:Water ] 
-  ;
-
-  # attributes
-  sh:property [
-    sh:path imf:hasAttribute ;
-    sh:node ex:T-Attribute001 ;
-    sh:name "" # name of the constraint
-    sh:description "" # description of the constraint
-    sh:minCount 1;
-    sh:maxCount 1;
-  ]
-.
-
-ex:T-Attribute001 a imf:AttributeType, sh:NodeShape ;
-  # values
-  sh:property
-    [ sh:path imf:property ; sh:hasValue rdl:Something ] ,
-    [ sh:path imf:uom ;         
-        # one of the following:
-        # sh:hasValue rdl:meter              ### one specific value
-        # sh:in ( rdl:meter rdl:cm rdl:mm )  ### list of values
-        # sh:class rdl:LengthUOMs            ### value must be instance of this class
-    ] ,
-    [ sh:path imf:value ;
-             
-        # one of the following:  
-        sh:hasValue 3.14 ;
-        sh:in ( 1.1 2.2 3.3 ) ;
-
-        # count
-        sh:minCount 1;
-        sh:maxCount 2;
-
-        # datatype
-        sh:datatype xsd:decimal ;
-
-        # value constraint: <, <=, > >=.
-        # sh:minExclusive 
-        sh:minInclusive 0 ;
-        # sh:maxExclusive
-        sh:maxInclusive 100 ;
-
-        # string based constraints
-        sh:minLength 3;
-        sh:maxLength 5;
-        sh:pattern "^B" ;
-        sh:flags "i" 
-    ] 
-.
-
-
-
-
-####################################################################
-
-  # attribute constraints
-  imf:hasAttributeGroupTypeConstraint [
-    imf:minCount 1;
-    imf:maxCount 1;
-    rdfs:label "" ;
-    skos:description "" ;
-    imf:onType ex:XYZ-ag001
-  ] ;
-
-ex:XYZ-ag001 a imf:AttributeGroupType ;
-  rdfs:label "Pumping attributes" ;
-  imf:hasAttributeType ex:XYZ-attr001 , ex:XYZ-attr002 .
-
-## TODO need to specify different types of attributes
-
-ex:XYZ-attr001 a imf:AttributeType ;
-  rdfs:label "Fluid" ;
-  imf:property rdl:Fluid .
-
-ex:XYZ-attr002 a imf:AttributeType ;
-  rdfs:label "Flowrate, vol, UoM" ;
-  imf:property rdl:VolumetricFlowrate .
-  
+#+BEGIN_SRC sh :exports none :results raw
+java -jar bin/lutra.jar -f -L stottr -l out/ottr/shacl.stottr -I tabottr example/pumpingFunctionType.xlsx | rapper - -i turtle -o turtle -I 'http://example.com#' > example/pumpingFunctionType.xlsx.ttl
 #+END_SRC
 
-** Instance
+#+RESULTS:
+rapper: Parsing file <stdin> with parser turtle and base URI http://example.com#
+rapper: Serializing with serializer turtle and base URI http://example.com#
+rapper: Parsing returned 167 triples
 
-#+BEGIN_SRC ttl
-ex:myPumping001 a imf:Block ;
-  imf:instanceOf ex:XYZ-b001 ;
-  ## can/should(?) include all type data?
+#+INCLUDE: "example/pumpingFunctionType.xlsx.ttl" src ttl
 
-  imf:hasAttributeGroup [
-    rdfs:label "Purpose attributes" ;
-    imf:instanceOf ex:XYZ-ag001 ;
+*** Type translation: OWL
 
-    imf:hasAttribute [
-      imf:instanceOf ex:XYZ-attr001;
-      imf:value rdl:Liquid
-    ] , [
-      imf:instanceOf ex:XYZ-attr002 ;
-      imf:uom rdl:CubicMeterPerHour ;
-      imf:value 3000 ;
-      imf:qualifier rdl:specified, rdl:operating, rdl:maximum, rdl:continuous .
-    ] ;
- 
-  imf:hasTerminal ex:myTerminal003 .
+#+CALL: py_run_sparql(query=sparql_shaclClass, data="example/pumpingFunctionType.xlsx.ttl")
 
-ex:myTerminal003 a imf:Terminal .
+#+RESULTS:
+| ~class~         | ~imfClass~           | ~name~                             | ~description~ | ~severity~ | ~message~ |
+|-----------------+----------------------+------------------------------------+---------------+------------+-----------|
+| ~ex:sB-001~     | ~imf:Block~          | ~Pumping, liquid velocity~         |               |            |           |
+| ~ex:sBAg-001~   | ~imf:AttributeGroup~ | ~Pumping purpose attributes~       |               |            |           |
+| ~ex:sBAg-002~   | ~imf:AttributeGroup~ | ~Pumping supplementary attributes~ |               |            |           |
+| ~ex:sBAttr-001~ | ~imf:Attribute~      | ~Fluid~                            |               |            |           |
+| ~ex:sBAttr-002~ | ~imf:Attribute~      | ~Flowrate~                         |               |            |           |
+| ~ex:sBAttr-003~ | ~imf:Attribute~      | ~Pressure delta~                   |               |            |           |
+| ~ex:sBAttr-004~ | ~imf:Attribute~      | ~Suction pressure~                 |               |            |           |
+| ~ex:sBAttr-005~ | ~imf:Attribute~      | ~Pressure delta~                   |               |            |           |
+| ~ex:sBAttr-006~ | ~imf:Attribute~      | ~Pumping power~                    |               |            |           |
+| ~ex:sBAttr-007~ | ~imf:Attribute~      | ~App standard~                     |               |            |           |
+| ~ex:sBAttr-008~ | ~imf:Attribute~      | ~Client reqs~                      |               |            |           |
+| ~ex:sBAttr-009~ | ~imf:Attribute~      | ~Noise regs~                       |               |            |           |
+| ~ex:sT-001~     | ~imf:Terminal~       |                                    |               |            |           |
+| ~ex:sT-002~     | ~imf:Terminal~       |                                    |               |            |           |
+| ~ex:sT-003~     | ~imf:Terminal~       |                                    |               |            |           |
 
-#+END_SRC
+#+CALL: py_run_sparql(query=sparql_shaclClassRestriction, data="example/pumpingFunctionType.xlsx.ttl")
+
+#+RESULTS:
+| ~class~         | ~path~                  | ~minCount~ | ~maxCount~ | ~nodeTargetClass~ | ~hasValue~                 | ~in~ | ~datatype~    | ~minExclusive~ | ~minInclusive~ | ~maxExclusive~ | ~maxInclusive~ | ~minLength~ | ~maxLength~ | ~pattern~ | ~flags~ |
+|-----------------+-------------------------+------------+------------+-------------------+----------------------------+------+---------------+----------------+----------------+----------------+----------------+-------------+-------------+-----------+---------|
+| ~ex:sB-001~     | ~imf:hasTerminal~       | ~1~        | ~1~        | ~ex:sT-001~       |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sB-001~     | ~imf:hasTerminal~       | ~1~        | ~1~        | ~ex:sT-002~       |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sB-001~     | ~imf:hasAttributeGroup~ | ~1~        | ~1~        | ~ex:sBAg-002~     |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sB-001~     | ~imf:aspect~            |            |            |                   | ~imf:functionAspect~       |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sB-001~     | ~imf:symbol~            |            |            |                   | ~SP402~                    |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sB-001~     | ~imf:classifier~        |            |            |                   | ~ns1:Pumping~              |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sB-001~     | ~imf:hasTerminal~       | ~1~        | ~3~        | ~ex:sT-003~       |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sB-001~     | ~imf:hasAttributeGroup~ | ~1~        | ~1~        | ~ex:sBAg-001~     |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-001~   |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-002~   |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-003~   |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-004~   |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-005~   |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-006~   |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAg-002~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-007~   |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAg-002~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-008~   |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAg-002~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-009~   |                            |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sBAttr-001~ | ~imf:value~             | ~1~        | ~1~        |                   |                            |      | ~xsd:integer~ |                | ~0~            |                | ~10000~        |             |             |           |         |
+| ~ex:sT-001~     | ~imf:classifier~        |            |            |                   | ~ns1:RDS4233125~           |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sT-001~     | ~imf:direction~         |            |            |                   | ~imf:input~                |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sT-001~     | ~imf:media~             |            |            |                   | ~ns1:WaterMedium~          |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sT-001~     | ~imf:classifier~        |            |            |                   | ~ns1:RDS4233127~           |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sT-001~     | ~imf:direction~         |            |            |                   | ~imf:output~               |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sT-001~     | ~imf:media~             |            |            |                   | ~ns1:WaterMedium~          |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sT-002~     | ~imf:direction~         |            |            |                   | ~imf:input~                |      |               |                |                |                |                |             |             |           |         |
+| ~ex:sT-002~     | ~imf:media~             |            |            |                   | ~ns1:MechanicalRotatation~ |      |               |                |                |                |                |             |             |           |         |
 
 * Appendix
 ** Prefixes
@@ -3103,6 +3334,44 @@ This section contains the prefixes used throughout this document.
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 @prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
 #+end_example
+
+#+NAME: py_prefixes_sparql
+#+BEGIN_SRC python :var prefixes=prefixes 
+output = ""
+
+for p in prefixes.split("\n"):
+  output += p.replace("@","").strip().strip(".") + "\n"
+
+return output
+#+END_SRC
+
+#+RESULTS: py_prefixes_sparql
+#+begin_example
+prefix xsd:	<http://www.w3.org/2001/XMLSchema#> 
+prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> 
+prefix owl:    <http://www.w3.org/2002/07/owl#> 
+prefix skos:	<http://www.w3.org/2004/02/skos/core#> 
+prefix pav:	<http://purl.org/pav/> 
+prefix sh: 	<http://www.w3.org/ns/shacl#> 
+prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> 
+prefix ex:	<http://example.com#> 
+prefix imf:	<http://ns.imfid.org/imf#> 
+
+prefix p14:    <http://example.com/P14#> 
+prefix ottr:        <http://ns.ottr.xyz/0.4/> 
+prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> 
+prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> 
+prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> 
+prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> 
+prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> 
+
+prefix o-imf:	     <http://ns.imfid.org/templates/> 
+prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/>
+#+end_example
+
+
+
 
 * Media                                                            :noexport:
 
@@ -3680,17 +3949,17 @@ sparql --data=<file> --query=<query>
 
 
 #+NAME: sh_jena_sparql
-#+BEGIN_SRC sh :results output :var query="PREFIX imf: <http://ns.imfid.org/imf#> SELECT * {?s ?p ?o} LIMIT 1" :var files="out/owl/imf-top.owl.ttl" :hlines yes :exports both
+#+BEGIN_SRC sh :results output :var query="PREFIX imf: <http://ns.imfid.org/imf#> SELECT * {?s ?p ?o} LIMIT 1" :var files="out/owl/imf-all.owl.ttl" :hlines yes :exports both
 echo "$query" > out/temp/.temp-sh_jena_sparql
 bin/apache-jena/bin/sparql --results=text --data=$files --query out/temp/.temp-sh_jena_sparql
 #+END_SRC
 
 #+RESULTS: sh_jena_sparql
-: -----------------------------------------------------------------------------------------------
-: | s                        | p                                             | o                |
-: ===============================================================================================
-: | imf:hierarchicalRelation | <http://www.w3.org/2000/01/rdf-schema#domain> | imf:AspectElement |
-: -----------------------------------------------------------------------------------------------
+: ---------------------------------------------------------------------------------------------------------------
+: | s    | p                                                 | o                                                |
+: ===============================================================================================================
+: | _:b0 | <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> | <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> |
+: ---------------------------------------------------------------------------------------------------------------
 
 
 
@@ -4342,7 +4611,7 @@ return output
 Run SPARQL queries on RDF data files.
 
 #+NAME: py_run_sparql
-#+BEGIN_SRC python :var query="SELECT ?s ?p ?o {?s ?p ?o} LIMIT 10" :var prefixes="" :var data="out/owl/imf-all.owl.ttl" :results raw
+#+BEGIN_SRC python :var query="SELECT ?s ?p ?o {?s ?p ?o} LIMIT 10" :var prefixes=py_prefixes_sparql() :var data="out/owl/imf-all.owl.ttl" :results raw
 
 # input: 'query': SPARQL query string
 # input: 'prefixes': a string of prefixes for conveniently appending to the query
@@ -4357,7 +4626,7 @@ graph = rdflib.Graph()
 graph.parse(data, format="ttl")
 
 # query graph:
-qResult = graph.query(prefixes + query)
+qResult = graph.query(prefixes + " " + query)
 
 output = ""
 
@@ -4402,20 +4671,18 @@ return output
 #+END_SRC
 
 #+RESULTS: py_run_sparql
-| ~s~                                    | ~p~                  | ~o~                                         |
-|----------------------------------------+----------------------+---------------------------------------------|
-| ~ub1bL280C25~                          | ~rdf:type~           | ~owl:Class~                                 |
-| ~imf:hasAspect~                        | ~skos:definition~    | ~Relates an aspect object with its aspect.~ |
-| ~ns1:imf-top~                          | ~skos:altLabel~      | ~IMF top ontology~                          |
-| ~ub1bL305C9~                           | ~owl:onProperty~     | ~imf:hasAspect~                             |
-| ~ns1:imf~                              | ~owl:imports~        | ~ns2:imf-top~                               |
-| ~f72435ec3bb9048bdbed94ab20fc43eb2b19~ | ~rdf:rest~           | ~f72435ec3bb9048bdbed94ab20fc43eb2b20~      |
-| ~imf:isPartOf~                        | ~rdfs:subPropertyOf~ | ~imf:hierarchicalRelation~                  |
-| ~imf:associativeRelation~              | ~rdf:type~           | ~owl:ObjectProperty~                        |
-| ~ns1:imf~                              | ~owl:imports~        | ~ns2:imf-aspects~                           |
-| ~imf:isPartOf~                        | ~rdfs:subPropertyOf~ | ~skos:broader~                              |
-
-
+| ~s~                                      | ~p~               | ~o~                                                                                                                                                                                           |
+|------------------------------------------+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ~ns1:Attribute~                          | ~rdfs:subClassOf~ | ~_:n8b06ae28f1664b04a1d16a1dc3f64d7fb42~                                                                                                                                                      |
+| ~ns1:externalReference~                  | ~rdf:type~        | ~owl:ObjectProperty~                                                                                                                                                                          |
+| ~ns1:AspectElement~                      | ~ns2:prefLabel~   | ~Aspect Element~                                                                                                                                                                              |
+| ~_:n8b06ae28f1664b04a1d16a1dc3f64d7fb30~ | ~rdf:type~        | ~owl:Restriction~                                                                                                                                                                             |
+| ~_:n8b06ae28f1664b04a1d16a1dc3f64d7fb27~ | ~rdf:rest~        | ~_:n8b06ae28f1664b04a1d16a1dc3f64d7fb28~                                                                                                                                                      |
+| ~ns1:associativeRelation~                | ~ns2:prefLabel~   | ~associative relation~                                                                                                                                                                        |
+| ~ns1:externalReference~                  | ~ns2:definition~  | ~A generic relation that is used to relate elements to external ontologies or reference data library for added semantic descriptions.~                                                        |
+| ~_:n8b06ae28f1664b04a1d16a1dc3f64d7fb41~ | ~owl:onClass~     | ~ns1:Regularity~                                                                                                                                                                              |
+| ~_:n8b06ae28f1664b04a1d16a1dc3f64d7fb73~ | ~rdf:rest~        | ~rdf:nil~                                                                                                                                                                                     |
+| ~ns3:imf~                                | ~ns2:scopeNote~   | ~This is the main IMF ontology and its main point of entry. This ontology document imports all other IMF sub-ontology documents, each of which focus on one particular part of the ontology.~ |
 
 *** py_parse-ttl-file: Parse source block
 

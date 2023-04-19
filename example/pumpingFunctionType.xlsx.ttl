@@ -1,0 +1,209 @@
+@base <http://example.com#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix p14: </P14#> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
+@prefix ex: <> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+ex:sB-001
+    a imf:BlockType, sh:NodeShape ;
+    sh:name "Pumping, liquid velocity" ;
+    sh:property [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sT-001 ;
+        sh:path imf:hasTerminal
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sT-002 ;
+        sh:path imf:hasTerminal
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAg-002 ;
+        sh:path imf:hasAttributeGroup
+    ], [
+        sh:hasValue imf:functionAspect ;
+        sh:path imf:aspect
+    ], [
+        sh:hasValue "SP402" ;
+        sh:path imf:symbol
+    ], [
+        sh:hasValue <http://example.net/rdl/Pumping> ;
+        sh:path imf:classifier
+    ], [
+        sh:maxCount 3 ;
+        sh:minCount 1 ;
+        sh:node ex:sT-003 ;
+        sh:path imf:hasTerminal
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAg-001 ;
+        sh:path imf:hasAttributeGroup
+    ] ;
+    sh:targetClass ex:sB-001 .
+
+ex:sBAg-001
+    a imf:AttributeGroupType, sh:NodeShape ;
+    sh:name "Pumping purpose attributes" ;
+    sh:property [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAttr-001 ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAttr-002 ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAttr-003 ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAttr-004 ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAttr-005 ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAttr-006 ;
+        sh:path imf:hasAttribute
+    ] ;
+    sh:targetClass ex:sBAg-001 .
+
+ex:sBAg-002
+    a imf:AttributeGroupType, sh:NodeShape ;
+    sh:name "Pumping supplementary attributes" ;
+    sh:property [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAttr-007 ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAttr-008 ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:node ex:sBAttr-009 ;
+        sh:path imf:hasAttribute
+    ] ;
+    sh:targetClass ex:sBAg-002 .
+
+ex:sBAttr-001
+    a imf:AttributeType, sh:NodeShape ;
+    sh:name "Fluid" ;
+    sh:property [
+        sh:datatype xsd:integer ;
+        sh:maxCount 1 ;
+        sh:maxInclusive 10000 ;
+        sh:minCount 1 ;
+        sh:minInclusive 0 ;
+        sh:path imf:value
+    ] ;
+    sh:targetClass ex:sBAttr-001 .
+
+ex:sBAttr-002
+    a imf:AttributeType, sh:NodeShape ;
+    sh:name "Flowrate" ;
+    sh:targetClass ex:sBAttr-002 .
+
+ex:sBAttr-003
+    a imf:AttributeType, sh:NodeShape ;
+    sh:name "Pressure delta" ;
+    sh:targetClass ex:sBAttr-003 .
+
+ex:sBAttr-004
+    a imf:AttributeType, sh:NodeShape ;
+    sh:name "Suction pressure" ;
+    sh:targetClass ex:sBAttr-004 .
+
+ex:sBAttr-005
+    a imf:AttributeType, sh:NodeShape ;
+    sh:name "Pressure delta" ;
+    sh:targetClass ex:sBAttr-005 .
+
+ex:sBAttr-006
+    a imf:AttributeType, sh:NodeShape ;
+    sh:name "Pumping power" ;
+    sh:targetClass ex:sBAttr-006 .
+
+ex:sBAttr-007
+    a imf:AttributeType, sh:NodeShape ;
+    sh:name "App standard" ;
+    sh:targetClass ex:sBAttr-007 .
+
+ex:sBAttr-008
+    a imf:AttributeType, sh:NodeShape ;
+    sh:name "Client reqs" ;
+    sh:targetClass ex:sBAttr-008 .
+
+ex:sBAttr-009
+    a imf:AttributeType, sh:NodeShape ;
+    sh:name "Noise regs" ;
+    sh:targetClass ex:sBAttr-009 .
+
+ex:sT-001
+    a imf:TerminalType, sh:NodeShape ;
+    sh:property [
+        sh:hasValue <http://example.net/rdl/RDS4233125> ;
+        sh:path imf:classifier
+    ], [
+        sh:hasValue imf:input ;
+        sh:path imf:direction
+    ], [
+        sh:hasValue <http://example.net/rdl/WaterMedium> ;
+        sh:path imf:media
+    ], [
+        sh:hasValue <http://example.net/rdl/RDS4233127> ;
+        sh:path imf:classifier
+    ], [
+        sh:hasValue imf:output ;
+        sh:path imf:direction
+    ], [
+        sh:hasValue <http://example.net/rdl/WaterMedium> ;
+        sh:path imf:media
+    ] ;
+    sh:targetClass ex:sT-001 .
+
+ex:sT-002
+    a imf:TerminalType, sh:NodeShape ;
+    sh:property [
+        sh:hasValue imf:input ;
+        sh:path imf:direction
+    ], [
+        sh:hasValue <http://example.net/rdl/MechanicalRotatation> ;
+        sh:path imf:media
+    ] ;
+    sh:targetClass ex:sT-002 .
+
+ex:sT-003
+    a imf:TerminalType, sh:NodeShape ;
+    sh:targetClass ex:sT-003 .
+

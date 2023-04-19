@@ -18,52 +18,11 @@
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
-imf:Scope  rdfs:subClassOf  imf:AttributeQualifier .
+imf:Range  rdfs:subClassOf  imf:AttributeQualifier .
 
 imf:Attribute  rdfs:subClassOf  _:b0 .
 
-_:b0    owl:onClass                  imf:Scope ;
-        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
-        rdf:type                     owl:Restriction ;
-        owl:onProperty               imf:qualifier .
-
-imf:qualifier  rdf:type  owl:ObjectProperty .
-
-imf:Scope  rdf:type  owl:Class ;
-        rdf:type  owl:Class .
-
-_:b1    rdf:type   owl:Class ;
-        owl:oneOf  _:b2 .
-
-_:b3    rdf:rest   rdf:nil ;
-        rdf:first  imf:operating .
-
-_:b2    rdf:rest   _:b3 ;
-        rdf:first  imf:design .
-
-_:b1    rdf:type  owl:Class .
-
-imf:Scope  rdf:type          owl:Class ;
-        owl:equivalentClass  _:b1 .
-
-imf:design  rdf:type  imf:Scope .
-
-imf:operating  rdf:type  imf:Scope .
-
-_:b4    rdf:type     owl:AllDifferent ;
-        owl:members  _:b5 .
-
-_:b6    rdf:rest   rdf:nil ;
-        rdf:first  imf:operating .
-
-_:b5    rdf:rest   _:b6 ;
-        rdf:first  imf:design .
-
-imf:Range  rdfs:subClassOf  imf:AttributeQualifier .
-
-imf:Attribute  rdfs:subClassOf  _:b7 .
-
-_:b7    owl:onClass                  imf:Range ;
+_:b0    owl:onClass                  imf:Range ;
         owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
         rdf:type                     owl:Restriction ;
         owl:onProperty               imf:qualifier .
@@ -72,29 +31,6 @@ imf:qualifier  rdf:type  owl:ObjectProperty .
 
 imf:Range  rdf:type  owl:Class ;
         rdf:type  owl:Class .
-
-_:b8    rdf:type   owl:Class ;
-        owl:oneOf  _:b9 .
-
-_:b9    rdf:rest   _:b10 ;
-        rdf:first  imf:average .
-
-_:b10   rdf:rest   _:b11 ;
-        rdf:first  imf:maximum .
-
-_:b12   rdf:rest   rdf:nil ;
-        rdf:first  imf:normal .
-
-_:b11   rdf:rest   _:b13 ;
-        rdf:first  imf:minimum .
-
-_:b13   rdf:rest   _:b12 ;
-        rdf:first  imf:nominal .
-
-_:b8    rdf:type  owl:Class .
-
-imf:Range  rdf:type          owl:Class ;
-        owl:equivalentClass  _:b8 .
 
 imf:average  rdf:type  imf:Range .
 
@@ -106,44 +42,52 @@ imf:nominal  rdf:type  imf:Range .
 
 imf:normal  rdf:type  imf:Range .
 
-_:b14   rdf:type     owl:AllDifferent ;
-        owl:members  _:b15 .
+_:b1    rdf:type   owl:Class ;
+        owl:oneOf  _:b2 .
 
-_:b16   rdf:rest   rdf:nil ;
+_:b3    rdf:rest   rdf:nil ;
         rdf:first  imf:normal .
 
-_:b15   rdf:rest   _:b17 ;
+_:b2    rdf:rest   _:b4 ;
         rdf:first  imf:average .
 
-_:b18   rdf:rest   _:b16 ;
-        rdf:first  imf:nominal .
-
-_:b17   rdf:rest   _:b19 ;
+_:b4    rdf:rest   _:b5 ;
         rdf:first  imf:maximum .
 
-_:b19   rdf:rest   _:b18 ;
+_:b5    rdf:rest   _:b6 ;
         rdf:first  imf:minimum .
 
-_:b20   rdf:type     owl:AllDisjointClasses ;
-        owl:members  _:b21 .
+_:b6    rdf:rest   _:b3 ;
+        rdf:first  imf:nominal .
 
-_:b22   rdf:rest   _:b23 ;
-        rdf:first  imf:Provenance .
+_:b1    rdf:type  owl:Class .
 
-_:b21   rdf:rest   _:b22 ;
-        rdf:first  imf:Range .
+imf:Range  rdf:type          owl:Class ;
+        owl:equivalentClass  _:b1 .
 
-_:b23   rdf:rest   _:b24 ;
-        rdf:first  imf:Regularity .
+_:b7    rdf:type     owl:AllDifferent ;
+        owl:members  _:b8 .
 
-_:b24   rdf:rest   rdf:nil ;
-        rdf:first  imf:Scope .
+_:b9    rdf:rest   _:b10 ;
+        rdf:first  imf:nominal .
+
+_:b11   rdf:rest   _:b9 ;
+        rdf:first  imf:minimum .
+
+_:b8    rdf:rest   _:b12 ;
+        rdf:first  imf:average .
+
+_:b12   rdf:rest   _:b11 ;
+        rdf:first  imf:maximum .
+
+_:b10   rdf:rest   rdf:nil ;
+        rdf:first  imf:normal .
 
 imf:Provenance  rdfs:subClassOf  imf:AttributeQualifier .
 
-imf:Attribute  rdfs:subClassOf  _:b25 .
+imf:Attribute  rdfs:subClassOf  _:b13 .
 
-_:b25   owl:onClass                  imf:Provenance ;
+_:b13   owl:onClass                  imf:Provenance ;
         owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
         rdf:type                     owl:Restriction ;
         owl:onProperty               imf:qualifier .
@@ -153,40 +97,96 @@ imf:qualifier  rdf:type  owl:ObjectProperty .
 imf:Provenance  rdf:type  owl:Class ;
         rdf:type  owl:Class .
 
-_:b26   rdf:type   owl:Class ;
-        owl:oneOf  _:b27 .
-
-_:b27   rdf:rest   _:b28 ;
-        rdf:first  imf:calculated .
-
-_:b29   rdf:rest   rdf:nil ;
-        rdf:first  imf:specified .
-
-_:b28   rdf:rest   _:b29 ;
-        rdf:first  imf:measured .
-
-_:b26   rdf:type  owl:Class .
-
-imf:Provenance  rdf:type     owl:Class ;
-        owl:equivalentClass  _:b26 .
-
 imf:calculated  rdf:type  imf:Provenance .
 
 imf:measured  rdf:type  imf:Provenance .
 
 imf:specified  rdf:type  imf:Provenance .
 
-_:b30   rdf:type     owl:AllDifferent ;
-        owl:members  _:b31 .
+_:b14   rdf:type   owl:Class ;
+        owl:oneOf  _:b15 .
 
-_:b31   rdf:rest   _:b32 ;
-        rdf:first  imf:calculated .
-
-_:b32   rdf:rest   _:b33 ;
+_:b16   rdf:rest   _:b17 ;
         rdf:first  imf:measured .
 
-_:b33   rdf:rest   rdf:nil ;
+_:b17   rdf:rest   rdf:nil ;
         rdf:first  imf:specified .
+
+_:b15   rdf:rest   _:b16 ;
+        rdf:first  imf:calculated .
+
+_:b14   rdf:type  owl:Class .
+
+imf:Provenance  rdf:type     owl:Class ;
+        owl:equivalentClass  _:b14 .
+
+_:b18   rdf:type     owl:AllDifferent ;
+        owl:members  _:b19 .
+
+_:b19   rdf:rest   _:b20 ;
+        rdf:first  imf:calculated .
+
+_:b20   rdf:rest   _:b21 ;
+        rdf:first  imf:measured .
+
+_:b21   rdf:rest   rdf:nil ;
+        rdf:first  imf:specified .
+
+_:b22   rdf:type     owl:AllDisjointClasses ;
+        owl:members  _:b23 .
+
+_:b24   rdf:rest   rdf:nil ;
+        rdf:first  imf:Regularity .
+
+_:b25   rdf:rest   _:b24 ;
+        rdf:first  imf:Range .
+
+_:b23   rdf:rest   _:b26 ;
+        rdf:first  imf:Scope .
+
+_:b26   rdf:rest   _:b25 ;
+        rdf:first  imf:Provenance .
+
+imf:Scope  rdfs:subClassOf  imf:AttributeQualifier .
+
+imf:Attribute  rdfs:subClassOf  _:b27 .
+
+_:b27   owl:onClass                  imf:Scope ;
+        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        rdf:type                     owl:Restriction ;
+        owl:onProperty               imf:qualifier .
+
+imf:qualifier  rdf:type  owl:ObjectProperty .
+
+imf:Scope  rdf:type  owl:Class ;
+        rdf:type  owl:Class .
+
+imf:design  rdf:type  imf:Scope .
+
+imf:operating  rdf:type  imf:Scope .
+
+_:b28   rdf:type   owl:Class ;
+        owl:oneOf  _:b29 .
+
+_:b30   rdf:rest   rdf:nil ;
+        rdf:first  imf:operating .
+
+_:b29   rdf:rest   _:b30 ;
+        rdf:first  imf:design .
+
+_:b28   rdf:type  owl:Class .
+
+imf:Scope  rdf:type          owl:Class ;
+        owl:equivalentClass  _:b28 .
+
+_:b31   rdf:type     owl:AllDifferent ;
+        owl:members  _:b32 .
+
+_:b32   rdf:rest   _:b33 ;
+        rdf:first  imf:design .
+
+_:b33   rdf:rest   rdf:nil ;
+        rdf:first  imf:operating .
 
 imf:Regularity  rdfs:subClassOf  imf:AttributeQualifier .
 
@@ -202,23 +202,23 @@ imf:qualifier  rdf:type  owl:ObjectProperty .
 imf:Regularity  rdf:type  owl:Class ;
         rdf:type  owl:Class .
 
+imf:absolute  rdf:type  imf:Regularity .
+
+imf:continuous  rdf:type  imf:Regularity .
+
 _:b35   rdf:type   owl:Class ;
         owl:oneOf  _:b36 .
 
-_:b36   rdf:rest   _:b37 ;
-        rdf:first  imf:absolute .
-
 _:b37   rdf:rest   rdf:nil ;
         rdf:first  imf:continuous .
+
+_:b36   rdf:rest   _:b37 ;
+        rdf:first  imf:absolute .
 
 _:b35   rdf:type  owl:Class .
 
 imf:Regularity  rdf:type     owl:Class ;
         owl:equivalentClass  _:b35 .
-
-imf:absolute  rdf:type  imf:Regularity .
-
-imf:continuous  rdf:type  imf:Regularity .
 
 _:b38   rdf:type     owl:AllDifferent ;
         owl:members  _:b39 .

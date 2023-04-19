@@ -18,23 +18,23 @@
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
-_:b0    rdf:type     owl:AllDifferent ;
-        owl:members  _:b1 .
+_:b0    rdf:type  owl:Class .
 
-_:b1    rdf:rest   _:b2 ;
+imf:InputTerminal  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b0 .
+
+_:b0    rdf:type        owl:Restriction ;
+        owl:onProperty  imf:direction ;
+        owl:hasValue    imf:input .
+
+_:b1    rdf:type     owl:AllDifferent ;
+        owl:members  _:b2 .
+
+_:b2    rdf:rest   _:b3 ;
         rdf:first  imf:input .
 
-_:b2    rdf:rest   rdf:nil ;
+_:b3    rdf:rest   rdf:nil ;
         rdf:first  imf:output .
-
-_:b3    rdf:type           owl:Restriction ;
-        owl:onProperty     imf:partOf ;
-        owl:allValuesFrom  imf:Terminal .
-
-imf:partOf  rdf:type  owl:ObjectProperty .
-
-imf:Terminal  rdf:type   owl:Class ;
-        rdfs:subClassOf  _:b3 .
 
 _:b4    rdf:type  owl:Class .
 
@@ -45,72 +45,68 @@ _:b4    rdf:type        owl:Restriction ;
         owl:onProperty  imf:direction ;
         owl:hasValue    imf:output .
 
-_:b5    rdf:type     owl:AllDisjointClasses ;
-        owl:members  _:b6 .
+_:b5    rdf:type           owl:Restriction ;
+        owl:onProperty     imf:partOf ;
+        owl:allValuesFrom  imf:Terminal .
 
-_:b7    rdf:rest   rdf:nil ;
-        rdf:first  imf:Terminal .
+imf:partOf  rdf:type  owl:ObjectProperty .
 
-_:b6    rdf:rest   _:b7 ;
-        rdf:first  imf:Block .
+imf:Terminal  rdf:type   owl:Class ;
+        rdfs:subClassOf  _:b5 .
 
-_:b8    rdf:type     owl:Class ;
-        owl:unionOf  _:b9 .
-
-_:b10   rdf:rest   rdf:nil ;
-        rdf:first  imf:Terminal .
-
-_:b9    rdf:rest   _:b10 ;
-        rdf:first  imf:Block .
-
-_:b8    rdf:type  owl:Class .
-
-imf:Element  rdf:type        owl:Class ;
-        owl:equivalentClass  _:b8 .
-
-_:b11   rdf:type   owl:Class ;
-        owl:oneOf  _:b12 .
-
-_:b12   rdf:rest   _:b13 ;
-        rdf:first  imf:input .
-
-_:b13   rdf:rest   rdf:nil ;
-        rdf:first  imf:output .
-
-_:b11   rdf:type  owl:Class .
-
-imf:Direction  rdf:type      owl:Class ;
-        owl:equivalentClass  _:b11 .
-
-_:b14   rdf:type           owl:Restriction ;
+_:b6    rdf:type           owl:Restriction ;
         owl:onProperty     imf:partOf ;
         owl:allValuesFrom  imf:Block .
 
 imf:partOf  rdf:type  owl:ObjectProperty .
 
 imf:Block  rdf:type      owl:Class ;
-        rdfs:subClassOf  _:b14 .
+        rdfs:subClassOf  _:b6 .
 
-_:b15   rdf:type  owl:Class .
+_:b7    rdf:type     owl:AllDisjointClasses ;
+        owl:members  _:b8 .
 
-imf:InputTerminal  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b15 .
+_:b8    rdf:rest   _:b9 ;
+        rdf:first  imf:Block .
 
-_:b15   rdf:type        owl:Restriction ;
-        owl:onProperty  imf:direction ;
-        owl:hasValue    imf:input .
+_:b9    rdf:rest   rdf:nil ;
+        rdf:first  imf:Terminal .
 
-_:b16   rdf:first  _:b17 ;
-        rdf:rest   _:b18 .
+_:b10   rdf:type     owl:Class ;
+        owl:unionOf  _:b11 .
+
+_:b11   rdf:rest   _:b12 ;
+        rdf:first  imf:Block .
+
+_:b12   rdf:rest   rdf:nil ;
+        rdf:first  imf:Terminal .
+
+_:b10   rdf:type  owl:Class .
+
+imf:Element  rdf:type        owl:Class ;
+        owl:equivalentClass  _:b10 .
+
+_:b13   rdf:type   owl:Class ;
+        owl:oneOf  _:b14 .
+
+_:b15   rdf:rest   rdf:nil ;
+        rdf:first  imf:output .
+
+_:b14   rdf:rest   _:b15 ;
+        rdf:first  imf:input .
+
+_:b13   rdf:type  owl:Class .
+
+imf:Direction  rdf:type      owl:Class ;
+        owl:equivalentClass  _:b13 .
 
 imf:thePart  rdf:type  owl:ObjectProperty ;
         rdfs:domain  imf:BreakdownPoint ;
         rdfs:range   imf:Element .
 
-_:b19   rdf:first  _:b20 ;
-        rdf:rest   rdf:nil .
-
-_:b20   owl:inverseOf  imf:theInput .
+imf:theWhole  rdf:type  owl:ObjectProperty ;
+        rdfs:domain  imf:BreakdownPoint ;
+        rdfs:range   imf:Element .
 
 imf:hasPart  rdf:type       owl:ObjectProperty ;
         rdfs:subPropertyOf  imf:intraAspectRelation ;
@@ -120,11 +116,10 @@ imf:hasPart  rdf:type       owl:ObjectProperty ;
         skos:prefLabel      "has part" ;
         skos:altLabel       "has child" .
 
-imf:theWhole  rdf:type  owl:ObjectProperty ;
-        rdfs:domain  imf:BreakdownPoint ;
-        rdfs:range   imf:Element .
-
 imf:symbol  rdf:type  owl:AnnotationProperty .
+
+_:b16   rdf:first  _:b17 ;
+        rdf:rest   _:b18 .
 
 imf:ConnectionPoint  rdf:type  owl:Class ;
         skos:prefLabel  "Connection Point" .
@@ -132,7 +127,12 @@ imf:ConnectionPoint  rdf:type  owl:Class ;
 imf:classifier  rdf:type    owl:ObjectProperty ;
         rdfs:subPropertyOf  imf:externalReference .
 
-_:b17   owl:inverseOf  imf:thePart .
+imf:Terminal  rdf:type   owl:Class ;
+        rdfs:subClassOf  imf:Element ;
+        skos:prefLabel   "Terminal" ;
+        skos:altLabel    "Port" ;
+        skos:altLabel    "Channel" ;
+        skos:altLabel    "Input/Output" .
 
 imf:hasOutputTerminal
         rdf:type            owl:ObjectProperty ;
@@ -140,13 +140,6 @@ imf:hasOutputTerminal
         skos:prefLabel      "has output terminal" ;
         rdfs:range          imf:OutputTerminal ;
         skos:definition     "The relation between a block and its output terminals." .
-
-imf:Terminal  rdf:type   owl:Class ;
-        rdfs:subClassOf  imf:Element ;
-        skos:prefLabel   "Terminal" ;
-        skos:altLabel    "Port" ;
-        skos:altLabel    "Channel" ;
-        skos:altLabel    "Input/Output" .
 
 imf:theInput  rdf:type  owl:ObjectProperty ;
         rdfs:domain  imf:ConnectionPoint ;
@@ -156,11 +149,13 @@ imf:Element  rdf:type  owl:Class .
 
 imf:Direction  rdf:type  owl:Class .
 
-imf:partOf  rdfs:domain         imf:Element ;
+_:b19   owl:inverseOf  imf:theInput .
+
+imf:partOf  owl:propertyChainAxiom  _:b16 ;
+        rdfs:domain             imf:Element ;
         skos:prefLabel          "is part of" ;
         skos:altLabel           "has parent" ;
         rdf:type                owl:FunctionalProperty ;
-        owl:propertyChainAxiom  _:b16 ;
         rdf:type                owl:ObjectProperty ;
         rdfs:subPropertyOf      imf:intraAspectRelation ;
         rdfs:subPropertyOf      skos:broader ;
@@ -173,18 +168,21 @@ imf:InputTerminal  rdf:type  owl:Class ;
         skos:prefLabel   "Input Terminal" ;
         skos:altLabel    "Input" .
 
+_:b18   rdf:first  imf:theWhole ;
+        rdf:rest   rdf:nil .
+
 <http://ns.imfid.org/imf-elements>
         rdf:type        owl:Ontology ;
         owl:versionIRI  <http://ns.imfid.org/20230331/imf-elements> ;
         skos:prefLabel  "Information Modelling Framework Ontology: Elements " ;
         skos:scopeNote  "\n\n    " .
 
-_:b21   rdf:first  imf:theOutput ;
-        rdf:rest   _:b19 .
-
 imf:medium  rdf:type        owl:ObjectProperty ;
         rdfs:subPropertyOf  imf:externalReference ;
         rdfs:domain         imf:Terminal .
+
+_:b20   rdf:first  imf:theOutput ;
+        rdf:rest   _:b21 .
 
 imf:Block  rdf:type      owl:Class ;
         rdfs:subClassOf  imf:Element ;
@@ -204,9 +202,6 @@ imf:hasTerminal  rdf:type   owl:ObjectProperty ;
         skos:prefLabel      "has terminal" ;
         skos:definition     "The relation between a block and its terminals." .
 
-_:b18   rdf:first  imf:theWhole ;
-        rdf:rest   rdf:nil .
-
 imf:OutputTerminal  rdf:type  owl:Class ;
         rdfs:subClassOf  imf:Terminal ;
         skos:prefLabel   "Output Terminal" ;
@@ -216,6 +211,8 @@ imf:theOutput  rdf:type  owl:ObjectProperty ;
         rdfs:domain  imf:ConnectionPoint ;
         rdfs:range   imf:Terminal .
 
+_:b17   owl:inverseOf  imf:thePart .
+
 imf:connectedTo  rdf:type       owl:ObjectProperty ;
         rdf:type                owl:FunctionalProperty ;
         rdf:type                owl:IrreflexiveProperty ;
@@ -224,7 +221,10 @@ imf:connectedTo  rdf:type       owl:ObjectProperty ;
         skos:prefLabel          "connected to" ;
         rdfs:domain             imf:Terminal ;
         rdfs:range              imf:Terminal ;
-        owl:propertyChainAxiom  _:b21 .
+        owl:propertyChainAxiom  _:b20 .
+
+_:b21   rdf:first  _:b19 ;
+        rdf:rest   rdf:nil .
 
 imf:BreakdownPoint  rdf:type  owl:Class ;
         skos:prefLabel  "Breakdown Point" .

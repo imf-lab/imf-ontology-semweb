@@ -109,8 +109,8 @@ o-imf-t-s:SimpleValues[
     ottr:IRI ?path, 
   ? List<rdfs:Resource> ?in,
   ? owl:Class ?class,
-    xsd:integer ?minCount = 1, 
-    xsd:integer ?maxCount = 1,
+    xsd:integer ?minCount, 
+    xsd:integer ?maxCount,
   ? xsd:string ?name, 
   ? xsd:string ?description
 ] :: {
@@ -128,7 +128,7 @@ o-imf-t-s:ComplexValues[
     ottr:IRI ?path, 
   #? xsd:string ?message,   ## add these to all patterns?
   #? ottr:IRI ?severity,
-  ? rdfs:Resource ?value,
+  #? rdfs:Resource ?value,
   ? List<rdfs:Resource> ?in,
   ? owl:Class ?class,
   ? ottr:IRI ?datatype,
@@ -146,8 +146,8 @@ o-imf-t-s:ComplexValues[
   ? xsd:string ?description
 ] :: {
   #o-imf:ShaclPropertyShape(?typeID, ?id, ?path),
-  o-imf-t-s:SimpleValue(?id, ?typeID, ?path, ?value, ?name, ?description),
-  o-imf-t-s:SimpleValues(?id, ?typeID, ?path, ?in, ?class, ?minCount, ?maxCount, none, none),
+  #o-imf-t-s:SimpleValue(?id, ?typeID, ?path, ?value, ?name, ?description),
+  o-imf-t-s:SimpleValues(?id, ?typeID, ?path, ?in, ?class, ?minCount, ?maxCount, ?name, ?description),
   #ottr:Triple(?id, sh:message, ?message),
   #ottr:Triple(?id, sh:severity, ?severity),
   ottr:Triple(?id, sh:datatype, ?datatype),

@@ -23,12 +23,11 @@ imf:Aspect
 
 imf:AspectElement
     a owl:Class ;
-    rdfs:subClassOf [
+    rdfs:subClassOf imf:Element, [
         a owl:Restriction ;
         owl:allValuesFrom imf:AspectElement ;
         owl:onProperty imf:intraAspectRelation
     ] ;
-    rdfs:subclassOf imf:Element ;
     skos:prefLabel "Aspect Element" .
 
 imf:FunctionBlock

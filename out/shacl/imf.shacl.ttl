@@ -42,6 +42,27 @@ imf:AttributeGroupShape
 imf:AttributeShape
     a sh:NodeShape ;
     sh:property [
+        sh:class imf:Provenence ;
+        sh:maxCount 1 ;
+        sh:path imf:qualifier
+    ], [
+        sh:message "Attribute has no value" ;
+        sh:minCount 1 ;
+        sh:path imf:value ;
+        sh:severity sh:Warning
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path imf:property
+    ], [
+        sh:class imf:Range ;
+        sh:maxCount 1 ;
+        sh:path imf:qualifier
+    ], [
+        sh:class imf:Scope ;
+        sh:maxCount 1 ;
+        sh:path imf:qualifier
+    ], [
         sh:message "Attribute has no qualifier" ;
         sh:minCount 1 ;
         sh:path imf:qualifier ;
@@ -53,27 +74,6 @@ imf:AttributeShape
         sh:class imf:Regularity ;
         sh:maxCount 1 ;
         sh:path imf:qualifier
-    ], [
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path imf:property
-    ], [
-        sh:class imf:Range ;
-        sh:maxCount 1 ;
-        sh:path imf:qualifier
-    ], [
-        sh:message "Attribute has no value" ;
-        sh:minCount 1 ;
-        sh:path imf:value ;
-        sh:severity sh:Warning
-    ], [
-        sh:class imf:Scope ;
-        sh:maxCount 1 ;
-        sh:path imf:qualifier
-    ], [
-        sh:class imf:Provenence ;
-        sh:maxCount 1 ;
-        sh:path imf:qualifier
     ] ;
     sh:targetClass imf:Attribute ;
     sh:targetObjectsOf imf:hasAttribute ;
@@ -82,13 +82,13 @@ imf:AttributeShape
 imf:BlockShape
     a sh:NodeShape ;
     sh:property [
-        sh:class sh:Terminal ;
-        sh:path skos:hasTerminal
-    ], [
         sh:message "Block has no Terminal" ;
         sh:minCount 1 ;
         sh:path skos:hasTerminal ;
         sh:severity sh:Warning
+    ], [
+        sh:class sh:Terminal ;
+        sh:path skos:hasTerminal
     ], [
         sh:class sh:Block ;
         sh:maxCount 1 ;
@@ -115,18 +115,15 @@ imf:ElementShape
 imf:TerminalShape
     a sh:NodeShape ;
     sh:property [
+        sh:in (imf:input
+            imf:output
+        ) ;
+        sh:maxCount 1 ;
+        sh:path imf:direction
+    ], [
         sh:class sh:Terminal ;
         sh:maxCount 1 ;
         sh:path imf:connectedTo
-    ], [
-        sh:message "Terminal has no connection (to other Terminal)" ;
-        sh:minCount 1 ;
-        sh:path imf:connectedTo ;
-        sh:severity sh:Warning
-    ], [
-        sh:class sh:Terminal ;
-        sh:maxCount 1 ;
-        sh:path imf:partOf
     ], [
         sh:message "Terminal has no medium" ;
         sh:minCount 1 ;
@@ -136,11 +133,14 @@ imf:TerminalShape
         sh:maxCount 1 ;
         sh:path imf:medium
     ], [
-        sh:in (imf:input
-            imf:output
-        ) ;
+        sh:class sh:Terminal ;
         sh:maxCount 1 ;
-        sh:path imf:direction
+        sh:path imf:partOf
+    ], [
+        sh:message "Terminal has no connection (to other Terminal)" ;
+        sh:minCount 1 ;
+        sh:path imf:connectedTo ;
+        sh:severity sh:Warning
     ] ;
     sh:targetClass imf:InputTerminal, imf:OutputTerminal, imf:Terminal ;
     sh:targetObjectsOf imf:connectedTo, imf:hasTerminal ;

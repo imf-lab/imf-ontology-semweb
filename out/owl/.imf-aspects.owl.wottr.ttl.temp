@@ -18,218 +18,33 @@
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
-_:b0    rdf:type     owl:AllDifferent ;
-        owl:members  _:b1 .
-
-_:b2    rdf:rest   _:b3 ;
-        rdf:first  imf:productAspect .
-
-_:b1    rdf:rest   _:b4 ;
-        rdf:first  imf:functionAspect .
-
-_:b3    rdf:rest   rdf:nil ;
-        rdf:first  imf:installedAspect .
-
-_:b4    rdf:rest   _:b2 ;
-        rdf:first  imf:locationAspect .
-
-_:b5    rdf:type  owl:Class .
-
-imf:FunctionElement  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b5 .
-
-_:b5    rdf:type        owl:Restriction ;
-        owl:onProperty  imf:aspect ;
-        owl:hasValue    imf:functionAspect .
-
-imf:aspect  rdf:type  owl:ObjectProperty .
-
-imf:FunctionElement  rdfs:subClassOf  imf:AspectElement .
-
-_:b6    rdf:type           owl:Restriction ;
-        owl:onProperty     imf:intraAspectRelation ;
-        owl:allValuesFrom  imf:FunctionElement .
-
-imf:FunctionElement  rdf:type  owl:Class .
-
-imf:intraAspectRelation
-        rdf:type  owl:ObjectProperty .
-
-imf:FunctionElement  rdfs:subClassOf  _:b6 .
-
-imf:FunctionBlock  rdfs:subClassOf  imf:Block ;
-        rdfs:subClassOf  imf:FunctionElement .
-
-_:b7    rdf:type  owl:Class .
-
-imf:FunctionBlock  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b7 .
-
-_:b7    rdf:type            owl:Class ;
-        owl:intersectionOf  _:b8 .
-
-_:b8    rdf:rest   _:b9 ;
-        rdf:first  imf:FunctionElement .
-
-_:b9    rdf:rest   rdf:nil ;
-        rdf:first  imf:Block .
-
-imf:ProductBlock  rdfs:subClassOf  imf:Block ;
-        rdfs:subClassOf  imf:ProductElement .
-
-_:b10   rdf:type  owl:Class .
-
-imf:ProductBlock  rdf:type   owl:Class ;
-        owl:equivalentClass  _:b10 .
-
-_:b10   rdf:type            owl:Class ;
-        owl:intersectionOf  _:b11 .
-
-_:b11   rdf:rest   _:b12 ;
-        rdf:first  imf:ProductElement .
-
-_:b12   rdf:rest   rdf:nil ;
-        rdf:first  imf:Block .
-
-imf:functionAspect  imf:color  "#FFFF00" ;
-        rdf:type    imf:Aspect ;
-        imf:prefix  "=" .
-
-_:b13   rdf:type  owl:Class .
-
-imf:InstalledElement  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b13 .
-
-_:b13   rdf:type        owl:Restriction ;
-        owl:onProperty  imf:aspect ;
-        owl:hasValue    imf:installedAspect .
-
-imf:aspect  rdf:type  owl:ObjectProperty .
-
-imf:InstalledElement  rdfs:subClassOf  imf:AspectElement .
-
-_:b14   rdf:type           owl:Restriction ;
-        owl:onProperty     imf:intraAspectRelation ;
-        owl:allValuesFrom  imf:InstalledElement .
-
-imf:InstalledElement  rdf:type  owl:Class .
-
-imf:intraAspectRelation
-        rdf:type  owl:ObjectProperty .
-
-imf:InstalledElement  rdfs:subClassOf  _:b14 .
-
-imf:InstalledTerminal
-        rdfs:subClassOf  imf:Terminal ;
-        rdfs:subClassOf  imf:InstalledElement .
-
-_:b15   rdf:type  owl:Class .
-
-imf:InstalledTerminal
-        rdf:type             owl:Class ;
-        owl:equivalentClass  _:b15 .
-
-_:b15   rdf:type            owl:Class ;
-        owl:intersectionOf  _:b16 .
-
-_:b17   rdf:rest   rdf:nil ;
-        rdf:first  imf:Terminal .
-
-_:b16   rdf:rest   _:b17 ;
-        rdf:first  imf:InstalledElement .
-
-imf:asInstalled  rdfs:range  imf:InstalledElement ;
-        rdfs:subPropertyOf  imf:interAspectRelation ;
-        rdf:type            owl:ObjectProperty .
-
-imf:LocationBlock  rdfs:subClassOf  imf:Block ;
-        rdfs:subClassOf  imf:LocationElement .
-
-_:b18   rdf:type  owl:Class .
-
-imf:LocationBlock  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b18 .
-
-_:b18   rdf:type            owl:Class ;
-        owl:intersectionOf  _:b19 .
-
-_:b19   rdf:rest   _:b20 ;
-        rdf:first  imf:LocationElement .
-
-_:b20   rdf:rest   rdf:nil ;
-        rdf:first  imf:Block .
-
-imf:asLocation  rdfs:range  imf:LocationElement ;
-        rdfs:subPropertyOf  imf:interAspectRelation ;
-        rdf:type            owl:ObjectProperty .
-
 imf:LocationTerminal  rdfs:subClassOf  imf:Terminal ;
         rdfs:subClassOf  imf:LocationElement .
 
-_:b21   rdf:type  owl:Class .
+_:b0    rdf:type  owl:Class .
 
 imf:LocationTerminal  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b21 .
+        owl:equivalentClass  _:b0 .
 
-_:b21   rdf:type            owl:Class ;
-        owl:intersectionOf  _:b22 .
+_:b0    rdf:type            owl:Class ;
+        owl:intersectionOf  _:b1 .
 
-_:b23   rdf:rest   rdf:nil ;
-        rdf:first  imf:Terminal .
-
-_:b22   rdf:rest   _:b23 ;
+_:b1    rdf:rest   _:b2 ;
         rdf:first  imf:LocationElement .
 
-imf:asProduct  rdfs:range   imf:ProductElement ;
-        rdfs:subPropertyOf  imf:interAspectRelation ;
-        rdf:type            owl:ObjectProperty .
-
-_:b24   rdf:type           owl:Restriction ;
-        owl:onProperty     imf:intraAspectRelation ;
-        owl:allValuesFrom  imf:AspectElement .
-
-imf:AspectElement  rdf:type  owl:Class .
-
-imf:intraAspectRelation
-        rdf:type  owl:ObjectProperty .
-
-imf:AspectElement  rdfs:subClassOf  _:b24 .
-
-imf:asFunction  rdfs:range  imf:FunctionElement ;
-        rdfs:subPropertyOf  imf:interAspectRelation ;
-        rdf:type            owl:ObjectProperty .
+_:b2    rdf:rest   rdf:nil ;
+        rdf:first  imf:Terminal .
 
 imf:installedAspect  imf:color  "#0000FF" ;
         rdf:type    imf:Aspect ;
         imf:prefix  "::" .
 
-imf:ProductTerminal  rdfs:subClassOf  imf:Terminal ;
-        rdfs:subClassOf  imf:ProductElement .
-
-_:b25   rdf:type  owl:Class .
-
-imf:ProductTerminal  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b25 .
-
-_:b25   rdf:type            owl:Class ;
-        owl:intersectionOf  _:b26 .
-
-_:b26   rdf:rest   _:b27 ;
-        rdf:first  imf:ProductElement .
-
-_:b27   rdf:rest   rdf:nil ;
-        rdf:first  imf:Terminal .
-
-imf:locationAspect  imf:color  "#FF00FF" ;
-        rdf:type    imf:Aspect ;
-        imf:prefix  "+" .
-
-_:b28   rdf:type  owl:Class .
+_:b3    rdf:type  owl:Class .
 
 imf:ProductElement  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b28 .
+        owl:equivalentClass  _:b3 .
 
-_:b28   rdf:type        owl:Restriction ;
+_:b3    rdf:type        owl:Restriction ;
         owl:onProperty  imf:aspect ;
         owl:hasValue    imf:productAspect .
 
@@ -237,7 +52,7 @@ imf:aspect  rdf:type  owl:ObjectProperty .
 
 imf:ProductElement  rdfs:subClassOf  imf:AspectElement .
 
-_:b29   rdf:type           owl:Restriction ;
+_:b4    rdf:type           owl:Restriction ;
         owl:onProperty     imf:intraAspectRelation ;
         owl:allValuesFrom  imf:ProductElement .
 
@@ -246,48 +61,209 @@ imf:ProductElement  rdf:type  owl:Class .
 imf:intraAspectRelation
         rdf:type  owl:ObjectProperty .
 
-imf:ProductElement  rdfs:subClassOf  _:b29 .
-
-imf:FunctionTerminal  rdfs:subClassOf  imf:Terminal ;
-        rdfs:subClassOf  imf:FunctionElement .
-
-_:b30   rdf:type  owl:Class .
-
-imf:FunctionTerminal  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b30 .
-
-_:b30   rdf:type            owl:Class ;
-        owl:intersectionOf  _:b31 .
-
-_:b32   rdf:rest   rdf:nil ;
-        rdf:first  imf:Terminal .
-
-_:b31   rdf:rest   _:b32 ;
-        rdf:first  imf:FunctionElement .
+imf:ProductElement  rdfs:subClassOf  _:b4 .
 
 imf:InstalledBlock  rdfs:subClassOf  imf:Block ;
         rdfs:subClassOf  imf:InstalledElement .
 
-_:b33   rdf:type  owl:Class .
+_:b5    rdf:type  owl:Class .
 
 imf:InstalledBlock  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b33 .
+        owl:equivalentClass  _:b5 .
 
-_:b33   rdf:type            owl:Class ;
-        owl:intersectionOf  _:b34 .
+_:b5    rdf:type            owl:Class ;
+        owl:intersectionOf  _:b6 .
 
-_:b34   rdf:rest   _:b35 ;
-        rdf:first  imf:InstalledElement .
-
-_:b35   rdf:rest   rdf:nil ;
+_:b7    rdf:rest   rdf:nil ;
         rdf:first  imf:Block .
 
-_:b36   rdf:type  owl:Class .
+_:b6    rdf:rest   _:b7 ;
+        rdf:first  imf:InstalledElement .
+
+imf:ProductBlock  rdfs:subClassOf  imf:Block ;
+        rdfs:subClassOf  imf:ProductElement .
+
+_:b8    rdf:type  owl:Class .
+
+imf:ProductBlock  rdf:type   owl:Class ;
+        owl:equivalentClass  _:b8 .
+
+_:b8    rdf:type            owl:Class ;
+        owl:intersectionOf  _:b9 .
+
+_:b9    rdf:rest   _:b10 ;
+        rdf:first  imf:ProductElement .
+
+_:b10   rdf:rest   rdf:nil ;
+        rdf:first  imf:Block .
+
+_:b11   rdf:type     owl:AllDifferent ;
+        owl:members  _:b12 .
+
+_:b13   rdf:rest   _:b14 ;
+        rdf:first  imf:productAspect .
+
+_:b15   rdf:rest   _:b13 ;
+        rdf:first  imf:locationAspect .
+
+_:b14   rdf:rest   rdf:nil ;
+        rdf:first  imf:installedAspect .
+
+_:b12   rdf:rest   _:b15 ;
+        rdf:first  imf:functionAspect .
+
+imf:asFunction  rdfs:range  imf:FunctionElement ;
+        rdfs:subPropertyOf  imf:interAspectRelation ;
+        rdf:type            owl:ObjectProperty .
+
+imf:ProductTerminal  rdfs:subClassOf  imf:Terminal ;
+        rdfs:subClassOf  imf:ProductElement .
+
+_:b16   rdf:type  owl:Class .
+
+imf:ProductTerminal  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b16 .
+
+_:b16   rdf:type            owl:Class ;
+        owl:intersectionOf  _:b17 .
+
+_:b17   rdf:rest   _:b18 ;
+        rdf:first  imf:ProductElement .
+
+_:b18   rdf:rest   rdf:nil ;
+        rdf:first  imf:Terminal .
+
+imf:asProduct  rdfs:range   imf:ProductElement ;
+        rdfs:subPropertyOf  imf:interAspectRelation ;
+        rdf:type            owl:ObjectProperty .
+
+imf:asLocation  rdfs:range  imf:LocationElement ;
+        rdfs:subPropertyOf  imf:interAspectRelation ;
+        rdf:type            owl:ObjectProperty .
+
+imf:FunctionBlock  rdfs:subClassOf  imf:Block ;
+        rdfs:subClassOf  imf:FunctionElement .
+
+_:b19   rdf:type  owl:Class .
+
+imf:FunctionBlock  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b19 .
+
+_:b19   rdf:type            owl:Class ;
+        owl:intersectionOf  _:b20 .
+
+_:b21   rdf:rest   rdf:nil ;
+        rdf:first  imf:Block .
+
+_:b20   rdf:rest   _:b21 ;
+        rdf:first  imf:FunctionElement .
+
+imf:functionAspect  imf:color  "#FFFF00" ;
+        rdf:type    imf:Aspect ;
+        imf:prefix  "=" .
+
+_:b22   rdf:type  owl:Class .
+
+imf:FunctionElement  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b22 .
+
+_:b22   rdf:type        owl:Restriction ;
+        owl:onProperty  imf:aspect ;
+        owl:hasValue    imf:functionAspect .
+
+imf:aspect  rdf:type  owl:ObjectProperty .
+
+imf:FunctionElement  rdfs:subClassOf  imf:AspectElement .
+
+_:b23   rdf:type           owl:Restriction ;
+        owl:onProperty     imf:intraAspectRelation ;
+        owl:allValuesFrom  imf:FunctionElement .
+
+imf:FunctionElement  rdf:type  owl:Class .
+
+imf:intraAspectRelation
+        rdf:type  owl:ObjectProperty .
+
+imf:FunctionElement  rdfs:subClassOf  _:b23 .
+
+imf:LocationBlock  rdfs:subClassOf  imf:Block ;
+        rdfs:subClassOf  imf:LocationElement .
+
+_:b24   rdf:type  owl:Class .
+
+imf:LocationBlock  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b24 .
+
+_:b24   rdf:type            owl:Class ;
+        owl:intersectionOf  _:b25 .
+
+_:b26   rdf:rest   rdf:nil ;
+        rdf:first  imf:Block .
+
+_:b25   rdf:rest   _:b26 ;
+        rdf:first  imf:LocationElement .
+
+_:b27   rdf:type           owl:Restriction ;
+        owl:onProperty     imf:intraAspectRelation ;
+        owl:allValuesFrom  imf:AspectElement .
+
+imf:AspectElement  rdf:type  owl:Class .
+
+imf:intraAspectRelation
+        rdf:type  owl:ObjectProperty .
+
+imf:AspectElement  rdfs:subClassOf  _:b27 .
+
+imf:asInstalled  rdfs:range  imf:InstalledElement ;
+        rdfs:subPropertyOf  imf:interAspectRelation ;
+        rdf:type            owl:ObjectProperty .
+
+imf:FunctionTerminal  rdfs:subClassOf  imf:Terminal ;
+        rdfs:subClassOf  imf:FunctionElement .
+
+_:b28   rdf:type  owl:Class .
+
+imf:FunctionTerminal  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b28 .
+
+_:b28   rdf:type            owl:Class ;
+        owl:intersectionOf  _:b29 .
+
+_:b30   rdf:rest   rdf:nil ;
+        rdf:first  imf:Terminal .
+
+_:b29   rdf:rest   _:b30 ;
+        rdf:first  imf:FunctionElement .
+
+imf:InstalledTerminal
+        rdfs:subClassOf  imf:Terminal ;
+        rdfs:subClassOf  imf:InstalledElement .
+
+_:b31   rdf:type  owl:Class .
+
+imf:InstalledTerminal
+        rdf:type             owl:Class ;
+        owl:equivalentClass  _:b31 .
+
+_:b31   rdf:type            owl:Class ;
+        owl:intersectionOf  _:b32 .
+
+_:b33   rdf:rest   rdf:nil ;
+        rdf:first  imf:Terminal .
+
+_:b32   rdf:rest   _:b33 ;
+        rdf:first  imf:InstalledElement .
+
+imf:productAspect  imf:color  "#00FFFF" ;
+        rdf:type    imf:Aspect ;
+        imf:prefix  "-" .
+
+_:b34   rdf:type  owl:Class .
 
 imf:LocationElement  rdf:type  owl:Class ;
-        owl:equivalentClass  _:b36 .
+        owl:equivalentClass  _:b34 .
 
-_:b36   rdf:type        owl:Restriction ;
+_:b34   rdf:type        owl:Restriction ;
         owl:onProperty  imf:aspect ;
         owl:hasValue    imf:locationAspect .
 
@@ -295,7 +271,7 @@ imf:aspect  rdf:type  owl:ObjectProperty .
 
 imf:LocationElement  rdfs:subClassOf  imf:AspectElement .
 
-_:b37   rdf:type           owl:Restriction ;
+_:b35   rdf:type           owl:Restriction ;
         owl:onProperty     imf:intraAspectRelation ;
         owl:allValuesFrom  imf:LocationElement .
 
@@ -304,11 +280,35 @@ imf:LocationElement  rdf:type  owl:Class .
 imf:intraAspectRelation
         rdf:type  owl:ObjectProperty .
 
-imf:LocationElement  rdfs:subClassOf  _:b37 .
+imf:LocationElement  rdfs:subClassOf  _:b35 .
 
-imf:productAspect  imf:color  "#00FFFF" ;
+_:b36   rdf:type  owl:Class .
+
+imf:InstalledElement  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b36 .
+
+_:b36   rdf:type        owl:Restriction ;
+        owl:onProperty  imf:aspect ;
+        owl:hasValue    imf:installedAspect .
+
+imf:aspect  rdf:type  owl:ObjectProperty .
+
+imf:InstalledElement  rdfs:subClassOf  imf:AspectElement .
+
+_:b37   rdf:type           owl:Restriction ;
+        owl:onProperty     imf:intraAspectRelation ;
+        owl:allValuesFrom  imf:InstalledElement .
+
+imf:InstalledElement  rdf:type  owl:Class .
+
+imf:intraAspectRelation
+        rdf:type  owl:ObjectProperty .
+
+imf:InstalledElement  rdfs:subClassOf  _:b37 .
+
+imf:locationAspect  imf:color  "#FF00FF" ;
         rdf:type    imf:Aspect ;
-        imf:prefix  "-" .
+        imf:prefix  "+" .
 
 imf:interAspectRelation
         rdf:type            owl:ObjectProperty ;
@@ -339,5 +339,5 @@ imf:intraAspectRelation
         skos:definition     "A generic relation between aspect objects of the same aspect" .
 
 imf:AspectElement  rdf:type  owl:Class ;
-        rdfs:subclassOf  imf:Element ;
+        rdfs:subClassOf  imf:Element ;
         skos:prefLabel   "Aspect Element" .

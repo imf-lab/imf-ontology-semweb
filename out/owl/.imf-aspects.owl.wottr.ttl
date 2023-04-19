@@ -35,7 +35,7 @@
 
 imf:Aspect a owl:Class .
 imf:AspectElement a owl:Class ;
-  rdfs:subclassOf imf:Element ;
+  rdfs:subClassOf imf:Element ;
   skos:prefLabel "Aspect Element";
   .
 

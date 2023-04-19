@@ -55,13 +55,13 @@ imf:qualifier a owl:ObjectProperty ;
   rdfs:domain imf:Attribute ;
   rdfs:range  imf:AttributeQualifier .
 [] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:Range (imf:average imf:maximum imf:minimum imf:nominal imf:normal) ) . 
+   ottr:values( imf:Scope (imf:design imf:operating) ) . 
 [] ottr:of o-imf:AttributeQualifier ;
    ottr:values( imf:Provenance (imf:calculated imf:measured imf:specified) ) . 
 [] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:Regularity (imf:absolute imf:continuous) ) . 
+   ottr:values( imf:Range (imf:average imf:maximum imf:minimum imf:nominal imf:normal) ) . 
 [] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:Scope (imf:design imf:operating) ) . 
+   ottr:values( imf:Regularity (imf:absolute imf:continuous) ) . 
 
 [] ottr:of o-owl-ax:DisjointClasses ;
-   ottr:values( ( imf:Range imf:Provenance imf:Regularity imf:Scope ) ) .
+   ottr:values( ( imf:Scope imf:Provenance imf:Range imf:Regularity ) ) .

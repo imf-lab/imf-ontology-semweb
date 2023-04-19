@@ -72,8 +72,8 @@ imf:ElementType
     rdfs:subClassOf imf:Type, [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Aspect ;
-        owl:onProperty imf:hasAspect
+        owl:onDataRange rdfs:Literal ;
+        owl:onProperty skos:notation
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
@@ -82,8 +82,8 @@ imf:ElementType
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onDataRange rdfs:Literal ;
-        owl:onProperty skos:notation
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect
     ] ;
     skos:prefLabel "Element Type" .
 
@@ -99,13 +99,13 @@ imf:TerminalType
     rdfs:subClassOf imf:ElementType, [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Direction ;
-        owl:onProperty imf:hasDirection
+        owl:onClass owl:Thing ;
+        owl:onProperty imf:hasMedium
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass owl:Thing ;
-        owl:onProperty imf:hasMedium
+        owl:onClass imf:Direction ;
+        owl:onProperty imf:hasDirection
     ] ;
     skos:prefLabel "Terminal Type" .
 
