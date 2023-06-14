@@ -24,11 +24,11 @@
 
 <http://ns.imfid.org/imf>
     pav:contributedBy [
-        foaf:name "Arild Waaler"
+        foaf:name "Martin G. Skjæveland"
     ], [
         foaf:name "Erlend Fjøsna"
     ], [
-        foaf:name "Martin G. Skjæveland"
+        foaf:name "Arild Waaler"
     ] ;
     pav:createdBy [
         foaf:name "Martin G. Skjæveland"
@@ -88,7 +88,7 @@ imf:Attribute
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:ProvenanceQualifier ;
+        owl:onClass imf:RangeQualifier ;
         owl:onProperty imf:hasQualifier
     ], [
         a owl:Restriction ;
@@ -103,7 +103,7 @@ imf:Attribute
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:RangeQualifier ;
+        owl:onClass imf:ProvenanceQualifier ;
         owl:onProperty imf:hasQualifier
     ] ;
     vs:term_status "testing" ;
@@ -118,7 +118,7 @@ imf:AttributeGroup
     skos:changeNote "0.2.0 :: Added" ;
     skos:definition "An [Attribute Group] is a collection of [Attribute]s which are typically grouped for convenience as they describe closely related features or characteristics of a resource." ;
     skos:editorialNote "Does an [Attribute Group] add any semantics? -- what is the difference from an [Attribute Group] and an [Element] with [Attribute]s?" ;
-    skos:example "The physical dimensions of a product, e.g., its length, width and height, could be grouped in an [Attribute Group]." ;
+    skos:example "The physical dimensions of a product, e.g., its length, width and height, could be grouped by an [Attribute Group]." ;
     skos:prefLabel "Attribute Group" .
 
 imf:AttributeQualifier
@@ -143,11 +143,11 @@ imf:BreakdownPoint
     a owl:Class ;
     rdfs:subClassOf imf:Element, [
         a owl:Restriction ;
-        owl:onProperty imf:theWhole ;
+        owl:onProperty imf:thePart ;
         owl:someValuesFrom imf:Element
     ], [
         a owl:Restriction ;
-        owl:onProperty imf:thePart ;
+        owl:onProperty imf:theWhole ;
         owl:someValuesFrom imf:Element
     ] ;
     vs:term_status "unstable" ;
@@ -160,17 +160,17 @@ imf:ConnectionPoint
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onClass imf:Element ;
+        owl:onProperty imf:theInput
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Element ;
         owl:onProperty imf:theOutput
     ], [
         a owl:Restriction ;
         owl:onClass imf:Element ;
         owl:onProperty imf:theConnected ;
         owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Element ;
-        owl:onProperty imf:theInput
     ] ;
     vs:term_status "unstable" ;
     skos:changeNote "0.2.0 :: Added" ;
@@ -657,23 +657,11 @@ skos:notation
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:inputFlow
-        imf:outputFlow
-    ) .
-
-[]
-    a owl:AllDisjointClasses ;
-    owl:members (imf:ProvenanceQualifier
-        imf:RangeQualifier
-        imf:RegularityQualifier
-        imf:ScopeQualifier
-    ) .
-
-[]
-    a owl:AllDifferent ;
-    owl:members (imf:calculatedQualifier
-        imf:measuredQualifier
-        imf:specifiedQualifier
+    owl:members (imf:averageQualifier
+        imf:maximumQualifier
+        imf:minimumQualifier
+        imf:nominalQualifier
+        imf:normalQualifier
     ) .
 
 []
@@ -684,16 +672,28 @@ skos:notation
 
 []
     a owl:AllDifferent ;
+    owl:members (imf:inputFlow
+        imf:outputFlow
+    ) .
+
+[]
+    a owl:AllDifferent ;
     owl:members (imf:absoluteQualifier
         imf:continuousQualifier
     ) .
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:averageQualifier
-        imf:maximumQualifier
-        imf:minimumQualifier
-        imf:nominalQualifier
-        imf:normalQualifier
+    owl:members (imf:calculatedQualifier
+        imf:measuredQualifier
+        imf:specifiedQualifier
+    ) .
+
+[]
+    a owl:AllDisjointClasses ;
+    owl:members (imf:ProvenanceQualifier
+        imf:RangeQualifier
+        imf:RegularityQualifier
+        imf:ScopeQualifier
     ) .
 
