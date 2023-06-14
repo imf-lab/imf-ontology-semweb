@@ -30,7 +30,7 @@
 o-imf:AttributeQualifier [owl:Class ?qualifierClass, NEList<owl:NamedIndividual> ?qualifierInstances] :: {
   o-rdf:Type(?qualifierClass, owl:Class) ,
   o-owl-ax:SubClassOf(?qualifierClass, imf:AttributeQualifier) ,
-  o-owl-ax:SubObjectMaxCardinality(imf:Attribute, "1"^^xsd:nonNegativeInteger, imf:hasQualifier, ?qualifierClass),
+  o-owl-ax:SubObjectMaxCardinality(imf:Attribute, "1"^^xsd:nonNegativeInteger, imf:hasAttributeQualifier, ?qualifierClass),
   cross | o-rdf:Type(++?qualifierInstances, ?qualifierClass),
   cross | o-rdf:Type(++?qualifierInstances, owl:NamedIndividual),
   o-owl-ax:EquivObjectOneOf(?qualifierClass, ?qualifierInstances),

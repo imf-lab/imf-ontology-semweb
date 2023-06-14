@@ -42,7 +42,7 @@ o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?label, xsd:string ?symbol
 
 o-imf:AspectClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
   o-owl-ax:SubClassOf(?class, imf:AspectElement),  
-  o-owl-ax:EquivObjectHasValue(?class, imf:aspect, ?aspect),
+  o-owl-ax:EquivObjectHasValue(?class, imf:hasAspect, ?aspect),
   o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class),
   ottr:Triple(?class, skos:editorialNote, "Generated from corresponding aspect individual")
 } .

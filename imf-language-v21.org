@@ -397,25 +397,26 @@ combines all diagrams and contains all information.
 
 <<owl-elements-relations-hasmedium>>
 
-<<owl-elements-reifieds-breakdownpoint>>
+#<<owl-elements-reifieds-breakdownpoint>>
 
-<<owl-elements-reifieds-connectionpoint>>
+#<<owl-elements-reifieds-connectionpoint>>
 
 <<owl-aspects-aspectelement>>
 
 <<owl-aspects-aspect>>
 
-<<py_aspect_ottr_instances_aspects_EDITED>>
+<<py_aspect_ottr_instances_aspects()>>
 
 <<owl-aspects-relations>>
 
 <<owl-attributes-value>>
 
-<<owl-attributes-group>>
+#<<owl-attributes-group>>
 
 <<owl-attributes-qualifier>>
 
 <<py_aspect_ottr_qualifiers()>>
+
 #+END_SRC
 
 ** Model and Identified's                                              :todo:
@@ -535,9 +536,9 @@ class Terminal
 class RDLItem << RDL >>
 class Medium << RDL >>
 
-enum Direction {
- input
- output
+enum TerminalQualifier {
+ inputFlow
+ outputFlow
 }
 
 Element "*" --> "*" RDLItem : classifier
@@ -549,7 +550,7 @@ Element <|-- Terminal
 ' relations
 Block "1" --> "*" Terminal : hasTerminal
 Terminal "*" --> "0..1" Medium : medium
-Terminal "*" --> "0..1" Direction : direction
+Terminal "*" --> "0..*" TerminalQualifier : qualifier
 
 Element "1" <-- "*" Element : partOf
 Terminal "1" --> "1" Terminal : connectedTo
@@ -567,7 +568,7 @@ imf:Element a owl:Class ;
   skos:prefLabel "Element" ;
   vs:term_status "testing" ;
   skos:definition "An [Element] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
-  skos:scopeNote "[Element] should not be directly instantiated, instead use one of its subclasses." ;
+  skos:scopeNote "Avoid direct instantiation of [Element], use instead one of its subclasses." ;
   skos:changeNote 
     "0.2.0 :: Added" ;
 . 
@@ -691,13 +692,13 @@ imf:hasTerminal a owl:ObjectProperty ;
 #+BEGIN_SRC ttl
 imf:TerminalShape a sh:NodeShape ;
   sh:targetClass imf:Terminal , imf:InputTerminal , imf:OutputTerminal ;
-  sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:direction ;
+  sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:hasTerminalQualifier ;
   sh:targetObjectsOf imf:hasTerminal, imf:connectedTo ;
   sh:property 
     [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class sh:Terminal ] ,
     [ sh:path imf:connectedTo ; sh:maxCount 1 ; sh:class sh:Terminal ] ,
     [ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no connection (to a different Terminal)." ] , 
-    [ sh:path imf:direction ; sh:maxCount 1 ; sh:in ( imf:inputDirection imf:outputDirection ) ] ,
+    [ sh:path imf:hasTerminalQualifier ; sh:maxCount 1 ; sh:in ( imf:inputFlow imf:outputFlow ) ] ,
     [ sh:path imf:medium ; sh:maxCount 1 ]  ,
     [ sh:path imf:medium ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no medium." ]
 .
@@ -749,39 +750,39 @@ imf:connectedTo a owl:ObjectProperty ;
 
 #+NAME: owl-elements-direction
 #+BEGIN_SRC ttl
-imf:TerminalFlow a owl:Class ;
-  skos:prefLabel "Terminal Flow" ;
+imf:TerminalQualifier a owl:Class ;
+  skos:prefLabel "Terminal Qualifier" ;
   vs:term_status "testing" ;
-  skos:definition "[Terminal Flow] is a characteristic of the flow of the [medium] of a [Terminal]." ;
+  skos:definition "[Terminal Qualifier] is a feature or characteristic of a [Terminal]." ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   .
 
-imf:inputFlow a owl:NamedIndividual, imf:TerminalFlow ;
+imf:inputFlow a owl:NamedIndividual, imf:TerminalQualifier ;
   skos:prefLabel "input flow" ;
   vs:term_status "testing" ;
-  skos:definition "[input flow] is a [Terminal Flow] that indicates that the flow is incoming to the [Terminal] is characterises." ;
+  skos:definition "[input flow] is a [Terminal Qualifier] that indicates that the flow is incoming to the [Terminal] it qualifies." ;
   skos:changeNote 
     "0.2.0 :: Added" .
 
-imf:outputFlow a owl:NamedIndividual, imf:TerminalFlow ;
+imf:outputFlow a owl:NamedIndividual, imf:TerminalQualifier ;
   skos:prefLabel "output flow" ;
   vs:term_status "testing" ;
-  skos:definition "[input flow] is a [Terminal Flow] that indicates that the flow is outgoing from the [Terminal] is characterises." ;
+  skos:definition "[output flow] is a [Terminal Qualifier] that indicates that the flow is outgoing from the [Terminal] it qualifies." ;
   skos:changeNote 
     "0.2.0 :: Added" .
 
 [] ottr:of o-owl-ax:DifferentIndividuals ;
    ottr:values ( ( imf:inputFlow imf:outputFlow ) ) .
 
-imf:hasFlowDirection a owl:ObjectProperty ;
-  skos:prefLabel "has terminal flow" ;
+imf:hasTerminalQualifier a owl:ObjectProperty ;
+  skos:prefLabel "has terminal qualifier" ;
   vs:term_status "testing" ;
-  skos:definition "[has terminal flow] relates a [Terminal] *T* to a [Terminal Flow] *F* to specify that *T* has the flow characteristic *F*." ;
+  skos:definition "[has terminal qualifier] relates a [Terminal] *T* to a [Terminal Qualifier] *Q* to specify that *T* has the qualifier *Q*." ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   rdfs:domain imf:Terminal ;
-  rdfs:range imf:TerminalFlow .
+  rdfs:range imf:TerminalQualifier .
 #+END_SRC
 
 *** ~Input/OutputTerminal~
@@ -799,7 +800,7 @@ imf:InputTerminal a owl:Class ;
   .
 
 [] ottr:of o-owl-ax:EquivHasValue ;
-   ottr:values ( imf:InputTerminal imf:direction imf:inputFlow ) .
+   ottr:values ( imf:InputTerminal imf:hasTerminalQualifier imf:inputFlow ) .
 
 imf:OutputTerminal a owl:Class ;
   skos:prefLabel "Output Terminal" ;
@@ -812,7 +813,7 @@ imf:OutputTerminal a owl:Class ;
   .
 
 [] ottr:of o-owl-ax:EquivHasValue ;
-   ottr:values ( imf:OutputTerminal imf:direction imf:outputFlow ) .
+   ottr:values ( imf:OutputTerminal imf:hasTerminalQualifier imf:outputFlow ) .
 
 imf:hasInputTerminal a owl:ObjectProperty ;
   skos:prefLabel "has input terminal" ;
@@ -876,6 +877,8 @@ imf:thePart a owl:ObjectProperty ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   a owl:FunctionalProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:associativeRelation ;
+  skos:editorialNote "Is [thePart] and [theWhole] associative, hierachical or none?" ; 
   rdfs:domain imf:BreakdownPoint ;
   rdfs:range imf:Element .
 
@@ -885,6 +888,7 @@ imf:theWhole a owl:ObjectProperty ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   a owl:FunctionalProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:associativeRelation ;
   rdfs:domain imf:BreakdownPoint ;
   rdfs:range imf:Element .
 
@@ -925,6 +929,7 @@ imf:ConnectionPoint a owl:Class ;
 imf:theConnected a owl:ObjectProperty ;
   skos:prefLabel "the connected" ;
   vs:term_status "unstable" ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:associativeRelation ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   rdfs:domain imf:ConnectionPoint ;
@@ -988,7 +993,7 @@ enum Aspect {
   Installed
 }
 
-AspectElement "*" --> "1" Aspect : aspect
+AspectElement "*" --> "1" Aspect : hasAspect
 
 AspectElement --> AspectElement : intraAspectRelation
 AspectElement --> AspectElement : interAspectRelation
@@ -1015,7 +1020,7 @@ imf:AspectElement a owl:Class ;
     owl:intersectionOf ( 
       imf:Element
       [ rdf:type owl:Restriction ;
-        owl:onProperty imf:aspect ;
+        owl:onProperty imf:hasAspect ;
         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onClass imf:Aspect 
       ]
@@ -1025,10 +1030,10 @@ imf:AspectElement a owl:Class ;
 imf:hasAspect a owl:ObjectProperty ;
   skos:prefLabel "has aspect" ;
   vs:term_status "testing" ;
-  skos:definition "[has aspect] is a relation from an [Aspect Element] *E* to an [Aspect] *A* that specfies that *E* has the [Aspect] *A*." ;
+  skos:definition "[has aspect] is a relation from an [Element] *E* to an [Aspect] *A* that specfies that *E* has the [Aspect] *A*." ;
   skos:changeNote 
     "0.1.0 :: Added" ;
-  rdfs:domain imf:AspectElement ;
+  rdfs:domain imf:Element ;
   rdfs:range imf:Aspect .
 #+END_SRC
 
@@ -1036,7 +1041,7 @@ imf:hasAspect a owl:ObjectProperty ;
 #+BEGIN_SRC ttl
 imf:AspectElementShape a sh:NodeShape ;
   sh:targetClass imf:AspectElement ;
-  sh:targetSubjectsOf imf:aspect ;
+  sh:targetSubjectsOf imf:hasAspect ;
   sh:property 
     [ sh:path imf:hasAspect ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sh:Aspect ] 
 .
@@ -1064,14 +1069,13 @@ imf:Aspect a owl:Class ;
 imf:prefix a owl:AnnotationProperty ;
   skos:prefLabel "prefix" ;
   vs:term_status "testing" ;
-  skos:definition "[prefix] is a relation from an [Aspect] *A* to a [xsd:string] *s* to specify that *s* is the prefix associated with *A*. Such prefix strings are typically used for identifying the aspect when constructing reference designation system (RDS) identifiers." ;
+  skos:definition "[prefix] is a relation from an [Aspect] *A* to a string *s* to specify that *s* is the prefix associated with *A*. Such prefix strings are typically used for identifying the aspect when constructing reference designation system (RDS) identifiers." ;
   skos:example "For examples, see the instances of [Aspect] defined in this ontology." ;
   skos:changeNote 
     "0.1.0 :: Added" ;
   rdfs:domain imf:Aspect ;
   rdfs:range xsd:string ;
   .
-
 
 imf:color a owl:AnnotationProperty ;
   skos:prefLabel "color" ;
@@ -1090,24 +1094,25 @@ imf:color a owl:AnnotationProperty ;
 #+BEGIN_SRC ttl
 imf:intraAspectRelation a owl:ObjectProperty ;
   skos:prefLabel "intra-aspect relation" ;
-  skos:definition "[intra-aspect relation] a generic relation between [Aspect Element]s *E1* and *E2* such that *E1* and *E2* have the same [Aspect]." ;
+  skos:definition "[intra-aspect relation] a generic relation between [Element]s *E1* and *E2* such that *E1* and *E2* share at least one [Aspect]." ;
   vs:term_status "testing" ;
   skos:changeNote 
     "0.1.0 :: Added" ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
   .
 
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:AspectElement imf:intraAspectRelation imf:AspectElement ) .
+#[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+#   ottr:values ( imf:AspectElement imf:intraAspectRelation imf:AspectElement ) .
 
 imf:interAspectRelation a owl:ObjectProperty ;
   skos:prefLabel "inter-aspect relation" ;
-  skos:definition "[inter-aspect relation] a generic relation between [Aspect Element]s *E1* and *E2* such that *E1* and *E2* have different [Aspect]s." ;
+  skos:definition "[inter-aspect relation] a generic relation between [Element]s *E1* and *E2* such that *E1* and *E2* do not share any [Aspect]s." ;
   vs:term_status "testing" ;
   skos:changeNote 
     "0.1.0 :: Added" ;
-  rdfs:subPropertyOf skos:related ;
-  rdfs:domain imf:AspectElement ;
-  rdfs:range imf:AspectElement ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
   owl:propertyDisjointWith imf:intraAspectRelation ;
   .
 #+END_SRC
@@ -1144,7 +1149,7 @@ o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?label, xsd:string ?symbol
 
 o-imf:AspectClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
   o-owl-ax:SubClassOf(?class, imf:AspectElement),  
-  o-owl-ax:EquivObjectHasValue(?class, imf:aspect, ?aspect),
+  o-owl-ax:EquivObjectHasValue(?class, imf:hasAspect, ?aspect),
   o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class),
   ottr:Triple(?class, skos:editorialNote, "Generated from corresponding aspect individual")
 } .
@@ -1215,13 +1220,13 @@ return output
 #+RESULTS: py_aspect_ottr_instances_aspects
 #+BEGIN_src ttl
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:functionAspect 'function' '=' '#FFFF00' ) . 
+   ottr:values( imf:functionAspect 'function' '=' '#FFFF00' '[function aspect] is an [Aspect] about the intended activity of [Element]s, i.e., the activity an [Element] perfoms or is designed to bring about. [function aspect] has /perspective/ \"Activity\", /interest/ \"System design\", and /modality/ \"Specification\".' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:locationAspect 'location' '+' '#FF00FF' ) . 
+   ottr:values( imf:locationAspect 'location' '+' '#FF00FF' '[location aspect] is an [Aspect] about the spatial envelope (e.g., geometry, size and shape) of [Element]s. [location aspect] has /perspective/ \"Location\", /interest/ \"Geometry and Position\", and /modality/ \"Specification\".' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:productAspect 'product' '-' '#00FFFF' ) . 
+   ottr:values( imf:productAspect 'product' '-' '#00FFFF' '[product aspect] is an [Aspect] about the specification of a (physical) solution/implementation of [Element]s. [product aspect] has /perspective/ \"Artefact\", /interest/ \"Built\", and /modality/ \"Specification\".' ) . 
 [] ottr:of o-imf:Aspect ;
-   ottr:values( imf:installedAspect 'installed' '::' '#0000FF' ) . 
+   ottr:values( imf:installedAspect 'installed' '::' '#0000FF' '[installed aspect] is an [Aspect] about the information of [element] instances. [installed aspect] has /perspective/ \"Artefact\", /interest/ \"Built\", and /modality/ \"Description of individual\".' ) . 
 
 [] ottr:of o-owl-ax:DifferentIndividuals ;
    ottr:values( ( imf:functionAspect imf:locationAspect imf:productAspect imf:installedAspect ) ) . 
@@ -1382,14 +1387,17 @@ InstalledElement <|-- InstalledTerminal
 abstract class Element
 
 Element *--> "*" Attribute : hasAttribute
-Element *--> "*" AttributeGroup : hasAttributeGroup
 
-AttributeGroup *--> "*" Attribute : hasAttribute
+'Element *--> "*" AttributeGroup : hasAttributeGroup
 
-class AttributeGroup {
- name : 0..1
- description : 0..1
-}
+'AttributeGroup *--> "*" Attribute : hasAttribute
+
+'
+'class AttributeGroup {
+' name : 0..1
+' description : 0..1
+'}
+
 
 class Attribute {
  name : 0..1
@@ -1459,9 +1467,10 @@ imf:Attribute a owl:Class ;
 imf:hasAttribute a owl:ObjectProperty ;
   skos:prefLabel "has attribute" ;
   vs:term_status "testing" ;
-  skos:definition "[has attribute] is a relation between a resource *X* and an [Attribute] *A* that specifies that *X* has the attribute *A*." ;
+  skos:definition "[has attribute] is a relation between an [Element] *E* and an [Attribute] *A* that specifies that *E* has the attribute *A*." ;
   skos:changeNote 
     "0.2.0 :: Added" ;
+  rdfs:domain imf:Element ;
   rdfs:range  imf:Attribute .
 
 imf:property a owl:ObjectProperty ;
@@ -1501,16 +1510,16 @@ imf:value a owl:DatatypeProperty ;
 imf:AttributeShape a sh:NodeShape ;
   sh:targetClass imf:Attribute ;
   sh:targetObjectsOf imf:hasAttribute ;
-  sh:targetSubjectsOf imf:property, imf:uom, imf:hasQualifier ;
+  sh:targetSubjectsOf imf:property, imf:uom, imf:hasAttributeQualifier ;
   sh:property 
     [ sh:path imf:property ; sh:minCount 1 ; sh:maxCount 1 ] ,
     [ sh:path imf:value ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no value." ] ,
     [ sh:path imf:uom ; sh:maxCount 1 ] , 
-    [ sh:path imf:hasQualifier ; sh:maxCount 1 ; sh:class imf:RegularityQualifier ] , 
-    [ sh:path imf:hasQualifier ; sh:maxCount 1 ; sh:class imf:RangeQualifier ] , 
-    [ sh:path imf:hasQualifier ; sh:maxCount 1 ; sh:class imf:ProvenenceQualifier ] , 
-    [ sh:path imf:hasQualifier ; sh:maxCount 1 ; sh:class imf:ScopeQualifier ] ,
-    [ sh:path imf:hasQualifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no qualifier." ] 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RegularityQualifier ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RangeQualifier ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ProvenenceQualifier ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ScopeQualifier ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no qualifier." ] 
 .
 #+END_SRC
 
@@ -1560,10 +1569,10 @@ imf:AttributeQualifier a owl:Class ;
     "0.2.0 :: Added" ;
   .
 
-imf:hasQualifier a owl:ObjectProperty ;
-  skos:prefLabel "has qualifier" ;
+imf:hasAttributeQualifier a owl:ObjectProperty ;
+  skos:prefLabel "has attribute qualifier" ;
   vs:term_status "testing" ;
-  skos:definition "[has qualifier] is a relation between an [Attribute] *A* and an [Attribute Qualifier] *Q* to specify that *A* is qualified by *Q*." ;
+  skos:definition "[has attribute qualifier] is a relation between an [Attribute] *A* and an [Attribute Qualifier] *Q* to specify that *A* is qualified by *Q*." ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   rdfs:domain imf:Attribute ;
@@ -1596,7 +1605,7 @@ imf:hasQualifier a owl:ObjectProperty ;
 o-imf:AttributeQualifier [owl:Class ?qualifierClass, NEList<owl:NamedIndividual> ?qualifierInstances] :: {
   o-rdf:Type(?qualifierClass, owl:Class) ,
   o-owl-ax:SubClassOf(?qualifierClass, imf:AttributeQualifier) ,
-  o-owl-ax:SubObjectMaxCardinality(imf:Attribute, "1"^^xsd:nonNegativeInteger, imf:hasQualifier, ?qualifierClass),
+  o-owl-ax:SubObjectMaxCardinality(imf:Attribute, "1"^^xsd:nonNegativeInteger, imf:hasAttributeQualifier, ?qualifierClass),
   cross | o-rdf:Type(++?qualifierInstances, ?qualifierClass),
   cross | o-rdf:Type(++?qualifierInstances, owl:NamedIndividual),
   o-owl-ax:EquivObjectOneOf(?qualifierClass, ?qualifierInstances),
@@ -1636,152 +1645,6 @@ output += instance.format("o-owl-ax:DisjointClasses", "( " + " ".join(qualifiers
 return output
 #+END_SRC
 
-#+NAME: py_aspect_ottr_qualifiers_EDITED
-#+BEGIN_src ttl
-imf:ProvenanceQualifier a owl:Class ;
-  skos:prefLabel "Provenance Qualifier" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:calculatedQualifier a owl:NamedIndividual ;
-  skos:prefLabel "calculated" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:measuredQualifier a owl:NamedIndividual ;
-  skos:prefLabel "measured" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:specifiedQualifier a owl:NamedIndividual ;
-  skos:prefLabel "specified" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-[] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:ProvenanceQualifier (imf:calculatedQualifier imf:measuredQualifier imf:specifiedQualifier) ) . 
-
-imf:RangeQualifier a owl:Class ;
-  skos:prefLabel "Range Qualifier" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:averageQualifier a owl:NamedIndividual ;
-  skos:prefLabel "average" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:maximumQualifier a owl:NamedIndividual ;
-  skos:prefLabel "maximum" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:minimumQualifier a owl:NamedIndividual ;
-  skos:prefLabel "minimum" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:nominalQualifier a owl:NamedIndividual ;
-  skos:prefLabel "nominal" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:normalQualifier a owl:NamedIndividual ;
-  skos:prefLabel "normal" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-[] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:RangeQualifier (imf:averageQualifier imf:maximumQualifier imf:minimumQualifier imf:nominalQualifier imf:normalQualifier) ) . 
-
-imf:RegularityQualifier a owl:Class ;
-  skos:prefLabel "Regularity Qualifier" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:absoluteQualifier a owl:NamedIndividual ;
-  skos:prefLabel "absolute" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:continuousQualifier a owl:NamedIndividual ;
-  skos:prefLabel "continuous" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-[] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:RegularityQualifier (imf:absoluteQualifier imf:continuousQualifier) ) . 
-
-imf:ScopeQualifier a owl:Class ;
-  skos:prefLabel "Scope Qualifier" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:designQualifier a owl:NamedIndividual ;
-  skos:prefLabel "design" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-imf:operatingQualifier a owl:NamedIndividual ;
-  skos:prefLabel "operating" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-.
-
-[] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:ScopeQualifier (imf:designQualifier imf:operatingQualifier) ) . 
-
-
-[] ottr:of o-owl-ax:DisjointClasses ;
-   ottr:values( ( imf:ProvenanceQualifier imf:RangeQualifier imf:RegularityQualifier imf:ScopeQualifier ) ) . 
-#+END_src
 
 ** Summary
 *** Overview
@@ -1807,7 +1670,6 @@ All diagrams combined.
 *** Vocabulary
 
 Report of the vocabulary used by the IMF ontology.
-
 
 **** IMF vocabulary
 
@@ -1852,73 +1714,6 @@ ORDER BY ?status ?type ?iri
 #+END_SRC
 
 #+CALL: py_run_sparql(query=sparql_all_imf_iris)
-
-#+RESULTS:
-| ~iri~                      | ~label~                                    | ~type~                   | ~status~   | ~definition~                                                                                                                                                                                                                                                                                                                                                 | ~scopeNote~                                                                                                                                                                                                                                                          | ~example~                                                                                                                                                                                                                                                                       | ~ed~                                                                                                                                                                                                                                                                        |
-|----------------------------+--------------------------------------------+--------------------------+------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ~ns1:imf~                  | ~Information Modelling Framework Ontology~ | ~owl:Ontology~           |            |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:color~                | ~color~                                    | ~owl:AnnotationProperty~ | ~testing~  | ~[color] is a relation from a resource *X* to a string identifying a hexadecimal color *c* to specify that the *c* is a color that is associated with *A*.~                                                                                                                                                                                                  | ~[Aspect]s are often associated with a distinct color, which is used in graphical presentations of IMF models.~                                                                                                                                                      | ~For examples, see the instances of [Aspect] defined in this ontology.~                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                             |
-| ~imf:prefix~               | ~prefix~                                   | ~owl:AnnotationProperty~ | ~testing~  | ~[prefix] is a relation from an [Aspect] *A* to a [xsd:string] *s* to specify that *s* is the prefix associated with *A*. Such prefix strings are typically used for identifying the aspect when constructing reference designation system (RDS) identifiers.~                                                                                               |                                                                                                                                                                                                                                                                      | ~For examples, see the instances of [Aspect] defined in this ontology.~                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                             |
-| ~imf:symbol~               | ~symbol~                                   | ~owl:AnnotationProperty~ | ~testing~  | ~[symbol] associates a resource *X* with a typical graphical representation of *X*.~                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:Aspect~               | ~Aspect~                                   | ~owl:Class~              | ~testing~  | ~An [Aspect] describes a context for interpreting [Element]s. An [Aspect] specifies a /perspective/, an /interest/, and a /modality/. /Perspective/ refers to from which viewpoint the [Element] is interpreted. /Interest/ refers to the scope for which the information is intended used. /Modality/ refers to the form in which information is recorded.~ | ~Aspect is a core concept of ISO/IEC 81346 and the IMF ontology includes aspects that are found in ISO/IEC 81346: function, location and product. We anticipate that more aspects will be added to support future modelling needs.~                                  | ~For examples, see the instances of [Aspect] defined in this ontology.~                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                             |
-| ~imf:AspectElement~        | ~Aspect Element~                           | ~owl:Class~              | ~testing~  | ~An [Aspect Element] is an [Element] that has exactly one [Aspect].~                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:Attribute~            | ~Attribute~                                | ~owl:Class~              | ~testing~  | ~An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure].~                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                      | ~Color: red~                                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                             |
-| ~imf:Attribute~            | ~Attribute~                                | ~owl:Class~              | ~testing~  | ~An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure].~                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                      | ~Maximum ambient operating temperature: 120 K~                                                                                                                                                                                                                                  |                                                                                                                                                                                                                                                                             |
-| ~imf:Attribute~            | ~Attribute~                                | ~owl:Class~              | ~testing~  | ~An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure].~                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                      | ~Weight: 1250 kg~                                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                             |
-| ~imf:AttributeGroup~       | ~Attribute Group~                          | ~owl:Class~              | ~testing~  | ~An [Attribute Group] is a collection of [Attribute]s which are typically grouped for convenience as they describe closely related features or characteristics of a resource.~                                                                                                                                                                               |                                                                                                                                                                                                                                                                      | ~The physical dimensions of a product, e.g., its length, width and height, could be grouped in an [Attribute Group].~                                                                                                                                                           | ~Does an [Attribute Group] add any semantics? -- what is the difference from an [Attribute Group] and an [Element] with [Attribute]s?~                                                                                                                                      |
-| ~imf:AttributeQualifier~   | ~Attribute Qualifier~                      | ~owl:Class~              | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:Block~                | ~Block~                                    | ~owl:Class~              | ~testing~  | ~A [block] is an [element] that ???~                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:Element~              | ~Element~                                  | ~owl:Class~              | ~testing~  | ~An [Element] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288.~                                                                                                                                                                                                                                                        | ~[Element] should not be directly instantiated, instead use one of its subclasses.~                                                                                                                                                                                  |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:InputTerminal~        | ~Input Terminal~                           | ~owl:Class~              | ~testing~  | ~An [Input Terminal] is a [Terminal] that accepts input (and not output).~                                                                                                                                                                                                                                                                                   |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:OutputTerminal~       | ~Output Terminal~                          | ~owl:Class~              | ~testing~  | ~An [Output Terminal] is a [Terminal] that accepts output (and not input).~                                                                                                                                                                                                                                                                                  |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:ProvenanceQualifier~  | ~Provenance Qualifier~                     | ~owl:Class~              | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:RangeQualifier~       | ~Range Qualifier~                          | ~owl:Class~              | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:RegularityQualifier~  | ~Regularity Qualifier~                     | ~owl:Class~              | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:ScopeQualifier~       | ~Scope Qualifier~                          | ~owl:Class~              | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:Terminal~             | ~Terminal~                                 | ~owl:Class~              | ~testing~  | ~A [Terminal] is an [Element] that represents a point of interation or communication for a given [Block] (through the relation [has terminal]), and hence specifies an input and/or output that the [Block] produces and/or receives.~                                                                                                                       |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:TerminalFlow~         | ~Terminal Flow~                            | ~owl:Class~              | ~testing~  | ~[Terminal Flow] is a characteristic of the flow of the [medium] of a [Terminal].~                                                                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:value~                | ~value~                                    | ~owl:DatatypeProperty~   | ~testing~  | ~[value] relates an [Attribute] *A* to literal value *v* to specify that *A* has the value *v*.~                                                                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                      | ~The [value] of an [Attribute] "Weight: 1250 kg" could be specified as the literal "1250"^^xsd:integer (or using a different appropriate literal datatype).~                                                                                                                    |                                                                                                                                                                                                                                                                             |
-| ~imf:absoluteQualifier~    | ~absolute~                                 | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:averageQualifier~     | ~average~                                  | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:calculatedQualifier~  | ~calculated~                               | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:continuousQualifier~  | ~continuous~                               | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:designQualifier~      | ~design~                                   | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:inputFlow~            | ~input flow~                               | ~owl:NamedIndividual~    | ~testing~  | ~[input flow] is a [Terminal Flow] that indicates that the flow is incoming to the [Terminal] is characterises.~                                                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:maximumQualifier~     | ~maximum~                                  | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:measuredQualifier~    | ~measured~                                 | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:minimumQualifier~     | ~minimum~                                  | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:nominalQualifier~     | ~nominal~                                  | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:normalQualifier~      | ~normal~                                   | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:operatingQualifier~   | ~operating~                                | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:outputFlow~           | ~output flow~                              | ~owl:NamedIndividual~    | ~testing~  | ~[input flow] is a [Terminal Flow] that indicates that the flow is outgoing from the [Terminal] is characterises.~                                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:specifiedQualifier~   | ~specified~                                | ~owl:NamedIndividual~    | ~testing~  |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:associativeRelation~  | ~associative relation~                     | ~owl:ObjectProperty~     | ~testing~  | ~[associative relation] is a generic relation that relates resources in an associative (or non-hierarchical) structure.~                                                                                                                                                                                                                                     |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:classifier~           | ~classifier~                               | ~owl:ObjectProperty~     | ~testing~  | ~[classifier] is an [external reference] that relates an [Element] *E* to a resource *X* in an external ontology or reference data library such that *X* classifies *E* -- or equivalently, *E* is an instance of *X*.~                                                                                                                                      |                                                                                                                                                                                                                                                                      | ~[classifier] is used to relate a [Block] that is specified to perform a pumping function to the external resource PUMPING <https://data.posccaesar.org/rdl/RDS9657917>. We then say that the [Block] is classified by PUMPING, or that the [Block] is an instance of PUMPING.~ |                                                                                                                                                                                                                                                                             |
-| ~imf:connectedTo~          | ~connected to~                             | ~owl:ObjectProperty~     | ~testing~  | ~[connected to] is an [associative relation] and an [intra-aspect relation] that relates a [Terminal] *T1* to a [Terminal] *T2* to specify that *T1* is connected to *T2*. [connected to] specifies a topology of [Element]s by relating the [Terminal]s of [Block]s and hence describes how [Block]s are interconnected and indicates how they interact.~   | ~[connected to] is a 1-1 relationship: a [Terminal] may only be [connected to] one other [Terminal], that is, a [Terminal] may not be [connected to] multiple [Terminal]s and it may not be [connected to] itself.~                                                  |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:externalReference~    | ~external reference~                       | ~owl:ObjectProperty~     | ~testing~  | ~[external reference] is a generic relation that relates a resource *X* to a resource in an external ontology or reference data library for added semantic description of *X*.~                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:hasAspect~            | ~has aspect~                               | ~owl:ObjectProperty~     | ~testing~  | ~[has aspect] is a relation from an [Aspect Element] *E* to an [Aspect] *A* that specfies that *E* has the [Aspect] *A*.~                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:hasAttribute~         | ~has attribute~                            | ~owl:ObjectProperty~     | ~testing~  | ~[has attribute] is a relation between a resource *X* and an [Attribute] *A* that specifies that *X* has the attribute *A*.~                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:hasAttributeGroup~    | ~has attribute group~                      | ~owl:ObjectProperty~     | ~testing~  | ~[has attribute group] is a relation between a resource *X* and an [Attribute Group] *A* that specifies that *X* has the attribute group *A*.~                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 | ~See comment on [Attribute Group], does [has attribute group] represent a "long-hand property" meaning that attaching the Attributes of the Attribute Group directly is equivalent? Perhaps the functionality of [Attribute Group]s is best realised as aspect-less-types?~ |
-| ~imf:hasFlowDirection~     | ~has terminal flow~                        | ~owl:ObjectProperty~     | ~testing~  | ~[has terminal flow] relates a [Terminal] *T* to a [Terminal Flow] *F* to specify that *T* has the flow characteristic *F*.~                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:hasInputTerminal~     | ~has input terminal~                       | ~owl:ObjectProperty~     | ~testing~  | ~[has input terminal] specialises the [has terminal] property to relate [Block]s to [InputTerminal]s.~                                                                                                                                                                                                                                                       |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:hasOutputTerminal~    | ~has output terminal~                      | ~owl:ObjectProperty~     | ~testing~  | ~[has output terminal] specialises the [has terminal] property to relate [Block]s to [Output Terminal]s.~                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:hasPart~              | ~has part~                                 | ~owl:ObjectProperty~     | ~testing~  | ~[has part] is a [hierarchical relation] and an [intra-aspect relation] that is the inverse relation of [part of].~                                                                                                                                                                                                                                          | ~Use [has part] when you want to specify the [Element]s that are part of an [Element] *E* "on *E*", rather than using the inverse property [part of] to state that the [part of] relationship to *E* for every [Element] that is part of *E*.~                       |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:hasQualifier~         | ~has qualifier~                            | ~owl:ObjectProperty~     | ~testing~  | ~[has qualifier] is a relation between an [Attribute] *A* and an [Attribute Qualifier] *Q* to specify that *A* is qualified by *Q*.~                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:hasTerminal~          | ~has terminal~                             | ~owl:ObjectProperty~     | ~testing~  | ~[has terminal] is an [associative relation] and an [intra-aspect relation] that relates a [Block] *B* to a [Terminal] *T* to specify that *T* is a terminal of, or belongs to, *B*. [has terminal] is an inverse functional property which means that a [Terminal] may only belong to one [Block].~                                                         |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:hierarchicalRelation~ | ~hierarchical relation~                    | ~owl:ObjectProperty~     | ~testing~  | ~[hierarchical relation] is a generic relation that relates resources in a hierarchical or tree-shaped structure.~                                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:interAspectRelation~  | ~inter-aspect relation~                    | ~owl:ObjectProperty~     | ~testing~  | ~[inter-aspect relation] a generic relation between [Aspect Element]s *E1* and *E2* such that *E1* and *E2* have different [Aspect]s.~                                                                                                                                                                                                                       |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:intraAspectRelation~  | ~intra-aspect relation~                    | ~owl:ObjectProperty~     | ~testing~  | ~[intra-aspect relation] a generic relation between [Aspect Element]s *E1* and *E2* such that *E1* and *E2* have the same [Aspect].~                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:medium~               | ~medium~                                   | ~owl:ObjectProperty~     | ~testing~  | ~[medium] is an [external reference] that relates a [Terminal] *T* to a resource *X* to specify that *X* is the medium that flows through *T*.~                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      | ~[medium] is typically used to relate a [Terminal] to an resource that specifies one of the following:Material (Fluid, Solids)Energy (Mechanical, Electrical, Thermal)Force (Mechanical)Information(Electrical, Optical, Wireless)~                                             |                                                                                                                                                                                                                                                                             |
-| ~imf:partOf~               | ~part of~                                  | ~owl:ObjectProperty~     | ~testing~  | ~[part of] is a [hierarchical relation] and an [intra-aspect relation] that relates an [Element] *E1* and an [Element] *E2* to specify that *E1* is part of *E2*, or equivalently that *E2* has *E1* as a part. [part of] is used to specify a breakdown hierarchy of [Element]s.~                                                                           | ~"An [Element] may only have one 'parent'": [part of] is functional and irreflexive property which means that any [Element] may only be part of one other [Element], that is: an [Element] may not be part of multiple [Element]s and it may not be part of itself.~ |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:property~             | ~property~                                 | ~owl:ObjectProperty~     | ~testing~  | ~[property] is an [external reference] that relates an [Attribute] *A* to a resource *X* to specify that *A* has the property *X*.~                                                                                                                                                                                                                          |                                                                                                                                                                                                                                                                      | ~The [property] of an [Attribute] "Weight: 1250 kg" could be specified as WEIGTH <http://data.posccaesar.org/rdl/RDS356894>.~                                                                                                                                                   |                                                                                                                                                                                                                                                                             |
-| ~imf:uom~                  | ~unit of measure~                          | ~owl:ObjectProperty~     | ~testing~  | ~[unit of measure] is an [external reference] that relates an [Attribute] *A* to a resource *X* to specify that *A* has the unit of measure *X*.~                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                      | ~The [unit of measure] of an [Attribute] "Weight: 1250 kg" could be specified as KILOGRAM <http://data.posccaesar.org/rdl/RDS1328669>.~                                                                                                                                         |                                                                                                                                                                                                                                                                             |
-| ~imf:BreakdownPoint~       | ~Breakdown Point~                          | ~owl:Class~              | ~unstable~ |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:ConnectionPoint~      | ~Connection Point~                         | ~owl:Class~              | ~unstable~ |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:theConnected~         | ~the connected~                            | ~owl:ObjectProperty~     | ~unstable~ |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:theInput~             | ~the input~                                | ~owl:ObjectProperty~     | ~unstable~ |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:theOutput~            | ~the output~                               | ~owl:ObjectProperty~     | ~unstable~ |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:thePart~              | ~the part~                                 | ~owl:ObjectProperty~     | ~unstable~ |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
-| ~imf:theWhole~             | ~the whole~                                | ~owl:ObjectProperty~     | ~unstable~ |                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                             |
 
 
 **** IRIs
@@ -1977,31 +1772,6 @@ ORDER BY ?class
 
 #+CALL: py_run_sparql(query=sparql_class)
 
-#+RESULTS:
-| ~class~                  | ~prefLabel~      | ~altLabels~ | ~definition~ | ~superclasses~                       |
-|--------------------------+------------------+-------------+--------------+--------------------------------------|
-| ~ns1:Aspect~             |                  |             |              |                                      |
-| ~ns1:AspectElement~      | ~Aspect Element~ |             |              |                                      |
-| ~ns1:Attribute~          |                  |             |              |                                      |
-| ~ns1:AttributeGroup~     |                  |             |              |                                      |
-| ~ns1:AttributeQualifier~ |                  |             |              |                                      |
-| ~ns1:FunctionBlock~      |                  |             |              | ~ns1:Block, ns1:FunctionElement~     |
-| ~ns1:FunctionElement~    |                  |             |              | ~ns1:AspectElement~                  |
-| ~ns1:FunctionTerminal~   |                  |             |              | ~ns1:FunctionElement, ns1:Terminal~  |
-| ~ns1:InstalledBlock~     |                  |             |              | ~ns1:Block, ns1:InstalledElement~    |
-| ~ns1:InstalledElement~   |                  |             |              | ~ns1:AspectElement~                  |
-| ~ns1:InstalledTerminal~  |                  |             |              | ~ns1:InstalledElement, ns1:Terminal~ |
-| ~ns1:LocationBlock~      |                  |             |              | ~ns1:Block, ns1:LocationElement~     |
-| ~ns1:LocationElement~    |                  |             |              | ~ns1:AspectElement~                  |
-| ~ns1:LocationTerminal~   |                  |             |              | ~ns1:LocationElement, ns1:Terminal~  |
-| ~ns1:ProductBlock~       |                  |             |              | ~ns1:Block, ns1:ProductElement~      |
-| ~ns1:ProductElement~     |                  |             |              | ~ns1:AspectElement~                  |
-| ~ns1:ProductTerminal~    |                  |             |              | ~ns1:ProductElement, ns1:Terminal~   |
-| ~ns1:Provenance~         |                  |             |              | ~ns1:AttributeQualifier~             |
-| ~ns1:Range~              |                  |             |              | ~ns1:AttributeQualifier~             |
-| ~ns1:Regularity~         |                  |             |              | ~ns1:AttributeQualifier~             |
-| ~ns1:Scope~              |                  |             |              | ~ns1:AttributeQualifier~             |
-
 **** Properties
 
 #+NAME: sparql_property
@@ -2036,57 +1806,43 @@ ORDER BY ?type ?property
 
 #+CALL: py_run_sparql(query=sparql_property)
 
-#+RESULTS:
-| ~type~                 | ~property~                 | ~prefLabel~             | ~altLabels~ | ~definition~                                                                                                                           | ~domain~            | ~range~                  | ~characteristics~ | ~superproperties~         |
-|------------------------+----------------------------+-------------------------+-------------+----------------------------------------------------------------------------------------------------------------------------------------+---------------------+--------------------------+-------------------+---------------------------|
-| ~owl:DatatypeProperty~ | ~ns1:value~                |                         |             |                                                                                                                                        | ~ns1:Attribute~     |                          |                   |                           |
-| ~owl:ObjectProperty~   | ~ns1:asFunction~           |                         |             |                                                                                                                                        |                     | ~ns1:FunctionElement~    |                   | ~ns1:interAspectRelation~ |
-| ~owl:ObjectProperty~   | ~ns1:asInstalled~          |                         |             |                                                                                                                                        |                     | ~ns1:InstalledElement~   |                   | ~ns1:interAspectRelation~ |
-| ~owl:ObjectProperty~   | ~ns1:asLocation~           |                         |             |                                                                                                                                        |                     | ~ns1:LocationElement~    |                   | ~ns1:interAspectRelation~ |
-| ~owl:ObjectProperty~   | ~ns1:asProduct~            |                         |             |                                                                                                                                        |                     | ~ns1:ProductElement~     |                   | ~ns1:interAspectRelation~ |
-| ~owl:ObjectProperty~   | ~ns1:aspect~               | ~aspect~                |             | ~Relates an Aspect Element to its Aspect.~                                                                                             | ~ns1:AspectElement~ | ~ns1:Aspect~             |                   |                           |
-| ~owl:ObjectProperty~   | ~ns1:associativeRelation~  | ~associative relation~  |             | ~A generic associative relation.~                                                                                                      | ~ns1:AspectElement~ | ~ns1:AspectElement~      |                   | ~ns2:related~             |
-| ~owl:ObjectProperty~   | ~ns1:externalReference~    |                         |             | ~A generic relation that is used to relate elements to external ontologies or reference data library for added semantic descriptions.~ |                     |                          |                   |                           |
-| ~owl:ObjectProperty~   | ~ns1:hasAttribute~         |                         |             |                                                                                                                                        |                     | ~ns1:Attribute~          |                   |                           |
-| ~owl:ObjectProperty~   | ~ns1:hasAttributeGroup~    |                         |             |                                                                                                                                        |                     | ~ns1:AttributeGroup~     |                   |                           |
-| ~owl:ObjectProperty~   | ~ns1:hierarchicalRelation~ | ~hierarchical relation~ |             | ~A generic hierachical relation that may be used to represent a breakdown structure.~                                                  | ~ns1:AspectElement~ | ~ns1:AspectElement~      |                   | ~ns2:semanticRelation~    |
-| ~owl:ObjectProperty~   | ~ns1:interAspectRelation~  | ~inter-aspect relation~ |             |                                                                                                                                        | ~ns1:AspectElement~ | ~ns1:AspectElement~      |                   | ~ns2:related~             |
-| ~owl:ObjectProperty~   | ~ns1:intraAspectRelation~  | ~intra-aspect relation~ |             | ~A generic relation between aspect objects of the same aspect~                                                                         |                     |                          |                   | ~ns2:semanticRelation~    |
-| ~owl:ObjectProperty~   | ~ns1:property~             |                         |             |                                                                                                                                        | ~ns1:Attribute~     |                          |                   | ~ns1:classifier~          |
-| ~owl:ObjectProperty~   | ~ns1:qualifier~            |                         |             |                                                                                                                                        | ~ns1:Attribute~     | ~ns1:AttributeQualifier~ |                   |                           |
-| ~owl:ObjectProperty~   | ~ns1:uom~                  |                         |             |                                                                                                                                        | ~ns1:Attribute~     |                          |                   | ~ns1:externalReference~   |
 
 
 *** SHACL Shapes
 
 All SHACL Shapes combined.
 
-#+NAME: owl-top-ontology
+#+NAME: shacl-all
 #+BEGIN_SRC ttl :noweb yes :tangle out/shacl/imf.shacl.wottr.ttl :mkdirp yes
 <<prefixes>>
 
 <<shacl-elements-annotations>>
 <<shacl-elements-block>>
 <<shacl-elements-terminal>>
-<<shacl-elements-breakdownpoint>>
-<<shacl-elements-connectionpoint>>
+#<<shacl-elements-breakdownpoint>>
+#<<shacl-elements-connectionpoint>>
 <<shacl-aspect-aspectelement>>
 <<shacl-attributes-value>>
-<<shacl-attributes-group>>
+#<<shacl-attributes-group>>
 #+END_SRC
 
-#+RESULTS: owl-top-ontology
+#+RESULTS: shacl-all
 #+begin_example
 @prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
 @prefix sh: 	<http://www.w3.org/ns/shacl#> . 
 @prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-@prefix ex:	<http://example.com#> .
+
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+
 @prefix imf:	<http://ns.imfid.org/imf#> .
+@prefix ex:	<http://example.com#> .
 
 @prefix p14:    <http://example.com/P14#> .
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
@@ -2098,6 +1854,7 @@ All SHACL Shapes combined.
 
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 @prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+@prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
 
 
 imf:ElementShape a sh:NodeShape ;
@@ -2111,47 +1868,62 @@ imf:BlockShape a sh:NodeShape ;
   sh:targetSubjectsOf imf:hasTerminal ;
   sh:property 
     [ sh:path skos:hasTerminal ; sh:class sh:Terminal ] ,
-    [ sh:path skos:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Block has no Terminal" ] ,     
+    [ sh:path skos:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminal." ] ,     
     [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class sh:Block ]
 .
 imf:TerminalShape a sh:NodeShape ;
   sh:targetClass imf:Terminal , imf:InputTerminal , imf:OutputTerminal ;
-  sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:direction ;
+  sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:hasTerminalQualifier ;
   sh:targetObjectsOf imf:hasTerminal, imf:connectedTo ;
   sh:property 
     [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class sh:Terminal ] ,
     [ sh:path imf:connectedTo ; sh:maxCount 1 ; sh:class sh:Terminal ] ,
-    [ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Terminal has no connection (to other Terminal)" ] , 
-    [ sh:path imf:direction ; sh:maxCount 1 ; sh:in ( imf:input imf:output ) ] ,
+    [ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no connection (to a different Terminal)." ] , 
+    [ sh:path imf:hasTerminalQualifier ; sh:maxCount 1 ; sh:in ( imf:inputFlow imf:outputFlow ) ] ,
     [ sh:path imf:medium ; sh:maxCount 1 ]  ,
-    [ sh:path imf:medium ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Terminal has no medium" ]
+    [ sh:path imf:medium ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no medium." ]
 .
+#imf:BreakdownPointShape a sh:NodeShape ;
+#  sh:targetClass imf:BreakdownPoint ;
+#  sh:targetSubjectsOf imf:thePart , imf:theWhole ;
+#  sh:property 
+#    [ sh:path imf:thePart  ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sh:Element ] ,
+#    [ sh:path imf:theWhole ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sh:Element ] 
+#.
+#imf:ConnectionPointShape a sh:NodeShape ;
+#  sh:targetClass imf:ConnectionPoint ;
+#  sh:targetSubjectsOf imf:theConnected , imf:theInput , imf:theOutput ;
+#  sh:property 
+#    [ sh:path imf:theInput  ; sh:maxCount 1 ; sh:class sh:Element ] ,
+#    [ sh:path imf:theOutput ; sh:maxCount 1 ; sh:class sh:Element ] ,
+#    [ sh:path imf:theConnected ; sh:maxCount 2 ; sh:class sh:Element ] 
+#.
 imf:AspectElementShape a sh:NodeShape ;
   sh:targetClass imf:AspectElement ;
   sh:targetSubjectsOf imf:aspect ;
   sh:property 
-    [ sh:path imf:aspect ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sh:Aspect ] 
+    [ sh:path imf:hasAspect ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sh:Aspect ] 
 .
 imf:AttributeShape a sh:NodeShape ;
   sh:targetClass imf:Attribute ;
   sh:targetObjectsOf imf:hasAttribute ;
-  sh:targetSubjectsOf imf:property, imf:uom, imf:hasQualifier ;
+  sh:targetSubjectsOf imf:property, imf:uom, imf:hasAttributeQualifier ;
   sh:property 
     [ sh:path imf:property ; sh:minCount 1 ; sh:maxCount 1 ] ,
-    [ sh:path imf:value ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no value" ] ,
+    [ sh:path imf:value ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no value." ] ,
     [ sh:path imf:uom ; sh:maxCount 1 ] , 
-    [ sh:path imf:hasQualifier ; sh:maxCount 1 ; sh:class imf:Regularity ] , 
-    [ sh:path imf:hasQualifier ; sh:maxCount 1 ; sh:class imf:Range ] , 
-    [ sh:path imf:hasQualifier ; sh:maxCount 1 ; sh:class imf:Provenence ] , 
-    [ sh:path imf:hasQualifier ; sh:maxCount 1 ; sh:class imf:Scope ] ,
-    [ sh:path imf:hasQualifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no qualifier" ] 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RegularityQualifier ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RangeQualifier ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ProvenenceQualifier ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ScopeQualifier ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no qualifier." ] 
 .
-imf:AttributeGroupShape a sh:NodeShape ;
-  sh:targetClass imf:AttributeGroup ;
-  sh:targetObjectsOf imf:hasAttributeGroup ;
-  sh:property 
-    [ sh:path imf:hasAttribute ; sh:minCount 1 ; sh:message "AttributeGroup has no Attributes" ]
-.
+#imf:AttributeGroupShape a sh:NodeShape ;
+#  sh:targetClass imf:AttributeGroup ;
+#  sh:targetObjectsOf imf:hasAttributeGroup ;
+#  sh:property 
+#    [ sh:path imf:hasAttribute ; sh:minCount 1 ; sh:message "AttributeGroup has no Attributes." ]
+#.
 #+end_example
 
 **** Processing and QA                                                   :QA:
@@ -2417,7 +2189,6 @@ Conforms
 
 
 *** SHACL checks
-
 **** SPARQL select
 
 #+NAME: vocabulary-checks-select-query
@@ -5076,18 +4847,6 @@ output += " - IRIs deleted from v2 :: " + ", ".join(prepare(deleted))
 
 return output
 #+END_SRC
-
-#+RESULTS: py_rdf_diff
- - IRIs in both versions :: ns1:imf, Aspect, AspectElement, Block, FunctionBlock, FunctionTerminal, InputTerminal, InstalledBlock, InstalledTerminal, LocationBlock, LocationTerminal, OutputTerminal, ProductBlock, ProductTerminal, Terminal, associativeRelation, color, hasInputTerminal, hasOutputTerminal, hasPart, hasTerminal, hierarchicalRelation, interAspectRelation, intraAspectRelation, prefix, theInput, theOutput
-
- - IRIs added to v2 :: ns2:imf, ns2:imf-aspects, ns2:imf-attributes, ns2:imf-elements, Attribute, AttributeGroup, AttributeQualifier, BreakdownPoint, ConnectionPoint, Direction, Element, FunctionElement, InstalledElement, LocationElement, ProductElement, ProvenanceQualifier, RangeQualifier, RegularityQualifier, ScopeQualifier, absoluteQualifier, asFunction, asInstalled, asLocation, asProduct, aspect, averageQualifier, calculatedQualifier, classifier, connectedTo, continuousQualifier, designQualifier, direction, externalReference, functionAspect, hasAttribute, hasAttributeGroup, hierachicalRelation, inputDirection, installedAspect, locationAspect, maximumQualifier, measuredQualifier, medium, minimumQualifier, nominalQualifier, normalQualifier, operatingQualifier, outputDirection, partOf, productAspect, property, qualifier, specifiedQualifier, symbol, theConnected, thePart, theWhole, uom, value, ns1:imf-aspects, ns1:imf-attributes, ns1:imf-elements
-
- - IRIs deleted from v2 :: ns3:imf-vocabulary, FunctionAspect, FunctionAspectElement, FunctionInterfacePoint, InstalledAspect, InstalledAspectElement, InstalledInterfacePoint, InterAspectRelation, InterfacePoint, LocationAspect, LocationAspectElement, LocationInterfacePoint, ProductAspect, ProductAspectElement, ProductInterfacePoint, System, SystemElement, fulfilledBy, fulfills, hasAspect, isConnectedTo, isPartOf, memberOf
-IRIs in both versions: ns1:imf, Aspect, AspectElement, Block, FunctionBlock, FunctionTerminal, InputTerminal, InstalledBlock, InstalledTerminal, LocationBlock, LocationTerminal, OutputTerminal, ProductBlock, ProductTerminal, Terminal, associativeRelation, color, hasInputTerminal, hasOutputTerminal, hasPart, hasTerminal, hierarchicalRelation, interAspectRelation, intraAspectRelation, prefix, theInput, theOutput
-IRIs added to v2: ns2:imf, ns2:imf-aspects, ns2:imf-attributes, ns2:imf-elements, Attribute, AttributeGroup, AttributeQualifier, BreakdownPoint, ConnectionPoint, Direction, Element, FunctionElement, InstalledElement, LocationElement, ProductElement, ProvenanceQualifier, RangeQualifier, RegularityQualifier, ScopeQualifier, absoluteQualifier, asFunction, asInstalled, asLocation, asProduct, aspect, averageQualifier, calculatedQualifier, classifier, connectedTo, continuousQualifier, designQualifier, direction, externalReference, functionAspect, hasAttribute, hasAttributeGroup, hierachicalRelation, inputDirection, installedAspect, locationAspect, maximumQualifier, measuredQualifier, medium, minimumQualifier, nominalQualifier, normalQualifier, operatingQualifier, outputDirection, partOf, productAspect, property, qualifier, specifiedQualifier, symbol, theConnected, thePart, theWhole, uom, value, ns1:imf-aspects, ns1:imf-attributes, ns1:imf-elements
-IRIs deleted from v2: ns3:imf-vocabulary, FunctionAspect, FunctionAspectElement, FunctionInterfacePoint, InstalledAspect, InstalledAspectElement, InstalledInterfacePoint, InterAspectRelation, InterfacePoint, LocationAspect, LocationAspectElement, LocationInterfacePoint, ProductAspect, ProductAspectElement, ProductInterfacePoint, System, SystemElement, fulfilledBy, fulfills, hasAspect, isConnectedTo, isPartOf, memberOf
-ns1:imf, Aspect, AspectElement, Block, FunctionBlock, FunctionTerminal, InputTerminal, InstalledBlock, InstalledTerminal, LocationBlock, LocationTerminal, OutputTerminal, ProductBlock, ProductTerminal, Terminal, associativeRelation, color, hasInputTerminal, hasOutputTerminal, hasPart, hasTerminal, hierarchicalRelation, interAspectRelation, intraAspectRelation, prefix, theInput, theOutput
-['ns1:imf', 'Aspect', 'AspectElement', 'Block', 'FunctionBlock', 'FunctionTerminal', 'InputTerminal', 'InstalledBlock', 'InstalledTerminal', 'LocationBlock', 'LocationTerminal', 'OutputTerminal', 'ProductBlock', 'ProductTerminal', 'Terminal', 'associativeRelation', 'color', 'hasInputTerminal', 'hasOutputTerminal', 'hasPart', 'hasTerminal', 'hierarchicalRelation', 'interAspectRelation', 'intraAspectRelation', 'prefix', 'theInput', 'theOutput']
 
 *** py_parse-ttl-file: Parse source block
 
