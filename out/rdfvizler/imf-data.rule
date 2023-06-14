@@ -2,12 +2,17 @@
 @prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
 @prefix sh: 	<http://www.w3.org/ns/shacl#> . 
 @prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-@prefix ex:	<http://example.com#> .
+
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+
 @prefix imf:	<http://ns.imfid.org/imf#> .
+@prefix ex:	<http://example.com#> .
 
 @prefix p14:    <http://example.com/P14#> .
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
@@ -19,6 +24,7 @@
 
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 @prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+@prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
 
 @prefix rvz:  <http://rdfvizler.dyreriket.xyz/vocabulary/core#> .
 @prefix rvz-a: <http://rdfvizler.dyreriket.xyz/vocabulary/attribute#> .
@@ -30,12 +36,17 @@
 @prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
 @prefix sh: 	<http://www.w3.org/ns/shacl#> . 
 @prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-@prefix ex:	<http://example.com#> .
+
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+
 @prefix imf:	<http://ns.imfid.org/imf#> .
+@prefix ex:	<http://example.com#> .
 
 @prefix p14:    <http://example.com/P14#> .
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
@@ -47,6 +58,7 @@
 
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 @prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+@prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
 
 @prefix rvz:  <http://rdfvizler.dyreriket.xyz/vocabulary/core#> .
 @prefix rvz-a: <http://rdfvizler.dyreriket.xyz/vocabulary/attribute#> .

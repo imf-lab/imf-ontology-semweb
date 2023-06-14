@@ -1,0 +1,895 @@
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix o-imf-t-o: <http://ns.imfid.org/templates/type/owl/> .
+@prefix p14: <http://example.com/P14#> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
+@prefix ex: <http://example.com#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+
+imf:RangeQualifier  rdfs:subClassOf  imf:AttributeQualifier ;
+        rdf:type         owl:Class .
+
+imf:averageQualifier  rdf:type  imf:RangeQualifier .
+
+imf:maximumQualifier  rdf:type  imf:RangeQualifier .
+
+imf:minimumQualifier  rdf:type  imf:RangeQualifier .
+
+imf:nominalQualifier  rdf:type  imf:RangeQualifier .
+
+imf:normalQualifier  rdf:type  imf:RangeQualifier .
+
+imf:averageQualifier  rdf:type  owl:NamedIndividual .
+
+imf:maximumQualifier  rdf:type  owl:NamedIndividual .
+
+imf:minimumQualifier  rdf:type  owl:NamedIndividual .
+
+imf:nominalQualifier  rdf:type  owl:NamedIndividual .
+
+imf:normalQualifier  rdf:type  owl:NamedIndividual .
+
+_:b0    rdf:type   owl:Class ;
+        owl:oneOf  _:b1 .
+
+_:b2    rdf:rest   rdf:nil ;
+        rdf:first  imf:normalQualifier .
+
+_:b3    rdf:rest   _:b4 ;
+        rdf:first  imf:maximumQualifier .
+
+_:b5    rdf:rest   _:b2 ;
+        rdf:first  imf:nominalQualifier .
+
+_:b1    rdf:rest   _:b3 ;
+        rdf:first  imf:averageQualifier .
+
+_:b4    rdf:rest   _:b5 ;
+        rdf:first  imf:minimumQualifier .
+
+_:b0    rdf:type  owl:Class .
+
+imf:RangeQualifier  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b0 .
+
+imf:Attribute  rdfs:subClassOf  _:b6 .
+
+_:b6    owl:onClass                  imf:RangeQualifier ;
+        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        rdf:type                     owl:Restriction ;
+        owl:onProperty               imf:hasQualifier .
+
+imf:hasQualifier  rdf:type  owl:ObjectProperty .
+
+imf:RangeQualifier  rdf:type  owl:Class .
+
+_:b7    rdf:type     owl:AllDifferent ;
+        owl:members  _:b8 .
+
+_:b9    rdf:rest   _:b10 ;
+        rdf:first  imf:minimumQualifier .
+
+_:b11   rdf:rest   _:b9 ;
+        rdf:first  imf:maximumQualifier .
+
+_:b8    rdf:rest   _:b11 ;
+        rdf:first  imf:averageQualifier .
+
+_:b12   rdf:rest   rdf:nil ;
+        rdf:first  imf:normalQualifier .
+
+_:b10   rdf:rest   _:b12 ;
+        rdf:first  imf:nominalQualifier .
+
+_:b13   rdf:type           owl:Restriction ;
+        owl:onProperty     imf:partOf ;
+        owl:allValuesFrom  imf:Block .
+
+imf:partOf  rdf:type  owl:ObjectProperty .
+
+imf:Block  rdf:type      owl:Class ;
+        rdfs:subClassOf  _:b13 .
+
+_:b14   rdf:type  owl:Class .
+
+imf:InputTerminal  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b14 .
+
+_:b14   rdf:type        owl:Restriction ;
+        owl:onProperty  imf:direction ;
+        owl:hasValue    imf:inputFlow .
+
+_:b15   rdf:type            owl:Restriction ;
+        owl:onProperty      _:b16 ;
+        owl:someValuesFrom  imf:Block .
+
+_:b16   rdf:type  owl:ObjectProperty .
+
+imf:Block  rdf:type  owl:Class .
+
+imf:Terminal  rdfs:subClassOf  _:b15 .
+
+_:b17   rdf:type     owl:AllDifferent ;
+        owl:members  _:b18 .
+
+_:b18   rdf:rest   _:b19 ;
+        rdf:first  imf:inputFlow .
+
+_:b19   rdf:rest   rdf:nil ;
+        rdf:first  imf:outputFlow .
+
+_:b20   rdf:type           owl:Restriction ;
+        owl:onProperty     imf:intraAspectRelation ;
+        owl:allValuesFrom  imf:AspectElement .
+
+imf:intraAspectRelation
+        rdf:type  owl:ObjectProperty .
+
+imf:AspectElement  rdf:type  owl:Class ;
+        rdfs:subClassOf  _:b20 .
+
+imf:ConnectionPoint  rdfs:subClassOf  _:b21 .
+
+_:b21   owl:onClass                  imf:Element ;
+        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        rdf:type                     owl:Restriction ;
+        owl:onProperty               imf:theOutput .
+
+imf:theOutput  rdf:type  owl:ObjectProperty .
+
+imf:Element  rdf:type  owl:Class .
+
+_:b22   rdf:type            owl:Restriction ;
+        owl:onProperty      imf:theWhole ;
+        owl:someValuesFrom  imf:Element .
+
+imf:theWhole  rdf:type  owl:ObjectProperty .
+
+imf:Element  rdf:type  owl:Class .
+
+imf:BreakdownPoint  rdfs:subClassOf  _:b22 .
+
+_:b23   owl:onClass               imf:Element ;
+        owl:qualifiedCardinality  "2"^^xsd:nonNegativeInteger ;
+        rdf:type                  owl:Restriction ;
+        owl:onProperty            imf:theConnected .
+
+imf:theConnected  rdf:type  owl:ObjectProperty .
+
+imf:Element  rdf:type  owl:Class .
+
+imf:ConnectionPoint  rdfs:subClassOf  _:b23 .
+
+_:b24   rdf:type  owl:Class .
+
+imf:OutputTerminal  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b24 .
+
+_:b24   rdf:type        owl:Restriction ;
+        owl:onProperty  imf:direction ;
+        owl:hasValue    imf:outputFlow .
+
+_:b25   rdf:type           owl:Restriction ;
+        owl:onProperty     imf:partOf ;
+        owl:allValuesFrom  imf:Terminal .
+
+imf:partOf  rdf:type  owl:ObjectProperty .
+
+imf:Terminal  rdf:type   owl:Class ;
+        rdfs:subClassOf  _:b25 .
+
+_:b26   rdf:type     owl:AllDisjointClasses ;
+        owl:members  _:b27 .
+
+_:b28   rdf:rest   rdf:nil ;
+        rdf:first  imf:ScopeQualifier .
+
+_:b29   rdf:rest   _:b28 ;
+        rdf:first  imf:RegularityQualifier .
+
+_:b30   rdf:rest   _:b29 ;
+        rdf:first  imf:RangeQualifier .
+
+_:b27   rdf:rest   _:b30 ;
+        rdf:first  imf:ProvenanceQualifier .
+
+imf:ProvenanceQualifier
+        rdfs:subClassOf  imf:AttributeQualifier ;
+        rdf:type         owl:Class .
+
+imf:calculatedQualifier
+        rdf:type  imf:ProvenanceQualifier .
+
+imf:measuredQualifier
+        rdf:type  imf:ProvenanceQualifier .
+
+imf:specifiedQualifier
+        rdf:type  imf:ProvenanceQualifier .
+
+imf:calculatedQualifier
+        rdf:type  owl:NamedIndividual .
+
+imf:measuredQualifier
+        rdf:type  owl:NamedIndividual .
+
+imf:specifiedQualifier
+        rdf:type  owl:NamedIndividual .
+
+_:b31   rdf:type   owl:Class ;
+        owl:oneOf  _:b32 .
+
+_:b33   rdf:rest   _:b34 ;
+        rdf:first  imf:measuredQualifier .
+
+_:b32   rdf:rest   _:b33 ;
+        rdf:first  imf:calculatedQualifier .
+
+_:b34   rdf:rest   rdf:nil ;
+        rdf:first  imf:specifiedQualifier .
+
+_:b31   rdf:type  owl:Class .
+
+imf:ProvenanceQualifier
+        rdf:type             owl:Class ;
+        owl:equivalentClass  _:b31 .
+
+imf:Attribute  rdfs:subClassOf  _:b35 .
+
+_:b35   owl:onClass                  imf:ProvenanceQualifier ;
+        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        rdf:type                     owl:Restriction ;
+        owl:onProperty               imf:hasQualifier .
+
+imf:hasQualifier  rdf:type  owl:ObjectProperty .
+
+imf:ProvenanceQualifier
+        rdf:type  owl:Class .
+
+_:b36   rdf:type     owl:AllDifferent ;
+        owl:members  _:b37 .
+
+_:b37   rdf:rest   _:b38 ;
+        rdf:first  imf:calculatedQualifier .
+
+_:b39   rdf:rest   rdf:nil ;
+        rdf:first  imf:specifiedQualifier .
+
+_:b38   rdf:rest   _:b39 ;
+        rdf:first  imf:measuredQualifier .
+
+imf:ScopeQualifier  rdfs:subClassOf  imf:AttributeQualifier ;
+        rdf:type         owl:Class .
+
+imf:designQualifier  rdf:type  imf:ScopeQualifier .
+
+imf:operatingQualifier
+        rdf:type  imf:ScopeQualifier .
+
+imf:designQualifier  rdf:type  owl:NamedIndividual .
+
+imf:operatingQualifier
+        rdf:type  owl:NamedIndividual .
+
+_:b40   rdf:type   owl:Class ;
+        owl:oneOf  _:b41 .
+
+_:b42   rdf:rest   rdf:nil ;
+        rdf:first  imf:operatingQualifier .
+
+_:b41   rdf:rest   _:b42 ;
+        rdf:first  imf:designQualifier .
+
+_:b40   rdf:type  owl:Class .
+
+imf:ScopeQualifier  rdf:type  owl:Class ;
+        owl:equivalentClass  _:b40 .
+
+imf:Attribute  rdfs:subClassOf  _:b43 .
+
+_:b43   owl:onClass                  imf:ScopeQualifier ;
+        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        rdf:type                     owl:Restriction ;
+        owl:onProperty               imf:hasQualifier .
+
+imf:hasQualifier  rdf:type  owl:ObjectProperty .
+
+imf:ScopeQualifier  rdf:type  owl:Class .
+
+_:b44   rdf:type     owl:AllDifferent ;
+        owl:members  _:b45 .
+
+_:b46   rdf:rest   rdf:nil ;
+        rdf:first  imf:operatingQualifier .
+
+_:b45   rdf:rest   _:b46 ;
+        rdf:first  imf:designQualifier .
+
+imf:RegularityQualifier
+        rdfs:subClassOf  imf:AttributeQualifier ;
+        rdf:type         owl:Class .
+
+imf:absoluteQualifier
+        rdf:type  imf:RegularityQualifier .
+
+imf:continuousQualifier
+        rdf:type  imf:RegularityQualifier .
+
+imf:absoluteQualifier
+        rdf:type  owl:NamedIndividual .
+
+imf:continuousQualifier
+        rdf:type  owl:NamedIndividual .
+
+_:b47   rdf:type   owl:Class ;
+        owl:oneOf  _:b48 .
+
+_:b49   rdf:rest   rdf:nil ;
+        rdf:first  imf:continuousQualifier .
+
+_:b48   rdf:rest   _:b49 ;
+        rdf:first  imf:absoluteQualifier .
+
+_:b47   rdf:type  owl:Class .
+
+imf:RegularityQualifier
+        rdf:type             owl:Class ;
+        owl:equivalentClass  _:b47 .
+
+imf:Attribute  rdfs:subClassOf  _:b50 .
+
+_:b50   owl:onClass                  imf:RegularityQualifier ;
+        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        rdf:type                     owl:Restriction ;
+        owl:onProperty               imf:hasQualifier .
+
+imf:hasQualifier  rdf:type  owl:ObjectProperty .
+
+imf:RegularityQualifier
+        rdf:type  owl:Class .
+
+_:b51   rdf:type     owl:AllDifferent ;
+        owl:members  _:b52 .
+
+_:b52   rdf:rest   _:b53 ;
+        rdf:first  imf:absoluteQualifier .
+
+_:b53   rdf:rest   rdf:nil ;
+        rdf:first  imf:continuousQualifier .
+
+_:b54   rdf:type            owl:Restriction ;
+        owl:onProperty      imf:thePart ;
+        owl:someValuesFrom  imf:Element .
+
+imf:thePart  rdf:type  owl:ObjectProperty .
+
+imf:Element  rdf:type  owl:Class .
+
+imf:BreakdownPoint  rdfs:subClassOf  _:b54 .
+
+imf:ConnectionPoint  rdfs:subClassOf  _:b55 .
+
+_:b55   owl:onClass                  imf:Element ;
+        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        rdf:type                     owl:Restriction ;
+        owl:onProperty               imf:theInput .
+
+imf:theInput  rdf:type  owl:ObjectProperty .
+
+imf:Element  rdf:type  owl:Class .
+
+imf:nominalQualifier  rdf:type  owl:NamedIndividual ;
+        skos:prefLabel   "nominal" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:interAspectRelation
+        rdf:type                  owl:ObjectProperty ;
+        skos:prefLabel            "inter-aspect relation" ;
+        skos:definition           "[inter-aspect relation] a generic relation between [Aspect Element]s *E1* and *E2* such that *E1* and *E2* have different [Aspect]s." ;
+        vs:term_status            "testing" ;
+        skos:changeNote           "0.1.0 :: Added" ;
+        rdfs:subPropertyOf        skos:related ;
+        rdfs:domain               imf:AspectElement ;
+        rdfs:range                imf:AspectElement ;
+        owl:propertyDisjointWith  imf:intraAspectRelation .
+
+imf:hasAttribute  rdf:type  owl:ObjectProperty ;
+        skos:prefLabel   "has attribute" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[has attribute] is a relation between a resource *X* and an [Attribute] *A* that specifies that *X* has the attribute *A*." ;
+        skos:changeNote  "0.2.0 :: Added" ;
+        rdfs:range       imf:Attribute .
+
+imf:minimumQualifier  rdf:type  owl:NamedIndividual ;
+        skos:prefLabel   "minimum" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:intraAspectRelation
+        rdf:type         owl:ObjectProperty ;
+        skos:prefLabel   "intra-aspect relation" ;
+        skos:definition  "[intra-aspect relation] a generic relation between [Aspect Element]s *E1* and *E2* such that *E1* and *E2* have the same [Aspect]." ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.1.0 :: Added" .
+
+imf:OutputTerminal  rdf:type  owl:Class ;
+        skos:prefLabel   "Output Terminal" ;
+        skos:altLabel    "Output" ;
+        vs:term_status   "testing" ;
+        skos:definition  "An [Output Terminal] is a [Terminal] that accepts output (and not input)." ;
+        skos:changeNote  "0.1.0 :: Added" ;
+        rdfs:subClassOf  imf:Terminal .
+
+imf:ProvenanceQualifier
+        rdf:type         owl:Class ;
+        skos:prefLabel   "Provenance Qualifier" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:associativeRelation
+        rdf:type                  owl:ObjectProperty ;
+        skos:prefLabel            "associative relation" ;
+        vs:term_status            "testing" ;
+        skos:definition           "[associative relation] is a generic relation that relates resources in an associative (or non-hierarchical) structure." ;
+        skos:changeNote           "0.1.0 :: Added" ;
+        rdfs:subPropertyOf        skos:related ;
+        owl:propertyDisjointWith  imf:hierachicalRelation .
+
+imf:uom  rdf:type           owl:ObjectProperty ;
+        skos:prefLabel      "unit of measure" ;
+        skos:altLabel       "uom" ;
+        vs:term_status      "testing" ;
+        skos:definition     "[unit of measure] is an [external reference] that relates an [Attribute] *A* to a resource *X* to specify that *A* has the unit of measure *X*." ;
+        skos:example        "The [unit of measure] of an [Attribute] \"Weight: 1250 kg\" could be specified as KILOGRAM <http://data.posccaesar.org/rdl/RDS1328669>." ;
+        skos:changeNote     "0.2.0 :: Added" ;
+        rdfs:subPropertyOf  imf:externalReference ;
+        rdfs:domain         imf:Attribute .
+
+imf:inputFlow  rdf:type  owl:NamedIndividual ;
+        rdf:type         imf:TerminalFlow ;
+        skos:prefLabel   "input flow" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[input flow] is a [Terminal Flow] that indicates that the flow is incoming to the [Terminal] is characterises." ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+<http://ns.imfid.org/imf>
+        vann:namespacePrefix  "imf" ;
+        pav:createdBy         _:b56 ;
+        pav:contributedBy     _:b57 ;
+        pav:contributedBy     _:b58 ;
+        owl:versionInfo       "0.2.0" ;
+        owl:priorVersion      <https://ns.imfid.org/20221118/imf> ;
+        owl:versionIRI        <http://ns.imfid.org/20230630/imf> ;
+        rdf:type              owl:Ontology ;
+        skos:changeNote       "0.2.0 :: Change summary:\n       - Change: minor naming adjustments to some IRIs. \n       - Added metadata descriptions, including definitinos and statuses." ;
+        skos:altLabel         "The IMF Ontology" ;
+        pav:createdOn         "2023-06-30T00:00:00"^^xsd:dateTime ;
+        skos:prefLabel        "Information Modelling Framework Ontology" ;
+        vann:namespaceURI     <http://ns.imfid.org> ;
+        pav:contributedBy     _:b59 .
+
+imf:hasAttributeGroup
+        rdf:type            owl:ObjectProperty ;
+        skos:prefLabel      "has attribute group" ;
+        vs:term_status      "testing" ;
+        skos:definition     "[has attribute group] is a relation between a resource *X* and an [Attribute Group] *A* that specifies that *X* has the attribute group *A*." ;
+        skos:editorialNote  "See comment on [Attribute Group], does [has attribute group] represent a \"long-hand property\" meaning that attaching the Attributes of the Attribute Group directly is equivalent? Perhaps the functionality of [Attribute Group]s is best realised as aspect-less-types?" ;
+        skos:changeNote     "0.2.0 :: Added" ;
+        rdfs:range          imf:AttributeGroup .
+
+imf:theConnected  rdf:type  owl:ObjectProperty ;
+        skos:prefLabel   "the connected" ;
+        vs:term_status   "unstable" ;
+        skos:changeNote  "0.2.0 :: Added" ;
+        rdfs:domain      imf:ConnectionPoint ;
+        rdfs:range       imf:Terminal .
+
+imf:measuredQualifier
+        rdf:type         owl:NamedIndividual ;
+        skos:prefLabel   "measured" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+_:b60   rdf:type            owl:Class ;
+        owl:intersectionOf  _:b61 .
+
+imf:hasFlowDirection  rdf:type  owl:ObjectProperty ;
+        skos:prefLabel   "has terminal flow" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[has terminal flow] relates a [Terminal] *T* to a [Terminal Flow] *F* to specify that *T* has the flow characteristic *F*." ;
+        skos:changeNote  "0.2.0 :: Added" ;
+        rdfs:domain      imf:Terminal ;
+        rdfs:range       imf:TerminalFlow .
+
+imf:hasTerminal  skos:definition  "[has terminal] is an [associative relation] and an [intra-aspect relation] that relates a [Block] *B* to a [Terminal] *T* to specify that *T* is a terminal of, or belongs to, *B*. [has terminal] is an inverse functional property which means that a [Terminal] may only belong to one [Block]." ;
+        rdfs:domain         imf:Block ;
+        vs:term_status      "testing" ;
+        skos:prefLabel      "has terminal" ;
+        rdfs:subPropertyOf  imf:intraAspectRelation ;
+        rdf:type            owl:InverseFunctionalProperty ;
+        rdfs:subPropertyOf  imf:associativeRelation ;
+        skos:changeNote     "0.1.0 :: Added" ;
+        rdfs:range          imf:Terminal ;
+        rdf:type            owl:ObjectProperty .
+
+imf:Attribute  rdf:type  owl:Class ;
+        skos:prefLabel   "Attribute" ;
+        vs:term_status   "testing" ;
+        skos:definition  "An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure]." ;
+        skos:example     "Color: red" ;
+        skos:example     "Weight: 1250 kg" ;
+        skos:example     "Maximum ambient operating temperature: 120 K" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+_:b62   rdf:first  _:b63 ;
+        rdf:rest   rdf:nil .
+
+imf:thePart  rdf:type    owl:ObjectProperty ;
+        skos:prefLabel   "the part" ;
+        vs:term_status   "unstable" ;
+        skos:changeNote  "0.2.0 :: Added" ;
+        rdf:type         owl:FunctionalProperty ;
+        rdfs:domain      imf:BreakdownPoint ;
+        rdfs:range       imf:Element .
+
+imf:Element  rdf:type    owl:Class ;
+        skos:prefLabel   "Element" ;
+        vs:term_status   "testing" ;
+        skos:definition  "An [Element] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
+        skos:scopeNote   "[Element] should not be directly instantiated, instead use one of its subclasses." ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:ScopeQualifier  rdf:type  owl:Class ;
+        skos:prefLabel   "Scope Qualifier" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:averageQualifier  rdf:type  owl:NamedIndividual ;
+        skos:prefLabel   "average" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:RangeQualifier  rdf:type  owl:Class ;
+        skos:prefLabel   "Range Qualifier" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:continuousQualifier
+        rdf:type         owl:NamedIndividual ;
+        skos:prefLabel   "continuous" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:Aspect  rdf:type     owl:Class ;
+        skos:prefLabel   "Aspect" ;
+        vs:term_status   "testing" ;
+        skos:definition  "\n  An [Aspect] describes a context for interpreting [Element]s. An [Aspect] specifies a /perspective/, an /interest/, and a /modality/. \n  /Perspective/ refers to from which viewpoint the [Element] is interpreted.\n  /Interest/ refers to the scope for which the information is intended used.\n  /Modality/ refers to the form in which information is recorded.\n" ;
+        skos:scopeNote   "Aspect is a core concept of ISO/IEC 81346 and the IMF ontology includes aspects that are found in ISO/IEC 81346: function, location and product. We anticipate that more aspects will be added to support future modelling needs." ;
+        skos:example     "For examples, see the instances of [Aspect] defined in this ontology." ;
+        skos:changeNote  "0.1.0 :: Added" .
+
+imf:maximumQualifier  rdf:type  owl:NamedIndividual ;
+        skos:prefLabel   "maximum" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:specifiedQualifier
+        rdf:type         owl:NamedIndividual ;
+        skos:prefLabel   "specified" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:InputTerminal  rdf:type  owl:Class ;
+        skos:prefLabel   "Input Terminal" ;
+        skos:altLabel    "Input" ;
+        vs:term_status   "testing" ;
+        skos:definition  "An [Input Terminal] is a [Terminal] that accepts input (and not output)." ;
+        skos:changeNote  "0.1.0 :: Added" ;
+        rdfs:subClassOf  imf:Terminal .
+
+_:b57   foaf:name  "Arild Waaler" .
+
+imf:Block  rdf:type      owl:Class ;
+        skos:prefLabel   "Block" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.1.0 :: Added" ;
+        rdfs:subClassOf  imf:Element ;
+        skos:definition  "A [block] is an [element] that ???" .
+
+imf:property  rdf:type      owl:ObjectProperty ;
+        skos:prefLabel      "property" ;
+        vs:term_status      "testing" ;
+        skos:definition     "[property] is an [external reference] that relates an [Attribute] *A* to a resource *X* to specify that *A* has the property *X*." ;
+        skos:example        "The [property] of an [Attribute] \"Weight: 1250 kg\" could be specified as WEIGTH <http://data.posccaesar.org/rdl/RDS356894>." ;
+        skos:changeNote     "0.2.0 :: Added" ;
+        rdfs:subPropertyOf  imf:externalReference ;
+        rdfs:domain         imf:Attribute .
+
+imf:hasOutputTerminal
+        rdf:type            owl:ObjectProperty ;
+        skos:prefLabel      "has output terminal" ;
+        vs:term_status      "testing" ;
+        skos:definition     "[has output terminal] specialises the [has terminal] property to relate [Block]s to [Output Terminal]s." ;
+        skos:changeNote     "0.1.0 :: Added" ;
+        rdfs:subPropertyOf  imf:hasTerminal ;
+        rdfs:range          imf:OutputTerminal .
+
+imf:connectedTo  rdfs:range  imf:Terminal ;
+        rdf:type            owl:InverseFunctionalProperty ;
+        rdfs:domain         imf:Terminal ;
+        skos:prefLabel      "connected to" ;
+        vs:term_status      "testing" ;
+        skos:changeNote     "0.1.0 :: Added" ;
+        rdf:type            owl:IrreflexiveProperty ;
+        rdfs:subPropertyOf  imf:associativeRelation ;
+        skos:changeNote     "0.2.0 :: Changed IRI from imf:isConnectedTo to imf:connectedTo." ;
+        skos:scopeNote      "[connected to] is a 1-1 relationship: a [Terminal] may only be [connected to] one other [Terminal], that is, a [Terminal] may not be [connected to] multiple [Terminal]s and it may not be [connected to] itself." ;
+        rdfs:subPropertyOf  imf:intraAspectRelation ;
+        skos:definition     "[connected to] is an [associative relation] and an [intra-aspect relation] that relates a [Terminal] *T1* to a [Terminal] *T2* to specify that *T1* is connected to *T2*. [connected to] specifies a topology of [Element]s by relating the [Terminal]s of [Block]s and hence describes how [Block]s are interconnected and indicates how they interact." ;
+        rdf:type            owl:FunctionalProperty ;
+        rdf:type            owl:ObjectProperty .
+
+imf:symbol  rdf:type     owl:AnnotationProperty ;
+        skos:prefLabel   "symbol" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[symbol] associates a resource *X* with a typical graphical representation of *X*." ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:theInput  rdf:type      owl:ObjectProperty ;
+        skos:prefLabel      "the input" ;
+        vs:term_status      "unstable" ;
+        skos:changeNote     "0.2.0 :: Added" ;
+        rdfs:subPropertyOf  imf:theConnected ;
+        rdfs:range          imf:OutputTerminal .
+
+_:b63   rdf:type                  owl:Restriction ;
+        owl:onProperty            imf:aspect ;
+        owl:qualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        owl:onClass               imf:Aspect .
+
+imf:AspectElement  rdf:type  owl:Class ;
+        skos:prefLabel       "Aspect Element" ;
+        skos:definition      "An [Aspect Element] is an [Element] that has exactly one [Aspect]." ;
+        vs:term_status       "testing" ;
+        skos:changeNote      "0.1.0 :: Added" ;
+        owl:equivalentClass  _:b60 .
+
+imf:hasPart  skos:prefLabel  "has part" ;
+        rdf:type            owl:ObjectProperty ;
+        rdfs:subPropertyOf  imf:hierarchicalRelation ;
+        skos:scopeNote      "Use [has part] when you want to specify the [Element]s that are part of an [Element] *E* \"on *E*\", rather than using the inverse property [part of] to state that the [part of] relationship to *E* for every [Element] that is part of *E*." ;
+        vs:term_status      "testing" ;
+        skos:changeNote     "0.1.0 :: Added" ;
+        rdfs:subPropertyOf  imf:intraAspectRelation ;
+        owl:inverseOf       imf:partOf ;
+        rdfs:subPropertyOf  skos:narrower ;
+        skos:altLabel       "has child" ;
+        skos:definition     "[has part] is a [hierarchical relation] and an [intra-aspect relation] that is the inverse relation of [part of]." .
+
+_:b56   foaf:name  "Martin G. Skjæveland" .
+
+imf:value  rdf:type      owl:DatatypeProperty ;
+        skos:prefLabel   "value" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[value] relates an [Attribute] *A* to literal value *v* to specify that *A* has the value *v*." ;
+        skos:example     "The [value] of an [Attribute] \"Weight: 1250 kg\" could be specified as the literal \"1250\"^^xsd:integer (or using a different appropriate literal datatype)." ;
+        skos:changeNote  "0.2.0 :: Added" ;
+        rdfs:domain      imf:Attribute .
+
+imf:Terminal  rdf:type   owl:Class ;
+        skos:prefLabel   "Terminal" ;
+        skos:altLabel    "Port" ;
+        skos:altLabel    "Channel" ;
+        skos:altLabel    "Input/Output" ;
+        vs:term_status   "testing" ;
+        skos:definition  "A [Terminal] is an [Element] that represents a point of interation or communication for a given [Block] (through the relation [has terminal]), and hence specifies an input and/or output that the [Block] produces and/or receives." ;
+        skos:changeNote  "0.1.0 :: Added" ;
+        rdfs:subClassOf  imf:Element .
+
+imf:classifier  rdf:type    owl:ObjectProperty ;
+        skos:prefLabel      "classifier" ;
+        vs:term_status      "testing" ;
+        skos:definition     "[classifier] is an [external reference] that relates an [Element] *E* to a resource *X* in an external ontology or reference data library such that *X* classifies *E* -- or equivalently, *E* is an instance of *X*." ;
+        skos:example        "[classifier] is used to relate a [Block] that is specified to perform a pumping function to the external resource PUMPING <https://data.posccaesar.org/rdl/RDS9657917>. We then say that the [Block] is classified by PUMPING, or that the [Block] is an instance of PUMPING." ;
+        skos:changeNote     "0.2.0 :: Added" ;
+        rdfs:subPropertyOf  imf:externalReference .
+
+imf:hasQualifier  rdf:type  owl:ObjectProperty ;
+        skos:prefLabel   "has qualifier" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[has qualifier] is a relation between an [Attribute] *A* and an [Attribute Qualifier] *Q* to specify that *A* is qualified by *Q*." ;
+        skos:changeNote  "0.2.0 :: Added" ;
+        rdfs:domain      imf:Attribute ;
+        rdfs:range       imf:AttributeQualifier .
+
+skos:notation  rdf:type  owl:DatatypeProperty ;
+        skos:scopeNote  "From the SKOS reference: 'A notation is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme.' Use skos:notation to set a RDS string." .
+
+_:b59   foaf:name  "Martin G. Skjæveland" .
+
+_:b16   owl:inverseOf  imf:hasTerminal .
+
+imf:RegularityQualifier
+        rdf:type         owl:Class ;
+        skos:prefLabel   "Regularity Qualifier" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:hierarchicalRelation
+        rdf:type            owl:ObjectProperty ;
+        skos:prefLabel      "hierarchical relation" ;
+        vs:term_status      "testing" ;
+        skos:definition     "[hierarchical relation] is a generic relation that relates resources in a hierarchical or tree-shaped structure." ;
+        rdfs:seeAlso        <https://en.wikipedia.org/wiki/Tree_(data_structure)> ;
+        skos:changeNote     "0.1.0 :: Added" ;
+        rdf:type            owl:IrreflexiveProperty ;
+        rdfs:subPropertyOf  skos:semanticRelation .
+
+_:b61   rdf:first  imf:Element ;
+        rdf:rest   _:b62 .
+
+imf:hasAspect  rdf:type  owl:ObjectProperty ;
+        skos:prefLabel   "has aspect" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[has aspect] is a relation from an [Aspect Element] *E* to an [Aspect] *A* that specfies that *E* has the [Aspect] *A*." ;
+        skos:changeNote  "0.1.0 :: Added" ;
+        rdfs:domain      imf:AspectElement ;
+        rdfs:range       imf:Aspect .
+
+imf:color  rdf:type      owl:AnnotationProperty ;
+        skos:prefLabel   "color" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[color] is a relation from a resource *X* to a string identifying a hexadecimal color *c* to specify that the *c* is a color that is associated with *A*." ;
+        skos:scopeNote   "[Aspect]s are often associated with a distinct color, which is used in graphical presentations of IMF models." ;
+        skos:example     "For examples, see the instances of [Aspect] defined in this ontology." ;
+        skos:changeNote  "0.1.0 :: Added" ;
+        rdfs:range       xsd:string .
+
+imf:externalReference
+        rdf:type         owl:ObjectProperty ;
+        skos:prefLabel   "external reference" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[external reference] is a generic relation that relates a resource *X* to a resource in an external ontology or reference data library for added semantic description of *X*." ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:prefix  rdf:type     owl:AnnotationProperty ;
+        skos:prefLabel   "prefix" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[prefix] is a relation from an [Aspect] *A* to a [xsd:string] *s* to specify that *s* is the prefix associated with *A*. Such prefix strings are typically used for identifying the aspect when constructing reference designation system (RDS) identifiers." ;
+        skos:example     "For examples, see the instances of [Aspect] defined in this ontology." ;
+        skos:changeNote  "0.1.0 :: Added" ;
+        rdfs:domain      imf:Aspect ;
+        rdfs:range       xsd:string .
+
+imf:AttributeQualifier
+        rdf:type         owl:Class ;
+        skos:prefLabel   "Attribute Qualifier" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:calculatedQualifier
+        rdf:type         owl:NamedIndividual ;
+        skos:prefLabel   "calculated" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:hasInputTerminal  rdf:type  owl:ObjectProperty ;
+        skos:prefLabel      "has input terminal" ;
+        vs:term_status      "testing" ;
+        skos:definition     "[has input terminal] specialises the [has terminal] property to relate [Block]s to [InputTerminal]s." ;
+        skos:changeNote     "0.1.0 :: Added" ;
+        rdfs:subPropertyOf  imf:hasTerminal ;
+        rdfs:range          imf:InputTerminal .
+
+imf:BreakdownPoint  rdf:type  owl:Class ;
+        skos:prefLabel   "Breakdown Point" ;
+        vs:term_status   "unstable" ;
+        skos:changeNote  "0.2.0 :: Added" ;
+        rdfs:subClassOf  imf:Element .
+
+imf:AttributeGroup  rdf:type  owl:Class ;
+        skos:prefLabel      "Attribute Group" ;
+        vs:term_status      "testing" ;
+        skos:definition     "An [Attribute Group] is a collection of [Attribute]s which are typically grouped for convenience as they describe closely related features or characteristics of a resource." ;
+        skos:example        "The physical dimensions of a product, e.g., its length, width and height, could be grouped in an [Attribute Group]." ;
+        skos:editorialNote  "Does an [Attribute Group] add any semantics? -- what is the difference from an [Attribute Group] and an [Element] with [Attribute]s?" ;
+        skos:changeNote     "0.2.0 :: Added" .
+
+imf:theWhole  rdf:type   owl:ObjectProperty ;
+        skos:prefLabel   "the whole" ;
+        vs:term_status   "unstable" ;
+        skos:changeNote  "0.2.0 :: Added" ;
+        rdf:type         owl:FunctionalProperty ;
+        rdfs:domain      imf:BreakdownPoint ;
+        rdfs:range       imf:Element .
+
+imf:ConnectionPoint  rdf:type  owl:Class ;
+        skos:prefLabel   "Connection Point" ;
+        vs:term_status   "unstable" ;
+        skos:changeNote  "0.2.0 :: Added" ;
+        rdfs:subClassOf  imf:Element .
+
+imf:normalQualifier  rdf:type  owl:NamedIndividual ;
+        skos:prefLabel   "normal" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:medium  rdf:type        owl:ObjectProperty ;
+        skos:prefLabel      "medium" ;
+        vs:term_status      "testing" ;
+        skos:definition     "[medium] is an [external reference] that relates a [Terminal] *T* to a resource *X* to specify that *X* is the medium that flows through *T*." ;
+        skos:example        "[medium] is typically used to relate a [Terminal] to an resource that specifies one of the following:\nMaterial (Fluid, Solids)\nEnergy (Mechanical, Electrical, Thermal)\nForce (Mechanical)\nInformation(Electrical, Optical, Wireless)\n" ;
+        skos:changeNote     "0.2.0 :: Added" ;
+        rdfs:subPropertyOf  imf:externalReference ;
+        rdfs:domain         imf:Terminal .
+
+imf:absoluteQualifier
+        rdf:type         owl:NamedIndividual ;
+        skos:prefLabel   "absolute" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:outputFlow  rdf:type  owl:NamedIndividual ;
+        rdf:type         imf:TerminalFlow ;
+        skos:prefLabel   "output flow" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[input flow] is a [Terminal Flow] that indicates that the flow is outgoing from the [Terminal] is characterises." ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:operatingQualifier
+        rdf:type         owl:NamedIndividual ;
+        skos:prefLabel   "operating" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:partOf  rdfs:domain     imf:Element ;
+        skos:prefLabel      "part of" ;
+        skos:changeNote     "0.2.0 :: Changed: IRI from imf:isPartOf to imf:partOf." ;
+        skos:altLabel       "has parent" ;
+        rdf:type            owl:FunctionalProperty ;
+        skos:changeNote     "0.1.0 :: Added" ;
+        rdf:type            owl:ObjectProperty ;
+        rdfs:subPropertyOf  imf:intraAspectRelation ;
+        rdfs:subPropertyOf  skos:broader ;
+        skos:scopeNote      "\"An [Element] may only have one 'parent'\": [part of] is functional and irreflexive property which means that any [Element] may only be part of one other [Element], that is: an [Element] may not be part of multiple [Element]s and it may not be part of itself." ;
+        skos:definition     "[part of] is a [hierarchical relation] and an [intra-aspect relation] that relates an [Element] *E1* and an [Element] *E2* to specify that *E1* is part of *E2*, or equivalently that *E2* has *E1* as a part. [part of] is used to specify a breakdown hierarchy of [Element]s." ;
+        rdfs:range          imf:Element ;
+        rdf:type            owl:IrreflexiveProperty ;
+        rdfs:subPropertyOf  imf:hierarchicalRelation ;
+        vs:term_status      "testing" .
+
+imf:theOutput  rdf:type     owl:ObjectProperty ;
+        skos:prefLabel      "the output" ;
+        vs:term_status      "unstable" ;
+        skos:changeNote     "0.2.0 :: Added" ;
+        rdfs:subPropertyOf  imf:theConnected ;
+        rdfs:range          imf:InputTerminal .
+
+_:b58   foaf:name  "Erlend Fjøsna" .
+
+imf:TerminalFlow  rdf:type  owl:Class ;
+        skos:prefLabel   "Terminal Flow" ;
+        vs:term_status   "testing" ;
+        skos:definition  "[Terminal Flow] is a characteristic of the flow of the [medium] of a [Terminal]." ;
+        skos:changeNote  "0.2.0 :: Added" .
+
+imf:designQualifier  rdf:type  owl:NamedIndividual ;
+        skos:prefLabel   "design" ;
+        vs:term_status   "testing" ;
+        skos:changeNote  "0.2.0 :: Added" .

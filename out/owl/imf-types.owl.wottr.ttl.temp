@@ -7,6 +7,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix o-imf-t-o: <http://ns.imfid.org/templates/type/owl/> .
 @prefix p14: <http://example.com/P14#> .
 @prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
 @prefix ex: <http://example.com#> .
@@ -15,86 +16,46 @@
 @prefix o-imf: <http://ns.imfid.org/templates/> .
 @prefix ottr: <http://ns.ottr.xyz/0.4/> .
 @prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
 
 _:b0    rdf:type           owl:Restriction ;
         owl:onProperty     imf:instanceOf ;
-        owl:allValuesFrom  imf:TerminalType .
-
-imf:TerminalType  rdf:type  owl:Class .
-
-imf:instanceOf  rdf:type  owl:ObjectProperty .
-
-imf:Terminal  rdfs:subClassOf  _:b0 .
-
-_:b1    rdf:type           owl:Restriction ;
-        owl:onProperty     imf:instanceOf ;
-        owl:allValuesFrom  imf:AttributeGroupType .
-
-imf:AttributeGroupType
-        rdf:type  owl:Class .
-
-imf:instanceOf  rdf:type  owl:ObjectProperty .
-
-imf:AttributeGroup  rdfs:subClassOf  _:b1 .
-
-skos:notation  rdf:type  owl:DatatypeProperty .
-
-rdfs:Literal  rdf:type  rdfs:Datatype .
-
-_:b2    owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
-        rdf:type                     owl:Restriction ;
-        owl:onProperty               skos:notation ;
-        owl:onDataRange              rdfs:Literal .
-
-imf:ElementType  rdfs:subClassOf  _:b2 .
-
-imf:symbol  rdf:type  owl:DatatypeProperty .
-
-rdfs:Literal  rdf:type  rdfs:Datatype .
-
-_:b3    owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
-        rdf:type                     owl:Restriction ;
-        owl:onProperty               imf:symbol ;
-        owl:onDataRange              rdfs:Literal .
-
-imf:ElementType  rdfs:subClassOf  _:b3 .
-
-_:b4    rdf:type           owl:Restriction ;
-        owl:onProperty     imf:instanceOf ;
         owl:allValuesFrom  imf:ElementType .
+
+imf:instanceOf  rdf:type  owl:ObjectProperty .
 
 imf:ElementType  rdf:type  owl:Class .
 
-imf:instanceOf  rdf:type  owl:ObjectProperty .
+imf:Element  rdfs:subClassOf  _:b0 .
 
-imf:Element  rdfs:subClassOf  _:b4 .
-
-_:b5    rdf:type           owl:Restriction ;
+_:b1    rdf:type           owl:Restriction ;
         owl:onProperty     imf:instanceOf ;
-        owl:allValuesFrom  imf:AttributeType .
-
-imf:AttributeType  rdf:type  owl:Class .
+        owl:allValuesFrom  imf:TerminalType .
 
 imf:instanceOf  rdf:type  owl:ObjectProperty .
 
-imf:Attribute  rdfs:subClassOf  _:b5 .
+imf:TerminalType  rdf:type  owl:Class .
 
-imf:TerminalType  rdfs:subClassOf  _:b6 .
+imf:Terminal  rdfs:subClassOf  _:b1 .
 
-_:b6    owl:onClass                  owl:Thing ;
-        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+_:b2    owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
         rdf:type                     owl:Restriction ;
-        owl:onProperty               imf:hasMedium .
+        owl:onProperty               skos:notation .
 
-imf:hasMedium  rdf:type  owl:ObjectProperty .
+rdfs:Literal  rdf:type  rdfs:Datatype .
 
-owl:Thing  rdf:type  owl:Class .
+skos:notation  rdf:type  owl:DatatypeProperty .
 
-imf:ElementType  rdfs:subClassOf  _:b7 .
+_:b2    owl:onDataRange  rdfs:Literal .
 
-_:b7    owl:onClass                  imf:Aspect ;
+imf:ElementType  rdfs:subClassOf  _:b2 ;
+        rdfs:subClassOf  _:b3 .
+
+_:b3    owl:onClass                  imf:Aspect ;
         owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
         rdf:type                     owl:Restriction ;
         owl:onProperty               imf:hasAspect .
@@ -103,19 +64,42 @@ imf:hasAspect  rdf:type  owl:ObjectProperty .
 
 imf:Aspect  rdf:type  owl:Class .
 
-_:b8    rdf:type           owl:Restriction ;
+_:b4    rdf:type           owl:Restriction ;
         owl:onProperty     imf:instanceOf ;
-        owl:allValuesFrom  imf:BlockType .
-
-imf:BlockType  rdf:type  owl:Class .
+        owl:allValuesFrom  imf:AttributeGroupType .
 
 imf:instanceOf  rdf:type  owl:ObjectProperty .
 
-imf:Block  rdfs:subClassOf  _:b8 .
+imf:AttributeGroupType
+        rdf:type  owl:Class .
 
-imf:TerminalType  rdfs:subClassOf  _:b9 .
+imf:AttributeGroup  rdfs:subClassOf  _:b4 .
 
-_:b9    owl:onClass                  imf:Direction ;
+_:b5    rdf:type           owl:Restriction ;
+        owl:onProperty     imf:instanceOf ;
+        owl:allValuesFrom  imf:BlockType .
+
+imf:instanceOf  rdf:type  owl:ObjectProperty .
+
+imf:BlockType  rdf:type  owl:Class .
+
+imf:Block  rdfs:subClassOf  _:b5 .
+
+_:b6    owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        rdf:type                     owl:Restriction ;
+        owl:onProperty               imf:minCount .
+
+xsd:integer  rdf:type  rdfs:Datatype .
+
+imf:minCount  rdf:type  owl:DatatypeProperty .
+
+_:b6    owl:onDataRange  xsd:integer .
+
+imf:TypeConstraint  rdfs:subClassOf  _:b6 .
+
+imf:TerminalType  rdfs:subClassOf  _:b7 .
+
+_:b7    owl:onClass                  imf:Direction ;
         owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
         rdf:type                     owl:Restriction ;
         owl:onProperty               imf:hasDirection .
@@ -124,27 +108,50 @@ imf:hasDirection  rdf:type  owl:ObjectProperty .
 
 imf:Direction  rdf:type  owl:Class .
 
+_:b8    rdf:type           owl:Restriction ;
+        owl:onProperty     imf:instanceOf ;
+        owl:allValuesFrom  imf:AttributeType .
+
+imf:instanceOf  rdf:type  owl:ObjectProperty .
+
+imf:AttributeType  rdf:type  owl:Class .
+
+imf:Attribute  rdfs:subClassOf  _:b8 .
+
+_:b9    owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+        rdf:type                     owl:Restriction ;
+        owl:onProperty               imf:maxCount .
+
+xsd:integer  rdf:type  rdfs:Datatype .
+
 imf:maxCount  rdf:type  owl:DatatypeProperty .
 
-xsd:integer  rdf:type  rdfs:Datatype .
+_:b9    owl:onDataRange  xsd:integer .
 
-_:b10   owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+imf:TypeConstraint  rdfs:subClassOf  _:b9 .
+
+imf:TerminalType  rdfs:subClassOf  _:b10 .
+
+_:b10   owl:onClass                  owl:Thing ;
+        owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
         rdf:type                     owl:Restriction ;
-        owl:onProperty               imf:maxCount ;
-        owl:onDataRange              xsd:integer .
+        owl:onProperty               imf:hasMedium .
 
-imf:TypeConstraint  rdfs:subClassOf  _:b10 .
+imf:hasMedium  rdf:type  owl:ObjectProperty .
 
-imf:minCount  rdf:type  owl:DatatypeProperty .
-
-xsd:integer  rdf:type  rdfs:Datatype .
+owl:Thing  rdf:type  owl:Class .
 
 _:b11   owl:maxQualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
         rdf:type                     owl:Restriction ;
-        owl:onProperty               imf:minCount ;
-        owl:onDataRange              xsd:integer .
+        owl:onProperty               imf:symbol .
 
-imf:TypeConstraint  rdfs:subClassOf  _:b11 .
+rdfs:Literal  rdf:type  rdfs:Datatype .
+
+imf:symbol  rdf:type  owl:DatatypeProperty .
+
+_:b11   owl:onDataRange  rdfs:Literal .
+
+imf:ElementType  rdfs:subClassOf  _:b11 .
 
 imf:BlockType  rdf:type  owl:Class ;
         rdfs:subClassOf  imf:ElementType ;

@@ -2438,7 +2438,7 @@ Path shapes:
 | imf:AspectElementShape | skos:prefLabel |         | sh:Warning |        1 |        1 |            | xsd:string |           |
 | imf:AspectElementShape | imf:hasAspect  |         |            |        1 |        1 | imf:Aspect |            |           |
 
-** SystemElements
+*** SystemElements
 
 Node shapes:
 

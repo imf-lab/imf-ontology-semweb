@@ -2,12 +2,17 @@
 @prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
 @prefix sh: 	<http://www.w3.org/ns/shacl#> . 
 @prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-@prefix ex:	<http://example.com#> .
+
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+
 @prefix imf:	<http://ns.imfid.org/imf#> .
+@prefix ex:	<http://example.com#> .
 
 @prefix p14:    <http://example.com/P14#> .
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
@@ -19,29 +24,39 @@
 
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 @prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+@prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
 
 
 ## This creates an individual for each of the aspects in the table.
-o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?symbol, xsd:string ?color] :: {
+o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?label, xsd:string ?symbol, xsd:string ?color, xsd:string ?definition] :: {
   o-rdf:Type(?aspect, imf:Aspect) ,
+  o-rdf:Type(?aspect, owl:NamedIndividual) ,
   ottr:Triple(?aspect, imf:prefix, ?symbol),
-  ottr:Triple(?aspect, imf:color, ?color)
+  ottr:Triple(?aspect, imf:color, ?color),
+  ottr:Triple(?aspect, skos:prefLabel, ?label),
+  ottr:Triple(?aspect, skos:definition, ?definition),
+  ottr:Triple(?aspect, vs:term_status, "testing"),
+  ottr:Triple(?aspect, skos:changeNote, "0.1.0 :: Added"),
+  ottr:Triple(?aspect, skos:changeNote, "0.2.0 :: Changed: use lowerCamelCase for localname of IRI")
 } .
 
 o-imf:AspectClass [owl:Class ?class, owl:NamedIndividual ?aspect] :: {
   o-owl-ax:SubClassOf(?class, imf:AspectElement),  
-  o-owl-ax:EquivObjectHasValue(?class, imf:aspect, ?aspect)
-  o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class)
+  o-owl-ax:EquivObjectHasValue(?class, imf:aspect, ?aspect),
+  o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class),
+  ottr:Triple(?class, skos:editorialNote, "Generated from corresponding aspect individual")
 } .
 
 o-imf:AspectElementClass [owl:Class ?class, owl:Class ?aspectClass, owl:Class ?elementClass] :: {
   o-owl-ax:EquivObjectIntersectionOf(?class, ( ?aspectClass, ?elementClass ) )
   o-owl-ax:SubClassOf(?class, ?aspectClass),
-  o-owl-ax:SubClassOf(?class, ?elementClass)
+  o-owl-ax:SubClassOf(?class, ?elementClass),
+  ottr:Triple(?class, skos:editorialNote, "Generated from corresponding aspect individual")
 } .
 
 o-imf:InterAspectRelation [owl:ObjectProperty ?property, owl:Class ?aspectClass] :: {
   o-rdf:Type(?property, owl:ObjectProperty),
   o-owl-ax:SubPropertyOf(?property, imf:interAspectRelation),  
-  o-rdfs:Range(?property, ?aspectClass)
+  o-rdfs:Range(?property, ?aspectClass),
+  ottr:Triple(?property, skos:editorialNote, "Generated from corresponding aspect individual")
 } .

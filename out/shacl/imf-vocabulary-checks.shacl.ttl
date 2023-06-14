@@ -27,12 +27,30 @@
 @prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
 
 
-o-imf:AttributeQualifier [owl:Class ?qualifierClass, NEList<owl:NamedIndividual> ?qualifierInstances] :: {
-  o-rdf:Type(?qualifierClass, owl:Class) ,
-  o-owl-ax:SubClassOf(?qualifierClass, imf:AttributeQualifier) ,
-  o-owl-ax:SubObjectMaxCardinality(imf:Attribute, "1"^^xsd:nonNegativeInteger, imf:hasQualifier, ?qualifierClass),
-  cross | o-rdf:Type(++?qualifierInstances, ?qualifierClass),
-  cross | o-rdf:Type(++?qualifierInstances, owl:NamedIndividual),
-  o-owl-ax:EquivObjectOneOf(?qualifierClass, ?qualifierInstances),
-  o-owl-ax:DifferentIndividuals(?qualifierInstances)
-} .
+_:allIRIs a sh:NodeShape ;
+  sh:target [
+    a sh:SPARQLTarget ;
+    sh:prefixes owl: ;
+    sh:select """
+      PREFIX owl:   <http://www.w3.org/2002/07/owl#> 
+      PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+      SELECT ?this { 
+        ?this a ?type 
+	FILTER (STRSTARTS(STR(?this), 'http://ns.imfid.org'))
+        FILTER (isIRI(?this))
+        #FILTER (?type IN ( owl:Class, owl:NamedIndividual, owl:ObjectProperty, owl:DatatypeProperty, owl:AnnotationProperty ))
+        FILTER (?type != owl:Ontology)
+        FILTER NOT EXISTS { 
+	  ?this skos:editorialNote ?note .
+	  FILTER (STRSTARTS(STR(?note), 'Generated'))
+	}
+      }
+      ## ORDER BY ?this
+      """ 
+  ] ;
+  sh:property 
+    [ sh:path vs:term_status ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "unstable" "testing" "stable" "archaic" ) ] ,
+    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    # [ sh:path skos:definition ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string  ] ,
+    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ] 
+.
