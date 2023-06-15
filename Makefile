@@ -32,7 +32,7 @@ out/owl/imf.owl.wottr.ttl: \
 
 ### Lutra
 
-%.ttl: %.wottr.ttl
+%.ttl: %.wottr.ttl .org-tangle-imf-language-v21.org
 	$(LUTRA) -I wottr -o $@.temp $<
 	cat out/.std-prefixes.ttl >> $@.temp
 	rapper -i turtle -o turtle $@.temp > $@
