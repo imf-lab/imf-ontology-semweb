@@ -315,24 +315,30 @@ Generated changelog that only checks the occurrence of IRIs in the IMF namespace
 
     skos:editorialNote 
       "On versioning. Versions of this ontology and other semantic web resources are published an URL following this schema:  http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]" ,
+
       "On statuses. All terms in the ontology are given a status using the 'term_status' property from the 'Term-centric Semantic Web Vocabulary Annotations' vocabulary (https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label." ,
+
       """References to external vocabularies used by this ontology:
 - SKOS: https://www.w3.org/TR/skos-primer/ ;
 - VANN: https://vocab.org/vann/ ;
 - PAV: https://pav-ontology.github.io/pav/ ;
 """ ,
+
       """On naming conventions. 
 - Classes use UpperCamelCase;
-- Properties use lowerCamelCase, where
+- Properties use lowerCamelCase, with additional rules:
    - object properties between IMF Classes usually start with a verb, e.g., 'has',
    - object properties for reified properties start with 'the',
    - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
  - Individuals use lowerCamelCase.
 """ ,
+
       "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel." ;
 
     skos:editorialNote """
 <<sh_jena_shacl_validate(shapes="http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl", data="out/owl/imf.owl.ttl")>>
+
+<<sh_jena_shacl_validate(shapes="out/shacl/imf-vocabulary-checks.shacl.ttl", data="out/owl/imf.owl.ttl")>>
     """
 
     .
@@ -386,10 +392,11 @@ _:ef  foaf:name "Erlend Fjøsna" .
     pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
     pav:createdBy _:mgs ;
     pav:contributedBy _:mgs, _:aw, _:ef ;
+    foaf:depiction <imf-overview.png> ;
     skos:changeNote 
       """0.2.0 :: Change summary:
 - Change: minor naming adjustments to some IRIs. 
-- Added metadata descriptions, including definitinos and statuses.
+- Added metadata descriptions, including definitions and statuses.
 
 Generated changelog that only checks the occurrence of IRIs in the IMF namespace between this and the previous version of the ontology:
 
@@ -405,28 +412,106 @@ Generated changelog that only checks the occurrence of IRIs in the IMF namespace
 
     skos:editorialNote 
       "On versioning. Versions of this ontology and other semantic web resources are published an URL following this schema:  http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]" ,
+
       "On statuses. All terms in the ontology are given a status using the 'term_status' property from the 'Term-centric Semantic Web Vocabulary Annotations' vocabulary (https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label." ,
+
       """References to external vocabularies used by this ontology:
 - SKOS: https://www.w3.org/TR/skos-primer/ ;
 - VANN: https://vocab.org/vann/ ;
 - PAV: https://pav-ontology.github.io/pav/ ;
 """ ,
+
       """On naming conventions. 
 - Classes use UpperCamelCase;
-- Properties use lowerCamelCase, where
-   - object properties between IMF Classes usually start with a verb, e.g., ~has~,
-   - object properties for reified properties start with ~the~,
+- Properties use lowerCamelCase, with additional rules:
+   - object properties between IMF Classes usually start with a verb, e.g., 'has',
+   - object properties for reified properties start with 'the',
    - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
  - Individuals use lowerCamelCase.
 """ ,
-      "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel."
 
-    skos:editoralNote """Automatic validation:
+      "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel." ;
 
+    skos:editorialNote """
 Result of validating RDF data <out/owl/imf.owl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
-
+2023-06-15
 Conforms
 
+
+Result of validating RDF data <out/owl/imf.owl.ttl> against SHACL shape <out/shacl/imf-vocabulary-checks.shacl.ttl>:
+2023-06-15
+Node=<http://ns.imfid.org/imf#continuousQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#minimumQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#RegularityQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#BreakdownPoint>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theInput>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#measuredQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#normalQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#operatingQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#ProvenanceQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theConnected>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#calculatedQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#specifiedQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#absoluteQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#averageQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#ConnectionPoint>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#RangeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#nominalQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#ScopeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theWhole>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#designQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#thePart>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theOutput>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#AttributeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#maximumQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 
     """
 
@@ -479,6 +564,7 @@ imf:Element a owl:Class ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "elements" ;
+  foaf:depiction <./imf-overview-elements.png> ;
 . 
 
 # In anticipation of more direct subclasses, this is commented out:
@@ -801,6 +887,7 @@ imf:AspectElement a owl:Class ;
   skos:prefLabel "Aspect Element";
   skos:definition "An [Aspect Element] is an [Element] that has exactly one [Aspect]." ;
   vs:term_status "testing" ;
+  foaf:depiction <./imf-overview-aspects.png> ;
   skos:changeNote 
     "0.1.0 :: Added" ;
   vann:termGroup "aspects" ;
@@ -949,6 +1036,7 @@ imf:Attribute a owl:Class ;
   vs:term_status "testing" ;
   skos:definition "An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure]." ;
   skos:example "Color: red" , "Weight: 1250 kg" , "Maximum ambient operating temperature: 120 K" ;
+  foaf:depiction <./imf-overview-attributes.png> ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "attributes" ;

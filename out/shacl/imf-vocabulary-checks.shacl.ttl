@@ -41,8 +41,8 @@ _:allIRIs a sh:NodeShape ;
         #FILTER (?type IN ( owl:Class, owl:NamedIndividual, owl:ObjectProperty, owl:DatatypeProperty, owl:AnnotationProperty ))
         FILTER (?type != owl:Ontology)
         FILTER NOT EXISTS { 
-	  ?this skos:editorialNote ?note .
-	  FILTER (STRSTARTS(STR(?note), 'Generated'))
+	  ?this skos:note ?note .
+	  FILTER (STRSTARTS(STR(?note), 'This resource is programatically generated.'))
 	}
       }
       ## ORDER BY ?this
@@ -50,7 +50,8 @@ _:allIRIs a sh:NodeShape ;
   ] ;
   sh:property 
     [ sh:path vs:term_status ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "unstable" "testing" "stable" "archaic" ) ] ,
+    [ sh:path vann:termGroup ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "elements" "aspects" "attributes" "generic relations" "model" ) ] ,
     [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
-    # [ sh:path skos:definition ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string  ] ,
+    [ sh:path skos:definition ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string  ] ,
     [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ] 
 .
