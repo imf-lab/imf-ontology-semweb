@@ -65,18 +65,14 @@ Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
         sh:minCount 1 ;
         sh:path vann:termGroup
     ], [
-        sh:minCount 1 ;
-        sh:path skos:scopeNote ;
-        sh:severity sh:Warning
-    ], [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
         sh:path skos:definition
     ], [
         sh:minCount 1 ;
-        sh:path skos:changeNote ;
-        sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]"
+        sh:path skos:scopeNote ;
+        sh:severity sh:Warning
     ], [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
@@ -91,6 +87,10 @@ Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
         sh:maxCount 1 ;
         sh:minCount 1 ;
         sh:path vs:term_status
+    ], [
+        sh:minCount 1 ;
+        sh:path skos:changeNote ;
+        sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]"
     ] ;
     sh:target [
         a sh:SPARQLTarget ;

@@ -37,22 +37,7 @@ imf:AspectElementShape
 imf:AttributeShape
     a sh:NodeShape ;
     sh:property [
-        sh:maxCount 1 ;
-        sh:path imf:uom
-    ], [
-        sh:class imf:ScopeQualifier ;
-        sh:maxCount 1 ;
-        sh:path imf:hasAttributeQualifier
-    ], [
-        sh:class imf:ProvenenceQualifier ;
-        sh:maxCount 1 ;
-        sh:path imf:hasAttributeQualifier
-    ], [
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path imf:property
-    ], [
-        sh:class imf:RangeQualifier ;
+        sh:class imf:RegularityQualifier ;
         sh:maxCount 1 ;
         sh:path imf:hasAttributeQualifier
     ], [
@@ -61,14 +46,29 @@ imf:AttributeShape
         sh:path imf:value ;
         sh:severity sh:Warning
     ], [
-        sh:class imf:RegularityQualifier ;
+        sh:class imf:RangeQualifier ;
         sh:maxCount 1 ;
         sh:path imf:hasAttributeQualifier
+    ], [
+        sh:class imf:ProvenenceQualifier ;
+        sh:maxCount 1 ;
+        sh:path imf:hasAttributeQualifier
+    ], [
+        sh:maxCount 1 ;
+        sh:path imf:uom
     ], [
         sh:message "Attribute has no qualifier." ;
         sh:minCount 1 ;
         sh:path imf:hasAttributeQualifier ;
         sh:severity sh:Warning
+    ], [
+        sh:class imf:ScopeQualifier ;
+        sh:maxCount 1 ;
+        sh:path imf:hasAttributeQualifier
+    ], [
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path imf:property
     ] ;
     sh:targetClass imf:Attribute ;
     sh:targetObjectsOf imf:hasAttribute ;
@@ -77,6 +77,10 @@ imf:AttributeShape
 imf:BlockShape
     a sh:NodeShape ;
     sh:property [
+        sh:class imf:Block ;
+        sh:message "Blocks can only be part of Blocks." ;
+        sh:path imf:partOf
+    ], [
         sh:class imf:Terminal ;
         sh:path imf:hasTerminal
     ], [
@@ -84,10 +88,6 @@ imf:BlockShape
         sh:minCount 1 ;
         sh:path imf:hasTerminal ;
         sh:severity sh:Warning
-    ], [
-        sh:class imf:Block ;
-        sh:message "Blocks can only be part of Blocks." ;
-        sh:path imf:partOf
     ], [
         sh:class imf:Block ;
         sh:message "Blocks can only have Blocks as parts." ;
@@ -116,16 +116,16 @@ imf:ConnectionPointShape
     a sh:NodeShape ;
     sh:property [
         sh:class imf:Element ;
+        sh:maxCount 2 ;
+        sh:path imf:theConnected
+    ], [
+        sh:class imf:Element ;
         sh:maxCount 1 ;
         sh:path imf:theInput
     ], [
         sh:class imf:Element ;
         sh:maxCount 1 ;
         sh:path imf:theOutput
-    ], [
-        sh:class imf:Element ;
-        sh:maxCount 2 ;
-        sh:path imf:theConnected
     ] ;
     sh:targetClass imf:ConnectionPoint ;
     sh:targetSubjectsOf imf:theConnected, imf:theInput, imf:theOutput .
@@ -138,18 +138,40 @@ imf:ElementShape
         sh:path dc:description ;
         sh:severity sh:Warning
     ], [
+        sh:message "Element has no classifier." ;
+        sh:minCount 1 ;
+        sh:path imf:classifier ;
+        sh:severity sh:Warning
+    ], [
         sh:maxCount 1 ;
         sh:message "Elements cannot be part of multiple Elements." ;
         sh:path imf:partOf
+    ], [
+        sh:message "Element has created timestamp." ;
+        sh:minCount 1 ;
+        sh:path pav:createdOn ;
+        sh:severity sh:Warning
     ], [
         sh:message "Element has no prefLabel." ;
         sh:minCount 1 ;
         sh:path skos:prefLabel ;
         sh:severity sh:Warning
     ], [
-        sh:message "Element has no classifier." ;
+        sh:message "Element has no version number." ;
         sh:minCount 1 ;
-        sh:path imf:classifier ;
+        sh:path pav:version ;
+        sh:severity sh:Warning
+    ], [
+        sh:message "Element has creator." ;
+        sh:minCount 1 ;
+        sh:path pav:createdBy ;
+        sh:severity sh:Warning
+    ], [
+        sh:message "Element is not contained in a Model." ;
+        sh:minCount 1 ;
+        sh:path [
+            sh:inversePath skos:hasElement
+        ] ;
         sh:severity sh:Warning
     ] ;
     sh:targetClass imf:Block, imf:Element, imf:Terminal .
@@ -185,14 +207,23 @@ Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
     skos:prefLabel "Information Modelling Framework: IMF Model Grammar" ;
     sh:shapesGraph <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl>, <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>, <http://www.w3.org/ns/shacl-shacl#> .
 
+imf:ModelShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:message "Model has contains no Elements." ;
+        sh:minCount 1 ;
+        sh:path skos:hasElement ;
+        sh:severity sh:Warning
+    ] ;
+    sh:targetClass imf:Model ;
+    sh:targetSubjectsOf imf:hasElement .
+
 imf:TerminalShape
     a sh:NodeShape ;
     sh:property [
-        sh:in (imf:inputFlow
-            imf:outputFlow
-        ) ;
+        sh:class imf:Terminal ;
         sh:maxCount 1 ;
-        sh:path imf:hasTerminalQualifier
+        sh:path imf:connectedTo
     ], [
         sh:message "The Terminal has no connection (to a different Terminal)." ;
         sh:minCount 1 ;
@@ -203,17 +234,19 @@ imf:TerminalShape
         sh:maxCount 1 ;
         sh:path imf:partOf
     ], [
+        sh:maxCount 1 ;
+        sh:path imf:medium
+    ], [
         sh:message "The Terminal has no medium." ;
         sh:minCount 1 ;
         sh:path imf:medium ;
         sh:severity sh:Warning
     ], [
-        sh:class imf:Terminal ;
+        sh:in (imf:inputFlow
+            imf:outputFlow
+        ) ;
         sh:maxCount 1 ;
-        sh:path imf:connectedTo
-    ], [
-        sh:maxCount 1 ;
-        sh:path imf:medium
+        sh:path imf:hasTerminalQualifier
     ] ;
     sh:targetClass imf:InputTerminal, imf:OutputTerminal, imf:Terminal ;
     sh:targetObjectsOf imf:connectedTo, imf:hasTerminal ;

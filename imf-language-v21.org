@@ -359,6 +359,9 @@ _:ef  foaf:name "Erlend Fjøsna" .
 *** _includes                                                      :noexport:
 #+NAME: owl-imf-ontology-all-includes
 #+BEGIN_SRC ttl :noweb yes
+
+<<owl-model-model>>
+
 <<owl-main-genericrelations>>
 
 <<owl-elements-element>>
@@ -403,53 +406,51 @@ _:ef  foaf:name "Erlend Fjøsna" .
 
 #+END_SRC
 
-** Model and Identified's                                              :todo:
+** Model
 
 #+NAME: overview-model-versioning
-#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-overview-model-versioning.png
+#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-ontology-model.png
 <<plantuml-style>>
 
-stereotype Identified {
- id :
- name : string
- description : string
-}
-
-stereotype Metadata {
- version : string
- created : date
- createdBy : string
- lastUpdated : date
- updatedBy : string
-}
-
-class Model << Identified >>
-abstract class Element << Identified >>
+class Model
+abstract class Element
 
 Model o--> "*" Element
 #+END_SRC
 
-*** Metadata properties
-
-#+NAME: owl-elements-annotations
+#+NAME: owl-model-model
 #+BEGIN_SRC ttl
-skos:notation a owl:DatatypeProperty ;
-  skos:scopeNote "From the SKOS reference: 'A notation is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme.' Use skos:notation to set a RDS string."
-  .
+imf:Model a owl:Class ;
+  skos:prefLabel "Model (unstable)" ;
+  vs:term_status "unstable" ;
+  skos:definition "A [Model] is a collection of [Element]s. " ;
+  skos:changeNote 
+    "0.2.0 :: Added" ;
+  vann:termGroup "models" ;
+  foaf:depiction <./imf-ontology-model.png> ;
+. 
 
-imf:symbol a owl:AnnotationProperty ;
-  skos:prefLabel "symbol" ;
-  vs:term_status "testing" ;
-  skos:definition "[symbol] associates a resource *X* with a typical graphical representation of *X*." ;
-  skos:changeNote "0.2.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  .
+imf:hasElement a owl:ObjectProperty ;
+  skos:prefLabel "has Element (unstable)" ;
+  vs:term_status "unstable" ;
+  skos:definition "[has Element] is a relation from a [Model] *M* to an [Element] *E* to specify that *M* contains *E*" ;
+  skos:changeNote 
+    "0.2.0 :: Added" ;
+  vann:termGroup "models" ;
+  rdfs:domain imf:Model ;
+  rdfs:range imf:Element .
 #+END_SRC
 
+#+NAME: shacl-model-model
+#+BEGIN_SRC ttl
+imf:ModelShape a sh:NodeShape ;
+  sh:targetClass imf:Model ;
+  sh:targetSubjectsOf imf:hasElement ;
+  sh:property 
+    [ sh:path skos:hasElement ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Model has contains no Elements." ] .
 
+#+END_SRC
 
-#+RESULTS: overview-model-versioning
-[[file:out/img/imf-overview-model-versioning.png]]
 
 
 ** Structural relations
@@ -504,7 +505,7 @@ imf:associativeRelation a owl:ObjectProperty ;
 #+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-ontology-elements.png
 <<plantuml-style>>
 
-abstract class Element << Identified >> {
+abstract class Element {
   notation : 0..1 
   symbol : 0..1
 }
@@ -553,8 +554,11 @@ imf:Element a owl:Class ;
 - optionally additional alternative labels, using skos:altLabel;
 - a (textual) description, using dc:description;
 - optionally a source of origin from which information about the element is taken, using dc:source;
-- a IMF type, using rdf:type;
-- a classifier, using imf:classifier;
+- a version number, using pav:version;
+- a created timestamp, using pav:createdOn;
+- its creator, i.e., person, using createdBy;
+- optionally contributors to its creation, using pav:contributedBy;
+- optionally the time of latest update, using pav:lastUpdateOn
 """ ;
   skos:changeNote 
     "0.2.0 :: Added" ;
@@ -570,10 +574,39 @@ imf:ElementShape a sh:NodeShape ;
   sh:property 
     [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no prefLabel." ] ,
     [ sh:path dc:description ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no description." ] ,
+    [ sh:path pav:version ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no version number." ] ,
+    [ sh:path pav:createdOn ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has created timestamp." ] ,
+    [ sh:path pav:createdBy ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has creator." ] ,
+
     [ sh:path imf:classifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no classifier." ] ,
-    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:message "Elements cannot be part of multiple Elements."  ]
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:message "Elements cannot be part of multiple Elements."  ] ,
+
+    [ sh:path [ sh:inversePath skos:hasElement ] ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element is not contained in a Model." ]
 .
 #+END_SRC
+
+
+*** Metadata properties
+
+#+NAME: owl-elements-annotations
+#+BEGIN_SRC ttl
+skos:notation a owl:DatatypeProperty ;
+  skos:scopeNote "From the SKOS reference: 'A notation is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme.' Use skos:notation to set a RDS string."
+  .
+
+imf:symbol a owl:AnnotationProperty ;
+  skos:prefLabel "symbol" ;
+  vs:term_status "testing" ;
+  skos:definition "[symbol] associates a resource *X* with a typical graphical representation of *X*." ;
+  skos:changeNote "0.2.0 :: Added" ;
+  vann:termGroup "aspects" ;
+  .
+#+END_SRC
+
+
+
+#+RESULTS: overview-model-versioning
+[[file:out/img/imf-overview-model-versioning.png]]
 
 
 *** ~partOf~ / ~hasPart~
@@ -1995,6 +2028,7 @@ imf:IMFModelGrammar a owl:Ontology ;
     """
 .
 
+<<shacl-model-model>>
 <<shacl-elements-annotations>>
 <<shacl-elements-block>>
 <<shacl-elements-terminal>>
@@ -4496,7 +4530,7 @@ skinparam class {
 
 #+END_SRC
 
-* TODOs [17/46]
+* TODOs [21/45]
 
  Questions:
  - [X] Are BreakdownPoints and ConnectionPoints also Elements? Perhaps
@@ -4507,17 +4541,18 @@ skinparam class {
    that can be broken down to graphs). -> IMF v3
  - [ ] Can an Element be member of many Models? What is the name of
    the relation between an Element and a Model.
- - [ ] Can an attribute have many values?
+ - [X] Can an attribute have many values? -> let's leave that open --
+   and for the type to decide.
  - [ ] Represent ownership of models and elements?
- - [ ] Compatibility: Should next version be backwards compatible --
+ - [X] Compatibility: Should next version be backwards compatible --
    what does that mean?
- - [ ] Check domain and range
+ - [X] Check domain and range
    - Should hierarchial/assosicative relation have aspectelement as doman and range?
- - [X] Should connectedTo be symmetric?
+ - [X] Should connectedTo be symmetric? -> moved to editorialNote
 
  Text:
- - [ ] Explain that there is a difference between diagrams and
-   (OWL/SHACL) implementation.
+ - [X] +Explain that there is a difference between diagrams and
+   (OWL/SHACL) implementation.+
 
  Ontology:
  - [X] problem with direction-less connectedTo and the names theInput
