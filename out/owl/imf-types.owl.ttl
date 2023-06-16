@@ -1,9 +1,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix imf: <http://ns.imfid.org/imf#> .
-@prefix pav: <http://purl.org/pav/> .
-@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
 @prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -11,16 +9,19 @@
 @prefix o-imf-t-o: <http://ns.imfid.org/templates/type/owl/> .
 @prefix p14: <http://example.com/P14#> .
 @prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
-@prefix ex: <http://example.com#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix o-imf: <http://ns.imfid.org/templates/> .
 @prefix ottr: <http://ns.ottr.xyz/0.4/> .
 @prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
-@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
-@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix ex: <http://example.com#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix dc: <http://purl.org/dc/terms> .
 
 imf:Aspect
     a owl:Class .
@@ -76,11 +77,6 @@ imf:ElementType
     rdfs:subClassOf imf:Type, [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Aspect ;
-        owl:onProperty imf:hasAspect
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onDataRange rdfs:Literal ;
         owl:onProperty skos:notation
     ], [
@@ -88,6 +84,11 @@ imf:ElementType
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onDataRange rdfs:Literal ;
         owl:onProperty imf:symbol
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect
     ] ;
     skos:prefLabel "Element Type" .
 
@@ -123,12 +124,12 @@ imf:TypeConstraint
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onDataRange xsd:integer ;
-        owl:onProperty imf:minCount
+        owl:onProperty imf:maxCount
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onDataRange xsd:integer ;
-        owl:onProperty imf:maxCount
+        owl:onProperty imf:minCount
     ] .
 
 imf:hasAspect

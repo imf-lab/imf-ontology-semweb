@@ -201,7 +201,6 @@ writing), or N-Triples (a very simple format only appropriate for
 software).
 
 
-* Namespace and identifiers and filenames                            :update:
 * IMF Ontology
 ** Design                                                          :noexport:
 *** Diagram legend
@@ -285,21 +284,21 @@ combines all diagrams and contains all information.
 ** Ontology header
 
 #+NAME: owl-imf-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/imf.owl.wottr.ttl :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/imf-ontology.owl.wottr.ttl :mkdirp yes
 <<prefixes>>
 
-<http://ns.imfid.org/imf> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/20230630/imf> ;
+imf:IMFOntology a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230630/imf-ontology.owl.ttl> ;
     owl:versionInfo "0.2.0" ;
-    owl:priorVersion <https://ns.imfid.org/20221118/imf> ;
-    skos:prefLabel "Information Modelling Framework Ontology" ;
+    owl:priorVersion <https://ns.imfid.org/20221118/imf-vocabulary.owl.ttl> ;
+    skos:prefLabel "Information Modelling Framework: Ontology" ;
     skos:altLabel "The IMF Ontology" ;
-    vann:namespacePrefix "imf" ;
-    vann:namespaceURI <http://ns.imfid.org/imf#> ;
+    vann:preferredNamespacePrefix "imf" ;
+    vann:preferredNamespaceUri imf: ;
     pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
     pav:createdBy _:mgs ;
     pav:contributedBy _:mgs, _:aw, _:ef ;
-    foaf:depiction <imf-overview.png> ;
+    foaf:depiction <imf-ontology.png> ;
     skos:changeNote 
       """0.2.0 :: Change summary:
 - Change: minor naming adjustments to some IRIs. 
@@ -307,18 +306,18 @@ combines all diagrams and contains all information.
 
 Generated changelog that only checks the occurrence of IRIs in the IMF namespace between this and the previous version of the ontology:
 
-<<py_iri_rdf_diff(v2="out/owl/imf.owl.ttl", v1="https://ns.imfid.org/20221118/imf-vocabulary.owl.ttl")>>
+<<py_iri_rdf_diff(v2="out/owl/imf-ontology.owl.ttl", v1="https://ns.imfid.org/20221118/imf-vocabulary.owl.ttl")>>
 
 """ ;
     # cc:licence 
     # skos:scopeNote ## add description of ontology
 
     skos:editorialNote 
-      "On versioning. Versions of this ontology and other semantic web resources are published an URL following this schema:  http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]" ,
+      "On publishing. Versions of this ontology and other semantic web resources for IMF are published at an URL following this schema: http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]" ,
 
       "On statuses. All terms in the ontology are given a status using the 'term_status' property from the 'Term-centric Semantic Web Vocabulary Annotations' vocabulary (https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label." ,
 
-      """References to external vocabularies used by this ontology:
+      """External vocabularies used by this ontology:
 - SKOS: https://www.w3.org/TR/skos-primer/ ;
 - VANN: https://vocab.org/vann/ ;
 - PAV: https://pav-ontology.github.io/pav/ ;
@@ -335,12 +334,19 @@ Generated changelog that only checks the occurrence of IRIs in the IMF namespace
 
       "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel." ;
 
-    skos:editorialNote """
-<<sh_jena_shacl_validate(shapes="http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl", data="out/owl/imf.owl.ttl")>>
+    sh:suggestedShapesGraph <http://ns.imfid.org/20230630/imf-model-grammar.shacl.ttl> ;
+    sh:shapesGraph 
+      <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ,
+      <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl> ,
+      <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
 
-<<sh_jena_shacl_validate(shapes="out/shacl/imf-vocabulary-checks.shacl.ttl", data="out/owl/imf.owl.ttl")>>
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+<<sh_jena_shacl_validate(shapes="http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl", data="out/owl/imf-ontology.owl.ttl")>>
+
+<<sh_jena_shacl_validate(shapes="out/shacl/imf-terms-grammar.shacl.ttl", data="out/owl/imf-ontology.owl.ttl")>>
+
+<<sh_jena_shacl_validate(shapes="out/shacl/imf-ontology-grammar.shacl.ttl", data="out/owl/imf-ontology.owl.ttl")>>
     """
-
     .
 
 _:mgs foaf:name "Martin G. Skjæveland" .
@@ -349,941 +355,6 @@ _:ef  foaf:name "Erlend Fjøsna" .
 
 <<owl-imf-ontology-all-includes>>
 #+END_SRC
-
-#+RESULTS: owl-imf-ontology
-#+begin_example
-@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
-@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
-@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
-@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
-@prefix vann:   <http://purl.org/vocab/vann/> .
-@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
-
-@prefix imf:	<http://ns.imfid.org/imf#> .
-@prefix ex:	<http://example.com#> .
-
-@prefix p14:    <http://example.com/P14#> .
-@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
-@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
-@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
-@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
-
-@prefix o-imf:	     <http://ns.imfid.org/templates/> .
-@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
-@prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
-
-
-<http://ns.imfid.org/imf> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/20230630/imf> ;
-    owl:versionInfo "0.2.0" ;
-    owl:priorVersion <https://ns.imfid.org/20221118/imf> ;
-    skos:prefLabel "Information Modelling Framework Ontology" ;
-    skos:altLabel "The IMF Ontology" ;
-    vann:namespacePrefix "imf" ;
-    vann:namespaceURI <http://ns.imfid.org/imf#> ;
-    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
-    pav:createdBy _:mgs ;
-    pav:contributedBy _:mgs, _:aw, _:ef ;
-    foaf:depiction <imf-overview.png> ;
-    skos:changeNote 
-      """0.2.0 :: Change summary:
-- Change: minor naming adjustments to some IRIs. 
-- Added metadata descriptions, including definitions and statuses.
-
-Generated changelog that only checks the occurrence of IRIs in the IMF namespace between this and the previous version of the ontology:
-
- - IRIs present in both versions :: ns1:imf, imf:Aspect, imf:AspectElement, imf:Block, imf:FunctionBlock, imf:FunctionTerminal, imf:InputTerminal, imf:InstalledBlock, imf:InstalledTerminal, imf:LocationBlock, imf:LocationTerminal, imf:OutputTerminal, imf:ProductBlock, imf:ProductTerminal, imf:Terminal, imf:associativeRelation, imf:color, imf:hasAspect, imf:hasInputTerminal, imf:hasOutputTerminal, imf:hasPart, imf:hasTerminal, imf:hierarchicalRelation, imf:interAspectRelation, imf:intraAspectRelation, imf:prefix, imf:theInput, imf:theOutput
-
- - IRIs present only in this version :: ns2:imf, imf:, imf:Attribute, imf:AttributeQualifier, imf:BreakdownPoint, imf:ConnectionPoint, imf:Element, imf:FunctionElement, imf:InstalledElement, imf:LocationElement, imf:ProductElement, imf:ProvenanceQualifier, imf:RangeQualifier, imf:RegularityQualifier, imf:ScopeQualifier, imf:TerminalQualifier, imf:absoluteQualifier, imf:asFunction, imf:asInstalled, imf:asLocation, imf:asProduct, imf:averageQualifier, imf:calculatedQualifier, imf:classifier, imf:connectedTo, imf:continuousQualifier, imf:designQualifier, imf:externalReference, imf:functionAspect, imf:hasAttribute, imf:hasAttributeQualifier, imf:hasTerminalQualifier, imf:hierachicalRelation, imf:inputFlow, imf:installedAspect, imf:locationAspect, imf:maximumQualifier, imf:measuredQualifier, imf:medium, imf:minimumQualifier, imf:nominalQualifier, imf:normalQualifier, imf:operatingQualifier, imf:outputFlow, imf:partOf, imf:productAspect, imf:property, imf:specifiedQualifier, imf:symbol, imf:theConnected, imf:thePart, imf:theWhole, imf:uom, imf:value
-
- - IRIs present only in previous version :: ns3:imf-vocabulary, imf:FunctionAspect, imf:FunctionAspectElement, imf:FunctionInterfacePoint, imf:InstalledAspect, imf:InstalledAspectElement, imf:InstalledInterfacePoint, imf:InterAspectRelation, imf:InterfacePoint, imf:LocationAspect, imf:LocationAspectElement, imf:LocationInterfacePoint, imf:ProductAspect, imf:ProductAspectElement, imf:ProductInterfacePoint, imf:System, imf:SystemElement, imf:fulfilledBy, imf:fulfills, imf:isConnectedTo, imf:isPartOf, imf:memberOf
-
-""" ;
-    # cc:licence 
-    # skos:scopeNote ## add description of ontology
-
-    skos:editorialNote 
-      "On versioning. Versions of this ontology and other semantic web resources are published an URL following this schema:  http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]" ,
-
-      "On statuses. All terms in the ontology are given a status using the 'term_status' property from the 'Term-centric Semantic Web Vocabulary Annotations' vocabulary (https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label." ,
-
-      """References to external vocabularies used by this ontology:
-- SKOS: https://www.w3.org/TR/skos-primer/ ;
-- VANN: https://vocab.org/vann/ ;
-- PAV: https://pav-ontology.github.io/pav/ ;
-""" ,
-
-      """On naming conventions. 
-- Classes use UpperCamelCase;
-- Properties use lowerCamelCase, with additional rules:
-   - object properties between IMF Classes usually start with a verb, e.g., 'has',
-   - object properties for reified properties start with 'the',
-   - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
- - Individuals use lowerCamelCase.
-""" ,
-
-      "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel." ;
-
-    skos:editorialNote """
-Result of validating RDF data <out/owl/imf.owl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
-2023-06-15
-Conforms
-
-
-Result of validating RDF data <out/owl/imf.owl.ttl> against SHACL shape <out/shacl/imf-vocabulary-checks.shacl.ttl>:
-2023-06-15
-Node=<http://ns.imfid.org/imf#continuousQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#minimumQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#RegularityQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#BreakdownPoint>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#theInput>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#measuredQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#normalQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#operatingQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#ProvenanceQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#theConnected>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#calculatedQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#specifiedQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#absoluteQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#averageQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#ConnectionPoint>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#RangeQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#nominalQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#ScopeQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#theWhole>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#designQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#thePart>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#theOutput>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#AttributeQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#maximumQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-
-    """
-
-    .
-
-_:mgs foaf:name "Martin G. Skjæveland" .
-_:aw  foaf:name "Arild Waaler" .
-_:ef  foaf:name "Erlend Fjøsna" .
-
-
-imf:externalReference a owl:ObjectProperty ;
-    skos:prefLabel "external reference" ;
-    vs:term_status "testing" ;
-    skos:definition "[external reference] is a generic relation that relates a resource *X* to a resource in an external ontology or reference data library for added semantic description of *X*." ;
-    skos:changeNote 
-      "0.2.0 :: Added" ;
-    vann:termGroup "generic relations" ;
-.
-
-imf:hierarchicalRelation a owl:ObjectProperty ;
-    skos:prefLabel "hierarchical relation";
-    vs:term_status "testing" ;
-    skos:definition "[hierarchical relation] is a generic relation that relates resources in a hierarchical or tree-shaped structure." ;
-    rdfs:seeAlso <https://en.wikipedia.org/wiki/Tree_(data_structure)> ;
-    skos:changeNote 
-      "0.1.0 :: Added" ;
-    vann:termGroup "generic relations" ;
-    a owl:IrreflexiveProperty ;
-    rdfs:subPropertyOf skos:semanticRelation ;
-    
-    .
-
-imf:associativeRelation a owl:ObjectProperty ;
-    skos:prefLabel "associative relation";
-    vs:term_status "testing" ;
-    skos:definition "[associative relation] is a generic relation that relates resources in an associative (or non-hierarchical) structure." ;
-    skos:changeNote 
-      "0.1.0 :: Added" ;
-    vann:termGroup "generic relations" ;
-    rdfs:subPropertyOf skos:related ;
-    owl:propertyDisjointWith imf:hierachicalRelation ;
-    
-    .
-
-imf:Element a owl:Class ;
-  skos:prefLabel "Element" ;
-  vs:term_status "testing" ;
-  skos:definition "An [Element] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
-  skos:scopeNote "Avoid direct instantiation of [Element], use instead one of its subclasses." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  foaf:depiction <./imf-overview-elements.png> ;
-. 
-
-# In anticipation of more direct subclasses, this is commented out:
-#[] ottr:of o-owl-ma:ClassPartition ;
-#   ottr:values ( imf:Element ( imf:Block imf:Terminal ) ) .
-
-imf:Block a owl:Class ;
-  skos:prefLabel "Block" ;
-  vs:term_status "testing" ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subClassOf imf:Element ;
-  skos:definition "A [block] is an [element] that ???"
-  .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values (imf:Block imf:partOf imf:Block) .
-
-imf:Terminal a owl:Class ;
-  skos:prefLabel "Terminal" ;
-  skos:altLabel "Port", "Channel", "Input/Output" ;
-  vs:term_status "testing" ;
-  skos:definition "A [Terminal] is an [Element] that represents a point of interaction or communication for a given [Block] (through the relation [has terminal]), and hence specifies an input and/or output that the [Block] produces and/or receives." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subClassOf imf:Element ;
-  .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values (imf:Terminal imf:partOf imf:Terminal) .
-
-imf:hasTerminal a owl:ObjectProperty ;
-  skos:prefLabel "has terminal" ;
-  vs:term_status "testing" ;
-  skos:definition "[has terminal] is an [associative relation] and an [intra-aspect relation] that relates a [Block] *B* to a [Terminal] *T* to specify that *T* is a terminal of, or belongs to, *B*. [has terminal] is an inverse functional property which means that a [Terminal] may only belong to one [Block]." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  a owl:InverseFunctionalProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
-  rdfs:domain imf:Block ;
-  rdfs:range imf:Terminal ;
-  .
-
-[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
-   ottr:values (imf:Terminal [ owl:inverseOf imf:hasTerminal ] imf:Block ) .
-
-imf:TerminalQualifier a owl:Class ;
-  skos:prefLabel "Terminal Qualifier" ;
-  vs:term_status "testing" ;
-  skos:definition "[Terminal Qualifier] is a feature or characteristic of a [Terminal]." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  .
-
-imf:inputFlow a owl:NamedIndividual, imf:TerminalQualifier ;
-  skos:prefLabel "input flow" ;
-  vs:term_status "testing" ;
-  skos:definition "[input flow] is a [Terminal Qualifier] that indicates that the flow is incoming to the [Terminal] it qualifies." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-.
-
-imf:outputFlow a owl:NamedIndividual, imf:TerminalQualifier ;
-  skos:prefLabel "output flow" ;
-  vs:term_status "testing" ;
-  skos:definition "[output flow] is a [Terminal Qualifier] that indicates that the flow is outgoing from the [Terminal] it qualifies." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  .
-
-[] ottr:of o-owl-ax:DifferentIndividuals ;
-   ottr:values ( ( imf:inputFlow imf:outputFlow ) ) .
-
-imf:hasTerminalQualifier a owl:ObjectProperty ;
-  skos:prefLabel "has terminal qualifier" ;
-  vs:term_status "testing" ;
-  skos:definition "[has terminal qualifier] relates a [Terminal] *T* to a [Terminal Qualifier] *Q* to specify that *T* has the qualifier *Q*." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:domain imf:Terminal ;
-  rdfs:range imf:TerminalQualifier .
-
-imf:InputTerminal a owl:Class ;
-  skos:prefLabel "Input Terminal" ;
-  skos:altLabel "Input" ;
-  vs:term_status "testing" ;
-  skos:definition "An [Input Terminal] is a [Terminal] that accepts input (and not output)." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subClassOf imf:Terminal ;
-  .
-
-[] ottr:of o-owl-ax:EquivHasValue ;
-   ottr:values ( imf:InputTerminal imf:hasTerminalQualifier imf:inputFlow ) .
-
-imf:OutputTerminal a owl:Class ;
-  skos:prefLabel "Output Terminal" ;
-  skos:altLabel "Output" ;
-  vs:term_status "testing" ;
-  skos:definition "An [Output Terminal] is a [Terminal] that accepts output (and not input)." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subClassOf imf:Terminal ;
-  .
-
-[] ottr:of o-owl-ax:EquivHasValue ;
-   ottr:values ( imf:OutputTerminal imf:hasTerminalQualifier imf:outputFlow ) .
-
-imf:hasInputTerminal a owl:ObjectProperty ;
-  skos:prefLabel "has input terminal" ;
-  vs:term_status "testing" ;
-  skos:definition "[has input terminal] specialises the [has terminal] property to relate [Block]s to [InputTerminal]s." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:hasTerminal ;
-  rdfs:range imf:InputTerminal ;
-  .
-
-imf:hasOutputTerminal a owl:ObjectProperty ;
-  skos:prefLabel "has output terminal" ;
-  vs:term_status "testing" ;
-  skos:definition "[has output terminal] specialises the [has terminal] property to relate [Block]s to [Output Terminal]s." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:hasTerminal ;
-  rdfs:range imf:OutputTerminal ;
-  .
-
-skos:notation a owl:DatatypeProperty ;
-  skos:scopeNote "From the SKOS reference: 'A notation is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme.' Use skos:notation to set a RDS string."
-  .
-
-imf:symbol a owl:AnnotationProperty ;
-  skos:prefLabel "symbol" ;
-  vs:term_status "testing" ;
-  skos:definition "[symbol] associates a resource *X* with a typical graphical representation of *X*." ;
-  skos:changeNote "0.2.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  .
-
-imf:partOf a owl:ObjectProperty;
-  skos:prefLabel "part of" ;
-  skos:altLabel "has parent" ;
-  vs:term_status "testing" ;
-  skos:definition "[part of] is a [hierarchical relation] and an [intra-aspect relation] that relates an [Element] *E1* and an [Element] *E2* to specify that *E1* is part of *E2*, or equivalently that *E2* has *E1* as a part. [part of] is used to specify a breakdown hierarchy of [Element]s." ;
-  skos:scopeNote "\"An [Element] may only have one 'parent'\": [part of] is functional and irreflexive property which means that any [Element] may only be part of one other [Element], that is: an [Element] may not be part of multiple [Element]s and it may not be part of itself." ; 
-  skos:changeNote 
-    "0.1.0 :: Added" ,
-    "0.2.0 :: Changed: IRI from imf:isPartOf to imf:partOf." ;
-  vann:termGroup "elements" ;
-  a owl:FunctionalProperty ;
-  a owl:IrreflexiveProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
-  rdfs:domain imf:Element ;
-  rdfs:range imf:Element ;
-  .
-
-imf:hasPart a owl:ObjectProperty ;
-  skos:prefLabel "has part";
-  skos:altLabel "has child";
-  vs:term_status "testing" ;
-  skos:definition "[has part] is a [hierarchical relation] and an [intra-aspect relation] that is the inverse relation of [part of]." ;
-  skos:scopeNote "Use [has part] when you want to specify the [Element]s that are part of an [Element] *E* \"on *E*\", rather than using the inverse property [part of] to state that the [part of] relationship to *E* for every [Element] that is part of *E*." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
-  owl:inverseOf imf:partOf ;
-  .
-
-imf:connectedTo a owl:ObjectProperty ;
-  skos:prefLabel "connected to" ;
-  vs:term_status "testing" ;
-  skos:definition "[connected to] is an [associative relation] and an [intra-aspect relation] that relates a [Terminal] *T1* to a [Terminal] *T2* to specify that *T1* is connected to *T2*. [connected to] specifies a topology of [Element]s by relating the [Terminal]s of [Block]s and hence describes how [Block]s are interconnected and indicates how they interact." ;
-  skos:scopeNote "[connected to] is a 1-1 relationship: a [Terminal] may only be [connected to] one other [Terminal], that is, a [Terminal] may not be [connected to] multiple [Terminal]s and it may not be [connected to] itself." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ,
-    "0.2.0 :: Changed IRI from imf:isConnectedTo to imf:connectedTo." ;
-  skos:editorialNote "Should connectedTo be symmetric?" ;
-  vann:termGroup "elements" ;
-  a owl:FunctionalProperty ;
-  a owl:InverseFunctionalProperty ;
-  a owl:IrreflexiveProperty ; 
-  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
-  rdfs:domain imf:Terminal ;
-  rdfs:range imf:Terminal ;
-  .
-
-imf:classifier a owl:ObjectProperty ;
-  skos:prefLabel "classifier" ;
-  vs:term_status "testing" ;
-  skos:definition "[classifier] is an [external reference] that relates an [Element] *E* to a resource *X* in an external ontology or reference data library such that *X* classifies *E* -- or equivalently, *E* is an instance of *X*." ;
-  skos:example "[classifier] is used to relate a [Block] that is specified to perform a pumping function to the external resource PUMPING <https://data.posccaesar.org/rdl/RDS9657917>. We then say that the [Block] is classified by PUMPING, or that the [Block] is an instance of PUMPING." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:externalReference ;
-  .
-
-imf:medium a owl:ObjectProperty  ;
-  skos:prefLabel "medium" ;
-  vs:term_status "testing" ;
-  skos:definition "[medium] is an [external reference] that relates a [Terminal] *T* to a resource *X* to specify that *X* is the medium that flows through *T*." ;
-  skos:example """[medium] is typically used to relate a [Terminal] to an resource that specifies one of the following:
- Material (Fluid, Solids),
- Energy (Mechanical, Electrical, Thermal),
- Force (Mechanical),
- Information(Electrical, Optical, Wireless)
-""" ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:externalReference ;
-  rdfs:domain imf:Terminal ;
-  .
-
-
-imf:BreakdownPoint a owl:Class ;
-  skos:prefLabel "Breakdown Point (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subClassOf imf:Element ;
-  .
-
-imf:thePart a owl:ObjectProperty ;
-  skos:prefLabel "the part (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  a owl:FunctionalProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:associativeRelation ;
-  skos:editorialNote "Is [thePart] and [theWhole] associative, hierachical or none?" ; 
-  rdfs:domain imf:BreakdownPoint ;
-  rdfs:range imf:Element .
-
-imf:theWhole a owl:ObjectProperty ;
-  skos:prefLabel "the whole (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  a owl:FunctionalProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:associativeRelation ;
-  rdfs:domain imf:BreakdownPoint ;
-  rdfs:range imf:Element .
-
-[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
-   ottr:values ( imf:BreakdownPoint imf:thePart imf:Element ) .
-[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
-   ottr:values ( imf:BreakdownPoint imf:theWhole imf:Element ) .
-
-### Problem: gives non-simple property
-#imf:partOf a owl:ObjectProperty ;
-#  owl:propertyChainAxiom ( [ owl:inverseOf imf:thePart ] imf:theWhole ) .
-
-
-imf:ConnectionPoint a owl:Class ;
-  skos:prefLabel "Connection Point (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subClassOf imf:Element ;
-  .
-
-imf:theConnected a owl:ObjectProperty ;
-  skos:prefLabel "the connected (unstable)" ;
-  vs:term_status "unstable" ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:associativeRelation ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:domain imf:ConnectionPoint ;
-  rdfs:range imf:Terminal . 
-
-[] ottr:of o-owl-ax:SubObjectExactCardinality ;
-   ottr:values( imf:ConnectionPoint "2"^^xsd:nonNegativeInteger imf:theConnected imf:Element ) .
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values( imf:ConnectionPoint "1"^^xsd:nonNegativeInteger imf:theInput imf:Element ) .
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values( imf:ConnectionPoint "1"^^xsd:nonNegativeInteger imf:theOutput imf:Element ) .
-
-imf:theInput a owl:ObjectProperty ;
-  skos:prefLabel "the input (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:theConnected ;
-  rdfs:range imf:OutputTerminal . 
-
-imf:theOutput a owl:ObjectProperty ;
-  skos:prefLabel "the output (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:theConnected ;
-  rdfs:range imf:InputTerminal .
-
-### Problem: gives non-simple property
-#imf:connectedTo a owl:ObjectProperty ;
-#  owl:propertyChainAxiom ( imf:theOutput [ owl:inverseOf imf:theInput ] ) .
-
-imf:AspectElement a owl:Class ;
-  skos:prefLabel "Aspect Element";
-  skos:definition "An [Aspect Element] is an [Element] that has exactly one [Aspect]." ;
-  vs:term_status "testing" ;
-  foaf:depiction <./imf-overview-aspects.png> ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-
-  # an aspect element is an element with an aspect:
-  owl:equivalentClass [
-    rdf:type owl:Class ;
-    owl:intersectionOf ( 
-      imf:Element
-      [ rdf:type owl:Restriction ;
-        owl:onProperty imf:hasAspect ;
-        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Aspect 
-      ]
-  ) ] 
-  .
-
-imf:hasAspect a owl:ObjectProperty ;
-  skos:prefLabel "has aspect" ;
-  vs:term_status "testing" ;
-  skos:definition "[has aspect] is a relation from an [Element] *E* to an [Aspect] *A* that specfies that *E* has the [Aspect] *A*." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  rdfs:domain imf:Element ;
-  rdfs:range imf:Aspect .
-
-imf:Aspect a owl:Class ;
-  skos:prefLabel "Aspect" ;
-  vs:term_status "testing" ;
-  skos:definition """
-  An [Aspect] describes a context for interpreting [Element]s. An [Aspect] specifies a /perspective/, an /interest/, and a /modality/. 
-  /Perspective/ refers to from which viewpoint the [Element] is interpreted.
-  /Interest/ refers to the scope for which the information is intended used.
-  /Modality/ refers to the form in which information is recorded.
-""" ;
-  skos:scopeNote "Aspect is a core concept of ISO/IEC 81346 and the IMF ontology includes aspects that are found in ISO/IEC 81346: function, location and product. We anticipate that more aspects will be added to support future modelling needs." ;
-  skos:example "For examples, see the instances of [Aspect] defined in this ontology." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  .
-
-imf:prefix a owl:AnnotationProperty ;
-  skos:prefLabel "prefix" ;
-  vs:term_status "testing" ;
-  skos:definition "[prefix] is a relation from an [Aspect] *A* to a string *s* to specify that *s* is the prefix associated with *A*. Such prefix strings are typically used for identifying the aspect when constructing reference designation system (RDS) identifiers." ;
-  skos:example "For examples, see the instances of [Aspect] defined in this ontology." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  rdfs:domain imf:Aspect ;
-  rdfs:range xsd:string ;
-  .
-
-imf:color a owl:AnnotationProperty ;
-  skos:prefLabel "color" ;
-  vs:term_status "testing" ;
-  skos:definition "[color] is a relation from a resource *X* to a string identifying a hexadecimal color *c* to specify that the *c* is a color that is associated with *A*.";
-  skos:scopeNote "[Aspect]s are often associated with a distinct color, which is used in graphical presentations of IMF models." ;
-  skos:example "For examples, see the instances of [Aspect] defined in this ontology." ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  rdfs:range xsd:string
-  .
-
-
-[] ottr:of o-imf:Aspect ;
-   ottr:values( imf:functionAspect 'function' '=' '#FFFF00' '[function aspect] is an [Aspect] about the intended activity of [Element]s, i.e., the activity an [Element] perfoms or is designed to bring about. [function aspect] has /perspective/ \"Activity\", /interest/ \"System design\", and /modality/ \"Specification\".' ) . 
-[] ottr:of o-imf:Aspect ;
-   ottr:values( imf:locationAspect 'location' '+' '#FF00FF' '[location aspect] is an [Aspect] about the spatial envelope (e.g., geometry, size and shape) of [Element]s. [location aspect] has /perspective/ \"Location\", /interest/ \"Geometry and Position\", and /modality/ \"Specification\".' ) . 
-[] ottr:of o-imf:Aspect ;
-   ottr:values( imf:productAspect 'product' '-' '#00FFFF' '[product aspect] is an [Aspect] about the specification of a (physical) solution/implementation of [Element]s. [product aspect] has /perspective/ \"Artefact\", /interest/ \"Built\", and /modality/ \"Specification\".' ) . 
-[] ottr:of o-imf:Aspect ;
-   ottr:values( imf:installedAspect 'installed' '::' '#0000FF' '[installed aspect] is an [Aspect] about the information of [element] instances. [installed aspect] has /perspective/ \"Artefact\", /interest/ \"Built\", and /modality/ \"Description of individual\".' ) . 
-
-[] ottr:of o-owl-ax:DifferentIndividuals ;
-   ottr:values( ( imf:functionAspect imf:locationAspect imf:productAspect imf:installedAspect ) ) . 
-
-[] ottr:of o-imf:AspectClass ;
-   ottr:values( imf:FunctionElement imf:functionAspect ) . 
-[] ottr:of o-imf:AspectClass ;
-   ottr:values( imf:LocationElement imf:locationAspect ) . 
-[] ottr:of o-imf:AspectClass ;
-   ottr:values( imf:ProductElement imf:productAspect ) . 
-[] ottr:of o-imf:AspectClass ;
-   ottr:values( imf:InstalledElement imf:installedAspect ) . 
-
-[] ottr:of o-imf:AspectElementClass ;
-   ottr:values( imf:FunctionBlock imf:FunctionElement imf:Block ) . 
-[] ottr:of o-imf:AspectElementClass ;
-   ottr:values( imf:FunctionTerminal imf:FunctionElement imf:Terminal ) . 
-[] ottr:of o-imf:AspectElementClass ;
-   ottr:values( imf:LocationBlock imf:LocationElement imf:Block ) . 
-[] ottr:of o-imf:AspectElementClass ;
-   ottr:values( imf:LocationTerminal imf:LocationElement imf:Terminal ) . 
-[] ottr:of o-imf:AspectElementClass ;
-   ottr:values( imf:ProductBlock imf:ProductElement imf:Block ) . 
-[] ottr:of o-imf:AspectElementClass ;
-   ottr:values( imf:ProductTerminal imf:ProductElement imf:Terminal ) . 
-[] ottr:of o-imf:AspectElementClass ;
-   ottr:values( imf:InstalledBlock imf:InstalledElement imf:Block ) . 
-[] ottr:of o-imf:AspectElementClass ;
-   ottr:values( imf:InstalledTerminal imf:InstalledElement imf:Terminal ) . 
-
-[] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:asFunction imf:FunctionElement ) . 
-[] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:asLocation imf:LocationElement ) . 
-[] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:asProduct imf:ProductElement ) . 
-[] ottr:of o-imf:InterAspectRelation ;
-   ottr:values( imf:asInstalled imf:InstalledElement ) . 
-
-
-
-imf:intraAspectRelation a owl:ObjectProperty ;
-  skos:prefLabel "intra-aspect relation" ;
-  skos:definition "[intra-aspect relation] a generic relation between [Element]s *E1* and *E2* such that *E1* and *E2* share at least one [Aspect]." ;
-  vs:term_status "testing" ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  rdfs:domain imf:Element ;
-  rdfs:range imf:Element ;
-  .
-
-#[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-#   ottr:values ( imf:AspectElement imf:intraAspectRelation imf:AspectElement ) .
-
-imf:interAspectRelation a owl:ObjectProperty ;
-  skos:prefLabel "inter-aspect relation" ;
-  skos:definition "[inter-aspect relation] a generic relation between [Element]s *E1* and *E2* such that *E1* and *E2* do not share any [Aspect]s." ;
-  vs:term_status "testing" ;
-  skos:changeNote 
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  rdfs:domain imf:Element ;
-  rdfs:range imf:Element ;
-  owl:propertyDisjointWith imf:intraAspectRelation ;
-  .
-
-imf:Attribute a owl:Class ;
-  skos:prefLabel "Attribute" ;
-  vs:term_status "testing" ;
-  skos:definition "An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure]." ;
-  skos:example "Color: red" , "Weight: 1250 kg" , "Maximum ambient operating temperature: 120 K" ;
-  foaf:depiction <./imf-overview-attributes.png> ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "attributes" ;
-  .
-
-imf:hasAttribute a owl:ObjectProperty ;
-  skos:prefLabel "has attribute" ;
-  vs:term_status "testing" ;
-  skos:definition "[has attribute] is a relation between an [Element] *E* and an [Attribute] *A* that specifies that *E* has the attribute *A*." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "attributes" ;
-  rdfs:domain imf:Element ;
-  rdfs:range  imf:Attribute .
-
-imf:property a owl:ObjectProperty ;
-  skos:prefLabel "property" ;
-  vs:term_status "testing" ;
-  skos:definition "[property] is an [external reference] that relates an [Attribute] *A* to a resource *X* to specify that *A* has the property *X*." ;
-  skos:example "The [property] of an [Attribute] \"Weight: 1250 kg\" could be specified as WEIGTH <http://data.posccaesar.org/rdl/RDS356894>." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "attributes" ;
-  rdfs:subPropertyOf imf:externalReference ;
-  rdfs:domain imf:Attribute .
-
-imf:uom a owl:ObjectProperty ;
-  skos:prefLabel "unit of measure" ;
-  skos:altLabel "uom" ;
-  vs:term_status "testing" ;
-  skos:definition "[unit of measure] is an [external reference] that relates an [Attribute] *A* to a resource *X* to specify that *A* has the unit of measure *X*." ;
-  skos:example "The [unit of measure] of an [Attribute] \"Weight: 1250 kg\" could be specified as KILOGRAM <http://data.posccaesar.org/rdl/RDS1328669>." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "attributes" ;
-  rdfs:subPropertyOf imf:externalReference ;
-  rdfs:domain imf:Attribute .
-
-imf:value a owl:DatatypeProperty ;
-  skos:prefLabel "value" ;
-  vs:term_status "testing" ;
-  skos:definition "[value] relates an [Attribute] *A* to literal value *v* to specify that *A* has the value *v*." ;
-  skos:example "The [value] of an [Attribute] \"Weight: 1250 kg\" could be specified as the literal \"1250\"^^xsd:integer (or using a different appropriate literal datatype)." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "attributes" ;
-  rdfs:domain imf:Attribute 
-.
-
-#imf:AttributeGroup a owl:Class ;
-#  skos:prefLabel "Attribute Group" ;
-#  vs:term_status "testing" ;
-#  skos:definition "An [Attribute Group] is a collection of [Attribute]s which are typically grouped for convenience as they describe closely related features or characteristics of a resource." ;
-#  skos:example "The physical dimensions of a product, e.g., its length, width and height, could be grouped by an [Attribute Group]." ;
-#  skos:editorialNote "Does an [Attribute Group] add any semantics? -- what is the difference from an [Attribute Group] and an [Element] with [Attribute]s?" ;
-#  skos:changeNote 
-#    "0.2.0 :: Added" ;
-#  .
-#
-#imf:hasAttributeGroup a owl:ObjectProperty ;
-#  skos:prefLabel "has attribute group" ;
-#  vs:term_status "testing" ;
-#  skos:definition "[has attribute group] is a relation between a resource *X* and an [Attribute Group] *A* that specifies that *X* has the attribute group *A*." ;
-#  skos:editorialNote "See comment on [Attribute Group], does [has attribute group] represent a \"long-hand property\" meaning that attaching the Attributes of the Attribute Group directly is equivalent? Perhaps the functionality of [Attribute Group]s is best realised as aspect-less-types?" ;
-#  skos:changeNote 
-#    "0.2.0 :: Added" ;
-#  rdfs:range imf:AttributeGroup .
-
-imf:AttributeQualifier a owl:Class ;
-  skos:prefLabel "Attribute Qualifier" ;
-  vs:term_status "testing" ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "attributes" ;
-  .
-
-imf:hasAttributeQualifier a owl:ObjectProperty ;
-  skos:prefLabel "has attribute qualifier" ;
-  vs:term_status "testing" ;
-  skos:definition "[has attribute qualifier] is a relation between an [Attribute] *A* and an [Attribute Qualifier] *Q* to specify that *A* is qualified by *Q*." ;
-  skos:changeNote 
-    "0.2.0 :: Added" ;
-  vann:termGroup "attributes" ;
-  rdfs:domain imf:Attribute ;
-  rdfs:range  imf:AttributeQualifier .
-
-imf:ProvenanceQualifier a owl:Class ;
-  skos:prefLabel "Provenance Qualifier" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:calculatedQualifier a owl:NamedIndividual ;
-  skos:prefLabel "calculated" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:measuredQualifier a owl:NamedIndividual ;
-  skos:prefLabel "measured" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:specifiedQualifier a owl:NamedIndividual ;
-  skos:prefLabel "specified" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-[] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:ProvenanceQualifier (imf:calculatedQualifier imf:measuredQualifier imf:specifiedQualifier) ) . 
-
-imf:RangeQualifier a owl:Class ;
-  skos:prefLabel "Range Qualifier" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:averageQualifier a owl:NamedIndividual ;
-  skos:prefLabel "average" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:maximumQualifier a owl:NamedIndividual ;
-  skos:prefLabel "maximum" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:minimumQualifier a owl:NamedIndividual ;
-  skos:prefLabel "minimum" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:nominalQualifier a owl:NamedIndividual ;
-  skos:prefLabel "nominal" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:normalQualifier a owl:NamedIndividual ;
-  skos:prefLabel "normal" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-[] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:RangeQualifier (imf:averageQualifier imf:maximumQualifier imf:minimumQualifier imf:nominalQualifier imf:normalQualifier) ) . 
-
-imf:RegularityQualifier a owl:Class ;
-  skos:prefLabel "Regularity Qualifier" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:absoluteQualifier a owl:NamedIndividual ;
-  skos:prefLabel "absolute" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:continuousQualifier a owl:NamedIndividual ;
-  skos:prefLabel "continuous" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-[] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:RegularityQualifier (imf:absoluteQualifier imf:continuousQualifier) ) . 
-
-imf:ScopeQualifier a owl:Class ;
-  skos:prefLabel "Scope Qualifier" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:designQualifier a owl:NamedIndividual ;
-  skos:prefLabel "design" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-imf:operatingQualifier a owl:NamedIndividual ;
-  skos:prefLabel "operating" ;
-  vs:term_status "testing" ;
-  #skos:definition "";
-  skos:changeNote
-     "0.2.0 :: Added" ;
-  vann:termGroup "attributes";
-.
-
-[] ottr:of o-imf:AttributeQualifier ;
-   ottr:values( imf:ScopeQualifier (imf:designQualifier imf:operatingQualifier) ) . 
-
-
-[] ottr:of o-owl-ax:DisjointClasses ;
-   ottr:values( ( imf:ProvenanceQualifier imf:RangeQualifier imf:RegularityQualifier imf:ScopeQualifier ) ) . 
-
-#+end_example
 
 *** _includes                                                      :noexport:
 #+NAME: owl-imf-ontology-all-includes
@@ -1375,15 +446,6 @@ imf:symbol a owl:AnnotationProperty ;
   .
 #+END_SRC
 
-#+NAME: shacl-elements-annotations
-#+BEGIN_SRC ttl
-imf:ElementShape a sh:NodeShape ;
-  sh:targetClass imf:Element , imf:Block , imf:Terminal ;
-  sh:property 
-    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no prefLabel" ] ,
-    [ sh:path imf:classifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no classifier" ]
-.
-#+END_SRC
 
 
 #+RESULTS: overview-model-versioning
@@ -1439,7 +501,7 @@ imf:associativeRelation a owl:ObjectProperty ;
 ** Elements
 
 #+NAME: overview-instances
-#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-overview-elements.png
+#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-ontology-elements.png
 <<plantuml-style>>
 
 abstract class Element << Identified >> {
@@ -1475,7 +537,7 @@ Terminal "1" --> "1" Terminal : connectedTo
 
 #+ATTR_LATEX: :width 8cm
 #+RESULTS: overview-instances
-[[file:out/owl/imf-overview-elements.png]]
+[[file:out/owl/imf-ontology-elements.png]]
 
 *** ~Element~
 
@@ -1484,18 +546,35 @@ Terminal "1" --> "1" Terminal : connectedTo
 imf:Element a owl:Class ;
   skos:prefLabel "Element" ;
   vs:term_status "testing" ;
-  skos:definition "An [Element] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
+  skos:definition "An [Element] is a general object for modelling systems and system elements." ;
   skos:scopeNote "Avoid direct instantiation of [Element], use instead one of its subclasses." ;
+  skos:scopeNote """All [Element]s should be given the following metadata:
+- a preferred label, using skos:prefLabel;
+- optionally additional alternative labels, using skos:altLabel;
+- a (textual) description, using dc:description;
+- optionally a source of origin from which information about the element is taken, using dc:source;
+- a IMF type, using rdf:type;
+- a classifier, using imf:classifier;
+""" ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "elements" ;
-  foaf:depiction <./imf-overview-elements.png> ;
+  foaf:depiction <./imf-ontology-elements.png> ;
 . 
-
-# In anticipation of more direct subclasses, this is commented out:
-#[] ottr:of o-owl-ma:ClassPartition ;
-#   ottr:values ( imf:Element ( imf:Block imf:Terminal ) ) .
 #+END_SRC
+
+#+NAME: shacl-elements-annotations
+#+BEGIN_SRC ttl
+imf:ElementShape a sh:NodeShape ;
+  sh:targetClass imf:Element , imf:Block , imf:Terminal ;
+  sh:property 
+    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no prefLabel." ] ,
+    [ sh:path dc:description ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no description." ] ,
+    [ sh:path imf:classifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no classifier." ] ,
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:message "Elements cannot be part of multiple Elements."  ]
+.
+#+END_SRC
+
 
 *** ~partOf~ / ~hasPart~
 
@@ -1555,11 +634,11 @@ imf:classifier a owl:ObjectProperty ;
 imf:Block a owl:Class ;
   skos:prefLabel "Block" ;
   vs:term_status "testing" ;
+  skos:definition "A [Block] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
   skos:changeNote 
     "0.1.0 :: Added" ;
   vann:termGroup "elements" ;
   rdfs:subClassOf imf:Element ;
-  skos:definition "A [block] is an [element] that ???"
   .
 
 [] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
@@ -1573,8 +652,9 @@ imf:BlockShape a sh:NodeShape ;
   sh:targetSubjectsOf imf:hasTerminal ;
   sh:property 
     [ sh:path imf:hasTerminal ; sh:class imf:Terminal ] ,
-    [ sh:path imf:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminal." ] ,     
-    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class imf:Block ]
+    [ sh:path imf:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminals." ] ,     
+    [ sh:path imf:partOf ; sh:class imf:Block ; sh:message "Blocks can only be part of Blocks." ] ,
+    [ sh:path imf:hasPart ; sh:class imf:Block ; sh:message "Blocks can only have Blocks as parts." ]
 .
 #+END_SRC
 
@@ -1778,7 +858,7 @@ imf:hasOutputTerminal a owl:ObjectProperty ;
 **** Overview
 
 #+NAME: overview-instances-w-reified
-#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-overview-instances-w-reified.png
+#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-ontology-elements-w-reified.png
 <<overview-instances>>
 
 ' reified relations
@@ -1794,7 +874,7 @@ Terminal "1" <-- "1" ConnectionPoint : theOutput
 #+END_SRC
 
 #+RESULTS: overview-instances-w-reified
-[[file:out/img/imf-overview-instances-w-reified.png]]
+[[file:out/img/imf-ontology-elements-w-reified.png]]
 
 **** ~BreakdownPoint~
 
@@ -1923,7 +1003,7 @@ imf:ConnectionPointShape a sh:NodeShape ;
 ** Aspects
 
 #+NAME: overview-aspect-element
-#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-overview-aspects.png
+#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-ontology-aspects.png
 <<plantuml-style>>
 
 abstract class AspectElement
@@ -1946,7 +1026,7 @@ Element --> Element : interAspectRelation
 
 #+ATTR_LATEX: :width 6cm
 #+RESULTS: overview-aspect-element
-[[file:out/owl/imf-overview-aspects.png]]
+[[file:out/owl/imf-ontology-aspects.png]]
 
 *** ~AspectElement~
 
@@ -1955,8 +1035,9 @@ Element --> Element : interAspectRelation
 imf:AspectElement a owl:Class ;
   skos:prefLabel "Aspect Element";
   skos:definition "An [Aspect Element] is an [Element] that has exactly one [Aspect]." ;
+  skos:scopeNote "Avoid direct instantiation of [Aspect Element], use instead one of its subclasses." ;
   vs:term_status "testing" ;
-  foaf:depiction <./imf-overview-aspects.png> ;
+  foaf:depiction <./imf-ontology-aspects.png> ;
   skos:changeNote 
     "0.1.0 :: Added" ;
   vann:termGroup "aspects" ;
@@ -2290,7 +1371,7 @@ InstalledElement <|-- InstalledTerminal
 *** Overview
 
 #+NAME: overview-attribute
-#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-overview-attributes.png
+#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-ontology-attributes.png
 <<plantuml-style>>
 
 abstract class Element
@@ -2369,7 +1450,7 @@ imf:Attribute a owl:Class ;
   vs:term_status "testing" ;
   skos:definition "An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure]." ;
   skos:example "Color: red" , "Weight: 1250 kg" , "Maximum ambient operating temperature: 120 K" ;
-  foaf:depiction <./imf-overview-attributes.png> ;
+  foaf:depiction <./imf-ontology-attributes.png> ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "attributes" ;
@@ -2568,7 +1649,7 @@ return output
 
 All diagrams combined.
 
-#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-overview.png
+#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-ontology.png
 <<plantuml-style>>
 
 '<<overview-model-versioning>>
@@ -2583,7 +1664,7 @@ All diagrams combined.
 #+END_SRC
 
 #+RESULTS:
-[[file:out/img/imf-overview.png]]
+[[file:out/img/imf-ontology.png]]
 
 *** Vocabulary
 
@@ -2722,72 +1803,16 @@ ORDER BY ?type ?property
 #+CALL: py_run_sparql(query=sparql_property)
 
 
-*** SHACL Shapes
-
-All SHACL Shapes combined.
-
-#+NAME: shacl-all
-#+BEGIN_SRC ttl :noweb yes :tangle out/shacl/imf.shacl.wottr.ttl :mkdirp yes
-<<prefixes>>
-
-<<shacl-elements-annotations>>
-<<shacl-elements-block>>
-<<shacl-elements-terminal>>
-<<shacl-elements-breakdownpoint>>
-<<shacl-elements-connectionpoint>>
-<<shacl-aspect-aspectelement>>
-<<shacl-attributes-value>>
-#<<shacl-attributes-group>>
-#+END_SRC
-
-
-**** Processing and QA                                                   :QA:
-***** RDF validate tangled file
-
-#+CALL: sh_jena_validate_rdf(files="out/shacl/imf.shacl.wottr.ttl")
-
-#+RESULTS:
-: file:///home/martige/repo/imf-lab/imf-ontology/out/shacl/imf.shacl.wottr.ttl : 0.20 sec : 116 Triples : 574.26 per second
-
-***** Expand OTTR instances
-
-#+CALL: lutra-expand(in="out/shacl/imf.shacl.wottr.ttl", out="out/shacl/imf.shacl.ttl")
-
-
-***** RDF validate final file
-
-#+CALL: sh_jena_validate_rdf(files="out/shacl/imf.shacl.ttl")
-
-#+RESULTS:
-: file:///home/martige/repo/imf-lab/imf-ontology/out/shacl/imf.shacl.ttl : 0.21 sec : 114 Triples : 553.40 per second
-
-#+CALL: sh_jena_shacl_std_validate(data="out/shacl/imf.shacl.ttl")
-
-#+RESULTS:
-#+BEGIN_src ttl
-Result of validating RDF data <out/shacl/imf.shacl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
-
-Conforms
-#+END_src
-
-***** Diagram
-
-#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-aspects.owl.ttl", output="out/owl/imf-aspects-overview.svg")
-
-#+RESULTS:
-
-[[./out/owl/imf-aspects-overview.svg]]
-
 
 ** Compile and verify
 *** RDF validate tangled file
 
-#+CALL: sh_jena_validate_rdf(files="out/owl/imf.owl.wottr.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-ontology.owl.wottr.ttl")
 
 #+RESULTS:
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.wottr.ttl : 0.22 sec : 317 Triples : 1,454.13 per second
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology.owl.wottr.ttl : 0.22 sec : 317 Triples : 1,454.13 per second
 
-#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf.owl.wottr.ttl")
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-ontology.owl.wottr.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -2796,23 +1821,23 @@ Conforms
 
 *** Expand OTTR instances
 
-#+CALL: lutra-expand(in="out/owl/imf.owl.wottr.ttl", out="out/owl/imf.owl.ttl")
+#+CALL: lutra-expand(in="out/owl/imf-ontology.owl.wottr.ttl", out="out/owl/imf-ontology.owl.ttl")
 
 *** RDF validate final file
 
-#+CALL: sh_jena_validate_rdf(files="out/owl/imf.owl.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/owl/imf-ontology.owl.ttl")
 
 #+RESULTS:
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.21 sec : 355 Triples : 1,674.53 per second
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology.owl.ttl : 0.21 sec : 355 Triples : 1,674.53 per second
 
-#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf.owl.ttl")
+#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-ontology.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
 Conforms
 #+END_src
 
-#+CALL: sh_jena_shacl_validate(shapes="out/shacl/imf-vocabulary-checks.shacl.ttl", data="out/owl/imf.owl.ttl")
+#+CALL: sh_jena_shacl_validate(shapes="out/shacl/imf-ontology-grammar.shacl.ttl", data="out/owl/imf-ontology.owl.ttl")
 
 #+RESULTS:
 #+BEGIN_src ttl
@@ -2891,15 +1916,141 @@ Node=<http://ns.imfid.org/imf#maximumQualifier>
 #+END_src
 
 *** Diagram
-#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf.owl.wottr.ttl", output="out/owl/imf-overview.svg")
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-ontology.owl.wottr.ttl", output="out/owl/imf-overview.svg")
 
 #+RESULTS:
 
 [[./out/owl/imf-overview.svg]]
 
 
-*** SHACL checks
-**** SPARQL select
+* SHACL Shape graphs
+** IMF Terms
+
+#+BEGIN_SRC ttl :noweb yes :tangle out/shacl/imf-terms-grammar.shacl.wottr.ttl :mkdirp yes
+<<prefixes>>
+
+imf:IMFTermsGrammar a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
+    owl:versionInfo "0.2.0" ;
+    skos:prefLabel "Information Modelling Framework: IMF Terms Grammar" ;
+    dc:description "This shapes graph can be used to validate RDF data against correct use of IMF terms, IRIs only." ;
+    pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    sh:shapesGraph 
+      <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ,
+      <http://www.w3.org/ns/shacl-shacl#> ;
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+<<sh_jena_shacl_validate(shapes="http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl", data="out/shacl/imf-terms-grammar.shacl.ttl")>>
+
+<<sh_jena_shacl_validate(shapes="http://www.w3.org/ns/shacl-shacl#", data="out/shacl/imf-terms-grammar.shacl.ttl")>>
+    """
+.
+
+<<shacl_imf-vocabulary-elements-check>>
+#+END_SRC
+
+*** IMF vocabulary elements
+
+#+NAME: shacl_imf-vocabulary-elements-check
+#+BEGIN_SRC ttl :noweb yes
+[] a sh:NodeShape ;
+    sh:message "Unrecognised IMF vocabulary element. Check spelling." ;
+    sh:name "IMF vocabulary element." ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:select """
+	      PREFIX imf: <http://ns.imfid.org/imf#>
+	      SELECT DISTINCT ?value 
+	      WHERE { { ?value ?p ?o }
+	        UNION { ?s ?value ?o }
+	        UNION { ?s ?p ?value }
+	      FILTER (isIRI(?value) 
+	        && STRSTARTS(STR(?value), 'http://ns.imfid.org/imf#'))
+	      FILTER (?value NOT IN (<<py_list_iris()>>)) }""" ] ;
+    sh:targetNode <http://shipshape.dyreriket.xyz#ANY_NODE> .
+#+END_SRC
+
+** IMF Model Grammar
+
+#+BEGIN_SRC ttl :noweb yes :tangle out/shacl/imf-model-grammar.shacl.wottr.ttl :mkdirp yes
+<<prefixes>>
+
+imf:IMFModelGrammar a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230630/imf-model-grammar.shacl.ttl> ;
+    owl:versionInfo "0.2.0" ;
+    owl:priorVersion <https://ns.imfid.org/20221118/imf-grammar.shacl.ttl> ;
+    skos:prefLabel "Information Modelling Framework: IMF Model Grammar" ;
+    dc:description "This shapes graph can be used to validate IMF Model RDF data against the grammar for IMF Models." ;
+    pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    sh:shapesGraph 
+      <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ,
+      <http://www.w3.org/ns/shacl-shacl#> ,
+      <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+<<sh_jena_shacl_validate(shapes="http://www.w3.org/ns/shacl-shacl#", data="out/shacl/imf-ontology-grammar.shacl.ttl")>>
+
+<<sh_jena_shacl_validate(shapes="http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl", data="out/shacl/imf-model-grammar.shacl.ttl")>>
+
+<<sh_jena_shacl_validate(shapes="out/shacl/imf-terms-grammar.shacl.ttl", data="out/shacl/imf-ontology-grammar.shacl.ttl")>>
+    """
+.
+
+<<shacl-elements-annotations>>
+<<shacl-elements-block>>
+<<shacl-elements-terminal>>
+<<shacl-elements-breakdownpoint>>
+<<shacl-elements-connectionpoint>>
+<<shacl-aspect-aspectelement>>
+<<shacl-attributes-value>>
+#<<shacl-attributes-group>>
+#+END_SRC
+
+
+
+** IMF Ontology Grammar
+
+#+BEGIN_SRC ttl :noweb yes :tangle out/shacl/imf-ontology-grammar.shacl.wottr.ttl :mkdirp yes
+<<prefixes>>
+
+imf:IMFOntologyGrammar a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl> ;
+    skos:prefLabel "Information Modelling Framework: IMF Ontology Grammar" ;
+    dc:description "This shapes graph can be used to validate the IMF Ontology." ;
+    pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    sh:shapesGraph 
+      <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ,
+      <http://www.w3.org/ns/shacl-shacl#> ,
+      <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+<<sh_jena_shacl_validate(shapes="http://www.w3.org/ns/shacl-shacl#", data="out/shacl/imf-ontology-grammar.shacl.ttl")>>
+
+<<sh_jena_shacl_validate(shapes="http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl", data="out/shacl/imf-ontology-grammar.shacl.ttl")>>
+
+<<sh_jena_shacl_validate(shapes="out/shacl/imf-terms-grammar.shacl.ttl", data="out/shacl/imf-ontology-grammar.shacl.ttl")>>
+    """
+.
+
+
+_:TermMetadata a sh:NodeShape ;
+  sh:target [
+    a sh:SPARQLTarget ;
+    sh:select """
+<<vocabulary-checks-select-query>>
+      """ 
+  ] ;
+  sh:property 
+    [ sh:path vs:term_status ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "unstable" "testing" "stable" "archaic" ) ] ,
+    [ sh:path vann:termGroup ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "elements" "aspects" "attributes" "generic relations" "model" ) ] ,
+    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path skos:definition ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string  ] ,
+    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ] ,
+    [ sh:path skos:scopeNote ; sh:minCount 1 ; sh:severity sh:Warning ] 
+.
+
+#+END_SRC
+
+*** SPARQL query
 
 #+NAME: vocabulary-checks-select-query
 #+BEGIN_SRC ttl
@@ -2919,28 +2070,45 @@ Node=<http://ns.imfid.org/imf#maximumQualifier>
       ## ORDER BY ?this
 #+END_SRC
 
-#+BEGIN_SRC ttl :noweb yes :tangle out/shacl/imf-vocabulary-checks.shacl.ttl :mkdirp yes
-<<prefixes>>
 
-_:allIRIs a sh:NodeShape ;
-  sh:target [
-    a sh:SPARQLTarget ;
-    sh:prefixes owl: ;
-    sh:select """
-<<vocabulary-checks-select-query>>
-      """ 
-  ] ;
-  sh:property 
-    [ sh:path vs:term_status ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "unstable" "testing" "stable" "archaic" ) ] ,
-    [ sh:path vann:termGroup ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "elements" "aspects" "attributes" "generic relations" "model" ) ] ,
-    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
-    [ sh:path skos:definition ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string  ] ,
-    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ] 
-.
+#+CALL: sh_jena_sparql(query=vocabulary-checks-select-query, "out/owl/imf-ontology.owl.ttl")
 
-#+END_SRC
+* Processing and QA                                                      :QA:
+** RDF validate tangled file
 
-#+CALL: sh_jena_sparql(query=vocabulary-checks-select-query, "out/owl/imf.owl.ttl")
+#+CALL: sh_jena_validate_rdf(files="out/shacl/imf.shacl.wottr.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/shacl/imf.shacl.wottr.ttl : 0.20 sec : 116 Triples : 574.26 per second
+
+** Expand OTTR instances
+
+#+CALL: lutra-expand(in="out/shacl/imf.shacl.wottr.ttl", out="out/shacl/imf.shacl.ttl")
+
+
+** RDF validate final file
+
+#+CALL: sh_jena_validate_rdf(files="out/shacl/imf.shacl.ttl")
+
+#+RESULTS:
+: file:///home/martige/repo/imf-lab/imf-ontology/out/shacl/imf.shacl.ttl : 0.21 sec : 114 Triples : 553.40 per second
+
+#+CALL: sh_jena_shacl_std_validate(data="out/shacl/imf.shacl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+Result of validating RDF data <out/shacl/imf.shacl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
+
+Conforms
+#+END_src
+
+** Diagram
+
+#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-aspects.owl.ttl", output="out/owl/imf-aspects-overview.svg")
+
+#+RESULTS:
+
+[[./out/owl/imf-aspects-overview.svg]]
 
 * TODO Types
 
@@ -3881,7 +3049,6 @@ imf:TypeConstraint a owl:Class .
    ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
 #+end_example
 
-* Converters                                                       :noexport:
 * Example
 
 [[./example/pumpingFunctionType.png]]
@@ -3976,6 +3143,7 @@ This section contains the prefixes used throughout this document.
 
 @prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
 @prefix pav:	<http://purl.org/pav/> .
+@prefix dc:	<http://purl.org/dc/terms> .
 @prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
 @prefix vann:   <http://purl.org/vocab/vann/> .
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
@@ -3983,6 +3151,25 @@ This section contains the prefixes used throughout this document.
 @prefix imf:	<http://ns.imfid.org/imf#> .
 @prefix ex:	<http://example.com#> .
 #+END_SRC
+
+#+RESULTS: prefixes-std
+#+begin_example
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+
+@prefix imf:	<http://ns.imfid.org/imf#> .
+@prefix ex:	<http://example.com#> .
+#+end_example
 
 *** IMF prefixes
 
@@ -4081,7 +3268,7 @@ prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/>
 
 
 
-* Media                                                            :noexport:
+** Media                                                           :noexport:
 
   Media, taken from ~MaterialsBreakdownRev3.xlsx~.
   
@@ -4154,302 +3341,6 @@ unzip apache-jena.zip
 mv apache-jena-4.4.0 apache-jena
 #+END_SRC
 
-#+RESULTS:
-File ‘apache-jena.zip’ already there; not retrieving.
-Archive:  apache-jena.zip
-   creating: apache-jena-4.4.0/
-   creating: apache-jena-4.4.0/bin/
-   creating: apache-jena-4.4.0/bat/
-   creating: apache-jena-4.4.0/src-examples/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/bin/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/aggregates/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/algebra/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/bgpmatching/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/constructquads/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/engine/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/filter/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/propertyfunction/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/update/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/helloworld/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/pizza/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/streaming/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shacl/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shacl/examples/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/examples/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/data/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/ontologies/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/org/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/org/apache/
-   creating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/org/apache/jena_examples/
-   creating: apache-jena-4.4.0/src-examples/data/
-   creating: apache-jena-4.4.0/src-examples/jena/
-   creating: apache-jena-4.4.0/src-examples/jena/examples/
-   creating: apache-jena-4.4.0/src-examples/jena/examples/ontology/
-   creating: apache-jena-4.4.0/src-examples/jena/examples/ontology/classHierarchy/
-   creating: apache-jena-4.4.0/src-examples/jena/examples/ontology/describeClass/
-   creating: apache-jena-4.4.0/src-examples/jena/examples/rdf/
-   creating: apache-jena-4.4.0/lib/
-   creating: apache-jena-4.4.0/lib-src/
-  inflating: apache-jena-4.4.0/README  
-  inflating: apache-jena-4.4.0/LICENSE  
-  inflating: apache-jena-4.4.0/NOTICE  
-  inflating: apache-jena-4.4.0/bin/arq  
-  inflating: apache-jena-4.4.0/bin/infer  
-  inflating: apache-jena-4.4.0/bin/iri  
-  inflating: apache-jena-4.4.0/bin/jena  
-  inflating: apache-jena-4.4.0/bin/jena.version  
-  inflating: apache-jena-4.4.0/bin/juuid  
-  inflating: apache-jena-4.4.0/bin/nquads  
-  inflating: apache-jena-4.4.0/bin/ntriples  
-  inflating: apache-jena-4.4.0/bin/qparse  
-  inflating: apache-jena-4.4.0/bin/rdfcat  
-  inflating: apache-jena-4.4.0/bin/rdfcompare  
-  inflating: apache-jena-4.4.0/bin/rdfcopy  
-  inflating: apache-jena-4.4.0/bin/rdfdiff  
-  inflating: apache-jena-4.4.0/bin/rdfparse  
-  inflating: apache-jena-4.4.0/bin/rdfxml  
-  inflating: apache-jena-4.4.0/bin/riot  
-  inflating: apache-jena-4.4.0/bin/rset  
-  inflating: apache-jena-4.4.0/bin/rsparql  
-  inflating: apache-jena-4.4.0/bin/rupdate  
-  inflating: apache-jena-4.4.0/bin/schemagen  
-  inflating: apache-jena-4.4.0/bin/shacl  
-  inflating: apache-jena-4.4.0/bin/shex  
-  inflating: apache-jena-4.4.0/bin/sparql  
-  inflating: apache-jena-4.4.0/bin/tdb1.xloader  
-  inflating: apache-jena-4.4.0/bin/tdb2.tdbbackup  
-  inflating: apache-jena-4.4.0/bin/tdb2.tdbcompact  
-  inflating: apache-jena-4.4.0/bin/tdb2.tdbdump  
-  inflating: apache-jena-4.4.0/bin/tdb2.tdbloader  
-  inflating: apache-jena-4.4.0/bin/tdb2.tdbquery  
-  inflating: apache-jena-4.4.0/bin/tdb2.tdbstats  
-  inflating: apache-jena-4.4.0/bin/tdb2.tdbupdate  
-  inflating: apache-jena-4.4.0/bin/tdb2.xloader  
-  inflating: apache-jena-4.4.0/bin/tdbbackup  
-  inflating: apache-jena-4.4.0/bin/tdbdump  
-  inflating: apache-jena-4.4.0/bin/tdbloader  
-  inflating: apache-jena-4.4.0/bin/tdbloader2  
-  inflating: apache-jena-4.4.0/bin/tdbquery  
-  inflating: apache-jena-4.4.0/bin/tdbstats  
-  inflating: apache-jena-4.4.0/bin/tdbupdate  
-  inflating: apache-jena-4.4.0/bin/trig  
-  inflating: apache-jena-4.4.0/bin/turtle  
-  inflating: apache-jena-4.4.0/bin/uparse  
-  inflating: apache-jena-4.4.0/bin/update  
-  inflating: apache-jena-4.4.0/bin/utf8  
-  inflating: apache-jena-4.4.0/bin/wwwdec  
-  inflating: apache-jena-4.4.0/bin/wwwenc  
-  inflating: apache-jena-4.4.0/bin/xload-common  
-  inflating: apache-jena-4.4.0/bin/xload-data  
-  inflating: apache-jena-4.4.0/bin/xload-index  
-  inflating: apache-jena-4.4.0/bin/xload-main  
-  inflating: apache-jena-4.4.0/log4j2.properties  
-  inflating: apache-jena-4.4.0/bat/arq.bat  
-  inflating: apache-jena-4.4.0/bat/infer.bat  
-  inflating: apache-jena-4.4.0/bat/iri.bat  
-  inflating: apache-jena-4.4.0/bat/jena_version.bat  
-  inflating: apache-jena-4.4.0/bat/juuid.bat  
-  inflating: apache-jena-4.4.0/bat/nquads.bat  
-  inflating: apache-jena-4.4.0/bat/ntriples.bat  
-  inflating: apache-jena-4.4.0/bat/qparse.bat  
-  inflating: apache-jena-4.4.0/bat/rdfcat.bat  
-  inflating: apache-jena-4.4.0/bat/rdfcompare.bat  
-  inflating: apache-jena-4.4.0/bat/rdfcopy.bat  
-  inflating: apache-jena-4.4.0/bat/rdfdiff.bat  
-  inflating: apache-jena-4.4.0/bat/rdfparse.bat  
-  inflating: apache-jena-4.4.0/bat/rdfxml.bat  
-  inflating: apache-jena-4.4.0/bat/riot.bat  
-  inflating: apache-jena-4.4.0/bat/rset.bat  
-  inflating: apache-jena-4.4.0/bat/rsparql.bat  
-  inflating: apache-jena-4.4.0/bat/rupdate.bat  
-  inflating: apache-jena-4.4.0/bat/schemagen.bat  
-  inflating: apache-jena-4.4.0/bat/shacl.bat  
-  inflating: apache-jena-4.4.0/bat/shex.bat  
-  inflating: apache-jena-4.4.0/bat/sparql.bat  
-  inflating: apache-jena-4.4.0/bat/tdb2_tdbbackup.bat  
-  inflating: apache-jena-4.4.0/bat/tdb2_tdbcompact.bat  
-  inflating: apache-jena-4.4.0/bat/tdb2_tdbdump.bat  
-  inflating: apache-jena-4.4.0/bat/tdb2_tdbloader.bat  
-  inflating: apache-jena-4.4.0/bat/tdb2_tdbquery.bat  
-  inflating: apache-jena-4.4.0/bat/tdb2_tdbstats.bat  
-  inflating: apache-jena-4.4.0/bat/tdb2_tdbupdate.bat  
-  inflating: apache-jena-4.4.0/bat/tdbbackup.bat  
-  inflating: apache-jena-4.4.0/bat/tdbdump.bat  
-  inflating: apache-jena-4.4.0/bat/tdbloader.bat  
-  inflating: apache-jena-4.4.0/bat/tdbquery.bat  
-  inflating: apache-jena-4.4.0/bat/tdbstats.bat  
-  inflating: apache-jena-4.4.0/bat/tdbupdate.bat  
-  inflating: apache-jena-4.4.0/bat/trig.bat  
-  inflating: apache-jena-4.4.0/bat/turtle.bat  
-  inflating: apache-jena-4.4.0/bat/uparse.bat  
-  inflating: apache-jena-4.4.0/bat/update.bat  
-  inflating: apache-jena-4.4.0/bat/utf8.bat  
-  inflating: apache-jena-4.4.0/bat/wwwdec.bat  
-  inflating: apache-jena-4.4.0/bat/wwwenc.bat  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/README.md  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/bin/get-data  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/pom.xml  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExModelStore01.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExModification01.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExProg1.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExProg2.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExQuerySelect1.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExQuerySelect2.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExQuerySubstitute_01.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExampleDBpedia1.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExampleDBpedia2.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExampleDBpedia3.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/ExamplesServer.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/aggregates/CustomAggregate.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/algebra/AlgebraEx.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/algebra/AlgebraExec.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth00_Setup.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth01_RDFConnectionPW.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth02_QueryExecutionPW.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth03_UpdateExecutionPW.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/auth/ExAuth04_ServicePW.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/bgpmatching/OpExecutorAlt.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/bgpmatching/StageAltMain.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/bgpmatching/StageGeneratorAlt.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/constructquads/ExampleConstructQuads.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/engine/MyQueryEngine.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/filter/classify.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/propertyfunction/labelSearch.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/propertyfunction/localname.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/propertyfunction/uppercase.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT1_ReadModel.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT2_ReadDataset.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT3_RDFParser.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT4_StreamRDF_Filter.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT5_StreamRDFCollect.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT6_AddNewReader.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT7_AddNewWriter.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT8_RelativeURIs.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT9_AsyncParser.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT_RDFXML_ReaderProperties.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT_RDFXML_WriteProperties.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT_writeModel.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/ExRIOT_writeRDF.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/riot/Ex_WriteJsonLD.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/update/UpdateExecuteOperations.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/update/UpdateProgrammatic.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/arq/examples/update/UpdateReadFromFile.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/Base.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/CheeseBase.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/helloworld/HelloWorld.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/pizza/PizzaSparqlNoInf.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/org/apache/jena/example/streaming/StreamRDFToConnection.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample1.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample2.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample3.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample4.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample5.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/rdfconnection/examples/RDFConnectionExample6.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shacl/examples/Shacl01_validateGraph.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shacl/examples/Shacl02_validateTransaction.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/examples/Shex01_validateGraph.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/examples/Shex02_validateNode.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/shex/examples/Shex03_validate.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExQuadFilter.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB1.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB2.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB3.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB4.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB5.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB6.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB_Txn1.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB_Txn2.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/java/tdb1/examples/ExTDB_Txn3.java  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/data/cheeses-0.1.ttl  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/data/pizza.owl.rdf  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/main/resources/ontologies/cheese.ttl  
-  inflating: apache-jena-4.4.0/src-examples/jena-examples/src/test/java/org/apache/jena_examples/AppTest.java  
-  inflating: apache-jena-4.4.0/src-examples/data/camera.owl  
-  inflating: apache-jena-4.4.0/src-examples/data/eswc-2006-09-21.rdf  
-  inflating: apache-jena-4.4.0/src-examples/data/test1.owl  
-  inflating: apache-jena-4.4.0/src-examples/data/test2.owl  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/ontology/classHierarchy/ClassHierarchy.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/ontology/classHierarchy/Main.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/ontology/describeClass/DescribeClass.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/ontology/describeClass/Main.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial01.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial02.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial03.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial04.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial05.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial06.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial07.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial08.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial09.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial10.java  
-  inflating: apache-jena-4.4.0/src-examples/jena/examples/rdf/Tutorial11.java  
-  inflating: apache-jena-4.4.0/lib/jena-arq-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jsonld-java-0.13.4.jar  
-  inflating: apache-jena-4.4.0/lib/commons-io-2.11.0.jar  
-  inflating: apache-jena-4.4.0/lib/httpclient-cache-4.5.13.jar  
-  inflating: apache-jena-4.4.0/lib/httpclient-4.5.13.jar  
-  inflating: apache-jena-4.4.0/lib/httpcore-4.4.15.jar  
-  inflating: apache-jena-4.4.0/lib/jcl-over-slf4j-1.7.35.jar  
-  inflating: apache-jena-4.4.0/lib/jackson-core-2.13.1.jar  
-  inflating: apache-jena-4.4.0/lib/jackson-databind-2.13.1.jar  
-  inflating: apache-jena-4.4.0/lib/jackson-annotations-2.13.1.jar  
-  inflating: apache-jena-4.4.0/lib/titanium-json-ld-1.2.0.jar  
-  inflating: apache-jena-4.4.0/lib/jakarta.json-2.0.1.jar  
-  inflating: apache-jena-4.4.0/lib/protobuf-java-3.19.3.jar  
-  inflating: apache-jena-4.4.0/lib/libthrift-0.15.0.jar  
-  inflating: apache-jena-4.4.0/lib/javax.annotation-api-1.3.2.jar  
-  inflating: apache-jena-4.4.0/lib/commons-lang3-3.12.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-core-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-base-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-shaded-guava-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/commons-csv-1.9.0.jar  
-  inflating: apache-jena-4.4.0/lib/commons-codec-1.15.jar  
-  inflating: apache-jena-4.4.0/lib/commons-compress-1.21.jar  
-  inflating: apache-jena-4.4.0/lib/collection-0.7.jar  
-  inflating: apache-jena-4.4.0/lib/jena-iri-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/commons-cli-1.5.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-tdb-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-rdfconnection-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-shacl-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-shex-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-cmds-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-tdb2-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-dboe-storage-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-dboe-trans-data-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-dboe-transaction-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-dboe-base-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/jena-dboe-index-4.4.0.jar  
-  inflating: apache-jena-4.4.0/lib/slf4j-api-1.7.35.jar  
-  inflating: apache-jena-4.4.0/lib/log4j-slf4j-impl-2.17.1.jar  
-  inflating: apache-jena-4.4.0/lib/log4j-api-2.17.1.jar  
-  inflating: apache-jena-4.4.0/lib/log4j-core-2.17.1.jar  
-  inflating: apache-jena-4.4.0/lib-src/jena-arq-4.4.0-sources.jar  
-  inflating: apache-jena-4.4.0/lib-src/jena-core-4.4.0-sources.jar  
-  inflating: apache-jena-4.4.0/lib-src/jena-tdb-4.4.0-sources.jar  
-  inflating: apache-jena-4.4.0/lib-src/jena-rdfconnection-4.4.0-sources.jar  
-  inflating: apache-jena-4.4.0/lib-src/jena-shacl-4.4.0-sources.jar  
-  inflating: apache-jena-4.4.0/lib-src/jena-shex-4.4.0-sources.jar  
-  inflating: apache-jena-4.4.0/lib-src/jena-cmds-4.4.0-sources.jar  
 
 *** RIOT
 
@@ -4490,15 +3381,15 @@ riot [--help] [--time] [--base=IRI] [-syntax=FORMAT] [--out=FORMAT] [--count] fi
 #+end_example
 
 #+NAME: sh_jena_validate_rdf
-#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="out/owl/imf.owl.ttl"
+#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="out/owl/imf-ontology.owl.ttl"
 bin/apache-jena/bin/riot --verbose --syntax=$syntax --validate --time $files 
 #+END_SRC
 
 #+RESULTS: sh_jena_validate_rdf
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.22 sec : 494 Triples : 2,235.29 per second
+: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology.owl.ttl : 0.22 sec : 494 Triples : 2,235.29 per second
 
 #+NAME: sh_jena_merge
-#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="out/owl/imf-elements.owl.ttl out/owl/imf-attributes.owl.ttl" :var out="out/owl/imf.owl.ttl"
+#+BEGIN_SRC sh :results output verbatim :var syntax="TTL" :var files="out/owl/imf-elements.owl.ttl out/owl/imf-attributes.owl.ttl" :var out="out/owl/imf-ontology.owl.ttl"
 bin/apache-jena/bin/riot --verbose --syntax=$syntax --check --time $files > $out
 #+END_SRC
 
@@ -4591,14 +3482,14 @@ org.apache.jena.riot.RiotNotFoundException: Not found: shacl/imf-all.shacl.ttl
 
 
 #+NAME: sh_jena_shacl_std_validate
-#+BEGIN_SRC sh :results output raw :var data="out/owl/imf.owl.ttl" :wrap src ttl
+#+BEGIN_SRC sh :results output raw :var data="out/owl/imf-ontology.owl.ttl" :wrap src ttl
 echo "Result of validating RDF data <$data> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:\n"
 bin/apache-jena/bin/shacl v --text --shapes http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl --data $data
 #+END_SRC
 
 #+RESULTS: sh_jena_shacl_std_validate
 #+BEGIN_src ttl
-Result of validating data <out/owl/imf.owl.ttl> against shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
+Result of validating data <out/owl/imf-ontology.owl.ttl> against shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
 
 Conforms
 #+END_src
@@ -4647,7 +3538,7 @@ sparql --data=<file> --query=<query>
 
 
 #+NAME: sh_jena_sparql
-#+BEGIN_SRC sh :results output :var query="PREFIX imf: <http://ns.imfid.org/imf#> SELECT * {?s ?p ?o} LIMIT 1" :var files="out/owl/imf.owl.ttl" :hlines yes :exports both
+#+BEGIN_SRC sh :results output :var query="PREFIX imf: <http://ns.imfid.org/imf#> SELECT * {?s ?p ?o} LIMIT 1" :var files="out/owl/imf-ontology.owl.ttl" :hlines yes :exports both
 echo "$query" > out/temp/.temp-sh_jena_sparql
 bin/apache-jena/bin/sparql --results=text --data=$files --query out/temp/.temp-sh_jena_sparql
 #+END_SRC
@@ -4843,7 +3734,7 @@ Options:
 
 
 #+NAME: rdfvizler
-#+BEGIN_SRC sh :results output verbatim :var rules="out/rdfvizler/import-hierarchy.rule" :var data="out/owl/imf.owl.ttl" :var output="out/.output-rdfvizler.svg"
+#+BEGIN_SRC sh :results output verbatim :var rules="out/rdfvizler/import-hierarchy.rule" :var data="out/owl/imf-ontology.owl.ttl" :var output="out/.output-rdfvizler.svg"
 java -jar bin/rdfvizler.jar --rules=$rules $data > $output
 #+END_SRC
 
@@ -5274,6 +4165,31 @@ Work in process. Rule set for visualising IMF data.
 #+END_SRC
 
 ** Python code snippets
+*** py Common functions
+
+#+NAME: py_common_functions
+#+BEGIN_SRC python
+import rdflib
+
+def getAllIRIs(data):
+  graph = rdflib.Graph()
+  iri = []
+
+  graph.parse(data, format="ttl")
+
+  for s, p, o in graph:
+    if(isinstance(s, rdflib.term.URIRef)):
+      iri.append(s)
+    if(isinstance(p, rdflib.term.URIRef)):
+      iri.append(p)
+    if(isinstance(o, rdflib.term.URIRef)):
+      iri.append(o)
+    
+  return set(iri)
+
+
+#+END_SRC
+
 *** py_ottr_instances
 
 Convert tables to OTTR instances.
@@ -5306,10 +4222,10 @@ return output
 
 *** py_run_sparql
 
-Run SPARQL queries on RDF data files.
+Run SPARQL queries on RDF data files. Output a table.
 
 #+NAME: py_run_sparql
-#+BEGIN_SRC python :var query="SELECT ?s ?p ?o {?s ?p ?o} LIMIT 10" :var prefixes=py_prefixes_sparql() :var data="out/owl/imf.owl.ttl" :results raw
+#+BEGIN_SRC python :var query="SELECT ?s ?p ?o {?s ?p ?o} LIMIT 10" :var prefixes=py_prefixes_sparql() :var data="out/owl/imf-ontology.owl.ttl" :results raw
 
 # input: 'query': SPARQL query string
 # input: 'prefixes': a string of prefixes for conveniently appending to the query
@@ -5369,43 +4285,45 @@ return output
 #+END_SRC
 
 
+*** py_list_iris
+
+#+NAME: py_list_iris
+#+BEGIN_SRC python :noweb yes :var datafile="out/owl/imf-ontology.owl.ttl" :results raw
+<<py_common_functions>>
+
+iris = list(filter(lambda x: x.startswith("http://ns.imfid.org/imf#"), getAllIRIs(datafile)))
+iris = ['<' + str(i) + '>' for i in iris]
+iris.sort()
+
+return ', '.join(iris)
+#+END_SRC
+
+#+RESULTS: py_list_iris
+<http://ns.imfid.org/imf#>, <http://ns.imfid.org/imf#Aspect>, <http://ns.imfid.org/imf#AspectElement>, <http://ns.imfid.org/imf#Attribute>, <http://ns.imfid.org/imf#AttributeQualifier>, <http://ns.imfid.org/imf#Block>, <http://ns.imfid.org/imf#BreakdownPoint>, <http://ns.imfid.org/imf#ConnectionPoint>, <http://ns.imfid.org/imf#Element>, <http://ns.imfid.org/imf#FunctionBlock>, <http://ns.imfid.org/imf#FunctionElement>, <http://ns.imfid.org/imf#FunctionTerminal>, <http://ns.imfid.org/imf#InputTerminal>, <http://ns.imfid.org/imf#InstalledBlock>, <http://ns.imfid.org/imf#InstalledElement>, <http://ns.imfid.org/imf#InstalledTerminal>, <http://ns.imfid.org/imf#LocationBlock>, <http://ns.imfid.org/imf#LocationElement>, <http://ns.imfid.org/imf#LocationTerminal>, <http://ns.imfid.org/imf#OutputTerminal>, <http://ns.imfid.org/imf#ProductBlock>, <http://ns.imfid.org/imf#ProductElement>, <http://ns.imfid.org/imf#ProductTerminal>, <http://ns.imfid.org/imf#ProvenanceQualifier>, <http://ns.imfid.org/imf#RangeQualifier>, <http://ns.imfid.org/imf#RegularityQualifier>, <http://ns.imfid.org/imf#ScopeQualifier>, <http://ns.imfid.org/imf#Terminal>, <http://ns.imfid.org/imf#TerminalQualifier>, <http://ns.imfid.org/imf#absoluteQualifier>, <http://ns.imfid.org/imf#asFunction>, <http://ns.imfid.org/imf#asInstalled>, <http://ns.imfid.org/imf#asLocation>, <http://ns.imfid.org/imf#asProduct>, <http://ns.imfid.org/imf#associativeRelation>, <http://ns.imfid.org/imf#averageQualifier>, <http://ns.imfid.org/imf#calculatedQualifier>, <http://ns.imfid.org/imf#classifier>, <http://ns.imfid.org/imf#color>, <http://ns.imfid.org/imf#connectedTo>, <http://ns.imfid.org/imf#continuousQualifier>, <http://ns.imfid.org/imf#designQualifier>, <http://ns.imfid.org/imf#externalReference>, <http://ns.imfid.org/imf#functionAspect>, <http://ns.imfid.org/imf#hasAspect>, <http://ns.imfid.org/imf#hasAttribute>, <http://ns.imfid.org/imf#hasAttributeQualifier>, <http://ns.imfid.org/imf#hasInputTerminal>, <http://ns.imfid.org/imf#hasOutputTerminal>, <http://ns.imfid.org/imf#hasPart>, <http://ns.imfid.org/imf#hasTerminal>, <http://ns.imfid.org/imf#hasTerminalQualifier>, <http://ns.imfid.org/imf#hierachicalRelation>, <http://ns.imfid.org/imf#hierarchicalRelation>, <http://ns.imfid.org/imf#inputFlow>, <http://ns.imfid.org/imf#installedAspect>, <http://ns.imfid.org/imf#interAspectRelation>, <http://ns.imfid.org/imf#intraAspectRelation>, <http://ns.imfid.org/imf#locationAspect>, <http://ns.imfid.org/imf#maximumQualifier>, <http://ns.imfid.org/imf#measuredQualifier>, <http://ns.imfid.org/imf#medium>, <http://ns.imfid.org/imf#minimumQualifier>, <http://ns.imfid.org/imf#nominalQualifier>, <http://ns.imfid.org/imf#normalQualifier>, <http://ns.imfid.org/imf#operatingQualifier>, <http://ns.imfid.org/imf#outputFlow>, <http://ns.imfid.org/imf#partOf>, <http://ns.imfid.org/imf#prefix>, <http://ns.imfid.org/imf#productAspect>, <http://ns.imfid.org/imf#property>, <http://ns.imfid.org/imf#specifiedQualifier>, <http://ns.imfid.org/imf#symbol>, <http://ns.imfid.org/imf#theConnected>, <http://ns.imfid.org/imf#theInput>, <http://ns.imfid.org/imf#theOutput>, <http://ns.imfid.org/imf#thePart>, <http://ns.imfid.org/imf#theWhole>, <http://ns.imfid.org/imf#uom>, <http://ns.imfid.org/imf#value>
+<http://ns.imfid.org/imf#> <http://ns.imfid.org/imf#Aspect> <http://ns.imfid.org/imf#AspectElement> <http://ns.imfid.org/imf#Attribute> <http://ns.imfid.org/imf#AttributeQualifier> <http://ns.imfid.org/imf#Block> <http://ns.imfid.org/imf#BreakdownPoint> <http://ns.imfid.org/imf#ConnectionPoint> <http://ns.imfid.org/imf#Element> <http://ns.imfid.org/imf#FunctionBlock> <http://ns.imfid.org/imf#FunctionElement> <http://ns.imfid.org/imf#FunctionTerminal> <http://ns.imfid.org/imf#InputTerminal> <http://ns.imfid.org/imf#InstalledBlock> <http://ns.imfid.org/imf#InstalledElement> <http://ns.imfid.org/imf#InstalledTerminal> <http://ns.imfid.org/imf#LocationBlock> <http://ns.imfid.org/imf#LocationElement> <http://ns.imfid.org/imf#LocationTerminal> <http://ns.imfid.org/imf#OutputTerminal> <http://ns.imfid.org/imf#ProductBlock> <http://ns.imfid.org/imf#ProductElement> <http://ns.imfid.org/imf#ProductTerminal> <http://ns.imfid.org/imf#ProvenanceQualifier> <http://ns.imfid.org/imf#RangeQualifier> <http://ns.imfid.org/imf#RegularityQualifier> <http://ns.imfid.org/imf#ScopeQualifier> <http://ns.imfid.org/imf#Terminal> <http://ns.imfid.org/imf#TerminalQualifier> <http://ns.imfid.org/imf#absoluteQualifier> <http://ns.imfid.org/imf#asFunction> <http://ns.imfid.org/imf#asInstalled> <http://ns.imfid.org/imf#asLocation> <http://ns.imfid.org/imf#asProduct> <http://ns.imfid.org/imf#associativeRelation> <http://ns.imfid.org/imf#averageQualifier> <http://ns.imfid.org/imf#calculatedQualifier> <http://ns.imfid.org/imf#classifier> <http://ns.imfid.org/imf#color> <http://ns.imfid.org/imf#connectedTo> <http://ns.imfid.org/imf#continuousQualifier> <http://ns.imfid.org/imf#designQualifier> <http://ns.imfid.org/imf#externalReference> <http://ns.imfid.org/imf#functionAspect> <http://ns.imfid.org/imf#hasAspect> <http://ns.imfid.org/imf#hasAttribute> <http://ns.imfid.org/imf#hasAttributeQualifier> <http://ns.imfid.org/imf#hasInputTerminal> <http://ns.imfid.org/imf#hasOutputTerminal> <http://ns.imfid.org/imf#hasPart> <http://ns.imfid.org/imf#hasTerminal> <http://ns.imfid.org/imf#hasTerminalQualifier> <http://ns.imfid.org/imf#hierachicalRelation> <http://ns.imfid.org/imf#hierarchicalRelation> <http://ns.imfid.org/imf#inputFlow> <http://ns.imfid.org/imf#installedAspect> <http://ns.imfid.org/imf#interAspectRelation> <http://ns.imfid.org/imf#intraAspectRelation> <http://ns.imfid.org/imf#locationAspect> <http://ns.imfid.org/imf#maximumQualifier> <http://ns.imfid.org/imf#measuredQualifier> <http://ns.imfid.org/imf#medium> <http://ns.imfid.org/imf#minimumQualifier> <http://ns.imfid.org/imf#nominalQualifier> <http://ns.imfid.org/imf#normalQualifier> <http://ns.imfid.org/imf#operatingQualifier> <http://ns.imfid.org/imf#outputFlow> <http://ns.imfid.org/imf#partOf> <http://ns.imfid.org/imf#prefix> <http://ns.imfid.org/imf#productAspect> <http://ns.imfid.org/imf#property> <http://ns.imfid.org/imf#specifiedQualifier> <http://ns.imfid.org/imf#symbol> <http://ns.imfid.org/imf#theConnected> <http://ns.imfid.org/imf#theInput> <http://ns.imfid.org/imf#theOutput> <http://ns.imfid.org/imf#thePart> <http://ns.imfid.org/imf#theWhole> <http://ns.imfid.org/imf#uom> <http://ns.imfid.org/imf#value>
+<http://ns.imfid.org/imf#> <http://ns.imfid.org/imf#Aspect> <http://ns.imfid.org/imf#AspectElement> <http://ns.imfid.org/imf#Attribute> <http://ns.imfid.org/imf#AttributeQualifier> <http://ns.imfid.org/imf#Block> <http://ns.imfid.org/imf#BreakdownPoint> <http://ns.imfid.org/imf#ConnectionPoint> <http://ns.imfid.org/imf#Element> <http://ns.imfid.org/imf#FunctionBlock> <http://ns.imfid.org/imf#FunctionElement> <http://ns.imfid.org/imf#FunctionTerminal> <http://ns.imfid.org/imf#InputTerminal> <http://ns.imfid.org/imf#InstalledBlock> <http://ns.imfid.org/imf#InstalledElement> <http://ns.imfid.org/imf#InstalledTerminal> <http://ns.imfid.org/imf#LocationBlock> <http://ns.imfid.org/imf#LocationElement> <http://ns.imfid.org/imf#LocationTerminal> <http://ns.imfid.org/imf#OutputTerminal> <http://ns.imfid.org/imf#ProductBlock> <http://ns.imfid.org/imf#ProductElement> <http://ns.imfid.org/imf#ProductTerminal> <http://ns.imfid.org/imf#ProvenanceQualifier> <http://ns.imfid.org/imf#RangeQualifier> <http://ns.imfid.org/imf#RegularityQualifier> <http://ns.imfid.org/imf#ScopeQualifier> <http://ns.imfid.org/imf#Terminal> <http://ns.imfid.org/imf#TerminalQualifier> <http://ns.imfid.org/imf#absoluteQualifier> <http://ns.imfid.org/imf#asFunction> <http://ns.imfid.org/imf#asInstalled> <http://ns.imfid.org/imf#asLocation> <http://ns.imfid.org/imf#asProduct> <http://ns.imfid.org/imf#associativeRelation> <http://ns.imfid.org/imf#averageQualifier> <http://ns.imfid.org/imf#calculatedQualifier> <http://ns.imfid.org/imf#classifier> <http://ns.imfid.org/imf#color> <http://ns.imfid.org/imf#connectedTo> <http://ns.imfid.org/imf#continuousQualifier> <http://ns.imfid.org/imf#designQualifier> <http://ns.imfid.org/imf#externalReference> <http://ns.imfid.org/imf#functionAspect> <http://ns.imfid.org/imf#hasAspect> <http://ns.imfid.org/imf#hasAttribute> <http://ns.imfid.org/imf#hasAttributeQualifier> <http://ns.imfid.org/imf#hasInputTerminal> <http://ns.imfid.org/imf#hasOutputTerminal> <http://ns.imfid.org/imf#hasPart> <http://ns.imfid.org/imf#hasTerminal> <http://ns.imfid.org/imf#hasTerminalQualifier> <http://ns.imfid.org/imf#hierachicalRelation> <http://ns.imfid.org/imf#hierarchicalRelation> <http://ns.imfid.org/imf#inputFlow> <http://ns.imfid.org/imf#installedAspect> <http://ns.imfid.org/imf#interAspectRelation> <http://ns.imfid.org/imf#intraAspectRelation> <http://ns.imfid.org/imf#locationAspect> <http://ns.imfid.org/imf#maximumQualifier> <http://ns.imfid.org/imf#measuredQualifier> <http://ns.imfid.org/imf#medium> <http://ns.imfid.org/imf#minimumQualifier> <http://ns.imfid.org/imf#nominalQualifier> <http://ns.imfid.org/imf#normalQualifier> <http://ns.imfid.org/imf#operatingQualifier> <http://ns.imfid.org/imf#outputFlow> <http://ns.imfid.org/imf#partOf> <http://ns.imfid.org/imf#prefix> <http://ns.imfid.org/imf#productAspect> <http://ns.imfid.org/imf#property> <http://ns.imfid.org/imf#specifiedQualifier> <http://ns.imfid.org/imf#symbol> <http://ns.imfid.org/imf#theConnected> <http://ns.imfid.org/imf#theInput> <http://ns.imfid.org/imf#theOutput> <http://ns.imfid.org/imf#thePart> <http://ns.imfid.org/imf#theWhole> <http://ns.imfid.org/imf#uom> <http://ns.imfid.org/imf#value>
+
 
 *** py_iri_rdf_diff
 
-Run SPARQL queries on RDF data files.
+Simple diff of 2 RDF files, output list of changed IRIs.
 
 #+NAME: py_iri_rdf_diff
-#+BEGIN_SRC python :var v2="out/owl/imf.owl.ttl" :var v1="https://ns.imfid.org/20221118/imf-vocabulary.owl.ttl" :results raw
+#+BEGIN_SRC python :noweb yes :var v2="out/owl/imf-ontology.owl.ttl" :var v1="https://ns.imfid.org/20221118/imf-vocabulary.owl.ttl" :results raw
 
-import rdflib
+<<py_common_functions>>
 
 pGraph = rdflib.Graph()
 pGraph.parse(v2, format="ttl")
 
-def getIRIs(data):
-  graph = rdflib.Graph()
-  iri = []
-
-  graph.parse(data, format="ttl")
-
-  for s, p, o in graph:
-    if(isinstance(s, rdflib.term.URIRef)):
-      iri.append(s)
-    if(isinstance(p, rdflib.term.URIRef)):
-      iri.append(p)
-    if(isinstance(o, rdflib.term.URIRef)):
-      iri.append(o)
-    
-  return set(iri)
-
 def prepare(input):
   rL = list(input)
-  rL2 = list(filter(lambda x: x.startswith("http://ns.imfid"), rL))
+  rL2 = list(filter(lambda x: x.startswith("http://ns.imfid.org"), rL))
   rL2.sort()
   return list(map(pGraph.namespace_manager.qname, rL2))
 
-iri1 = getIRIs(v1)
-iri2 = getIRIs(v2)
+iri1 = getAllIRIs(v1)
+iri2 = getAllIRIs(v2)
 
 inboth = iri1 & iri2
 added = iri2 - iri1
@@ -5419,6 +4337,13 @@ output += " - IRIs present only in previous version :: " + ", ".join(prepare(del
 
 return output
 #+END_SRC
+
+#+RESULTS: py_iri_rdf_diff
+ - IRIs present in both versions :: ns1:imf, imf:Aspect, imf:AspectElement, imf:Block, imf:FunctionBlock, imf:FunctionTerminal, imf:InputTerminal, imf:InstalledBlock, imf:InstalledTerminal, imf:LocationBlock, imf:LocationTerminal, imf:OutputTerminal, imf:ProductBlock, imf:ProductTerminal, imf:Terminal, imf:associativeRelation, imf:color, imf:hasAspect, imf:hasInputTerminal, imf:hasOutputTerminal, imf:hasPart, imf:hasTerminal, imf:hierarchicalRelation, imf:interAspectRelation, imf:intraAspectRelation, imf:prefix, imf:theInput, imf:theOutput
+
+ - IRIs present only in this version :: ns2:imf, imf:, imf:Attribute, imf:AttributeQualifier, imf:BreakdownPoint, imf:ConnectionPoint, imf:Element, imf:FunctionElement, imf:InstalledElement, imf:LocationElement, imf:ProductElement, imf:ProvenanceQualifier, imf:RangeQualifier, imf:RegularityQualifier, imf:ScopeQualifier, imf:TerminalQualifier, imf:absoluteQualifier, imf:asFunction, imf:asInstalled, imf:asLocation, imf:asProduct, imf:averageQualifier, imf:calculatedQualifier, imf:classifier, imf:connectedTo, imf:continuousQualifier, imf:designQualifier, imf:externalReference, imf:functionAspect, imf:hasAttribute, imf:hasAttributeQualifier, imf:hasTerminalQualifier, imf:hierachicalRelation, imf:inputFlow, imf:installedAspect, imf:locationAspect, imf:maximumQualifier, imf:measuredQualifier, imf:medium, imf:minimumQualifier, imf:nominalQualifier, imf:normalQualifier, imf:operatingQualifier, imf:outputFlow, imf:partOf, imf:productAspect, imf:property, imf:specifiedQualifier, imf:symbol, imf:theConnected, imf:thePart, imf:theWhole, imf:uom, imf:value
+
+ - IRIs present only in previous version :: ns3:imf-vocabulary, imf:FunctionAspect, imf:FunctionAspectElement, imf:FunctionInterfacePoint, imf:InstalledAspect, imf:InstalledAspectElement, imf:InstalledInterfacePoint, imf:InterAspectRelation, imf:InterfacePoint, imf:LocationAspect, imf:LocationAspectElement, imf:LocationInterfacePoint, imf:ProductAspect, imf:ProductAspectElement, imf:ProductInterfacePoint, imf:System, imf:SystemElement, imf:fulfilledBy, imf:fulfills, imf:isConnectedTo, imf:isPartOf, imf:memberOf
 
 *** py_parse-ttl-file: Parse source block
 
@@ -5451,7 +4376,7 @@ g.parse(data=rdf, format="text/turtle")
 return g.serialize(format='turtle').decode('utf-8')
 #+END_SRC
 
-*** Output
+*** py Output RDF
 
 #+NAME: py_output
 #+BEGIN_SRC python :var file="out/owl/imf-top.owl.ttl" :var s="None" :var p="RDF.type"
@@ -5548,7 +4473,6 @@ Include stderr in source block output:
 #+END_SRC
 
 *** Global tangle includes
-
 **** Graphviz 
 #+NAME: graphviz-style
 #+BEGIN_SRC dot :file out/img/.dummy-graphiz
@@ -5572,7 +4496,7 @@ skinparam class {
 
 #+END_SRC
 
-* TODOs [15/46]
+* TODOs [17/46]
 
  Questions:
  - [X] Are BreakdownPoints and ConnectionPoints also Elements? Perhaps
@@ -5606,14 +4530,14 @@ skinparam class {
  - [ ] Visualisation vocabulary
    - point (xyz), node, path
    - connectionpoints
- - [ ] Suggested list of metadata *for ontology*:
+ - [X] Suggested list of metadata *for ontology*:
    - pav:version
  - [-] Create unstable ontology file, containing
    - [ ] model
    - [X] breakdown points and connection points
 
  SHACL:
- - [ ] generate IMF-vocabulary check from ontology, see python code in
+ - [X] generate IMF-vocabulary check from ontology, see python code in
    https://github.com/dyreriket/shipshape
 
  RDF:
@@ -5629,7 +4553,7 @@ skinparam class {
  - [X] Mark all vocabulary elements with a term_status (s1, s2, s3,
    s4) and since (or something better)
  - [ ] Make examples
- - [ ] Define instanceOf?
+ - [ ] +Define instanceOf?+ -> use rdf:type
 
  Process:
  - [X] Diagrams
@@ -5641,7 +4565,7 @@ skinparam class {
  - [ ] bOTTR (SHACL + OTTR) over types to
    - [ ] Prototypes
    - [ ] OWL class
- - [ ] Vocabulary for visualisation
+ - [#] Vocabulary for visualisation -> v3
  - [ ] Visualisation
    - [ ] Instance data
    - [ ] Type data

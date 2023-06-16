@@ -1,9 +1,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix imf: <http://ns.imfid.org/imf#> .
-@prefix pav: <http://purl.org/pav/> .
-@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
 @prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -11,140 +9,19 @@
 @prefix o-imf-t-o: <http://ns.imfid.org/templates/type/owl/> .
 @prefix p14: <http://example.com/P14#> .
 @prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
-@prefix ex: <http://example.com#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix o-imf: <http://ns.imfid.org/templates/> .
 @prefix ottr: <http://ns.ottr.xyz/0.4/> .
 @prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
-@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
-@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
-
-<http://ns.imfid.org/imf>
-    pav:contributedBy _:b95, [
-        foaf:name "Arild Waaler"
-    ], [
-        foaf:name "Erlend Fjøsna"
-    ] ;
-    pav:createdBy _:b95 ;
-    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
-    vann:namespacePrefix "imf" ;
-    vann:namespaceURI <http://ns.imfid.org/imf#> ;
-    a owl:Ontology ;
-    owl:priorVersion <https://ns.imfid.org/20221118/imf> ;
-    owl:versionIRI <http://ns.imfid.org/20230630/imf> ;
-    owl:versionInfo "0.2.0" ;
-    skos:altLabel "The IMF Ontology" ;
-    skos:changeNote """0.2.0 :: Change summary:
-- Change: minor naming adjustments to some IRIs. 
-- Added metadata descriptions, including definitions and statuses.
-
-Generated changelog that only checks the occurrence of IRIs in the IMF namespace between this and the previous version of the ontology:
-
- - IRIs present in both versions :: ns1:imf, imf:Aspect, imf:AspectElement, imf:Block, imf:FunctionBlock, imf:FunctionTerminal, imf:InputTerminal, imf:InstalledBlock, imf:InstalledTerminal, imf:LocationBlock, imf:LocationTerminal, imf:OutputTerminal, imf:ProductBlock, imf:ProductTerminal, imf:Terminal, imf:associativeRelation, imf:color, imf:hasAspect, imf:hasInputTerminal, imf:hasOutputTerminal, imf:hasPart, imf:hasTerminal, imf:hierarchicalRelation, imf:interAspectRelation, imf:intraAspectRelation, imf:prefix, imf:theInput, imf:theOutput
-
- - IRIs present only in this version :: ns2:imf, imf:, imf:Attribute, imf:AttributeQualifier, imf:BreakdownPoint, imf:ConnectionPoint, imf:Element, imf:FunctionElement, imf:InstalledElement, imf:LocationElement, imf:ProductElement, imf:ProvenanceQualifier, imf:RangeQualifier, imf:RegularityQualifier, imf:ScopeQualifier, imf:TerminalQualifier, imf:absoluteQualifier, imf:asFunction, imf:asInstalled, imf:asLocation, imf:asProduct, imf:averageQualifier, imf:calculatedQualifier, imf:classifier, imf:connectedTo, imf:continuousQualifier, imf:designQualifier, imf:externalReference, imf:functionAspect, imf:hasAttribute, imf:hasAttributeQualifier, imf:hasTerminalQualifier, imf:hierachicalRelation, imf:inputFlow, imf:installedAspect, imf:locationAspect, imf:maximumQualifier, imf:measuredQualifier, imf:medium, imf:minimumQualifier, imf:nominalQualifier, imf:normalQualifier, imf:operatingQualifier, imf:outputFlow, imf:partOf, imf:productAspect, imf:property, imf:specifiedQualifier, imf:symbol, imf:theConnected, imf:thePart, imf:theWhole, imf:uom, imf:value
-
- - IRIs present only in previous version :: ns3:imf-vocabulary, imf:FunctionAspect, imf:FunctionAspectElement, imf:FunctionInterfacePoint, imf:InstalledAspect, imf:InstalledAspectElement, imf:InstalledInterfacePoint, imf:InterAspectRelation, imf:InterfacePoint, imf:LocationAspect, imf:LocationAspectElement, imf:LocationInterfacePoint, imf:ProductAspect, imf:ProductAspectElement, imf:ProductInterfacePoint, imf:System, imf:SystemElement, imf:fulfilledBy, imf:fulfills, imf:isConnectedTo, imf:isPartOf, imf:memberOf
-
-""" ;
-    skos:editorialNote """
-Result of validating RDF data <out/owl/imf.owl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
-2023-06-15
-Conforms
-
-
-Result of validating RDF data <out/owl/imf.owl.ttl> against SHACL shape <out/shacl/imf-vocabulary-checks.shacl.ttl>:
-2023-06-15
-Node=<http://ns.imfid.org/imf#continuousQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#minimumQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#RegularityQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#BreakdownPoint>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#theInput>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#measuredQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#normalQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#operatingQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#ProvenanceQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#theConnected>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#calculatedQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#specifiedQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#absoluteQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#averageQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#ConnectionPoint>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#RangeQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#nominalQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#ScopeQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#theWhole>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#designQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#thePart>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#theOutput>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#AttributeQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-Node=<http://ns.imfid.org/imf#maximumQualifier>
-  Path=<http://www.w3.org/2004/02/skos/core#definition>
-  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
-
-    """, "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel.", """On naming conventions. 
-- Classes use UpperCamelCase;
-- Properties use lowerCamelCase, with additional rules:
-   - object properties between IMF Classes usually start with a verb, e.g., 'has',
-   - object properties for reified properties start with 'the',
-   - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
- - Individuals use lowerCamelCase.
-""", "On statuses. All terms in the ontology are given a status using the 'term_status' property from the 'Term-centric Semantic Web Vocabulary Annotations' vocabulary (https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label.", "On versioning. Versions of this ontology and other semantic web resources are published an URL following this schema:  http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]", """References to external vocabularies used by this ontology:
-- SKOS: https://www.w3.org/TR/skos-primer/ ;
-- VANN: https://vocab.org/vann/ ;
-- PAV: https://pav-ontology.github.io/pav/ ;
-""" ;
-    skos:prefLabel "Information Modelling Framework Ontology" ;
-    foaf:depiction <file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-overview.png> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix ex: <http://example.com#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix dc: <http://purl.org/dc/terms> .
 
 imf:Aspect
     vann:termGroup "aspects" ;
@@ -179,7 +56,8 @@ imf:AspectElement
     skos:changeNote "0.1.0 :: Added" ;
     skos:definition "An [Aspect Element] is an [Element] that has exactly one [Aspect]." ;
     skos:prefLabel "Aspect Element" ;
-    foaf:depiction <file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-overview-aspects.png> .
+    skos:scopeNote "Avoid direct instantiation of [Aspect Element], use instead one of its subclasses." ;
+    foaf:depiction <file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology-aspects.png> .
 
 imf:Attribute
     vann:termGroup "attributes" ;
@@ -187,12 +65,12 @@ imf:Attribute
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:ProvenanceQualifier ;
+        owl:onClass imf:ScopeQualifier ;
         owl:onProperty imf:hasAttributeQualifier
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:ScopeQualifier ;
+        owl:onClass imf:ProvenanceQualifier ;
         owl:onProperty imf:hasAttributeQualifier
     ], [
         a owl:Restriction ;
@@ -210,7 +88,7 @@ imf:Attribute
     skos:definition "An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure]." ;
     skos:example "Color: red", "Maximum ambient operating temperature: 120 K", "Weight: 1250 kg" ;
     skos:prefLabel "Attribute" ;
-    foaf:depiction <file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-overview-attributes.png> .
+    foaf:depiction <file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology-attributes.png> .
 
 imf:AttributeQualifier
     vann:termGroup "attributes" ;
@@ -229,7 +107,7 @@ imf:Block
     ] ;
     vs:term_status "testing" ;
     skos:changeNote "0.1.0 :: Added" ;
-    skos:definition "A [block] is an [element] that ???" ;
+    skos:definition "A [Block] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
     skos:prefLabel "Block" .
 
 imf:BreakdownPoint
@@ -253,14 +131,14 @@ imf:ConnectionPoint
     a owl:Class ;
     rdfs:subClassOf imf:Element, [
         a owl:Restriction ;
-        owl:onClass imf:Element ;
-        owl:onProperty imf:theConnected ;
-        owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
-    ], [
-        a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onClass imf:Element ;
         owl:onProperty imf:theOutput
+    ], [
+        a owl:Restriction ;
+        owl:onClass imf:Element ;
+        owl:onProperty imf:theConnected ;
+        owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
@@ -276,10 +154,17 @@ imf:Element
     a owl:Class ;
     vs:term_status "testing" ;
     skos:changeNote "0.2.0 :: Added" ;
-    skos:definition "An [Element] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
+    skos:definition "An [Element] is a general object for modelling systems and system elements." ;
     skos:prefLabel "Element" ;
-    skos:scopeNote "Avoid direct instantiation of [Element], use instead one of its subclasses." ;
-    foaf:depiction <file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-overview-elements.png> .
+    skos:scopeNote """All [Element]s should be given the following metadata:
+- a preferred label, using skos:prefLabel;
+- optionally additional alternative labels, using skos:altLabel;
+- a (textual) description, using dc:description;
+- optionally a source of origin from which information about the element is taken, using dc:source;
+- a IMF type, using rdf:type;
+- a classifier, using imf:classifier;
+""", "Avoid direct instantiation of [Element], use instead one of its subclasses." ;
+    foaf:depiction <file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology-elements.png> .
 
 imf:FunctionBlock
     vann:termGroup "aspects" ;
@@ -322,6 +207,302 @@ imf:FunctionTerminal
     ] ;
     vs:term_status "testing" ;
     skos:note "This resource is programatically generated. Please consult its defining resources for a textual descriptions." .
+
+imf:IMFOntology
+    pav:contributedBy _:b92, [
+        foaf:name "Erlend Fjøsna"
+    ], [
+        foaf:name "Arild Waaler"
+    ] ;
+    pav:createdBy _:b92 ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    vann:preferredNamespacePrefix "imf" ;
+    vann:preferredNamespaceUri <http://ns.imfid.org/imf#> ;
+    a owl:Ontology ;
+    owl:priorVersion <https://ns.imfid.org/20221118/imf-vocabulary.owl.ttl> ;
+    owl:versionIRI <http://ns.imfid.org/20230630/imf-ontology.owl.ttl> ;
+    owl:versionInfo "0.2.0" ;
+    skos:altLabel "The IMF Ontology" ;
+    skos:changeNote """0.2.0 :: Change summary:
+- Change: minor naming adjustments to some IRIs. 
+- Added metadata descriptions, including definitions and statuses.
+
+Generated changelog that only checks the occurrence of IRIs in the IMF namespace between this and the previous version of the ontology:
+
+ - IRIs present in both versions :: imf:Aspect, imf:AspectElement, imf:Block, imf:FunctionBlock, imf:FunctionTerminal, imf:InputTerminal, imf:InstalledBlock, imf:InstalledTerminal, imf:LocationBlock, imf:LocationTerminal, imf:OutputTerminal, imf:ProductBlock, imf:ProductTerminal, imf:Terminal, imf:associativeRelation, imf:color, imf:hasAspect, imf:hasInputTerminal, imf:hasOutputTerminal, imf:hasPart, imf:hasTerminal, imf:hierarchicalRelation, imf:interAspectRelation, imf:intraAspectRelation, imf:prefix, imf:theInput, imf:theOutput
+
+ - IRIs present only in this version :: ns1:imf-model-grammar.shacl.ttl, ns1:imf-ontology-grammar.shacl.ttl, ns1:imf-ontology.owl.ttl, ns1:imf-terms-grammar.shacl.ttl, imf:, imf:Attribute, imf:AttributeQualifier, imf:BreakdownPoint, imf:ConnectionPoint, imf:Element, imf:FunctionElement, imf:IMFOntology, imf:InstalledElement, imf:LocationElement, imf:ProductElement, imf:ProvenanceQualifier, imf:RangeQualifier, imf:RegularityQualifier, imf:ScopeQualifier, imf:TerminalQualifier, imf:absoluteQualifier, imf:asFunction, imf:asInstalled, imf:asLocation, imf:asProduct, imf:averageQualifier, imf:calculatedQualifier, imf:classifier, imf:connectedTo, imf:continuousQualifier, imf:designQualifier, imf:externalReference, imf:functionAspect, imf:hasAttribute, imf:hasAttributeQualifier, imf:hasTerminalQualifier, imf:hierachicalRelation, imf:inputFlow, imf:installedAspect, imf:locationAspect, imf:maximumQualifier, imf:measuredQualifier, imf:medium, imf:minimumQualifier, imf:nominalQualifier, imf:normalQualifier, imf:operatingQualifier, imf:outputFlow, imf:partOf, imf:productAspect, imf:property, imf:specifiedQualifier, imf:symbol, imf:theConnected, imf:thePart, imf:theWhole, imf:uom, imf:value
+
+ - IRIs present only in previous version :: ns2:imf-vocabulary, ns3:imf, imf:FunctionAspect, imf:FunctionAspectElement, imf:FunctionInterfacePoint, imf:InstalledAspect, imf:InstalledAspectElement, imf:InstalledInterfacePoint, imf:InterAspectRelation, imf:InterfacePoint, imf:LocationAspect, imf:LocationAspectElement, imf:LocationInterfacePoint, imf:ProductAspect, imf:ProductAspectElement, imf:ProductInterfacePoint, imf:System, imf:SystemElement, imf:fulfilledBy, imf:fulfills, imf:isConnectedTo, imf:isPartOf, imf:memberOf
+
+""" ;
+    skos:editorialNote """External vocabularies used by this ontology:
+- SKOS: https://www.w3.org/TR/skos-primer/ ;
+- VANN: https://vocab.org/vann/ ;
+- PAV: https://pav-ontology.github.io/pav/ ;
+""", "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel.", """On naming conventions. 
+- Classes use UpperCamelCase;
+- Properties use lowerCamelCase, with additional rules:
+   - object properties between IMF Classes usually start with a verb, e.g., 'has',
+   - object properties for reified properties start with 'the',
+   - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
+ - Individuals use lowerCamelCase.
+""", "On publishing. Versions of this ontology and other semantic web resources for IMF are published at an URL following this schema: http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]", "On statuses. All terms in the ontology are given a status using the 'term_status' property from the 'Term-centric Semantic Web Vocabulary Annotations' vocabulary (https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label.", """Result of validation against specified sh:shapesGraph:
+Result of validating RDF data <out/owl/imf-ontology.owl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data <out/owl/imf-ontology.owl.ttl> against SHACL shape <out/shacl/imf-terms-grammar.shacl.ttl>:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data <out/owl/imf-ontology.owl.ttl> against SHACL shape <out/shacl/imf-ontology-grammar.shacl.ttl>:
+2023-06-16
+Node=<http://ns.imfid.org/imf#Terminal>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#prefix>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#continuousQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#continuousQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#intraAspectRelation>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#minimumQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#minimumQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#inputFlow>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#TerminalQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#hasOutputTerminal>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#RegularityQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#RegularityQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#hasTerminal>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#Block>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#BreakdownPoint>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#BreakdownPoint>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theInput>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theInput>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#hasTerminalQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#measuredQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#measuredQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#normalQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#normalQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#hierarchicalRelation>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#medium>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#operatingQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#operatingQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#ProvenanceQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#ProvenanceQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#Attribute>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theConnected>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theConnected>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#calculatedQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#calculatedQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#associativeRelation>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#hasInputTerminal>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#value>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#specifiedQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#specifiedQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#absoluteQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#absoluteQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#classifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#averageQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#averageQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#property>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#ConnectionPoint>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#ConnectionPoint>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#outputFlow>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#RangeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#RangeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#InputTerminal>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#nominalQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#nominalQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#ScopeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#ScopeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theWhole>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theWhole>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#interAspectRelation>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#designQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#designQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#symbol>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#functionAspect>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#hasAspect>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#thePart>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#thePart>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theOutput>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#theOutput>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#hasAttribute>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#externalReference>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#productAspect>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#uom>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#AttributeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#AttributeQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#maximumQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#maximumQualifier>
+  Path=<http://www.w3.org/2004/02/skos/core#definition>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#OutputTerminal>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#installedAspect>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://ns.imfid.org/imf#locationAspect>
+  Path=<http://www.w3.org/2004/02/skos/core#scopeNote>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+
+    """ ;
+    skos:prefLabel "Information Modelling Framework: Ontology" ;
+    sh:shapesGraph <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl>, <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl>, <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ;
+    sh:suggestedShapesGraph <http://ns.imfid.org/20230630/imf-model-grammar.shacl.ttl> ;
+    foaf:depiction <file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology.png> .
 
 imf:InputTerminal
     vann:termGroup "elements" ;
@@ -544,15 +725,15 @@ imf:Terminal
     a owl:Class ;
     rdfs:subClassOf imf:Element, [
         a owl:Restriction ;
+        owl:allValuesFrom imf:Terminal ;
+        owl:onProperty imf:partOf
+    ], [
+        a owl:Restriction ;
         owl:onProperty [
             a owl:ObjectProperty ;
             owl:inverseOf imf:hasTerminal
         ] ;
         owl:someValuesFrom imf:Block
-    ], [
-        a owl:Restriction ;
-        owl:allValuesFrom imf:Terminal ;
-        owl:onProperty imf:partOf
     ] ;
     vs:term_status "testing" ;
     skos:altLabel "Channel", "Input/Output", "Port" ;
@@ -1050,23 +1231,21 @@ skos:notation
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:calculatedQualifier
-        imf:measuredQualifier
-        imf:specifiedQualifier
-    ) .
-
-[]
-    a owl:AllDisjointClasses ;
-    owl:members (imf:ProvenanceQualifier
-        imf:RangeQualifier
-        imf:RegularityQualifier
-        imf:ScopeQualifier
+    owl:members (imf:designQualifier
+        imf:operatingQualifier
     ) .
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:designQualifier
-        imf:operatingQualifier
+    owl:members (imf:inputFlow
+        imf:outputFlow
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:calculatedQualifier
+        imf:measuredQualifier
+        imf:specifiedQualifier
     ) .
 
 []
@@ -1079,17 +1258,19 @@ skos:notation
     ) .
 
 []
+    a owl:AllDisjointClasses ;
+    owl:members (imf:ProvenanceQualifier
+        imf:RangeQualifier
+        imf:RegularityQualifier
+        imf:ScopeQualifier
+    ) .
+
+[]
     a owl:AllDifferent ;
     owl:members (imf:absoluteQualifier
         imf:continuousQualifier
     ) .
 
-[]
-    a owl:AllDifferent ;
-    owl:members (imf:inputFlow
-        imf:outputFlow
-    ) .
-
-_:b95
+_:b92
     foaf:name "Martin G. Skjæveland" .
 

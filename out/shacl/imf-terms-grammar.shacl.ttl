@@ -1,0 +1,66 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix o-imf-t-o: <http://ns.imfid.org/templates/type/owl/> .
+@prefix p14: <http://example.com/P14#> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix ex: <http://example.com#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix dc: <http://purl.org/dc/terms> .
+
+imf:IMFTermsGrammar
+    dc:description "This shapes graph can be used to validate RDF data against correct use of IMF terms, IRIs only." ;
+    pav:createdBy [
+        foaf:name "Martin G. Skjæveland"
+    ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
+    owl:versionInfo "0.2.0" ;
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+Result of validating RDF data <out/shacl/imf-terms-grammar.shacl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data <out/shacl/imf-terms-grammar.shacl.ttl> against SHACL shape <http://www.w3.org/ns/shacl-shacl#>:
+2023-06-16
+Conforms
+
+    """ ;
+    skos:prefLabel "Information Modelling Framework: IMF Terms Grammar" ;
+    sh:shapesGraph <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>, <http://www.w3.org/ns/shacl-shacl#> .
+
+[]
+    a sh:NodeShape ;
+    sh:message "Unrecognised IMF vocabulary element. Check spelling." ;
+    sh:name "IMF vocabulary element." ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:select """
+	      PREFIX imf: <http://ns.imfid.org/imf#>
+	      SELECT DISTINCT ?value 
+	      WHERE { { ?value ?p ?o }
+	        UNION { ?s ?value ?o }
+	        UNION { ?s ?p ?value }
+	      FILTER (isIRI(?value) 
+	        && STRSTARTS(STR(?value), 'http://ns.imfid.org/imf#'))
+	      FILTER (?value NOT IN (<http://ns.imfid.org/imf#>, <http://ns.imfid.org/imf#Aspect>, <http://ns.imfid.org/imf#AspectElement>, <http://ns.imfid.org/imf#Attribute>, <http://ns.imfid.org/imf#AttributeQualifier>, <http://ns.imfid.org/imf#Block>, <http://ns.imfid.org/imf#BreakdownPoint>, <http://ns.imfid.org/imf#ConnectionPoint>, <http://ns.imfid.org/imf#Element>, <http://ns.imfid.org/imf#FunctionBlock>, <http://ns.imfid.org/imf#FunctionElement>, <http://ns.imfid.org/imf#FunctionTerminal>, <http://ns.imfid.org/imf#IMFOntology>, <http://ns.imfid.org/imf#InputTerminal>, <http://ns.imfid.org/imf#InstalledBlock>, <http://ns.imfid.org/imf#InstalledElement>, <http://ns.imfid.org/imf#InstalledTerminal>, <http://ns.imfid.org/imf#LocationBlock>, <http://ns.imfid.org/imf#LocationElement>, <http://ns.imfid.org/imf#LocationTerminal>, <http://ns.imfid.org/imf#OutputTerminal>, <http://ns.imfid.org/imf#ProductBlock>, <http://ns.imfid.org/imf#ProductElement>, <http://ns.imfid.org/imf#ProductTerminal>, <http://ns.imfid.org/imf#ProvenanceQualifier>, <http://ns.imfid.org/imf#RangeQualifier>, <http://ns.imfid.org/imf#RegularityQualifier>, <http://ns.imfid.org/imf#ScopeQualifier>, <http://ns.imfid.org/imf#Terminal>, <http://ns.imfid.org/imf#TerminalQualifier>, <http://ns.imfid.org/imf#absoluteQualifier>, <http://ns.imfid.org/imf#asFunction>, <http://ns.imfid.org/imf#asInstalled>, <http://ns.imfid.org/imf#asLocation>, <http://ns.imfid.org/imf#asProduct>, <http://ns.imfid.org/imf#associativeRelation>, <http://ns.imfid.org/imf#averageQualifier>, <http://ns.imfid.org/imf#calculatedQualifier>, <http://ns.imfid.org/imf#classifier>, <http://ns.imfid.org/imf#color>, <http://ns.imfid.org/imf#connectedTo>, <http://ns.imfid.org/imf#continuousQualifier>, <http://ns.imfid.org/imf#designQualifier>, <http://ns.imfid.org/imf#externalReference>, <http://ns.imfid.org/imf#functionAspect>, <http://ns.imfid.org/imf#hasAspect>, <http://ns.imfid.org/imf#hasAttribute>, <http://ns.imfid.org/imf#hasAttributeQualifier>, <http://ns.imfid.org/imf#hasInputTerminal>, <http://ns.imfid.org/imf#hasOutputTerminal>, <http://ns.imfid.org/imf#hasPart>, <http://ns.imfid.org/imf#hasTerminal>, <http://ns.imfid.org/imf#hasTerminalQualifier>, <http://ns.imfid.org/imf#hierachicalRelation>, <http://ns.imfid.org/imf#hierarchicalRelation>, <http://ns.imfid.org/imf#inputFlow>, <http://ns.imfid.org/imf#installedAspect>, <http://ns.imfid.org/imf#interAspectRelation>, <http://ns.imfid.org/imf#intraAspectRelation>, <http://ns.imfid.org/imf#locationAspect>, <http://ns.imfid.org/imf#maximumQualifier>, <http://ns.imfid.org/imf#measuredQualifier>, <http://ns.imfid.org/imf#medium>, <http://ns.imfid.org/imf#minimumQualifier>, <http://ns.imfid.org/imf#nominalQualifier>, <http://ns.imfid.org/imf#normalQualifier>, <http://ns.imfid.org/imf#operatingQualifier>, <http://ns.imfid.org/imf#outputFlow>, <http://ns.imfid.org/imf#partOf>, <http://ns.imfid.org/imf#prefix>, <http://ns.imfid.org/imf#productAspect>, <http://ns.imfid.org/imf#property>, <http://ns.imfid.org/imf#specifiedQualifier>, <http://ns.imfid.org/imf#symbol>, <http://ns.imfid.org/imf#theConnected>, <http://ns.imfid.org/imf#theInput>, <http://ns.imfid.org/imf#theOutput>, <http://ns.imfid.org/imf#thePart>, <http://ns.imfid.org/imf#theWhole>, <http://ns.imfid.org/imf#uom>, <http://ns.imfid.org/imf#value>)) }"""
+    ] ;
+    sh:targetNode <http://shipshape.dyreriket.xyz#ANY_NODE> .
+

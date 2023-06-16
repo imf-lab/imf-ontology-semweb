@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-06-15 to. 14:27 -->
+<!-- 2023-06-16 fr. 15:10 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>IMF Language v2.1</title>
@@ -255,147 +255,156 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org16e2c2c">1. IMF Ontology</a>
+<li><a href="#orgc63508a">1. IMF Ontology</a>
 <ul>
-<li><a href="#orgc0204f2">1.1. Ontology header</a></li>
-<li><a href="#orge02bf94">1.2. Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></a>
+<li><a href="#org02f566e">1.1. Ontology header</a></li>
+<li><a href="#org5c18de9">1.2. Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></a>
 <ul>
-<li><a href="#orgcffce0f">1.2.1. Metadata properties</a></li>
+<li><a href="#orgede37dc">1.2.1. Metadata properties</a></li>
 </ul>
 </li>
-<li><a href="#org866e330">1.3. Structural relations</a></li>
-<li><a href="#orgc502cde">1.4. Elements</a>
+<li><a href="#orgef73a0c">1.3. Structural relations</a></li>
+<li><a href="#org15c029f">1.4. Elements</a>
 <ul>
-<li><a href="#orgde55893">1.4.1. <code>Element</code></a></li>
-<li><a href="#org96854f9">1.4.2. <code>partOf</code> / <code>hasPart</code></a></li>
-<li><a href="#org7a08a57">1.4.3. <code>classifier</code></a></li>
-<li><a href="#orgb46a699">1.4.4. <code>Block</code></a></li>
-<li><a href="#org9b4b141">1.4.5. <code>Terminal</code></a></li>
-<li><a href="#orgaed9aab">1.4.6. <code>medium</code></a></li>
-<li><a href="#org2eeeb60">1.4.7. <code>connectedTo</code></a></li>
-<li><a href="#orgc979de5">1.4.8. TerminalQualifier</a></li>
-<li><a href="#orged2e2a3">1.4.9. <code>Input/OutputTerminal</code></a></li>
-<li><a href="#org46e62e9">1.4.10. Association Points</a>
+<li><a href="#org83139e2">1.4.1. <code>Element</code></a></li>
+<li><a href="#org5c80e9c">1.4.2. <code>partOf</code> / <code>hasPart</code></a></li>
+<li><a href="#org3671b1c">1.4.3. <code>classifier</code></a></li>
+<li><a href="#org5172713">1.4.4. <code>Block</code></a></li>
+<li><a href="#orgeb6f173">1.4.5. <code>Terminal</code></a></li>
+<li><a href="#orgd0c671c">1.4.6. <code>medium</code></a></li>
+<li><a href="#orgc43e81f">1.4.7. <code>connectedTo</code></a></li>
+<li><a href="#orgd9b0a93">1.4.8. TerminalQualifier</a></li>
+<li><a href="#org565e63d">1.4.9. <code>Input/OutputTerminal</code></a></li>
+<li><a href="#org68995fd">1.4.10. Association Points</a>
 <ul>
-<li><a href="#org78588fd">1.4.10.1. Overview</a></li>
-<li><a href="#org4728a04">1.4.10.2. <code>BreakdownPoint</code></a></li>
-<li><a href="#orga979083">1.4.10.3. <code>ConnectionPoint</code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org60406db">1.5. Aspects</a>
-<ul>
-<li><a href="#orgc1aa379">1.5.1. <code>AspectElement</code></a></li>
-<li><a href="#org5fd098f">1.5.2. <code>Aspect</code></a></li>
-<li><a href="#org01dd7f9">1.5.3. Aspects</a></li>
-<li><a href="#org9219d89">1.5.4. Inter-aspect Relations</a></li>
-<li><a href="#org356d75f">1.5.5. <code>AspectElement</code> specialisations</a></li>
-</ul>
-</li>
-<li><a href="#org9345107">1.6. Attributes</a>
-<ul>
-<li><a href="#org0e628c5">1.6.1. Overview</a></li>
-<li><a href="#orge4aabed">1.6.2. <code>Attribute</code></a></li>
-<li><a href="#orgb940014">1.6.3. <code>AttributeQualifier</code></a></li>
-<li><a href="#orge0b3f0b">1.6.4. Attribute Qualifiers</a></li>
-</ul>
-</li>
-<li><a href="#orgb45e3bc">1.7. Summary</a>
-<ul>
-<li><a href="#org53313a6">1.7.1. Overview</a></li>
-<li><a href="#orgf6a391c">1.7.2. Vocabulary</a>
-<ul>
-<li><a href="#orgc4a79b4">1.7.2.1. IMF Vocabulary</a></li>
-<li><a href="#org4dc86ba">1.7.2.2. IRIs</a></li>
-<li><a href="#org113d5a2">1.7.2.3. Classes</a></li>
-<li><a href="#org1f228b2">1.7.2.4. Properties</a></li>
-</ul>
-</li>
-<li><a href="#org029821f">1.7.3. SHACL Shapes</a></li>
-</ul>
-</li>
-<li><a href="#orgf2d8512">1.8. Compile and verify</a>
-<ul>
-<li><a href="#orgf1625f5">1.8.1. RDF validate tangled file</a></li>
-<li><a href="#org2b58325">1.8.2. Expand OTTR instances</a></li>
-<li><a href="#orgd572f43">1.8.3. RDF validate final file</a></li>
-<li><a href="#org8c88ce9">1.8.4. Diagram</a></li>
-<li><a href="#orgb6dbfc8">1.8.5. SHACL checks</a>
-<ul>
-<li><a href="#orge6b0e27">1.8.5.1. SPARQL select</a></li>
+<li><a href="#orgc9eeb87">1.4.10.1. Overview</a></li>
+<li><a href="#org211a017">1.4.10.2. <code>BreakdownPoint</code></a></li>
+<li><a href="#orgdb9ddf9">1.4.10.3. <code>ConnectionPoint</code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#org1766964">2. <span class="todo TODO">TODO</span> Types</a>
+<li><a href="#org1d77221">1.5. Aspects</a>
 <ul>
-<li><a href="#org4012dfb">2.1. Overview type patterns</a>
+<li><a href="#org15078bf">1.5.1. <code>AspectElement</code></a></li>
+<li><a href="#orgff25174">1.5.2. <code>Aspect</code></a></li>
+<li><a href="#orgfee585a">1.5.3. Aspects</a></li>
+<li><a href="#orgda247a4">1.5.4. Inter-aspect Relations</a></li>
+<li><a href="#orgaaf5af4">1.5.5. <code>AspectElement</code> specialisations</a></li>
+</ul>
+</li>
+<li><a href="#org86e786b">1.6. Attributes</a>
 <ul>
-<li><a href="#org59858fc">2.1.1. Short description of the type patterns</a></li>
+<li><a href="#org55fb109">1.6.1. Overview</a></li>
+<li><a href="#orgc7011f7">1.6.2. <code>Attribute</code></a></li>
+<li><a href="#org78d96ff">1.6.3. <code>AttributeQualifier</code></a></li>
+<li><a href="#org0f37b66">1.6.4. Attribute Qualifiers</a></li>
 </ul>
 </li>
-<li><a href="#org6fcd553">2.2. Suggested use of the type patterns</a></li>
-<li><a href="#org73e14a7">2.3. Pattern representation to SHACL with OTTR Templates</a></li>
-<li><a href="#org2a8c453">2.4. Translation to OWL ontology representation</a>
+<li><a href="#org2e59d58">1.7. Summary</a>
 <ul>
-<li><a href="#org1a855ef">2.4.1. OWL Classes</a></li>
-<li><a href="#org91f0bca">2.4.2. OWL Class restrictions</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#orgc4763ff">3. Example</a>
+<li><a href="#org03d9879">1.7.1. Overview</a></li>
+<li><a href="#org23ad24d">1.7.2. Vocabulary</a>
 <ul>
-<li><a href="#orgd0b599a">3.1. Type</a>
+<li><a href="#orga88b383">1.7.2.1. IMF Vocabulary</a></li>
+<li><a href="#org5bdf4cd">1.7.2.2. IRIs</a></li>
+<li><a href="#org669e1ab">1.7.2.3. Classes</a></li>
+<li><a href="#orgc9bf5ed">1.7.2.4. Properties</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgb0040af">1.8. Compile and verify</a>
 <ul>
-<li><a href="#orgd535916">3.1.1. Type expansion: SHACL</a></li>
-<li><a href="#orgca13737">3.1.2. Type translation: OWL</a></li>
+<li><a href="#orgde79c2c">1.8.1. RDF validate tangled file</a></li>
+<li><a href="#org666e35b">1.8.2. Expand OTTR instances</a></li>
+<li><a href="#orgb65f3dc">1.8.3. RDF validate final file</a></li>
+<li><a href="#orgc2269ba">1.8.4. Diagram</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org9a8b1a4">4. Appendix</a>
+<li><a href="#org9f80777">2. SHACL Shape graphs</a>
 <ul>
-<li><a href="#orgf227b6a">4.1. Prefixes</a>
+<li><a href="#org4341c7a">2.1. IMF Terms</a>
 <ul>
-<li><a href="#org41a9169">4.1.1. Standard vocabulary prefixes</a></li>
-<li><a href="#org3e37cfb">4.1.2. IMF prefixes</a></li>
-<li><a href="#orgeaff34a">4.1.3. OTTR template prefixes</a></li>
+<li><a href="#org7609647">2.1.1. IMF vocabulary elements</a></li>
+</ul>
+</li>
+<li><a href="#orgc80deb8">2.2. IMF Model Grammar</a></li>
+<li><a href="#org6ed4a06">2.3. IMF Ontology Grammar</a>
+<ul>
+<li><a href="#orgea76ea8">2.3.1. SPARQL query</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org43a942c">5. TODOs <code>[15/46]</code></a></li>
+<li><a href="#orgc6376d5">3. <span class="todo TODO">TODO</span> Types</a>
+<ul>
+<li><a href="#org37e70dc">3.1. Overview type patterns</a>
+<ul>
+<li><a href="#orgbeacac0">3.1.1. Short description of the type patterns</a></li>
+</ul>
+</li>
+<li><a href="#orgf63a6b2">3.2. Suggested use of the type patterns</a></li>
+<li><a href="#org439f9d7">3.3. Pattern representation to SHACL with OTTR Templates</a></li>
+<li><a href="#org1b4f0d0">3.4. Translation to OWL ontology representation</a>
+<ul>
+<li><a href="#org09f2ccc">3.4.1. OWL Classes</a></li>
+<li><a href="#org7fddd8b">3.4.2. OWL Class restrictions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org6424c24">4. Example</a>
+<ul>
+<li><a href="#org9883ae5">4.1. Type</a>
+<ul>
+<li><a href="#orgf01f5c0">4.1.1. Type expansion: SHACL</a></li>
+<li><a href="#org05a68b9">4.1.2. Type translation: OWL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgca234bb">5. Appendix</a>
+<ul>
+<li><a href="#org98e5c64">5.1. Prefixes</a>
+<ul>
+<li><a href="#orge66cca7">5.1.1. Standard vocabulary prefixes</a></li>
+<li><a href="#org570c6a8">5.1.2. IMF prefixes</a></li>
+<li><a href="#org9f5cca7">5.1.3. OTTR template prefixes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org48fbdd0">6. TODOs <code>[17/46]</code></a></li>
 </ul>
 </div>
 </div>
 
 
-<div id="outline-container-org16e2c2c" class="outline-2">
-<h2 id="org16e2c2c"><span class="section-number-2">1</span> IMF Ontology</h2>
+<div id="outline-container-orgc63508a" class="outline-2">
+<h2 id="orgc63508a"><span class="section-number-2">1</span> IMF Ontology</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgc0204f2" class="outline-3">
-<h3 id="orgc0204f2"><span class="section-number-3">1.1</span> Ontology header</h3>
+<div id="outline-container-org02f566e" class="outline-3">
+<h3 id="org02f566e"><span class="section-number-3">1.1</span> Ontology header</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org1d64c95">
+<pre class="src src-ttl" id="org5a8cb83">
 
-&lt;http://ns.imfid.org/imf&gt; a owl:Ontology ;
-    owl:versionIRI &lt;http://ns.imfid.org/20230630/imf&gt; ;
+imf:IMFOntology a owl:Ontology ;
+    owl:versionIRI &lt;http://ns.imfid.org/20230630/imf-ontology.owl.ttl&gt; ;
     owl:versionInfo "0.2.0" ;
-    owl:priorVersion &lt;https://ns.imfid.org/20221118/imf&gt; ;
-    skos:prefLabel "Information Modelling Framework Ontology" ;
+    owl:priorVersion &lt;https://ns.imfid.org/20221118/imf-vocabulary.owl.ttl&gt; ;
+    skos:prefLabel "Information Modelling Framework: Ontology" ;
     skos:altLabel "The IMF Ontology" ;
-    vann:namespacePrefix "imf" ;
-    vann:namespaceURI &lt;http://ns.imfid.org/imf#&gt; ;
+    vann:preferredNamespacePrefix "imf" ;
+    vann:preferredNamespaceUri imf: ;
     pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
     pav:createdBy _:mgs ;
     pav:contributedBy _:mgs, _:aw, _:ef ;
-    foaf:depiction &lt;imf-overview.png&gt; ;
+    foaf:depiction &lt;imf-ontology.png&gt; ;
     skos:changeNote 
       """0.2.0 :: Change summary:
 - Change: minor naming adjustments to some IRIs. 
@@ -410,27 +419,40 @@ Generated changelog that only checks the occurrence of IRIs in the IMF namespace
     # skos:scopeNote ## add description of ontology
 
     skos:editorialNote 
-      "On versioning. Versions of this ontology and other semantic web resources are published an URL following this schema:  http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]" ,
+      "On publishing. Versions of this ontology and other semantic web resources for IMF are published at an URL following this schema: http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]" ,
+
       "On statuses. All terms in the ontology are given a status using the 'term_status' property from the 'Term-centric Semantic Web Vocabulary Annotations' vocabulary (https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label." ,
-      """References to external vocabularies used by this ontology:
+
+      """External vocabularies used by this ontology:
 - SKOS: https://www.w3.org/TR/skos-primer/ ;
 - VANN: https://vocab.org/vann/ ;
 - PAV: https://pav-ontology.github.io/pav/ ;
 """ ,
+
       """On naming conventions. 
 - Classes use UpperCamelCase;
-- Properties use lowerCamelCase, where
-   - object properties between IMF Classes usually start with a verb, e.g., ~has~,
-   - object properties for reified properties start with ~the~,
+- Properties use lowerCamelCase, with additional rules:
+   - object properties between IMF Classes usually start with a verb, e.g., 'has',
+   - object properties for reified properties start with 'the',
    - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
  - Individuals use lowerCamelCase.
 """ ,
+
       "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel." ;
 
-    skos:editorialNote """
+    sh:suggestedShapesGraph &lt;http://ns.imfid.org/20230630/imf-model-grammar.shacl.ttl&gt; ;
+    sh:shapesGraph 
+      &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt; ,
+      &lt;http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl&gt; ,
+      &lt;http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl&gt; ;
+
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+
+
+
+
 
     """
-
     .
 
 _:mgs foaf:name "Martin G. Skjæveland" .
@@ -443,15 +465,15 @@ _:ef  foaf:name "Erlend Fjøsna" .
 </div>
 </div>
 
-<div id="outline-container-orge02bf94" class="outline-3">
-<h3 id="orge02bf94"><span class="section-number-3">1.2</span> Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></h3>
+<div id="outline-container-org5c18de9" class="outline-3">
+<h3 id="org5c18de9"><span class="section-number-3">1.2</span> Model and Identified's&#xa0;&#xa0;&#xa0;<span class="tag"><span class="todo">todo</span></span></h3>
 <div class="outline-text-3" id="text-1-2">
 </div>
-<div id="outline-container-orgcffce0f" class="outline-4">
-<h4 id="orgcffce0f"><span class="section-number-4">1.2.1</span> Metadata properties</h4>
+<div id="outline-container-orgede37dc" class="outline-4">
+<h4 id="orgede37dc"><span class="section-number-4">1.2.1</span> Metadata properties</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org0e98bd0">skos:notation a owl:DatatypeProperty ;
+<pre class="src src-ttl" id="org7a22815">skos:notation a owl:DatatypeProperty ;
   skos:scopeNote "From the SKOS reference: 'A notation is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme.' Use skos:notation to set a RDS string."
   .
 
@@ -465,15 +487,6 @@ imf:symbol a owl:AnnotationProperty ;
 </pre>
 </div>
 
-<div class="org-src-container">
-<pre class="src src-ttl" id="orgbae3383">imf:ElementShape a sh:NodeShape ;
-  sh:targetClass imf:Element , imf:Block , imf:Terminal ;
-  sh:property 
-    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no prefLabel" ] ,
-    [ sh:path imf:classifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no classifier" ]
-.
-</pre>
-</div>
 
 
 
@@ -486,19 +499,19 @@ imf:symbol a owl:AnnotationProperty ;
 </div>
 
 
-<div id="outline-container-org866e330" class="outline-3">
-<h3 id="org866e330"><span class="section-number-3">1.3</span> Structural relations</h3>
+<div id="outline-container-orgef73a0c" class="outline-3">
+<h3 id="orgef73a0c"><span class="section-number-3">1.3</span> Structural relations</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 The following scope note is put on all following top-level relations:
 </p>
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgd83abae">skos:scopeNote "This is a generic property that is not intended to be used directly, rather use one of its subproperties. Generic properites like this are introduced to add structure to the properties of the ontology, and to be able to express generic class constraints."
+<pre class="src src-ttl" id="orgb78e37c">skos:scopeNote "This is a generic property that is not intended to be used directly, rather use one of its subproperties. Generic properites like this are introduced to add structure to the properties of the ontology, and to be able to express generic class constraints."
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgf8265cc">
+<pre class="src src-ttl" id="org08ab9ae">
 imf:externalReference a owl:ObjectProperty ;
     skos:prefLabel "external reference" ;
     vs:term_status "testing" ;
@@ -537,44 +550,61 @@ imf:associativeRelation a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgc502cde" class="outline-3">
-<h3 id="orgc502cde"><span class="section-number-3">1.4</span> Elements</h3>
+<div id="outline-container-org15c029f" class="outline-3">
+<h3 id="org15c029f"><span class="section-number-3">1.4</span> Elements</h3>
 <div class="outline-text-3" id="text-1-4">
 
 <div class="figure">
-<p><img src="out/owl/imf-overview-elements.png" alt="imf-overview-elements.png" />
+<p><img src="out/owl/imf-ontology-elements.png" alt="imf-ontology-elements.png" />
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgde55893" class="outline-4">
-<h4 id="orgde55893"><span class="section-number-4">1.4.1</span> <code>Element</code></h4>
+<div id="outline-container-org83139e2" class="outline-4">
+<h4 id="org83139e2"><span class="section-number-4">1.4.1</span> <code>Element</code></h4>
 <div class="outline-text-4" id="text-1-4-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgde9b4aa">imf:Element a owl:Class ;
+<pre class="src src-ttl" id="org6e73356">imf:Element a owl:Class ;
   skos:prefLabel "Element" ;
   vs:term_status "testing" ;
-  skos:definition "An [Element] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
+  skos:definition "An [Element] is a general object for modelling systems and system elements." ;
   skos:scopeNote "Avoid direct instantiation of [Element], use instead one of its subclasses." ;
+  skos:scopeNote """All [Element]s should be given the following metadata:
+- a preferred label, using skos:prefLabel;
+- optionally additional alternative labels, using skos:altLabel;
+- a (textual) description, using dc:description;
+- optionally a source of origin from which information about the element is taken, using dc:source;
+- a IMF type, using rdf:type;
+- a classifier, using imf:classifier;
+""" ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "elements" ;
-  foaf:depiction &lt;./imf-overview-elements.png&gt; ;
+  foaf:depiction &lt;./imf-ontology-elements.png&gt; ;
 . 
+</pre>
+</div>
 
-# In anticipation of more direct subclasses, this is commented out:
-#[] ottr:of o-owl-ma:ClassPartition ;
-#   ottr:values ( imf:Element ( imf:Block imf:Terminal ) ) .
+<div class="org-src-container">
+<pre class="src src-ttl" id="org0b65e05">imf:ElementShape a sh:NodeShape ;
+  sh:targetClass imf:Element , imf:Block , imf:Terminal ;
+  sh:property 
+    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no prefLabel." ] ,
+    [ sh:path dc:description ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no description." ] ,
+    [ sh:path imf:classifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no classifier." ] ,
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:message "Elements cannot be part of multiple Elements."  ]
+.
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org96854f9" class="outline-4">
-<h4 id="org96854f9"><span class="section-number-4">1.4.2</span> <code>partOf</code> / <code>hasPart</code></h4>
+
+<div id="outline-container-org5c80e9c" class="outline-4">
+<h4 id="org5c80e9c"><span class="section-number-4">1.4.2</span> <code>partOf</code> / <code>hasPart</code></h4>
 <div class="outline-text-4" id="text-1-4-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org28e9ec6">imf:partOf a owl:ObjectProperty;
+<pre class="src src-ttl" id="orgc4afb55">imf:partOf a owl:ObjectProperty;
   skos:prefLabel "part of" ;
   skos:altLabel "has parent" ;
   vs:term_status "testing" ;
@@ -608,11 +638,11 @@ imf:hasPart a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org7a08a57" class="outline-4">
-<h4 id="org7a08a57"><span class="section-number-4">1.4.3</span> <code>classifier</code></h4>
+<div id="outline-container-org3671b1c" class="outline-4">
+<h4 id="org3671b1c"><span class="section-number-4">1.4.3</span> <code>classifier</code></h4>
 <div class="outline-text-4" id="text-1-4-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org6bb54e9">imf:classifier a owl:ObjectProperty ;
+<pre class="src src-ttl" id="org625adc2">imf:classifier a owl:ObjectProperty ;
   skos:prefLabel "classifier" ;
   vs:term_status "testing" ;
   skos:definition "[classifier] is an [external reference] that relates an [Element] *E* to a resource *X* in an external ontology or reference data library such that *X* classifies *E* -- or equivalently, *E* is an instance of *X*." ;
@@ -627,18 +657,18 @@ imf:hasPart a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgb46a699" class="outline-4">
-<h4 id="orgb46a699"><span class="section-number-4">1.4.4</span> <code>Block</code></h4>
+<div id="outline-container-org5172713" class="outline-4">
+<h4 id="org5172713"><span class="section-number-4">1.4.4</span> <code>Block</code></h4>
 <div class="outline-text-4" id="text-1-4-4">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org7cc85fa">imf:Block a owl:Class ;
+<pre class="src src-ttl" id="org7cdefb9">imf:Block a owl:Class ;
   skos:prefLabel "Block" ;
   vs:term_status "testing" ;
+  skos:definition "A [Block] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
   skos:changeNote 
     "0.1.0 :: Added" ;
   vann:termGroup "elements" ;
   rdfs:subClassOf imf:Element ;
-  skos:definition "A [block] is an [element] that ???"
   .
 
 [] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
@@ -647,24 +677,25 @@ imf:hasPart a owl:ObjectProperty ;
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="org0253667">imf:BlockShape a sh:NodeShape ;
+<pre class="src src-ttl" id="orgd23f155">imf:BlockShape a sh:NodeShape ;
   sh:targetClass imf:Block ;
   sh:targetSubjectsOf imf:hasTerminal ;
   sh:property 
     [ sh:path imf:hasTerminal ; sh:class imf:Terminal ] ,
-    [ sh:path imf:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminal." ] ,     
-    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class imf:Block ]
+    [ sh:path imf:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminals." ] ,     
+    [ sh:path imf:partOf ; sh:class imf:Block ; sh:message "Blocks can only be part of Blocks." ] ,
+    [ sh:path imf:hasPart ; sh:class imf:Block ; sh:message "Blocks can only have Blocks as parts." ]
 .
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org9b4b141" class="outline-4">
-<h4 id="org9b4b141"><span class="section-number-4">1.4.5</span> <code>Terminal</code></h4>
+<div id="outline-container-orgeb6f173" class="outline-4">
+<h4 id="orgeb6f173"><span class="section-number-4">1.4.5</span> <code>Terminal</code></h4>
 <div class="outline-text-4" id="text-1-4-5">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org124da45">imf:Terminal a owl:Class ;
+<pre class="src src-ttl" id="orgfb4d0bd">imf:Terminal a owl:Class ;
   skos:prefLabel "Terminal" ;
   skos:altLabel "Port", "Channel", "Input/Output" ;
   vs:term_status "testing" ;
@@ -697,7 +728,7 @@ imf:hasTerminal a owl:ObjectProperty ;
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgcec21cc">imf:TerminalShape a sh:NodeShape ;
+<pre class="src src-ttl" id="orge1a3c84">imf:TerminalShape a sh:NodeShape ;
   sh:targetClass imf:Terminal , imf:InputTerminal , imf:OutputTerminal ;
   sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:hasTerminalQualifier ;
   sh:targetObjectsOf imf:hasTerminal, imf:connectedTo ;
@@ -714,11 +745,11 @@ imf:hasTerminal a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgaed9aab" class="outline-4">
-<h4 id="orgaed9aab"><span class="section-number-4">1.4.6</span> <code>medium</code></h4>
+<div id="outline-container-orgd0c671c" class="outline-4">
+<h4 id="orgd0c671c"><span class="section-number-4">1.4.6</span> <code>medium</code></h4>
 <div class="outline-text-4" id="text-1-4-6">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org08fec1e">imf:medium a owl:ObjectProperty  ;
+<pre class="src src-ttl" id="org3917859">imf:medium a owl:ObjectProperty  ;
   skos:prefLabel "medium" ;
   vs:term_status "testing" ;
   skos:definition "[medium] is an [external reference] that relates a [Terminal] *T* to a resource *X* to specify that *X* is the medium that flows through *T*." ;
@@ -739,11 +770,11 @@ imf:hasTerminal a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org2eeeb60" class="outline-4">
-<h4 id="org2eeeb60"><span class="section-number-4">1.4.7</span> <code>connectedTo</code></h4>
+<div id="outline-container-orgc43e81f" class="outline-4">
+<h4 id="orgc43e81f"><span class="section-number-4">1.4.7</span> <code>connectedTo</code></h4>
 <div class="outline-text-4" id="text-1-4-7">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgf9b9f1e">imf:connectedTo a owl:ObjectProperty ;
+<pre class="src src-ttl" id="org04b468d">imf:connectedTo a owl:ObjectProperty ;
   skos:prefLabel "connected to" ;
   vs:term_status "testing" ;
   skos:definition "[connected to] is an [associative relation] and an [intra-aspect relation] that relates a [Terminal] *T1* to a [Terminal] *T2* to specify that *T1* is connected to *T2*. [connected to] specifies a topology of [Element]s by relating the [Terminal]s of [Block]s and hence describes how [Block]s are interconnected and indicates how they interact." ;
@@ -765,11 +796,11 @@ imf:hasTerminal a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgc979de5" class="outline-4">
-<h4 id="orgc979de5"><span class="section-number-4">1.4.8</span> TerminalQualifier</h4>
+<div id="outline-container-orgd9b0a93" class="outline-4">
+<h4 id="orgd9b0a93"><span class="section-number-4">1.4.8</span> TerminalQualifier</h4>
 <div class="outline-text-4" id="text-1-4-8">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org80d242a">imf:TerminalQualifier a owl:Class ;
+<pre class="src src-ttl" id="org422437d">imf:TerminalQualifier a owl:Class ;
   skos:prefLabel "Terminal Qualifier" ;
   vs:term_status "testing" ;
   skos:definition "[Terminal Qualifier] is a feature or characteristic of a [Terminal]." ;
@@ -813,11 +844,11 @@ imf:hasTerminalQualifier a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orged2e2a3" class="outline-4">
-<h4 id="orged2e2a3"><span class="section-number-4">1.4.9</span> <code>Input/OutputTerminal</code></h4>
+<div id="outline-container-org565e63d" class="outline-4">
+<h4 id="org565e63d"><span class="section-number-4">1.4.9</span> <code>Input/OutputTerminal</code></h4>
 <div class="outline-text-4" id="text-1-4-9">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org5391c81">imf:InputTerminal a owl:Class ;
+<pre class="src src-ttl" id="orge4e1a5e">imf:InputTerminal a owl:Class ;
   skos:prefLabel "Input Terminal" ;
   skos:altLabel "Input" ;
   vs:term_status "testing" ;
@@ -871,26 +902,26 @@ imf:hasOutputTerminal a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org46e62e9" class="outline-4">
-<h4 id="org46e62e9"><span class="section-number-4">1.4.10</span> Association Points</h4>
+<div id="outline-container-org68995fd" class="outline-4">
+<h4 id="org68995fd"><span class="section-number-4">1.4.10</span> Association Points</h4>
 <div class="outline-text-4" id="text-1-4-10">
 </div>
-<div id="outline-container-org78588fd" class="outline-5">
-<h5 id="org78588fd"><span class="section-number-5">1.4.10.1</span> Overview</h5>
+<div id="outline-container-orgc9eeb87" class="outline-5">
+<h5 id="orgc9eeb87"><span class="section-number-5">1.4.10.1</span> Overview</h5>
 <div class="outline-text-5" id="text-1-4-10-1">
 
 <div class="figure">
-<p><img src="out/img/imf-overview-instances-w-reified.png" alt="imf-overview-instances-w-reified.png" />
+<p><img src="out/img/imf-ontology-elements-w-reified.png" alt="imf-ontology-elements-w-reified.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org4728a04" class="outline-5">
-<h5 id="org4728a04"><span class="section-number-5">1.4.10.2</span> <code>BreakdownPoint</code></h5>
+<div id="outline-container-org211a017" class="outline-5">
+<h5 id="org211a017"><span class="section-number-5">1.4.10.2</span> <code>BreakdownPoint</code></h5>
 <div class="outline-text-5" id="text-1-4-10-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org5c95f71">
+<pre class="src src-ttl" id="org671b5a0">
 imf:BreakdownPoint a owl:Class ;
   skos:prefLabel "Breakdown Point (unstable)" ;
   vs:term_status "unstable" ;
@@ -935,7 +966,7 @@ imf:theWhole a owl:ObjectProperty ;
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="org4a38a9d">imf:BreakdownPointShape a sh:NodeShape ;
+<pre class="src src-ttl" id="orgb0605ac">imf:BreakdownPointShape a sh:NodeShape ;
   sh:targetClass imf:BreakdownPoint ;
   sh:targetSubjectsOf imf:thePart , imf:theWhole ;
   sh:property 
@@ -947,11 +978,11 @@ imf:theWhole a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orga979083" class="outline-5">
-<h5 id="orga979083"><span class="section-number-5">1.4.10.3</span> <code>ConnectionPoint</code></h5>
+<div id="outline-container-orgdb9ddf9" class="outline-5">
+<h5 id="orgdb9ddf9"><span class="section-number-5">1.4.10.3</span> <code>ConnectionPoint</code></h5>
 <div class="outline-text-5" id="text-1-4-10-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgcfb9c76">
+<pre class="src src-ttl" id="org477ef36">
 imf:ConnectionPoint a owl:Class ;
   skos:prefLabel "Connection Point (unstable)" ;
   vs:term_status "unstable" ;
@@ -1003,7 +1034,7 @@ imf:theOutput a owl:ObjectProperty ;
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="org98aae39">imf:ConnectionPointShape a sh:NodeShape ;
+<pre class="src src-ttl" id="orgc967f89">imf:ConnectionPointShape a sh:NodeShape ;
   sh:targetClass imf:ConnectionPoint ;
   sh:targetSubjectsOf imf:theConnected , imf:theInput , imf:theOutput ;
   sh:property 
@@ -1018,25 +1049,26 @@ imf:theOutput a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org60406db" class="outline-3">
-<h3 id="org60406db"><span class="section-number-3">1.5</span> Aspects</h3>
+<div id="outline-container-org1d77221" class="outline-3">
+<h3 id="org1d77221"><span class="section-number-3">1.5</span> Aspects</h3>
 <div class="outline-text-3" id="text-1-5">
 
 <div class="figure">
-<p><img src="out/owl/imf-overview-aspects.png" alt="imf-overview-aspects.png" />
+<p><img src="out/owl/imf-ontology-aspects.png" alt="imf-ontology-aspects.png" />
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc1aa379" class="outline-4">
-<h4 id="orgc1aa379"><span class="section-number-4">1.5.1</span> <code>AspectElement</code></h4>
+<div id="outline-container-org15078bf" class="outline-4">
+<h4 id="org15078bf"><span class="section-number-4">1.5.1</span> <code>AspectElement</code></h4>
 <div class="outline-text-4" id="text-1-5-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgc0bfd2c">imf:AspectElement a owl:Class ;
+<pre class="src src-ttl" id="org9cc62ca">imf:AspectElement a owl:Class ;
   skos:prefLabel "Aspect Element";
   skos:definition "An [Aspect Element] is an [Element] that has exactly one [Aspect]." ;
+  skos:scopeNote "Avoid direct instantiation of [Aspect Element], use instead one of its subclasses." ;
   vs:term_status "testing" ;
-  foaf:depiction &lt;./imf-overview-aspects.png&gt; ;
+  foaf:depiction &lt;./imf-ontology-aspects.png&gt; ;
   skos:changeNote 
     "0.1.0 :: Added" ;
   vann:termGroup "aspects" ;
@@ -1067,7 +1099,7 @@ imf:hasAspect a owl:ObjectProperty ;
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="org893b1f3">imf:AspectElementShape a sh:NodeShape ;
+<pre class="src src-ttl" id="org27cc447">imf:AspectElementShape a sh:NodeShape ;
   sh:targetClass imf:AspectElement ;
   sh:targetSubjectsOf imf:hasAspect ;
   sh:property 
@@ -1078,11 +1110,11 @@ imf:hasAspect a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org5fd098f" class="outline-4">
-<h4 id="org5fd098f"><span class="section-number-4">1.5.2</span> <code>Aspect</code></h4>
+<div id="outline-container-orgff25174" class="outline-4">
+<h4 id="orgff25174"><span class="section-number-4">1.5.2</span> <code>Aspect</code></h4>
 <div class="outline-text-4" id="text-1-5-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgbd0b8f3">imf:Aspect a owl:Class ;
+<pre class="src src-ttl" id="orga349e8f">imf:Aspect a owl:Class ;
   skos:prefLabel "Aspect" ;
   vs:term_status "testing" ;
   skos:definition """
@@ -1126,7 +1158,7 @@ imf:color a owl:AnnotationProperty ;
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="orga062cea">imf:intraAspectRelation a owl:ObjectProperty ;
+<pre class="src src-ttl" id="org64d8f3e">imf:intraAspectRelation a owl:ObjectProperty ;
   skos:prefLabel "intra-aspect relation" ;
   skos:definition "[intra-aspect relation] a generic relation between [Element]s *E1* and *E2* such that *E1* and *E2* share at least one [Aspect]." ;
   vs:term_status "testing" ;
@@ -1156,14 +1188,14 @@ imf:interAspectRelation a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-org01dd7f9" class="outline-4">
-<h4 id="org01dd7f9"><span class="section-number-4">1.5.3</span> Aspects</h4>
+<div id="outline-container-orgfee585a" class="outline-4">
+<h4 id="orgfee585a"><span class="section-number-4">1.5.3</span> Aspects</h4>
 <div class="outline-text-4" id="text-1-5-3">
 <p>
 This is the current list of aspects:
 </p>
 
-<table id="orga6b0e95" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org9ef3e4d" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1216,8 +1248,8 @@ This is the current list of aspects:
 </div>
 </div>
 
-<div id="outline-container-org9219d89" class="outline-4">
-<h4 id="org9219d89"><span class="section-number-4">1.5.4</span> Inter-aspect Relations</h4>
+<div id="outline-container-orgda247a4" class="outline-4">
+<h4 id="orgda247a4"><span class="section-number-4">1.5.4</span> Inter-aspect Relations</h4>
 <div class="outline-text-4" id="text-1-5-4">
 
 <div class="figure">
@@ -1228,8 +1260,8 @@ This is the current list of aspects:
 </div>
 
 
-<div id="outline-container-org356d75f" class="outline-4">
-<h4 id="org356d75f"><span class="section-number-4">1.5.5</span> <code>AspectElement</code> specialisations</h4>
+<div id="outline-container-orgaaf5af4" class="outline-4">
+<h4 id="orgaaf5af4"><span class="section-number-4">1.5.5</span> <code>AspectElement</code> specialisations</h4>
 <div class="outline-text-4" id="text-1-5-5">
 
 <div class="figure">
@@ -1240,31 +1272,31 @@ This is the current list of aspects:
 </div>
 </div>
 
-<div id="outline-container-org9345107" class="outline-3">
-<h3 id="org9345107"><span class="section-number-3">1.6</span> Attributes</h3>
+<div id="outline-container-org86e786b" class="outline-3">
+<h3 id="org86e786b"><span class="section-number-3">1.6</span> Attributes</h3>
 <div class="outline-text-3" id="text-1-6">
 </div>
-<div id="outline-container-org0e628c5" class="outline-4">
-<h4 id="org0e628c5"><span class="section-number-4">1.6.1</span> Overview</h4>
+<div id="outline-container-org55fb109" class="outline-4">
+<h4 id="org55fb109"><span class="section-number-4">1.6.1</span> Overview</h4>
 <div class="outline-text-4" id="text-1-6-1">
 
 <div class="figure">
-<p><img src="out/owl/imf-overview-attributes.png" alt="imf-overview-attributes.png" />
+<p><img src="out/owl/imf-ontology-attributes.png" alt="imf-ontology-attributes.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge4aabed" class="outline-4">
-<h4 id="orge4aabed"><span class="section-number-4">1.6.2</span> <code>Attribute</code></h4>
+<div id="outline-container-orgc7011f7" class="outline-4">
+<h4 id="orgc7011f7"><span class="section-number-4">1.6.2</span> <code>Attribute</code></h4>
 <div class="outline-text-4" id="text-1-6-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org30b047d">imf:Attribute a owl:Class ;
+<pre class="src src-ttl" id="org905c15d">imf:Attribute a owl:Class ;
   skos:prefLabel "Attribute" ;
   vs:term_status "testing" ;
   skos:definition "An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure]." ;
   skos:example "Color: red" , "Weight: 1250 kg" , "Maximum ambient operating temperature: 120 K" ;
-  foaf:depiction &lt;./imf-overview-attributes.png&gt; ;
+  foaf:depiction &lt;./imf-ontology-attributes.png&gt; ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "attributes" ;
@@ -1317,7 +1349,7 @@ imf:value a owl:DatatypeProperty ;
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgca5ebe4">imf:AttributeShape a sh:NodeShape ;
+<pre class="src src-ttl" id="orga1f71e3">imf:AttributeShape a sh:NodeShape ;
   sh:targetClass imf:Attribute ;
   sh:targetObjectsOf imf:hasAttribute ;
   sh:targetSubjectsOf imf:property, imf:uom, imf:hasAttributeQualifier ;
@@ -1336,11 +1368,11 @@ imf:value a owl:DatatypeProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgb940014" class="outline-4">
-<h4 id="orgb940014"><span class="section-number-4">1.6.3</span> <code>AttributeQualifier</code></h4>
+<div id="outline-container-org78d96ff" class="outline-4">
+<h4 id="org78d96ff"><span class="section-number-4">1.6.3</span> <code>AttributeQualifier</code></h4>
 <div class="outline-text-4" id="text-1-6-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org5776e06">imf:AttributeQualifier a owl:Class ;
+<pre class="src src-ttl" id="orgf15863a">imf:AttributeQualifier a owl:Class ;
   skos:prefLabel "Attribute Qualifier" ;
   vs:term_status "testing" ;
   skos:changeNote 
@@ -1362,10 +1394,10 @@ imf:hasAttributeQualifier a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orge0b3f0b" class="outline-4">
-<h4 id="orge0b3f0b"><span class="section-number-4">1.6.4</span> Attribute Qualifiers</h4>
+<div id="outline-container-org0f37b66" class="outline-4">
+<h4 id="org0f37b66"><span class="section-number-4">1.6.4</span> Attribute Qualifiers</h4>
 <div class="outline-text-4" id="text-1-6-4">
-<table id="orgcadba8e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org3fb8afd" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -1445,12 +1477,12 @@ imf:hasAttributeQualifier a owl:ObjectProperty ;
 </div>
 </div>
 
-<div id="outline-container-orgb45e3bc" class="outline-3">
-<h3 id="orgb45e3bc"><span class="section-number-3">1.7</span> Summary</h3>
+<div id="outline-container-org2e59d58" class="outline-3">
+<h3 id="org2e59d58"><span class="section-number-3">1.7</span> Summary</h3>
 <div class="outline-text-3" id="text-1-7">
 </div>
-<div id="outline-container-org53313a6" class="outline-4">
-<h4 id="org53313a6"><span class="section-number-4">1.7.1</span> Overview</h4>
+<div id="outline-container-org03d9879" class="outline-4">
+<h4 id="org03d9879"><span class="section-number-4">1.7.1</span> Overview</h4>
 <div class="outline-text-4" id="text-1-7-1">
 <p>
 All diagrams combined.
@@ -1458,25 +1490,25 @@ All diagrams combined.
 
 
 <div class="figure">
-<p><img src="out/owl/imf-overview.png" alt="imf-overview.png" />
+<p><img src="out/owl/imf-ontology.png" alt="imf-ontology.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgf6a391c" class="outline-4">
-<h4 id="orgf6a391c"><span class="section-number-4">1.7.2</span> Vocabulary</h4>
+<div id="outline-container-org23ad24d" class="outline-4">
+<h4 id="org23ad24d"><span class="section-number-4">1.7.2</span> Vocabulary</h4>
 <div class="outline-text-4" id="text-1-7-2">
 <p>
 Report of the vocabulary used by the IMF ontology.
 </p>
 </div>
 
-<div id="outline-container-orgc4a79b4" class="outline-5">
-<h5 id="orgc4a79b4"><span class="section-number-5">1.7.2.1</span> IMF Vocabulary</h5>
+<div id="outline-container-orga88b383" class="outline-5">
+<h5 id="orga88b383"><span class="section-number-5">1.7.2.1</span> IMF Vocabulary</h5>
 <div class="outline-text-5" id="text-1-7-2-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org8d0a3da">SELECT DISTINCT ?iri ?label ?group ?type ?status ?definition ?scopeNote ?example ?ed
+<pre class="src src-ttl" id="orgaa74305">SELECT DISTINCT ?iri ?label ?group ?type ?status ?definition ?scopeNote ?example ?ed
 {
   { ?iri ?x1 ?x2 }
   UNION
@@ -1608,7 +1640,7 @@ ORDER BY ?group ?status ?type ?iri
 <td class="org-left"><code>owl:Class</code></td>
 <td class="org-left"><code>testing</code></td>
 <td class="org-left"><code>An [Aspect Element] is an [Element] that has exactly one [Aspect].</code></td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>Avoid direct instantiation of [Aspect Element], use instead one of its subclasses.</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 </tr>
@@ -2195,7 +2227,7 @@ ORDER BY ?group ?status ?type ?iri
 <td class="org-left"><code>elements</code></td>
 <td class="org-left"><code>owl:Class</code></td>
 <td class="org-left"><code>testing</code></td>
-<td class="org-left"><code>A [block] is an [element] that ???</code></td>
+<td class="org-left"><code>A [Block] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288.</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
@@ -2207,7 +2239,19 @@ ORDER BY ?group ?status ?type ?iri
 <td class="org-left"><code>elements</code></td>
 <td class="org-left"><code>owl:Class</code></td>
 <td class="org-left"><code>testing</code></td>
-<td class="org-left"><code>An [Element] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288.</code></td>
+<td class="org-left"><code>An [Element] is a general object for modelling systems and system elements.</code></td>
+<td class="org-left"><code>All [Element]s should be given the following metadata:- a preferred label, using skos:prefLabel;- optionally additional alternative labels, using skos:altLabel;- a (textual) description, using dc:description;- optionally a source of origin from which information about the element is taken, using dc:source;- a IMF type, using rdf:type;- a classifier, using imf:classifier;</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>imf:Element</code></td>
+<td class="org-left"><code>Element</code></td>
+<td class="org-left"><code>elements</code></td>
+<td class="org-left"><code>owl:Class</code></td>
+<td class="org-left"><code>testing</code></td>
+<td class="org-left"><code>An [Element] is a general object for modelling systems and system elements.</code></td>
 <td class="org-left"><code>Avoid direct instantiation of [Element], use instead one of its subclasses.</code></td>
 <td class="org-left">&#xa0;</td>
 <td class="org-left">&#xa0;</td>
@@ -2518,11 +2562,11 @@ ORDER BY ?group ?status ?type ?iri
 </div>
 
 
-<div id="outline-container-org4dc86ba" class="outline-5">
-<h5 id="org4dc86ba"><span class="section-number-5">1.7.2.2</span> IRIs</h5>
+<div id="outline-container-org5bdf4cd" class="outline-5">
+<h5 id="org5bdf4cd"><span class="section-number-5">1.7.2.2</span> IRIs</h5>
 <div class="outline-text-5" id="text-1-7-2-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orga3ad4f0">SELECT DISTINCT ?iri ?type
+<pre class="src src-ttl" id="org740d005">SELECT DISTINCT ?iri ?type
 {
   { ?iri ?x1 ?x2 }
   UNION
@@ -2578,12 +2622,12 @@ ORDER BY ?type ?iri
 </tr>
 
 <tr>
-<td class="org-left"><code>vann:namespacePrefix</code></td>
+<td class="org-left"><code>vann:preferredNamespacePrefix</code></td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="org-left"><code>vann:namespaceURI</code></td>
+<td class="org-left"><code>vann:preferredNamespaceUri</code></td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
@@ -2754,6 +2798,16 @@ ORDER BY ?type ?iri
 
 <tr>
 <td class="org-left"><code>skos:scopeNote</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>sh:shapesGraph</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>sh:suggestedShapesGraph</code></td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
@@ -3163,7 +3217,7 @@ ORDER BY ?type ?iri
 </tr>
 
 <tr>
-<td class="org-left"><code>ns1:imf</code></td>
+<td class="org-left"><code>imf:IMFOntology</code></td>
 <td class="org-left"><code>owl:Ontology</code></td>
 </tr>
 </tbody>
@@ -3171,11 +3225,11 @@ ORDER BY ?type ?iri
 </div>
 </div>
 
-<div id="outline-container-org113d5a2" class="outline-5">
-<h5 id="org113d5a2"><span class="section-number-5">1.7.2.3</span> Classes</h5>
+<div id="outline-container-org669e1ab" class="outline-5">
+<h5 id="org669e1ab"><span class="section-number-5">1.7.2.3</span> Classes</h5>
 <div class="outline-text-5" id="text-1-7-2-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgaaf3ed8">SELECT ?class ?prefLabel ?superclasses
+<pre class="src src-ttl" id="orga6a3074">SELECT ?class ?prefLabel ?superclasses
 {
   ?class a owl:Class.
   FILTER (!isBlank(?class))
@@ -3383,11 +3437,11 @@ ORDER BY ?superclasses ?class
 </div>
 </div>
 
-<div id="outline-container-org1f228b2" class="outline-5">
-<h5 id="org1f228b2"><span class="section-number-5">1.7.2.4</span> Properties</h5>
+<div id="outline-container-orgc9bf5ed" class="outline-5">
+<h5 id="orgc9bf5ed"><span class="section-number-5">1.7.2.4</span> Properties</h5>
 <div class="outline-text-5" id="text-1-7-2-4">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org1453139">SELECT ?type ?property ?prefLabel ?domain ?range ?characteristics ?superproperties
+<pre class="src src-ttl" id="org4875b01">SELECT ?type ?property ?prefLabel ?domain ?range ?characteristics ?superproperties
 {
   ?property a ?type.
   FILTER (?type = owl:ObjectProperty || ?type = owl:DatatypeProperty || ?type = owl:AnnotationProperty )
@@ -3778,133 +3832,24 @@ ORDER BY ?type ?property
 </div>
 </div>
 </div>
-
-
-<div id="outline-container-org029821f" class="outline-4">
-<h4 id="org029821f"><span class="section-number-4">1.7.3</span> SHACL Shapes</h4>
-<div class="outline-text-4" id="text-1-7-3">
-<p>
-All SHACL Shapes combined.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-ttl" id="org45c4054">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
-@prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix rdfs:	&lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix owl:    &lt;http://www.w3.org/2002/07/owl#&gt; .
-@prefix sh: 	&lt;http://www.w3.org/ns/shacl#&gt; . 
-@prefix shsh:   &lt;http://www.w3.org/ns/shacl-shacl#&gt; .
-
-@prefix skos:	&lt;http://www.w3.org/2004/02/skos/core#&gt; .
-@prefix pav:	&lt;http://purl.org/pav/&gt; .
-@prefix vs:     &lt;http://www.w3.org/2003/06/sw-vocab-status/ns#&gt; .
-@prefix vann:   &lt;http://purl.org/vocab/vann/&gt; .
-@prefix foaf:   &lt;http://xmlns.com/foaf/0.1/&gt; .
-
-@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
-@prefix ex:	&lt;http://example.com#&gt; .
-
-@prefix p14:    &lt;http://example.com/P14#&gt; .
-@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
-@prefix o-rdf:       &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
-@prefix o-rdfs:       &lt;http://tpl.ottr.xyz/rdfs/0.2/&gt; .
-@prefix o-owl-ax:    &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
-@prefix o-owl-ma:    &lt;http://tpl.ottr.xyz/owl/macro/0.1/&gt; .
-@prefix o-owl-rstr:  &lt;http://tpl.ottr.xyz/owl/restriction/0.1/&gt; .
-
-@prefix o-imf:	     &lt;http://ns.imfid.org/templates/&gt; .
-@prefix o-imf-t-s:   &lt;http://ns.imfid.org/templates/type/shacl/&gt; .
-@prefix o-imf-t-o:   &lt;http://ns.imfid.org/templates/type/owl/&gt; .
-
-
-imf:ElementShape a sh:NodeShape ;
-  sh:targetClass imf:Element , imf:Block , imf:Terminal ;
-  sh:property 
-    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no prefLabel" ] ,
-    [ sh:path imf:classifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no classifier" ]
-.
-imf:BlockShape a sh:NodeShape ;
-  sh:targetClass imf:Block ;
-  sh:targetSubjectsOf imf:hasTerminal ;
-  sh:property 
-    [ sh:path imf:hasTerminal ; sh:class imf:Terminal ] ,
-    [ sh:path imf:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminal." ] ,     
-    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class imf:Block ]
-.
-imf:TerminalShape a sh:NodeShape ;
-  sh:targetClass imf:Terminal , imf:InputTerminal , imf:OutputTerminal ;
-  sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:hasTerminalQualifier ;
-  sh:targetObjectsOf imf:hasTerminal, imf:connectedTo ;
-  sh:property 
-    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class imf:Terminal ] ,
-    [ sh:path imf:connectedTo ; sh:maxCount 1 ; sh:class imf:Terminal ] ,
-    [ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no connection (to a different Terminal)." ] , 
-    [ sh:path imf:hasTerminalQualifier ; sh:maxCount 1 ; sh:in ( imf:inputFlow imf:outputFlow ) ] ,
-    [ sh:path imf:medium ; sh:maxCount 1 ]  ,
-    [ sh:path imf:medium ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no medium." ]
-.
-imf:BreakdownPointShape a sh:NodeShape ;
-  sh:targetClass imf:BreakdownPoint ;
-  sh:targetSubjectsOf imf:thePart , imf:theWhole ;
-  sh:property 
-    [ sh:path imf:thePart  ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Element ] ,
-    [ sh:path imf:theWhole ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Element ] 
-.
-imf:ConnectionPointShape a sh:NodeShape ;
-  sh:targetClass imf:ConnectionPoint ;
-  sh:targetSubjectsOf imf:theConnected , imf:theInput , imf:theOutput ;
-  sh:property 
-    [ sh:path imf:theInput  ; sh:maxCount 1 ; sh:class imf:Element ] ,
-    [ sh:path imf:theOutput ; sh:maxCount 1 ; sh:class imf:Element ] ,
-    [ sh:path imf:theConnected ; sh:maxCount 2 ; sh:class imf:Element ] 
-.
-imf:AspectElementShape a sh:NodeShape ;
-  sh:targetClass imf:AspectElement ;
-  sh:targetSubjectsOf imf:hasAspect ;
-  sh:property 
-    [ sh:path imf:hasAspect ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Aspect ] 
-.
-imf:AttributeShape a sh:NodeShape ;
-  sh:targetClass imf:Attribute ;
-  sh:targetObjectsOf imf:hasAttribute ;
-  sh:targetSubjectsOf imf:property, imf:uom, imf:hasAttributeQualifier ;
-  sh:property 
-    [ sh:path imf:property ; sh:minCount 1 ; sh:maxCount 1 ] ,
-    [ sh:path imf:value ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no value." ] ,
-    [ sh:path imf:uom ; sh:maxCount 1 ] , 
-    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RegularityQualifier ] , 
-    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RangeQualifier ] , 
-    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ProvenenceQualifier ] , 
-    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ScopeQualifier ] ,
-    [ sh:path imf:hasAttributeQualifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no qualifier." ] 
-.
-#imf:AttributeGroupShape a sh:NodeShape ;
-#  sh:targetClass imf:AttributeGroup ;
-#  sh:targetObjectsOf imf:hasAttributeGroup ;
-#  sh:property 
-#    [ sh:path imf:hasAttribute ; sh:minCount 1 ; sh:message "AttributeGroup has no Attributes." ]
-#.
-</pre>
-</div>
-</div>
-</div>
 </div>
 
 
-<div id="outline-container-orgf2d8512" class="outline-3">
-<h3 id="orgf2d8512"><span class="section-number-3">1.8</span> Compile and verify</h3>
+
+<div id="outline-container-orgb0040af" class="outline-3">
+<h3 id="orgb0040af"><span class="section-number-3">1.8</span> Compile and verify</h3>
 <div class="outline-text-3" id="text-1-8">
 </div>
-<div id="outline-container-orgf1625f5" class="outline-4">
-<h4 id="orgf1625f5"><span class="section-number-4">1.8.1</span> RDF validate tangled file</h4>
+<div id="outline-container-orgde79c2c" class="outline-4">
+<h4 id="orgde79c2c"><span class="section-number-4">1.8.1</span> RDF validate tangled file</h4>
 <div class="outline-text-4" id="text-1-8-1">
 <pre class="example">
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.wottr.ttl : 0.28 sec : 802 Triples : 2,854.09 per second
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology.owl.wottr.ttl : 0.26 sec : 808 Triples : 3,095.79 per second
 
 </pre>
 
 <div class="org-src-container">
-<pre class="src src-ttl">Result of validating RDF data &lt;out/owl/imf.owl.wottr.ttl&gt; against SHACL shape &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt;:
+<pre class="src src-ttl">Result of validating RDF data &lt;out/owl/imf-ontology.owl.wottr.ttl&gt; against SHACL shape &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt;:
 
 Conforms
 </pre>
@@ -3912,19 +3857,17 @@ Conforms
 </div>
 </div>
 
-<div id="outline-container-org2b58325" class="outline-4">
-<h4 id="org2b58325"><span class="section-number-4">1.8.2</span> Expand OTTR instances</h4>
+<div id="outline-container-org666e35b" class="outline-4">
+<h4 id="org666e35b"><span class="section-number-4">1.8.2</span> Expand OTTR instances</h4>
 <div class="outline-text-4" id="text-1-8-2">
 <pre class="example">
-rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.wottr.ttl.temp with parser turtle
+rapper: Parsing URI file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology.owl.wottr.ttl.temp with parser turtle
 rapper: Serializing with serializer turtle
-rapper: Parsing returned 945 triples
+rapper: Parsing returned 951 triples
 @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix imf: &lt;http://ns.imfid.org/imf#&gt; .
-@prefix pav: &lt;http://purl.org/pav/&gt; .
-@prefix o-rdf: &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
-@prefix o-rdfs: &lt;http://tpl.ottr.xyz/rdfs/0.2/&gt; .
 @prefix o-owl-rstr: &lt;http://tpl.ottr.xyz/owl/restriction/0.1/&gt; .
+@prefix o-rdfs: &lt;http://tpl.ottr.xyz/rdfs/0.2/&gt; .
 @prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
 @prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
@@ -3932,64 +3875,19 @@ rapper: Parsing returned 945 triples
 @prefix o-imf-t-o: &lt;http://ns.imfid.org/templates/type/owl/&gt; .
 @prefix p14: &lt;http://example.com/P14#&gt; .
 @prefix o-imf-t-s: &lt;http://ns.imfid.org/templates/type/shacl/&gt; .
-@prefix ex: &lt;http://example.com#&gt; .
 @prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .
 @prefix o-imf: &lt;http://ns.imfid.org/templates/&gt; .
 @prefix ottr: &lt;http://ns.ottr.xyz/0.4/&gt; .
 @prefix o-owl-ma: &lt;http://tpl.ottr.xyz/owl/macro/0.1/&gt; .
 @prefix vann: &lt;http://purl.org/vocab/vann/&gt; .
-@prefix vs: &lt;http://www.w3.org/2003/06/sw-vocab-status/ns#&gt; .
-@prefix o-owl-ax: &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
 @prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
 @prefix shsh: &lt;http://www.w3.org/ns/shacl-shacl#&gt; .
-
-&lt;http://ns.imfid.org/imf&gt;
-    pav:contributedBy _:b92, [
-        foaf:name "Arild Waaler"
-    ], [
-        foaf:name "Erlend Fjøsna"
-    ] ;
-    pav:createdBy _:b92 ;
-    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
-    vann:namespacePrefix "imf" ;
-    vann:namespaceURI &lt;http://ns.imfid.org/imf#&gt; ;
-    a owl:Ontology ;
-    owl:priorVersion &lt;https://ns.imfid.org/20221118/imf&gt; ;
-    owl:versionIRI &lt;http://ns.imfid.org/20230630/imf&gt; ;
-    owl:versionInfo "0.2.0" ;
-    skos:altLabel "The IMF Ontology" ;
-    skos:changeNote """0.2.0 :: Change summary:
-- Change: minor naming adjustments to some IRIs. 
-- Added metadata descriptions, including definitions and statuses.
-
-Generated changelog that only checks the occurrence of IRIs in the IMF namespace between this and the previous version of the ontology:
-
- - IRIs present in both versions :: ns1:imf, imf:Aspect, imf:AspectElement, imf:Block, imf:FunctionBlock, imf:FunctionTerminal, imf:InputTerminal, imf:InstalledBlock, imf:InstalledTerminal, imf:LocationBlock, imf:LocationTerminal, imf:OutputTerminal, imf:ProductBlock, imf:ProductTerminal, imf:Terminal, imf:associativeRelation, imf:color, imf:hasAspect, imf:hasInputTerminal, imf:hasOutputTerminal, imf:hasPart, imf:hasTerminal, imf:hierarchicalRelation, imf:interAspectRelation, imf:intraAspectRelation, imf:prefix, imf:theInput, imf:theOutput
-
- - IRIs present only in this version :: ns2:imf, imf:, imf:Attribute, imf:AttributeQualifier, imf:BreakdownPoint, imf:ConnectionPoint, imf:Element, imf:FunctionElement, imf:InstalledElement, imf:LocationElement, imf:ProductElement, imf:ProvenanceQualifier, imf:RangeQualifier, imf:RegularityQualifier, imf:ScopeQualifier, imf:TerminalQualifier, imf:absoluteQualifier, imf:asFunction, imf:asInstalled, imf:asLocation, imf:asProduct, imf:averageQualifier, imf:calculatedQualifier, imf:classifier, imf:connectedTo, imf:continuousQualifier, imf:designQualifier, imf:externalReference, imf:functionAspect, imf:hasAttribute, imf:hasAttributeQualifier, imf:hasTerminalQualifier, imf:hierachicalRelation, imf:inputFlow, imf:installedAspect, imf:locationAspect, imf:maximumQualifier, imf:measuredQualifier, imf:medium, imf:minimumQualifier, imf:nominalQualifier, imf:normalQualifier, imf:operatingQualifier, imf:outputFlow, imf:partOf, imf:productAspect, imf:property, imf:specifiedQualifier, imf:symbol, imf:theConnected, imf:thePart, imf:theWhole, imf:uom, imf:value
-
- - IRIs present only in previous version :: ns3:imf-vocabulary, imf:FunctionAspect, imf:FunctionAspectElement, imf:FunctionInterfacePoint, imf:InstalledAspect, imf:InstalledAspectElement, imf:InstalledInterfacePoint, imf:InterAspectRelation, imf:InterfacePoint, imf:LocationAspect, imf:LocationAspectElement, imf:LocationInterfacePoint, imf:ProductAspect, imf:ProductAspectElement, imf:ProductInterfacePoint, imf:System, imf:SystemElement, imf:fulfilledBy, imf:fulfills, imf:isConnectedTo, imf:isPartOf, imf:memberOf
-
-""" ;
-    skos:editorialNote """
-Result of validating RDF data &lt;out/owl/imf.owl.ttl&gt; against SHACL shape &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt;:
-2023-06-15
-Conforms
-
-    """, "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel.", """On naming conventions. 
-- Classes use UpperCamelCase;
-- Properties use lowerCamelCase, where
-   - object properties between IMF Classes usually start with a verb, e.g., ~has~,
-   - object properties for reified properties start with ~the~,
-   - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
- - Individuals use lowerCamelCase.
-""", "On statuses. All terms in the ontology are given a status using the 'term_status' property from the 'Term-centric Semantic Web Vocabulary Annotations' vocabulary (https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label.", "On versioning. Versions of this ontology and other semantic web resources are published an URL following this schema:  http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]", """References to external vocabularies used by this ontology:
-- SKOS: https://www.w3.org/TR/skos-primer/ ;
-- VANN: https://vocab.org/vann/ ;
-- PAV: https://pav-ontology.github.io/pav/ ;
-""" ;
-    skos:prefLabel "Information Modelling Framework Ontology" ;
-    foaf:depiction &lt;file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-overview.png&gt; .
+@prefix pav: &lt;http://purl.org/pav/&gt; .
+@prefix o-rdf: &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
+@prefix ex: &lt;http://example.com#&gt; .
+@prefix vs: &lt;http://www.w3.org/2003/06/sw-vocab-status/ns#&gt; .
+@prefix o-owl-ax: &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
+@prefix dc: &lt;http://purl.org/dc/terms&gt; .
 
 imf:Aspect
     vann:termGroup "aspects" ;
@@ -4024,7 +3922,8 @@ imf:AspectElement
     skos:changeNote "0.1.0 :: Added" ;
     skos:definition "An [Aspect Element] is an [Element] that has exactly one [Aspect]." ;
     skos:prefLabel "Aspect Element" ;
-    foaf:depiction &lt;file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-overview-aspects.png&gt; .
+    skos:scopeNote "Avoid direct instantiation of [Aspect Element], use instead one of its subclasses." ;
+    foaf:depiction &lt;file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology-aspects.png&gt; .
 
 imf:Attribute
     vann:termGroup "attributes" ;
@@ -4032,12 +3931,7 @@ imf:Attribute
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:RegularityQualifier ;
-        owl:onProperty imf:hasAttributeQualifier
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:RangeQualifier ;
+        owl:onClass imf:ScopeQualifier ;
         owl:onProperty imf:hasAttributeQualifier
     ], [
         a owl:Restriction ;
@@ -4047,7 +3941,12 @@ imf:Attribute
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:ScopeQualifier ;
+        owl:onClass imf:RangeQualifier ;
+        owl:onProperty imf:hasAttributeQualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:RegularityQualifier ;
         owl:onProperty imf:hasAttributeQualifier
     ] ;
     vs:term_status "testing" ;
@@ -4055,7 +3954,7 @@ imf:Attribute
     skos:definition "An [Attribute] describes a quality or characteristic of a resource by setting a [property], a [value], and optionally a [unit of measure]." ;
     skos:example "Color: red", "Maximum ambient operating temperature: 120 K", "Weight: 1250 kg" ;
     skos:prefLabel "Attribute" ;
-    foaf:depiction &lt;file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-overview-attributes.png&gt; .
+    foaf:depiction &lt;file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology-attributes.png&gt; .
 
 imf:AttributeQualifier
     vann:termGroup "attributes" ;
@@ -4074,7 +3973,7 @@ imf:Block
     ] ;
     vs:term_status "testing" ;
     skos:changeNote "0.1.0 :: Added" ;
-    skos:definition "A [block] is an [element] that ???" ;
+    skos:definition "A [Block] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
     skos:prefLabel "Block" .
 
 imf:BreakdownPoint
@@ -4100,17 +3999,17 @@ imf:ConnectionPoint
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onClass imf:Element ;
-        owl:onProperty imf:theInput
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Element ;
         owl:onProperty imf:theOutput
     ], [
         a owl:Restriction ;
         owl:onClass imf:Element ;
         owl:onProperty imf:theConnected ;
         owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Element ;
+        owl:onProperty imf:theInput
     ] ;
     vs:term_status "unstable" ;
     skos:changeNote "0.2.0 :: Added" ;
@@ -4121,10 +4020,17 @@ imf:Element
     a owl:Class ;
     vs:term_status "testing" ;
     skos:changeNote "0.2.0 :: Added" ;
-    skos:definition "An [Element] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
+    skos:definition "An [Element] is a general object for modelling systems and system elements." ;
     skos:prefLabel "Element" ;
-    skos:scopeNote "Avoid direct instantiation of [Element], use instead one of its subclasses." ;
-    foaf:depiction &lt;file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-overview-elements.png&gt; .
+    skos:scopeNote """All [Element]s should be given the following metadata:
+- a preferred label, using skos:prefLabel;
+- optionally additional alternative labels, using skos:altLabel;
+- a (textual) description, using dc:description;
+- optionally a source of origin from which information about the element is taken, using dc:source;
+- a IMF type, using rdf:type;
+- a classifier, using imf:classifier;
+""", "Avoid direct instantiation of [Element], use instead one of its subclasses." ;
+    foaf:depiction &lt;file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology-elements.png&gt; .
 
 imf:FunctionBlock
     vann:termGroup "aspects" ;
@@ -4167,6 +4073,302 @@ imf:FunctionTerminal
     ] ;
     vs:term_status "testing" ;
     skos:note "This resource is programatically generated. Please consult its defining resources for a textual descriptions." .
+
+imf:IMFOntology
+    pav:contributedBy _:b92, [
+        foaf:name "Erlend Fjøsna"
+    ], [
+        foaf:name "Arild Waaler"
+    ] ;
+    pav:createdBy _:b92 ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    vann:preferredNamespacePrefix "imf" ;
+    vann:preferredNamespaceUri &lt;http://ns.imfid.org/imf#&gt; ;
+    a owl:Ontology ;
+    owl:priorVersion &lt;https://ns.imfid.org/20221118/imf-vocabulary.owl.ttl&gt; ;
+    owl:versionIRI &lt;http://ns.imfid.org/20230630/imf-ontology.owl.ttl&gt; ;
+    owl:versionInfo "0.2.0" ;
+    skos:altLabel "The IMF Ontology" ;
+    skos:changeNote """0.2.0 :: Change summary:
+- Change: minor naming adjustments to some IRIs. 
+- Added metadata descriptions, including definitions and statuses.
+
+Generated changelog that only checks the occurrence of IRIs in the IMF namespace between this and the previous version of the ontology:
+
+ - IRIs present in both versions :: imf:Aspect, imf:AspectElement, imf:Block, imf:FunctionBlock, imf:FunctionTerminal, imf:InputTerminal, imf:InstalledBlock, imf:InstalledTerminal, imf:LocationBlock, imf:LocationTerminal, imf:OutputTerminal, imf:ProductBlock, imf:ProductTerminal, imf:Terminal, imf:associativeRelation, imf:color, imf:hasAspect, imf:hasInputTerminal, imf:hasOutputTerminal, imf:hasPart, imf:hasTerminal, imf:hierarchicalRelation, imf:interAspectRelation, imf:intraAspectRelation, imf:prefix, imf:theInput, imf:theOutput
+
+ - IRIs present only in this version :: ns1:imf-model-grammar.shacl.ttl, ns1:imf-ontology-grammar.shacl.ttl, ns1:imf-ontology.owl.ttl, ns1:imf-terms-grammar.shacl.ttl, imf:, imf:Attribute, imf:AttributeQualifier, imf:BreakdownPoint, imf:ConnectionPoint, imf:Element, imf:FunctionElement, imf:IMFOntology, imf:InstalledElement, imf:LocationElement, imf:ProductElement, imf:ProvenanceQualifier, imf:RangeQualifier, imf:RegularityQualifier, imf:ScopeQualifier, imf:TerminalQualifier, imf:absoluteQualifier, imf:asFunction, imf:asInstalled, imf:asLocation, imf:asProduct, imf:averageQualifier, imf:calculatedQualifier, imf:classifier, imf:connectedTo, imf:continuousQualifier, imf:designQualifier, imf:externalReference, imf:functionAspect, imf:hasAttribute, imf:hasAttributeQualifier, imf:hasTerminalQualifier, imf:hierachicalRelation, imf:inputFlow, imf:installedAspect, imf:locationAspect, imf:maximumQualifier, imf:measuredQualifier, imf:medium, imf:minimumQualifier, imf:nominalQualifier, imf:normalQualifier, imf:operatingQualifier, imf:outputFlow, imf:partOf, imf:productAspect, imf:property, imf:specifiedQualifier, imf:symbol, imf:theConnected, imf:thePart, imf:theWhole, imf:uom, imf:value
+
+ - IRIs present only in previous version :: ns2:imf-vocabulary, ns3:imf, imf:FunctionAspect, imf:FunctionAspectElement, imf:FunctionInterfacePoint, imf:InstalledAspect, imf:InstalledAspectElement, imf:InstalledInterfacePoint, imf:InterAspectRelation, imf:InterfacePoint, imf:LocationAspect, imf:LocationAspectElement, imf:LocationInterfacePoint, imf:ProductAspect, imf:ProductAspectElement, imf:ProductInterfacePoint, imf:System, imf:SystemElement, imf:fulfilledBy, imf:fulfills, imf:isConnectedTo, imf:isPartOf, imf:memberOf
+
+""" ;
+    skos:editorialNote """External vocabularies used by this ontology:
+- SKOS: https://www.w3.org/TR/skos-primer/ ;
+- VANN: https://vocab.org/vann/ ;
+- PAV: https://pav-ontology.github.io/pav/ ;
+""", "On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property skos:prefLabel.", """On naming conventions. 
+- Classes use UpperCamelCase;
+- Properties use lowerCamelCase, with additional rules:
+   - object properties between IMF Classes usually start with a verb, e.g., 'has',
+   - object properties for reified properties start with 'the',
+   - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
+ - Individuals use lowerCamelCase.
+""", "On publishing. Versions of this ontology and other semantic web resources for IMF are published at an URL following this schema: http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]", "On statuses. All terms in the ontology are given a status using the 'term_status' property from the 'Term-centric Semantic Web Vocabulary Annotations' vocabulary (https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label.", """Result of validation against specified sh:shapesGraph:
+Result of validating RDF data &lt;out/owl/imf-ontology.owl.ttl&gt; against SHACL shape &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt;:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data &lt;out/owl/imf-ontology.owl.ttl&gt; against SHACL shape &lt;out/shacl/imf-terms-grammar.shacl.ttl&gt;:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data &lt;out/owl/imf-ontology.owl.ttl&gt; against SHACL shape &lt;out/shacl/imf-ontology-grammar.shacl.ttl&gt;:
+2023-06-16
+Node=&lt;http://ns.imfid.org/imf#Terminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#prefix&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#continuousQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#continuousQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#intraAspectRelation&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#minimumQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#minimumQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#inputFlow&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#TerminalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasOutputTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#RegularityQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#RegularityQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#Block&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#BreakdownPoint&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#BreakdownPoint&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theInput&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theInput&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasTerminalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#measuredQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#measuredQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#normalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#normalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hierarchicalRelation&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#medium&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#operatingQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#operatingQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#ProvenanceQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#ProvenanceQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#Attribute&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theConnected&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theConnected&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#calculatedQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#calculatedQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#associativeRelation&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasInputTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#value&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#specifiedQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#specifiedQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#absoluteQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#absoluteQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#classifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#averageQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#averageQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#property&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#ConnectionPoint&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#ConnectionPoint&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#outputFlow&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#RangeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#RangeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#InputTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#nominalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#nominalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasAttributeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#ScopeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#ScopeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theWhole&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theWhole&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#interAspectRelation&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#designQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#designQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#symbol&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#functionAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#thePart&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#thePart&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theOutput&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theOutput&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasAttribute&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#externalReference&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#productAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#uom&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#AttributeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#AttributeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#maximumQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#maximumQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#OutputTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#installedAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#locationAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+
+    """ ;
+    skos:prefLabel "Information Modelling Framework: Ontology" ;
+    sh:shapesGraph &lt;http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl&gt;, &lt;http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl&gt;, &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt; ;
+    sh:suggestedShapesGraph &lt;http://ns.imfid.org/20230630/imf-model-grammar.shacl.ttl&gt; ;
+    foaf:depiction &lt;file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology.png&gt; .
 
 imf:InputTerminal
     vann:termGroup "elements" ;
@@ -4887,16 +5089,29 @@ skos:notation
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:absoluteQualifier
-        imf:continuousQualifier
-    ) .
-
-[]
-    a owl:AllDifferent ;
     owl:members (imf:functionAspect
         imf:locationAspect
         imf:productAspect
         imf:installedAspect
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:designQualifier
+        imf:operatingQualifier
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:inputFlow
+        imf:outputFlow
+    ) .
+
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:calculatedQualifier
+        imf:measuredQualifier
+        imf:specifiedQualifier
     ) .
 
 []
@@ -4918,21 +5133,8 @@ skos:notation
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:inputFlow
-        imf:outputFlow
-    ) .
-
-[]
-    a owl:AllDifferent ;
-    owl:members (imf:calculatedQualifier
-        imf:measuredQualifier
-        imf:specifiedQualifier
-    ) .
-
-[]
-    a owl:AllDifferent ;
-    owl:members (imf:designQualifier
-        imf:operatingQualifier
+    owl:members (imf:absoluteQualifier
+        imf:continuousQualifier
     ) .
 
 _:b92
@@ -4942,103 +5144,268 @@ _:b92
 </div>
 </div>
 
-<div id="outline-container-orgd572f43" class="outline-4">
-<h4 id="orgd572f43"><span class="section-number-4">1.8.3</span> RDF validate final file</h4>
+<div id="outline-container-orgb65f3dc" class="outline-4">
+<h4 id="orgb65f3dc"><span class="section-number-4">1.8.3</span> RDF validate final file</h4>
 <div class="outline-text-4" id="text-1-8-3">
 <pre class="example">
-file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf.owl.ttl : 0.27 sec : 876 Triples : 3,197.08 per second
+file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-ontology.owl.ttl : 0.28 sec : 882 Triples : 3,138.79 per second
 
 </pre>
 
 <div class="org-src-container">
-<pre class="src src-ttl">Result of validating RDF data &lt;out/owl/imf.owl.ttl&gt; against SHACL shape &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt;:
+<pre class="src src-ttl">Result of validating RDF data &lt;out/owl/imf-ontology.owl.ttl&gt; against SHACL shape &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt;:
 
 Conforms
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-ttl">Result of validating RDF data &lt;out/owl/imf.owl.ttl&gt; against SHACL shape &lt;out/shacl/imf-vocabulary-checks.shacl.ttl&gt;:
-2023-06-15
+<pre class="src src-ttl">Result of validating RDF data &lt;out/owl/imf-ontology.owl.ttl&gt; against SHACL shape &lt;out/shacl/imf-ontology-grammar.shacl.ttl&gt;:
+2023-06-16
+Node=&lt;http://ns.imfid.org/imf#Terminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#prefix&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#continuousQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#continuousQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#intraAspectRelation&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#minimumQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#minimumQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#inputFlow&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#TerminalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasOutputTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#RegularityQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#RegularityQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#Block&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#BreakdownPoint&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#BreakdownPoint&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#theInput&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theInput&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasTerminalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#measuredQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#measuredQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#normalQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#normalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hierarchicalRelation&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#operatingQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#operatingQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#medium&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#ProvenanceQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#ProvenanceQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#Attribute&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#theConnected&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theConnected&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#calculatedQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#calculatedQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#associativeRelation&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasInputTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#value&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#specifiedQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#specifiedQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#absoluteQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#absoluteQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#classifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#averageQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#averageQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#property&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#ConnectionPoint&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#ConnectionPoint&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#outputFlow&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#RangeQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#RangeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#InputTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#nominalQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#nominalQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasAttributeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#ScopeQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#ScopeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#theWhole&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theWhole&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#interAspectRelation&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#designQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#designQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#symbol&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#functionAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#thePart&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#thePart&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#theOutput&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#theOutput&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#hasAttribute&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#externalReference&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#productAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#uom&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#AttributeQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#AttributeQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 Node=&lt;http://ns.imfid.org/imf#maximumQualifier&gt;
   Path=&lt;http://www.w3.org/2004/02/skos/core#definition&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#maximumQualifier&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#OutputTerminal&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#installedAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=&lt;http://ns.imfid.org/imf#locationAspect&gt;
+  Path=&lt;http://www.w3.org/2004/02/skos/core#scopeNote&gt;
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org8c88ce9" class="outline-4">
-<h4 id="org8c88ce9"><span class="section-number-4">1.8.4</span> Diagram</h4>
+<div id="outline-container-orgc2269ba" class="outline-4">
+<h4 id="orgc2269ba"><span class="section-number-4">1.8.4</span> Diagram</h4>
 <div class="outline-text-4" id="text-1-8-4">
 
 <div class="figure">
@@ -5048,33 +5415,17 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 </div>
-
-
-<div id="outline-container-orgb6dbfc8" class="outline-4">
-<h4 id="orgb6dbfc8"><span class="section-number-4">1.8.5</span> SHACL checks</h4>
-<div class="outline-text-4" id="text-1-8-5">
 </div>
-<div id="outline-container-orge6b0e27" class="outline-5">
-<h5 id="orge6b0e27"><span class="section-number-5">1.8.5.1</span> SPARQL select</h5>
-<div class="outline-text-5" id="text-1-8-5-1">
-<div class="org-src-container">
-<pre class="src src-ttl" id="org21afe87">      PREFIX owl:   &lt;http://www.w3.org/2002/07/owl#&gt; 
-      PREFIX skos:  &lt;http://www.w3.org/2004/02/skos/core#&gt;
-      SELECT ?this { 
-        ?this a ?type 
-	FILTER (STRSTARTS(STR(?this), 'http://ns.imfid.org'))
-        FILTER (isIRI(?this))
-        #FILTER (?type IN ( owl:Class, owl:NamedIndividual, owl:ObjectProperty, owl:DatatypeProperty, owl:AnnotationProperty ))
-        FILTER (?type != owl:Ontology)
-        FILTER NOT EXISTS { 
-	  ?this skos:note ?note .
-	  FILTER (STRSTARTS(STR(?note), 'This resource is programatically generated.'))
-	}
-      }
-      ## ORDER BY ?this
-</pre>
 </div>
 
+
+<div id="outline-container-org9f80777" class="outline-2">
+<h2 id="org9f80777"><span class="section-number-2">2</span> SHACL Shape graphs</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org4341c7a" class="outline-3">
+<h3 id="org4341c7a"><span class="section-number-3">2.1</span> IMF Terms</h3>
+<div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-ttl">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
@@ -5085,6 +5436,7 @@ Sorry, your browser does not support SVG.</object>
 
 @prefix skos:	&lt;http://www.w3.org/2004/02/skos/core#&gt; .
 @prefix pav:	&lt;http://purl.org/pav/&gt; .
+@prefix dc:	&lt;http://purl.org/dc/terms&gt; .
 @prefix vs:     &lt;http://www.w3.org/2003/06/sw-vocab-status/ns#&gt; .
 @prefix vann:   &lt;http://purl.org/vocab/vann/&gt; .
 @prefix foaf:   &lt;http://xmlns.com/foaf/0.1/&gt; .
@@ -5105,10 +5457,282 @@ Sorry, your browser does not support SVG.</object>
 @prefix o-imf-t-o:   &lt;http://ns.imfid.org/templates/type/owl/&gt; .
 
 
-_:allIRIs a sh:NodeShape ;
+imf:IMFTermsGrammar a owl:Ontology ;
+    owl:versionIRI &lt;http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl&gt; ;
+    owl:versionInfo "0.2.0" ;
+    skos:prefLabel "Information Modelling Framework: IMF Terms Grammar" ;
+    dc:description "This shapes graph can be used to validate RDF data against correct use of IMF terms, IRIs only." ;
+    pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    sh:shapesGraph 
+      &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt; ,
+      &lt;http://www.w3.org/ns/shacl-shacl#&gt; ;
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+Result of validating RDF data &lt;out/shacl/imf-terms-grammar.shacl.ttl&gt; against SHACL shape &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt;:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data &lt;out/shacl/imf-terms-grammar.shacl.ttl&gt; against SHACL shape &lt;http://www.w3.org/ns/shacl-shacl#&gt;:
+2023-06-16
+Conforms
+
+    """
+.
+
+[] a sh:NodeShape ;
+    sh:message "Unrecognised IMF vocabulary element. Check spelling." ;
+    sh:name "IMF vocabulary element." ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:select """
+	      PREFIX imf: &lt;http://ns.imfid.org/imf#&gt;
+	      SELECT DISTINCT ?value 
+	      WHERE { { ?value ?p ?o }
+	        UNION { ?s ?value ?o }
+	        UNION { ?s ?p ?value }
+	      FILTER (isIRI(?value) 
+	        &amp;&amp; STRSTARTS(STR(?value), 'http://ns.imfid.org/imf#'))
+	      FILTER (?value NOT IN (&lt;http://ns.imfid.org/imf#&gt;, &lt;http://ns.imfid.org/imf#Aspect&gt;, &lt;http://ns.imfid.org/imf#AspectElement&gt;, &lt;http://ns.imfid.org/imf#Attribute&gt;, &lt;http://ns.imfid.org/imf#AttributeQualifier&gt;, &lt;http://ns.imfid.org/imf#Block&gt;, &lt;http://ns.imfid.org/imf#BreakdownPoint&gt;, &lt;http://ns.imfid.org/imf#ConnectionPoint&gt;, &lt;http://ns.imfid.org/imf#Element&gt;, &lt;http://ns.imfid.org/imf#FunctionBlock&gt;, &lt;http://ns.imfid.org/imf#FunctionElement&gt;, &lt;http://ns.imfid.org/imf#FunctionTerminal&gt;, &lt;http://ns.imfid.org/imf#IMFOntology&gt;, &lt;http://ns.imfid.org/imf#InputTerminal&gt;, &lt;http://ns.imfid.org/imf#InstalledBlock&gt;, &lt;http://ns.imfid.org/imf#InstalledElement&gt;, &lt;http://ns.imfid.org/imf#InstalledTerminal&gt;, &lt;http://ns.imfid.org/imf#LocationBlock&gt;, &lt;http://ns.imfid.org/imf#LocationElement&gt;, &lt;http://ns.imfid.org/imf#LocationTerminal&gt;, &lt;http://ns.imfid.org/imf#OutputTerminal&gt;, &lt;http://ns.imfid.org/imf#ProductBlock&gt;, &lt;http://ns.imfid.org/imf#ProductElement&gt;, &lt;http://ns.imfid.org/imf#ProductTerminal&gt;, &lt;http://ns.imfid.org/imf#ProvenanceQualifier&gt;, &lt;http://ns.imfid.org/imf#RangeQualifier&gt;, &lt;http://ns.imfid.org/imf#RegularityQualifier&gt;, &lt;http://ns.imfid.org/imf#ScopeQualifier&gt;, &lt;http://ns.imfid.org/imf#Terminal&gt;, &lt;http://ns.imfid.org/imf#TerminalQualifier&gt;, &lt;http://ns.imfid.org/imf#absoluteQualifier&gt;, &lt;http://ns.imfid.org/imf#asFunction&gt;, &lt;http://ns.imfid.org/imf#asInstalled&gt;, &lt;http://ns.imfid.org/imf#asLocation&gt;, &lt;http://ns.imfid.org/imf#asProduct&gt;, &lt;http://ns.imfid.org/imf#associativeRelation&gt;, &lt;http://ns.imfid.org/imf#averageQualifier&gt;, &lt;http://ns.imfid.org/imf#calculatedQualifier&gt;, &lt;http://ns.imfid.org/imf#classifier&gt;, &lt;http://ns.imfid.org/imf#color&gt;, &lt;http://ns.imfid.org/imf#connectedTo&gt;, &lt;http://ns.imfid.org/imf#continuousQualifier&gt;, &lt;http://ns.imfid.org/imf#designQualifier&gt;, &lt;http://ns.imfid.org/imf#externalReference&gt;, &lt;http://ns.imfid.org/imf#functionAspect&gt;, &lt;http://ns.imfid.org/imf#hasAspect&gt;, &lt;http://ns.imfid.org/imf#hasAttribute&gt;, &lt;http://ns.imfid.org/imf#hasAttributeQualifier&gt;, &lt;http://ns.imfid.org/imf#hasInputTerminal&gt;, &lt;http://ns.imfid.org/imf#hasOutputTerminal&gt;, &lt;http://ns.imfid.org/imf#hasPart&gt;, &lt;http://ns.imfid.org/imf#hasTerminal&gt;, &lt;http://ns.imfid.org/imf#hasTerminalQualifier&gt;, &lt;http://ns.imfid.org/imf#hierachicalRelation&gt;, &lt;http://ns.imfid.org/imf#hierarchicalRelation&gt;, &lt;http://ns.imfid.org/imf#inputFlow&gt;, &lt;http://ns.imfid.org/imf#installedAspect&gt;, &lt;http://ns.imfid.org/imf#interAspectRelation&gt;, &lt;http://ns.imfid.org/imf#intraAspectRelation&gt;, &lt;http://ns.imfid.org/imf#locationAspect&gt;, &lt;http://ns.imfid.org/imf#maximumQualifier&gt;, &lt;http://ns.imfid.org/imf#measuredQualifier&gt;, &lt;http://ns.imfid.org/imf#medium&gt;, &lt;http://ns.imfid.org/imf#minimumQualifier&gt;, &lt;http://ns.imfid.org/imf#nominalQualifier&gt;, &lt;http://ns.imfid.org/imf#normalQualifier&gt;, &lt;http://ns.imfid.org/imf#operatingQualifier&gt;, &lt;http://ns.imfid.org/imf#outputFlow&gt;, &lt;http://ns.imfid.org/imf#partOf&gt;, &lt;http://ns.imfid.org/imf#prefix&gt;, &lt;http://ns.imfid.org/imf#productAspect&gt;, &lt;http://ns.imfid.org/imf#property&gt;, &lt;http://ns.imfid.org/imf#specifiedQualifier&gt;, &lt;http://ns.imfid.org/imf#symbol&gt;, &lt;http://ns.imfid.org/imf#theConnected&gt;, &lt;http://ns.imfid.org/imf#theInput&gt;, &lt;http://ns.imfid.org/imf#theOutput&gt;, &lt;http://ns.imfid.org/imf#thePart&gt;, &lt;http://ns.imfid.org/imf#theWhole&gt;, &lt;http://ns.imfid.org/imf#uom&gt;, &lt;http://ns.imfid.org/imf#value&gt;)) }""" ] ;
+    sh:targetNode &lt;http://shipshape.dyreriket.xyz#ANY_NODE&gt; .
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7609647" class="outline-4">
+<h4 id="org7609647"><span class="section-number-4">2.1.1</span> IMF vocabulary elements</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org4acdc53">[] a sh:NodeShape ;
+    sh:message "Unrecognised IMF vocabulary element. Check spelling." ;
+    sh:name "IMF vocabulary element." ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:select """
+	      PREFIX imf: &lt;http://ns.imfid.org/imf#&gt;
+	      SELECT DISTINCT ?value 
+	      WHERE { { ?value ?p ?o }
+	        UNION { ?s ?value ?o }
+	        UNION { ?s ?p ?value }
+	      FILTER (isIRI(?value) 
+	        &amp;&amp; STRSTARTS(STR(?value), 'http://ns.imfid.org/imf#'))
+	      FILTER (?value NOT IN (&lt;http://ns.imfid.org/imf#&gt;, &lt;http://ns.imfid.org/imf#Aspect&gt;, &lt;http://ns.imfid.org/imf#AspectElement&gt;, &lt;http://ns.imfid.org/imf#Attribute&gt;, &lt;http://ns.imfid.org/imf#AttributeQualifier&gt;, &lt;http://ns.imfid.org/imf#Block&gt;, &lt;http://ns.imfid.org/imf#BreakdownPoint&gt;, &lt;http://ns.imfid.org/imf#ConnectionPoint&gt;, &lt;http://ns.imfid.org/imf#Element&gt;, &lt;http://ns.imfid.org/imf#FunctionBlock&gt;, &lt;http://ns.imfid.org/imf#FunctionElement&gt;, &lt;http://ns.imfid.org/imf#FunctionTerminal&gt;, &lt;http://ns.imfid.org/imf#IMFOntology&gt;, &lt;http://ns.imfid.org/imf#InputTerminal&gt;, &lt;http://ns.imfid.org/imf#InstalledBlock&gt;, &lt;http://ns.imfid.org/imf#InstalledElement&gt;, &lt;http://ns.imfid.org/imf#InstalledTerminal&gt;, &lt;http://ns.imfid.org/imf#LocationBlock&gt;, &lt;http://ns.imfid.org/imf#LocationElement&gt;, &lt;http://ns.imfid.org/imf#LocationTerminal&gt;, &lt;http://ns.imfid.org/imf#OutputTerminal&gt;, &lt;http://ns.imfid.org/imf#ProductBlock&gt;, &lt;http://ns.imfid.org/imf#ProductElement&gt;, &lt;http://ns.imfid.org/imf#ProductTerminal&gt;, &lt;http://ns.imfid.org/imf#ProvenanceQualifier&gt;, &lt;http://ns.imfid.org/imf#RangeQualifier&gt;, &lt;http://ns.imfid.org/imf#RegularityQualifier&gt;, &lt;http://ns.imfid.org/imf#ScopeQualifier&gt;, &lt;http://ns.imfid.org/imf#Terminal&gt;, &lt;http://ns.imfid.org/imf#TerminalQualifier&gt;, &lt;http://ns.imfid.org/imf#absoluteQualifier&gt;, &lt;http://ns.imfid.org/imf#asFunction&gt;, &lt;http://ns.imfid.org/imf#asInstalled&gt;, &lt;http://ns.imfid.org/imf#asLocation&gt;, &lt;http://ns.imfid.org/imf#asProduct&gt;, &lt;http://ns.imfid.org/imf#associativeRelation&gt;, &lt;http://ns.imfid.org/imf#averageQualifier&gt;, &lt;http://ns.imfid.org/imf#calculatedQualifier&gt;, &lt;http://ns.imfid.org/imf#classifier&gt;, &lt;http://ns.imfid.org/imf#color&gt;, &lt;http://ns.imfid.org/imf#connectedTo&gt;, &lt;http://ns.imfid.org/imf#continuousQualifier&gt;, &lt;http://ns.imfid.org/imf#designQualifier&gt;, &lt;http://ns.imfid.org/imf#externalReference&gt;, &lt;http://ns.imfid.org/imf#functionAspect&gt;, &lt;http://ns.imfid.org/imf#hasAspect&gt;, &lt;http://ns.imfid.org/imf#hasAttribute&gt;, &lt;http://ns.imfid.org/imf#hasAttributeQualifier&gt;, &lt;http://ns.imfid.org/imf#hasInputTerminal&gt;, &lt;http://ns.imfid.org/imf#hasOutputTerminal&gt;, &lt;http://ns.imfid.org/imf#hasPart&gt;, &lt;http://ns.imfid.org/imf#hasTerminal&gt;, &lt;http://ns.imfid.org/imf#hasTerminalQualifier&gt;, &lt;http://ns.imfid.org/imf#hierachicalRelation&gt;, &lt;http://ns.imfid.org/imf#hierarchicalRelation&gt;, &lt;http://ns.imfid.org/imf#inputFlow&gt;, &lt;http://ns.imfid.org/imf#installedAspect&gt;, &lt;http://ns.imfid.org/imf#interAspectRelation&gt;, &lt;http://ns.imfid.org/imf#intraAspectRelation&gt;, &lt;http://ns.imfid.org/imf#locationAspect&gt;, &lt;http://ns.imfid.org/imf#maximumQualifier&gt;, &lt;http://ns.imfid.org/imf#measuredQualifier&gt;, &lt;http://ns.imfid.org/imf#medium&gt;, &lt;http://ns.imfid.org/imf#minimumQualifier&gt;, &lt;http://ns.imfid.org/imf#nominalQualifier&gt;, &lt;http://ns.imfid.org/imf#normalQualifier&gt;, &lt;http://ns.imfid.org/imf#operatingQualifier&gt;, &lt;http://ns.imfid.org/imf#outputFlow&gt;, &lt;http://ns.imfid.org/imf#partOf&gt;, &lt;http://ns.imfid.org/imf#prefix&gt;, &lt;http://ns.imfid.org/imf#productAspect&gt;, &lt;http://ns.imfid.org/imf#property&gt;, &lt;http://ns.imfid.org/imf#specifiedQualifier&gt;, &lt;http://ns.imfid.org/imf#symbol&gt;, &lt;http://ns.imfid.org/imf#theConnected&gt;, &lt;http://ns.imfid.org/imf#theInput&gt;, &lt;http://ns.imfid.org/imf#theOutput&gt;, &lt;http://ns.imfid.org/imf#thePart&gt;, &lt;http://ns.imfid.org/imf#theWhole&gt;, &lt;http://ns.imfid.org/imf#uom&gt;, &lt;http://ns.imfid.org/imf#value&gt;)) }""" ] ;
+    sh:targetNode &lt;http://shipshape.dyreriket.xyz#ANY_NODE&gt; .
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc80deb8" class="outline-3">
+<h3 id="orgc80deb8"><span class="section-number-3">2.2</span> IMF Model Grammar</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-ttl">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs:	&lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix owl:    &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix sh: 	&lt;http://www.w3.org/ns/shacl#&gt; . 
+@prefix shsh:   &lt;http://www.w3.org/ns/shacl-shacl#&gt; .
+
+@prefix skos:	&lt;http://www.w3.org/2004/02/skos/core#&gt; .
+@prefix pav:	&lt;http://purl.org/pav/&gt; .
+@prefix dc:	&lt;http://purl.org/dc/terms&gt; .
+@prefix vs:     &lt;http://www.w3.org/2003/06/sw-vocab-status/ns#&gt; .
+@prefix vann:   &lt;http://purl.org/vocab/vann/&gt; .
+@prefix foaf:   &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
+@prefix ex:	&lt;http://example.com#&gt; .
+
+@prefix p14:    &lt;http://example.com/P14#&gt; .
+@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
+@prefix o-rdf:       &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
+@prefix o-rdfs:       &lt;http://tpl.ottr.xyz/rdfs/0.2/&gt; .
+@prefix o-owl-ax:    &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
+@prefix o-owl-ma:    &lt;http://tpl.ottr.xyz/owl/macro/0.1/&gt; .
+@prefix o-owl-rstr:  &lt;http://tpl.ottr.xyz/owl/restriction/0.1/&gt; .
+
+@prefix o-imf:	     &lt;http://ns.imfid.org/templates/&gt; .
+@prefix o-imf-t-s:   &lt;http://ns.imfid.org/templates/type/shacl/&gt; .
+@prefix o-imf-t-o:   &lt;http://ns.imfid.org/templates/type/owl/&gt; .
+
+
+imf:IMFModelGrammar a owl:Ontology ;
+    owl:versionIRI &lt;http://ns.imfid.org/20230630/imf-model-grammar.shacl.ttl&gt; ;
+    owl:versionInfo "0.2.0" ;
+    owl:priorVersion &lt;https://ns.imfid.org/20221118/imf-grammar.shacl.ttl&gt; ;
+    skos:prefLabel "Information Modelling Framework: IMF Model Grammar" ;
+    dc:description "This shapes graph can be used to validate IMF Model RDF data against the grammar for IMF Models." ;
+    pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    sh:shapesGraph 
+      &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt; ,
+      &lt;http://www.w3.org/ns/shacl-shacl#&gt; ,
+      &lt;http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl&gt; ;
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+Result of validating RDF data &lt;out/shacl/imf-ontology-grammar.shacl.ttl&gt; against SHACL shape &lt;http://www.w3.org/ns/shacl-shacl#&gt;:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data &lt;out/shacl/imf-model-grammar.shacl.ttl&gt; against SHACL shape &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt;:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data &lt;out/shacl/imf-ontology-grammar.shacl.ttl&gt; against SHACL shape &lt;out/shacl/imf-terms-grammar.shacl.ttl&gt;:
+2023-06-16
+Node=&lt;http://shipshape.dyreriket.xyz#ANY_NODE&gt;
+  Value: &lt;http://ns.imfid.org/imf#IMFOntologyGrammar&gt;
+  Message: Unrecognised IMF vocabulary element. Check spelling.
+
+    """
+.
+
+imf:ElementShape a sh:NodeShape ;
+  sh:targetClass imf:Element , imf:Block , imf:Terminal ;
+  sh:property 
+    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no prefLabel." ] ,
+    [ sh:path dc:description ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no description." ] ,
+    [ sh:path imf:classifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no classifier." ] ,
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:message "Elements cannot be part of multiple Elements."  ]
+.
+imf:BlockShape a sh:NodeShape ;
+  sh:targetClass imf:Block ;
+  sh:targetSubjectsOf imf:hasTerminal ;
+  sh:property 
+    [ sh:path imf:hasTerminal ; sh:class imf:Terminal ] ,
+    [ sh:path imf:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminals." ] ,     
+    [ sh:path imf:partOf ; sh:class imf:Block ; sh:message "Blocks can only be part of Blocks." ] ,
+    [ sh:path imf:hasPart ; sh:class imf:Block ; sh:message "Blocks can only have Blocks as parts." ]
+.
+imf:TerminalShape a sh:NodeShape ;
+  sh:targetClass imf:Terminal , imf:InputTerminal , imf:OutputTerminal ;
+  sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:hasTerminalQualifier ;
+  sh:targetObjectsOf imf:hasTerminal, imf:connectedTo ;
+  sh:property 
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class imf:Terminal ] ,
+    [ sh:path imf:connectedTo ; sh:maxCount 1 ; sh:class imf:Terminal ] ,
+    [ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no connection (to a different Terminal)." ] , 
+    [ sh:path imf:hasTerminalQualifier ; sh:maxCount 1 ; sh:in ( imf:inputFlow imf:outputFlow ) ] ,
+    [ sh:path imf:medium ; sh:maxCount 1 ]  ,
+    [ sh:path imf:medium ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no medium." ]
+.
+imf:BreakdownPointShape a sh:NodeShape ;
+  sh:targetClass imf:BreakdownPoint ;
+  sh:targetSubjectsOf imf:thePart , imf:theWhole ;
+  sh:property 
+    [ sh:path imf:thePart  ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Element ] ,
+    [ sh:path imf:theWhole ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Element ] 
+.
+imf:ConnectionPointShape a sh:NodeShape ;
+  sh:targetClass imf:ConnectionPoint ;
+  sh:targetSubjectsOf imf:theConnected , imf:theInput , imf:theOutput ;
+  sh:property 
+    [ sh:path imf:theInput  ; sh:maxCount 1 ; sh:class imf:Element ] ,
+    [ sh:path imf:theOutput ; sh:maxCount 1 ; sh:class imf:Element ] ,
+    [ sh:path imf:theConnected ; sh:maxCount 2 ; sh:class imf:Element ] 
+.
+imf:AspectElementShape a sh:NodeShape ;
+  sh:targetClass imf:AspectElement ;
+  sh:targetSubjectsOf imf:hasAspect ;
+  sh:property 
+    [ sh:path imf:hasAspect ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Aspect ] 
+.
+imf:AttributeShape a sh:NodeShape ;
+  sh:targetClass imf:Attribute ;
+  sh:targetObjectsOf imf:hasAttribute ;
+  sh:targetSubjectsOf imf:property, imf:uom, imf:hasAttributeQualifier ;
+  sh:property 
+    [ sh:path imf:property ; sh:minCount 1 ; sh:maxCount 1 ] ,
+    [ sh:path imf:value ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no value." ] ,
+    [ sh:path imf:uom ; sh:maxCount 1 ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RegularityQualifier ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RangeQualifier ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ProvenenceQualifier ] , 
+    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ScopeQualifier ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Attribute has no qualifier." ] 
+.
+#imf:AttributeGroupShape a sh:NodeShape ;
+#  sh:targetClass imf:AttributeGroup ;
+#  sh:targetObjectsOf imf:hasAttributeGroup ;
+#  sh:property 
+#    [ sh:path imf:hasAttribute ; sh:minCount 1 ; sh:message "AttributeGroup has no Attributes." ]
+#.
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org6ed4a06" class="outline-3">
+<h3 id="org6ed4a06"><span class="section-number-3">2.3</span> IMF Ontology Grammar</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+<pre class="src src-ttl">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs:	&lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix owl:    &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix sh: 	&lt;http://www.w3.org/ns/shacl#&gt; . 
+@prefix shsh:   &lt;http://www.w3.org/ns/shacl-shacl#&gt; .
+
+@prefix skos:	&lt;http://www.w3.org/2004/02/skos/core#&gt; .
+@prefix pav:	&lt;http://purl.org/pav/&gt; .
+@prefix dc:	&lt;http://purl.org/dc/terms&gt; .
+@prefix vs:     &lt;http://www.w3.org/2003/06/sw-vocab-status/ns#&gt; .
+@prefix vann:   &lt;http://purl.org/vocab/vann/&gt; .
+@prefix foaf:   &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+@prefix imf:	&lt;http://ns.imfid.org/imf#&gt; .
+@prefix ex:	&lt;http://example.com#&gt; .
+
+@prefix p14:    &lt;http://example.com/P14#&gt; .
+@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
+@prefix o-rdf:       &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
+@prefix o-rdfs:       &lt;http://tpl.ottr.xyz/rdfs/0.2/&gt; .
+@prefix o-owl-ax:    &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
+@prefix o-owl-ma:    &lt;http://tpl.ottr.xyz/owl/macro/0.1/&gt; .
+@prefix o-owl-rstr:  &lt;http://tpl.ottr.xyz/owl/restriction/0.1/&gt; .
+
+@prefix o-imf:	     &lt;http://ns.imfid.org/templates/&gt; .
+@prefix o-imf-t-s:   &lt;http://ns.imfid.org/templates/type/shacl/&gt; .
+@prefix o-imf-t-o:   &lt;http://ns.imfid.org/templates/type/owl/&gt; .
+
+
+imf:IMFOntologyGrammar a owl:Ontology ;
+    owl:versionIRI &lt;http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl&gt; ;
+    skos:prefLabel "Information Modelling Framework: IMF Ontology Grammar" ;
+    dc:description "This shapes graph can be used to validate the IMF Ontology." ;
+    pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    sh:shapesGraph 
+      &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt; ,
+      &lt;http://www.w3.org/ns/shacl-shacl#&gt; ,
+      &lt;http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl&gt; ;
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+Result of validating RDF data &lt;out/shacl/imf-ontology-grammar.shacl.ttl&gt; against SHACL shape &lt;http://www.w3.org/ns/shacl-shacl#&gt;:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data &lt;out/shacl/imf-ontology-grammar.shacl.ttl&gt; against SHACL shape &lt;http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl&gt;:
+2023-06-16
+Conforms
+
+
+Result of validating RDF data &lt;out/shacl/imf-ontology-grammar.shacl.ttl&gt; against SHACL shape &lt;out/shacl/imf-terms-grammar.shacl.ttl&gt;:
+2023-06-16
+Node=&lt;http://shipshape.dyreriket.xyz#ANY_NODE&gt;
+  Value: &lt;http://ns.imfid.org/imf#IMFOntologyGrammar&gt;
+  Message: Unrecognised IMF vocabulary element. Check spelling.
+
+    """
+.
+
+
+_:TermMetadata a sh:NodeShape ;
   sh:target [
     a sh:SPARQLTarget ;
-    sh:prefixes owl: ;
     sh:select """
       PREFIX owl:   &lt;http://www.w3.org/2002/07/owl#&gt; 
       PREFIX skos:  &lt;http://www.w3.org/2004/02/skos/core#&gt;
@@ -5131,11 +5755,35 @@ _:allIRIs a sh:NodeShape ;
     [ sh:path vann:termGroup ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "elements" "aspects" "attributes" "generic relations" "model" ) ] ,
     [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path skos:definition ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string  ] ,
-    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ] 
+    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ] ,
+    [ sh:path skos:scopeNote ; sh:minCount 1 ; sh:severity sh:Warning ] 
 .
 
 </pre>
 </div>
+</div>
+
+<div id="outline-container-orgea76ea8" class="outline-4">
+<h4 id="orgea76ea8"><span class="section-number-4">2.3.1</span> SPARQL query</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<div class="org-src-container">
+<pre class="src src-ttl" id="org6e36716">      PREFIX owl:   &lt;http://www.w3.org/2002/07/owl#&gt; 
+      PREFIX skos:  &lt;http://www.w3.org/2004/02/skos/core#&gt;
+      SELECT ?this { 
+        ?this a ?type 
+	FILTER (STRSTARTS(STR(?this), 'http://ns.imfid.org'))
+        FILTER (isIRI(?this))
+        #FILTER (?type IN ( owl:Class, owl:NamedIndividual, owl:ObjectProperty, owl:DatatypeProperty, owl:AnnotationProperty ))
+        FILTER (?type != owl:Ontology)
+        FILTER NOT EXISTS { 
+	  ?this skos:note ?note .
+	  FILTER (STRSTARTS(STR(?note), 'This resource is programatically generated.'))
+	}
+      }
+      ## ORDER BY ?this
+</pre>
+</div>
+
 
 <pre class="example">
 ---------------------------------------------------
@@ -5236,11 +5884,10 @@ _:allIRIs a sh:NodeShape ;
 </div>
 </div>
 </div>
-</div>
 
-<div id="outline-container-org1766964" class="outline-2">
-<h2 id="org1766964"><span class="section-number-2">2</span> <span class="todo TODO">TODO</span> Types</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgc6376d5" class="outline-2">
+<h2 id="orgc6376d5"><span class="section-number-2">3</span> <span class="todo TODO">TODO</span> Types</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 Types are represented as patterns heavily inspired by the SHACL
 constaint languge for RDF.
@@ -5266,9 +5913,9 @@ to the different formats.
 </p>
 </div>
 
-<div id="outline-container-org4012dfb" class="outline-3">
-<h3 id="org4012dfb"><span class="section-number-3">2.1</span> Overview type patterns</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-org37e70dc" class="outline-3">
+<h3 id="org37e70dc"><span class="section-number-3">3.1</span> Overview type patterns</h3>
+<div class="outline-text-3" id="text-3-1">
 <p>
 The diagram displays the type patterns. 
 </p>
@@ -5287,9 +5934,9 @@ instances are translated into SHACL.
 </div>
 </div>
 
-<div id="outline-container-org59858fc" class="outline-4">
-<h4 id="org59858fc"><span class="section-number-4">2.1.1</span> Short description of the type patterns</h4>
-<div class="outline-text-4" id="text-2-1-1">
+<div id="outline-container-orgbeacac0" class="outline-4">
+<h4 id="orgbeacac0"><span class="section-number-4">3.1.1</span> Short description of the type patterns</h4>
+<div class="outline-text-4" id="text-3-1-1">
 <dl class="org-dl">
 <dt>Type</dt><dd>specifies a collection Property shapes, i.e., a Type is a
 specification of relations to other types and
@@ -5312,9 +5959,9 @@ value for an Attribute.</dd>
 </div>
 </div>
 
-<div id="outline-container-org6fcd553" class="outline-3">
-<h3 id="org6fcd553"><span class="section-number-3">2.2</span> Suggested use of the type patterns</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgf63a6b2" class="outline-3">
+<h3 id="orgf63a6b2"><span class="section-number-3">3.2</span> Suggested use of the type patterns</h3>
+<div class="outline-text-3" id="text-3-2">
 <p>
 The diagram below displays a suggested use of the type patterns.
 </p>
@@ -5327,9 +5974,9 @@ The diagram below displays a suggested use of the type patterns.
 </div>
 </div>
 
-<div id="outline-container-org73e14a7" class="outline-3">
-<h3 id="org73e14a7"><span class="section-number-3">2.3</span> Pattern representation to SHACL with OTTR Templates</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-org439f9d7" class="outline-3">
+<h3 id="org439f9d7"><span class="section-number-3">3.3</span> Pattern representation to SHACL with OTTR Templates</h3>
+<div class="outline-text-3" id="text-3-3">
 <div class="org-src-container">
 <pre class="src src-ttl">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
@@ -5340,6 +5987,7 @@ The diagram below displays a suggested use of the type patterns.
 
 @prefix skos:	&lt;http://www.w3.org/2004/02/skos/core#&gt; .
 @prefix pav:	&lt;http://purl.org/pav/&gt; .
+@prefix dc:	&lt;http://purl.org/dc/terms&gt; .
 @prefix vs:     &lt;http://www.w3.org/2003/06/sw-vocab-status/ns#&gt; .
 @prefix vann:   &lt;http://purl.org/vocab/vann/&gt; .
 @prefix foaf:   &lt;http://xmlns.com/foaf/0.1/&gt; .
@@ -5504,15 +6152,15 @@ o-imf-t-s:ComplexValues[
 </div>
 </div>
 
-<div id="outline-container-org2a8c453" class="outline-3">
-<h3 id="org2a8c453"><span class="section-number-3">2.4</span> Translation to OWL ontology representation</h3>
-<div class="outline-text-3" id="text-2-4">
+<div id="outline-container-org1b4f0d0" class="outline-3">
+<h3 id="org1b4f0d0"><span class="section-number-3">3.4</span> Translation to OWL ontology representation</h3>
+<div class="outline-text-3" id="text-3-4">
 </div>
-<div id="outline-container-org1a855ef" class="outline-4">
-<h4 id="org1a855ef"><span class="section-number-4">2.4.1</span> OWL Classes</h4>
-<div class="outline-text-4" id="text-2-4-1">
+<div id="outline-container-org09f2ccc" class="outline-4">
+<h4 id="org09f2ccc"><span class="section-number-4">3.4.1</span> OWL Classes</h4>
+<div class="outline-text-4" id="text-3-4-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgae628aa">SELECT 
+<pre class="src src-ttl" id="org7458470">SELECT 
   ?class 
   ?imfClass
   ?name
@@ -5549,15 +6197,15 @@ WHERE {
 </div>
 </div>
 
-<div id="outline-container-org91f0bca" class="outline-4">
-<h4 id="org91f0bca"><span class="section-number-4">2.4.2</span> OWL Class restrictions</h4>
-<div class="outline-text-4" id="text-2-4-2">
+<div id="outline-container-org7fddd8b" class="outline-4">
+<h4 id="org7fddd8b"><span class="section-number-4">3.4.2</span> OWL Class restrictions</h4>
+<div class="outline-text-4" id="text-3-4-2">
 <p>
 SPARQL query
 </p>
 
 <div class="org-src-container">
-<pre class="src src-ttl" id="org0cfe338">SELECT 
+<pre class="src src-ttl" id="org4b8cf2c">SELECT 
   ?class 
   ?path 
   ##?name
@@ -5696,9 +6344,9 @@ o-imf-t-o:DatatypeRestriction[
 </div>
 </div>
 
-<div id="outline-container-orgc4763ff" class="outline-2">
-<h2 id="orgc4763ff"><span class="section-number-2">3</span> Example</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-org6424c24" class="outline-2">
+<h2 id="org6424c24"><span class="section-number-2">4</span> Example</h2>
+<div class="outline-text-2" id="text-4">
 
 <div class="figure">
 <p><img src="./example/pumpingFunctionType.png" alt="pumpingFunctionType.png" />
@@ -5706,17 +6354,17 @@ o-imf-t-o:DatatypeRestriction[
 </div>
 </div>
 
-<div id="outline-container-orgd0b599a" class="outline-3">
-<h3 id="orgd0b599a"><span class="section-number-3">3.1</span> Type</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-org9883ae5" class="outline-3">
+<h3 id="org9883ae5"><span class="section-number-3">4.1</span> Type</h3>
+<div class="outline-text-3" id="text-4-1">
 <p>
 The types in the example is represented in the following Excel spreadsheet <a href="./example/pumpingFunctionType.xlsx">./example/pumpingFunctionType.xlsx</a>
 </p>
 </div>
 
-<div id="outline-container-orgd535916" class="outline-4">
-<h4 id="orgd535916"><span class="section-number-4">3.1.1</span> Type expansion: SHACL</h4>
-<div class="outline-text-4" id="text-3-1-1">
+<div id="outline-container-orgf01f5c0" class="outline-4">
+<h4 id="orgf01f5c0"><span class="section-number-4">4.1.1</span> Type expansion: SHACL</h4>
+<div class="outline-text-4" id="text-4-1-1">
 <p>
 rapper: Parsing file &lt;stdin&gt; with parser turtle and base URI <a href="http://example.com">http://example.com</a>#
 rapper: Serializing with serializer turtle and base URI <a href="http://example.com">http://example.com</a>#
@@ -5937,9 +6585,9 @@ ex:sT-003
 </div>
 </div>
 
-<div id="outline-container-orgca13737" class="outline-4">
-<h4 id="orgca13737"><span class="section-number-4">3.1.2</span> Type translation: OWL</h4>
-<div class="outline-text-4" id="text-3-1-2">
+<div id="outline-container-org05a68b9" class="outline-4">
+<h4 id="org05a68b9"><span class="section-number-4">4.1.2</span> Type translation: OWL</h4>
+<div class="outline-text-4" id="text-4-1-2">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -6661,23 +7309,23 @@ ex:sT-003
 </div>
 </div>
 
-<div id="outline-container-org9a8b1a4" class="outline-2">
-<h2 id="org9a8b1a4"><span class="section-number-2">4</span> Appendix</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-orgca234bb" class="outline-2">
+<h2 id="orgca234bb"><span class="section-number-2">5</span> Appendix</h2>
+<div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-orgf227b6a" class="outline-3">
-<h3 id="orgf227b6a"><span class="section-number-3">4.1</span> Prefixes</h3>
-<div class="outline-text-3" id="text-4-1">
+<div id="outline-container-org98e5c64" class="outline-3">
+<h3 id="org98e5c64"><span class="section-number-3">5.1</span> Prefixes</h3>
+<div class="outline-text-3" id="text-5-1">
 <p>
 This section contains the prefixes used throughout this document.
 </p>
 </div>
 
-<div id="outline-container-org41a9169" class="outline-4">
-<h4 id="org41a9169"><span class="section-number-4">4.1.1</span> Standard vocabulary prefixes</h4>
-<div class="outline-text-4" id="text-4-1-1">
+<div id="outline-container-orge66cca7" class="outline-4">
+<h4 id="orge66cca7"><span class="section-number-4">5.1.1</span> Standard vocabulary prefixes</h4>
+<div class="outline-text-4" id="text-5-1-1">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org98365b4">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
+<pre class="src src-ttl" id="orgf8f415f">@prefix xsd:	&lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs:	&lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix owl:    &lt;http://www.w3.org/2002/07/owl#&gt; .
@@ -6686,6 +7334,7 @@ This section contains the prefixes used throughout this document.
 
 @prefix skos:	&lt;http://www.w3.org/2004/02/skos/core#&gt; .
 @prefix pav:	&lt;http://purl.org/pav/&gt; .
+@prefix dc:	&lt;http://purl.org/dc/terms&gt; .
 @prefix vs:     &lt;http://www.w3.org/2003/06/sw-vocab-status/ns#&gt; .
 @prefix vann:   &lt;http://purl.org/vocab/vann/&gt; .
 @prefix foaf:   &lt;http://xmlns.com/foaf/0.1/&gt; .
@@ -6697,22 +7346,22 @@ This section contains the prefixes used throughout this document.
 </div>
 </div>
 
-<div id="outline-container-org3e37cfb" class="outline-4">
-<h4 id="org3e37cfb"><span class="section-number-4">4.1.2</span> IMF prefixes</h4>
-<div class="outline-text-4" id="text-4-1-2">
+<div id="outline-container-org570c6a8" class="outline-4">
+<h4 id="org570c6a8"><span class="section-number-4">5.1.2</span> IMF prefixes</h4>
+<div class="outline-text-4" id="text-5-1-2">
 <div class="org-src-container">
-<pre class="src src-ttl" id="org6e88d18">
+<pre class="src src-ttl" id="org0b0a606">
 @prefix p14:    &lt;http://example.com/P14#&gt; .
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgeaff34a" class="outline-4">
-<h4 id="orgeaff34a"><span class="section-number-4">4.1.3</span> OTTR template prefixes</h4>
-<div class="outline-text-4" id="text-4-1-3">
+<div id="outline-container-org9f5cca7" class="outline-4">
+<h4 id="org9f5cca7"><span class="section-number-4">5.1.3</span> OTTR template prefixes</h4>
+<div class="outline-text-4" id="text-5-1-3">
 <div class="org-src-container">
-<pre class="src src-ttl" id="orgf12e73d">@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
+<pre class="src src-ttl" id="org12f54c8">@prefix ottr:        &lt;http://ns.ottr.xyz/0.4/&gt; .
 @prefix o-rdf:       &lt;http://tpl.ottr.xyz/rdf/0.1/&gt; .
 @prefix o-rdfs:       &lt;http://tpl.ottr.xyz/rdfs/0.2/&gt; .
 @prefix o-owl-ax:    &lt;http://tpl.ottr.xyz/owl/axiom/0.1/&gt; .
@@ -6733,9 +7382,11 @@ This section contains the prefixes used throughout this document.
 
 
 
-<div id="outline-container-org43a942c" class="outline-2">
-<h2 id="org43a942c"><span class="section-number-2">5</span> TODOs <code>[15/46]</code></h2>
-<div class="outline-text-2" id="text-5">
+
+
+<div id="outline-container-org48fbdd0" class="outline-2">
+<h2 id="org48fbdd0"><span class="section-number-2">6</span> TODOs <code>[17/46]</code></h2>
+<div class="outline-text-2" id="text-6">
 <p>
 Questions:
 </p>
@@ -6785,7 +7436,7 @@ axioms on AspectElement.
 <li>point (xyz), node, path</li>
 <li>connectionpoints</li>
 </ul></li>
-<li class="off"><code>[&#xa0;]</code> Suggested list of metadata <b>for ontology</b>:
+<li class="on"><code>[X]</code> Suggested list of metadata <b>for ontology</b>:
 <ul class="org-ul">
 <li>pav:version</li>
 </ul></li>
@@ -6800,7 +7451,7 @@ axioms on AspectElement.
 SHACL:
 </p>
 <ul class="org-ul">
-<li class="off"><code>[&#xa0;]</code> generate IMF-vocabulary check from ontology, see python code in
+<li class="on"><code>[X]</code> generate IMF-vocabulary check from ontology, see python code in
 <a href="https://github.com/dyreriket/shipshape">https://github.com/dyreriket/shipshape</a></li>
 </ul>
 
@@ -6826,7 +7477,7 @@ Documentation:
 <li class="on"><code>[X]</code> Mark all vocabulary elements with a term<sub>status</sub> (s1, s2, s3,
 s4) and since (or something better)</li>
 <li class="off"><code>[&#xa0;]</code> Make examples</li>
-<li class="off"><code>[&#xa0;]</code> Define instanceOf?</li>
+<li class="off"><code>[&#xa0;]</code> <del>Define instanceOf?</del> -&gt; use rdf:type</li>
 </ul>
 
 <p>
@@ -6844,7 +7495,7 @@ Process:
 <li class="off"><code>[&#xa0;]</code> Prototypes</li>
 <li class="off"><code>[&#xa0;]</code> OWL class</li>
 </ul></li>
-<li class="off"><code>[&#xa0;]</code> Vocabulary for visualisation</li>
+<li>[#] Vocabulary for visualisation -&gt; v3</li>
 <li class="off"><code>[&#xa0;]</code> Visualisation
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> Instance data</li>
@@ -6930,7 +7581,7 @@ Challenges:
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: Editor: Martin G. Skjæveland</p>
-<p class="date">Created: 2023-06-15 to. 14:27</p>
+<p class="date">Created: 2023-06-16 fr. 15:10</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
