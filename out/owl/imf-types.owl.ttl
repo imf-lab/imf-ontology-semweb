@@ -21,7 +21,7 @@
 @prefix ex: <http://example.com#> .
 @prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix dc: <http://purl.org/dc/terms> .
+@prefix dc: <http://purl.org/dc/terms/> .
 
 imf:Aspect
     a owl:Class .
@@ -77,6 +77,11 @@ imf:ElementType
     rdfs:subClassOf imf:Type, [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Aspect ;
+        owl:onProperty imf:hasAspect
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onDataRange rdfs:Literal ;
         owl:onProperty skos:notation
     ], [
@@ -84,11 +89,6 @@ imf:ElementType
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onDataRange rdfs:Literal ;
         owl:onProperty imf:symbol
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Aspect ;
-        owl:onProperty imf:hasAspect
     ] ;
     skos:prefLabel "Element Type" .
 

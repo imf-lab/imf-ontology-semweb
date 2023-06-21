@@ -21,7 +21,7 @@
 @prefix ex: <http://example.com#> .
 @prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix dc: <http://purl.org/dc/terms> .
+@prefix dc: <http://purl.org/dc/terms/> .
 
 imf:IMFOntologyGrammar
     dc:description "This shapes graph can be used to validate the IMF Ontology." ;
@@ -33,17 +33,17 @@ imf:IMFOntologyGrammar
     owl:versionIRI <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl> ;
     skos:editorialNote """Result of validation against specified sh:shapesGraph:
 Result of validating RDF data <out/shacl/imf-ontology-grammar.shacl.ttl> against SHACL shape <http://www.w3.org/ns/shacl-shacl#>:
-2023-06-16
+2023-06-21
 Conforms
 
 
 Result of validating RDF data <out/shacl/imf-ontology-grammar.shacl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
-2023-06-16
+2023-06-21
 Conforms
 
 
 Result of validating RDF data <out/shacl/imf-ontology-grammar.shacl.ttl> against SHACL shape <out/shacl/imf-terms-grammar.shacl.ttl>:
-2023-06-16
+2023-06-21
 Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
   Value: <http://ns.imfid.org/imf#IMFOntologyGrammar>
   Message: Unrecognised IMF vocabulary element. Check spelling.
@@ -55,6 +55,15 @@ Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
 []
     a sh:NodeShape ;
     sh:property [
+        sh:in ("unstable"
+            "testing"
+            "stable"
+            "archaic"
+        ) ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path vs:term_status
+    ], [
         sh:in ("elements"
             "aspects"
             "attributes"
@@ -68,29 +77,20 @@ Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
-        sh:path skos:definition
-    ], [
-        sh:minCount 1 ;
-        sh:path skos:scopeNote ;
-        sh:severity sh:Warning
+        sh:path skos:prefLabel
     ], [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
-        sh:path skos:prefLabel
-    ], [
-        sh:in ("unstable"
-            "testing"
-            "stable"
-            "archaic"
-        ) ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path vs:term_status
+        sh:path skos:definition
     ], [
         sh:minCount 1 ;
         sh:path skos:changeNote ;
         sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]"
+    ], [
+        sh:minCount 1 ;
+        sh:path skos:scopeNote ;
+        sh:severity sh:Warning
     ] ;
     sh:target [
         a sh:SPARQLTarget ;
