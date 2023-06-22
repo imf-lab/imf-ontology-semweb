@@ -34,12 +34,12 @@ imf:IMFTermsGrammar
     owl:versionInfo "0.2.0" ;
     skos:editorialNote """Result of validation against specified sh:shapesGraph:
 Result of validating RDF data <out/shacl/imf-terms-grammar.shacl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
-2023-06-21
+2023-06-22
 Conforms
 
 
 Result of validating RDF data <out/shacl/imf-terms-grammar.shacl.ttl> against SHACL shape <http://www.w3.org/ns/shacl-shacl#>:
-2023-06-21
+2023-06-22
 Conforms
 
     """ ;

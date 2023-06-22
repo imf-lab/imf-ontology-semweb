@@ -302,15 +302,12 @@ imf:IMFOntology a owl:Ontology ;
     dc:description """
 The IMF ontology is designed to meet the following functional requirements:
 
- - The users of the IMG language should be subject matter experts (SME). This means that the IMF language must be easy to learn and simple to use, hence it must contain a limited set of vocabulary terms and grammar rules.
-
+ - The users of the IMF language should be subject matter experts (SME). This means that the IMF language must be easy to learn and simple to use, hence it must contain a limited set of vocabulary terms and grammar rules.
  - The language shall provide incremental value, and hence must support modelling in an incremental manner.
-
  - The language shall be scalable across disciplines, work processes, and the value chain. This means that the IMF language must: 
     - Enable SMEs from a range of disciplines to fully express their design using the same modelling principles. 
     - Enable SMEs to express different levels of precision as part of iterations of their design. 
     - Enable use in different phases of a project (concept, detail engineering, manufacturing, etc.).
-
  - The language shall have the precision of machine interpretation to allow automated verification. This means that the IMF language must be precise and unambiguous, and allow translation into other ontology languages and be able to exploit semantic descriptions in external ontologies and reference data libraries.
     """ ;
     skos:changeNote 
@@ -328,26 +325,33 @@ Generated changelog that only checks the occurrence of IRIs in the IMF namespace
     # skos:scopeNote ## add description of ontology
 
     skos:scopeNote 
-      """On statuses. All terms in the ontology are given a status using the `vs:term_status` property from the ['Term-centric Semantic Web Vocabulary Annotations' vocabulary](https://www.w3.org/2003/06/sw-vocab-status/note.html), and one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Terms that are 'unstable' contain also this word in their label. 
+      """
+Terms in the ontology are created following these principles:
 
-External vocabularies used by this ontology:
+  - All terms should validate against the SHACL shape description: <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl>
+
+  - All terms in the ontology are given a status using the `vs:term_status` property from the ['Term-centric Semantic Web Vocabulary Annotations' vocabulary](https://www.w3.org/2003/06/sw-vocab-status/note.html) to indicate their level of maturity using  one of the values 'unstable', 'testing', 'stable' and 'archaic'. In this version of the ontology the highest status is 'testing'. Some terms are 'unstable'; these terms also contain the word 'unstable' in their label to make this clear.
+
+  - All IRIs in the ontology are placed in the namespace `http://ns.imfid.org/imf`. The localname's of IRIs follow these naming conventions:
+
+    - Classes use `UpperCamelCase`;
+    - Properties use `lowerCamelCase`, with additional rules:
+       - object properties between IMF Classes usually start with a verb, e.g., `has`,
+       - object properties for reified properties start with `the`,
+       - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
+    - Individuals use `lowerCamelCase`. 
+
+  - When referring to a term in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property `skos:prefLabel`, e.g., we will write [Block] to refer to the class `imf:Block`.
+
+
+The ontology makes use of these vocabularies for its definition:
 
  - [SKOS](https://www.w3.org/TR/skos-primer/)
  - [VANN](https://vocab.org/vann/)
  - [PAV](https://pav-ontology.github.io/pav/)
 
-On naming conventions. 
 
- - Classes use UpperCamelCase;
- - Properties use lowerCamelCase, with additional rules:
-    - object properties between IMF Classes usually start with a verb, e.g., 'has',
-    - object properties for reified properties start with 'the',
-    - object properties to external libraries, datatype properties, and annotation properties do not start with a verb;
- - Individuals use lowerCamelCase. 
-
-On definitions. When referring to terms in the ontology, the following format is used: [prefLabel], where prefLabel is set by the property `skos:prefLabel`. 
-
-On publishing. Versions of this ontology and other semantic web resources for IMF are published at an URL following this schema: `http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]`.
+Versions of this ontology and other semantic web resources for IMF are published at an URL following this schema: `http://ns.imfid.org/[yyyy-mm-dd]/[resource-name]`.
 """ ;
 
     sh:suggestedShapesGraph <http://ns.imfid.org/20230630/imf-model-grammar.shacl.ttl> ;
@@ -674,7 +678,7 @@ imf:classifier a owl:ObjectProperty ;
   skos:prefLabel "classifier" ;
   vs:term_status "testing" ;
   skos:definition "[classifier] is an [external reference] that relates an [Element] *E* to a resource *X* in an external ontology or reference data library such that *X* classifies *E* -- or equivalently, *E* is an instance of *X*." ;
-  skos:example "[classifier] is used to relate a [Block] that is stated to perform a pumping function to the external resource PUMPING <https://data.posccaesar.org/rdl/RDS9657917>. We then say that the [Block] is classified by PUMPING, or that the [Block] is an instance of PUMPING." ;
+  skos:example "[classifier] is used to relate a [Block] that is stated to perform a pumping function to the external resource PUMPING <https://data.posccaesar.org/rdl/RDS9657917>. We then say that the [Block] is classified by PUMPING, or equivalently that the [Block] is an instance of PUMPING." ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "elements" ;
@@ -782,10 +786,11 @@ imf:medium a owl:ObjectProperty  ;
   vs:term_status "testing" ;
   skos:definition "[medium] is an [external reference] that relates a [Terminal] *T* to a resource *X* to specify that *X* is the medium that flows through *T*." ;
   skos:example """[medium] is typically used to relate a [Terminal] to a resource that specifies one of the following:
- - Material (Fluid, Solids),
- - Energy (Mechanical, Electrical, Thermal),
- - Force (Mechanical),
- - Information(Electrical, Optical, Wireless)
+
+  - Material (Fluid, Solids),
+  - Energy (Mechanical, Electrical, Thermal),
+  - Force (Mechanical),
+  - Information(Electrical, Optical, Wireless)
 """ ;
   skos:changeNote 
     "0.2.0 :: Added" ;
@@ -956,7 +961,9 @@ Terminal "1" <-- "1" ConnectionPoint : theOutput
 imf:BreakdownPoint a owl:Class ;
   skos:prefLabel "Breakdown Point (unstable)" ;
   vs:term_status "unstable" ;
-  skos:scopeNote "A [Breakdown Point] represents a reified [has part]/[part of] property instance, using the properties [the whole] and [the part] to relate to the [Element]s that are related by the [has part]/[part of] property. [Breakdown Point] has the status 'unstable'; its details are yet to be worked out." ;
+  skos:scopeNote """A [Breakdown Point] represents a reified [has part]/[part of] property instance, using the properties [the whole] and [the part] to relate to the [Element]s that are related by the [has part]/[part of] property. 
+
+[Breakdown Point] has the status 'unstable'; its details are yet to be worked out.""" ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "elements" ;
@@ -1017,7 +1024,9 @@ imf:BreakdownPointShape a sh:NodeShape ;
 imf:ConnectionPoint a owl:Class ;
   skos:prefLabel "Connection Point (unstable)" ;
   vs:term_status "unstable" ;
-  skos:scopeNote "A [Connection Point] represents a reified [connected to] property instance, using the property [the connected] or subpropertes [the input]/[the output] to relate to the [Terminal]s that are related by the [connected to] property. [Connection Point] has the status 'unstable'; its details are yet to be worked out." ;
+  skos:scopeNote """A [Connection Point] represents a reified [connected to] property instance, using the property [the connected] or subpropertes [the input]/[the output] to relate to the [Terminal]s that are related by the [connected to] property. 
+
+[Connection Point] has the status 'unstable'; its details are yet to be worked out.""" ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "elements" ;
@@ -1170,8 +1179,8 @@ imf:Aspect a owl:Class ;
  - *Perspective* refers to from which viewpoint the [Element] is interpreted.
  - *Interest* refers to the scope for which the information is intended used.
  - *Modality* refers to the form in which information is recorded.
-""" ;
-  skos:note "Aspect is a core concept of ISO/IEC 81346 and the IMF ontology includes aspects that are found in ISO/IEC 81346: function, location and product. We anticipate that more aspects will be added to support future modelling needs." ;
+""" ; 
+ skos:note "Aspect is a core concept of ISO/IEC 81346 and the IMF ontology includes aspects that are found in ISO/IEC 81346: function, location and product. We anticipate that more aspects will be added to support future modelling needs." ;
   skos:example "For examples, see the instances of [Aspect] defined in this ontology, e.g., [function aspect]." ;
   skos:changeNote 
     "0.1.0 :: Added" ;
@@ -1630,7 +1639,7 @@ imf:value a owl:DatatypeProperty ;
   skos:prefLabel "value" ;
   vs:term_status "testing" ;
   skos:definition "[value] relates an [Attribute] *A* to literal value *v* to specify that *A* has the value *v*." ;
-  skos:example "The [value] of an [Attribute] \"Weight: 1250 kg\" could be expressed as the literal \"1250\"^^xsd:integer (or using a different appropriate literal datatype)." ;
+  skos:example "The [value] of an [Attribute] \"Weight: 1250 kg\" could be expressed as the literal `\"1250\"^^xsd:integer` (or using a different appropriate literal datatype)." ;
   skos:changeNote 
     "0.2.0 :: Added" ;
   vann:termGroup "attributes" ;
@@ -2368,33 +2377,24 @@ instances are translated into SHACL.
 #+BEGIN_SRC plantuml :noweb yes :file out/img/imf-types.png
 <<plantuml-style>>
 
-metaclass sh.Shape {
+metaclass SHACL.Shape {
   id: 1 iri
   sh.name: 0..1 string
   sh.description: 0..1 string
 }
 
-metaclass sh.NodeShape {
+metaclass SHACL.NodeShape {
   sh.targetClass: 0..1 iri
 }
 
-metaclass sh.PropertyShape {
+metaclass SHACL.PropertyShape {
   sh.path: 1 iri
+  sh.severity: 0..1 iri
+  sh.message: 0..1 string
 }
 
 metaclass Type {
   typeClass: 1 iri
-}
-
-metaclass SimpleValue {
-  sh.hasValue: 1
-}
-
-metaclass SimpleValues {
-  sh.in: 0..*
-  sh.class: 0..1 iri
-  sh.minCount: 0..1 integer
-  sh.maxCount: 0..1 integer
 }
 
 metaclass TypeReference {
@@ -2402,33 +2402,38 @@ metaclass TypeReference {
   sh.maxCount: 0..1 integer
 }
 
-metaclass ComplexValues {
+metaclass PropertyConstraint {
+.. Value ..
+  sh.hasValue: 0..1
+.. Values ..
+  sh.in: 0..*
+  sh.class: 0..1 iri
   sh.datatype: 0..1 iri
-
+.. Cardinality ..
+  sh.minCount: 0..1 integer
+  sh.maxCount: 0..1 integer
+.. Numeric constraints ..
   sh.minExclusive: 0..1
   sh.minInclusive: 0..1
   sh.maxExclusive: 0..1
   sh.maxInclusive: 0..1
-
-  sh.minLenght: 0..1 integer
+.. String constraints ..
+  sh.minLength: 0..1 integer
   sh.maxLength: 0..1 integer
   sh.pattern: 0..1 string
   sh.flags: 0..1 string
 }
 
-sh.Shape <|-- sh.NodeShape
-sh.Shape <|-- sh.PropertyShape
+SHACL.Shape <|-- SHACL.NodeShape
+SHACL.Shape <|-- SHACL.PropertyShape
 
-sh.NodeShape <|-- Type
+SHACL.NodeShape <|-- Type
 
-sh.PropertyShape <|-- SimpleValue
-sh.PropertyShape <|-- SimpleValues
-sh.PropertyShape <|-- TypeReference
+SHACL.PropertyShape <|-- PropertyConstraint
+SHACL.PropertyShape <|-- TypeReference
 
-SimpleValues <|-- ComplexValues
-
-sh.NodeShape "1" -right-> sh.PropertyShape : sh.property
-TypeReference --> "1" sh.NodeShape : node
+SHACL.NodeShape "1" -right-> SHACL.PropertyShape : sh.property
+TypeReference --> "1" SHACL.NodeShape : node
 
 #+END_SRC
 
@@ -2500,13 +2505,13 @@ element -left-> ElementType : instanceOf
 #+RESULTS:
 [[file:out/img/imf-overview-type-patterns.png]]
 
-** Pattern representation to SHACL with OTTR Templates 
+** OTTR Template Representation
 
 #+BEGIN_SRC ttl :noweb yes :tangle out/ottr/imf-types-shacl.stottr :mkdirp yes
 <<prefixes>>
 
 o-imf:ShaclShape[
-  ottr:IRI ?id, 
+  ottr:IRI ?id, # this' shapes' id
   ? xsd:string ?name, 
   ? xsd:string ?description
 ] :: {
@@ -2514,42 +2519,39 @@ o-imf:ShaclShape[
   ottr:Triple(?id, sh:description, ?description)
 } .
 
-
 o-imf:ShaclNodeShape[
   ottr:IRI ?id, 
   ? owl:Class ?targetClass,
-  #? xsd:string ?targetSPARQLSelect
   ? xsd:string ?name, 
   ? xsd:string ?description
 ] :: {
   o-imf:ShaclShape(?id, ?name, ?description),
   o-rdf:Type(?id, sh:NodeShape),
   ottr:Triple(?id, sh:targetClass, ?targetClass)
-
-  #ottr:Triple(?id, sh:target, _:SHACLTarget),  
-  #o-rdf:Type(_:SHACLTarget, sh:SHACLTarget),
-  #ottr:Triple(_:SHACLTarget, sh:select, ?targetSPARQLSelect)
 } .
 
 o-imf:ShaclPropertyShape[
     ottr:IRI ?id,
-    ottr:IRI ?nodeShape, 
+    ottr:IRI ?nodeShape, ## the node shape to which this property belongs.
     ottr:IRI ?path,
   ? xsd:string ?name, 
-  ? xsd:string ?description
+  ? xsd:string ?description,
+  ? ottr:IRI ?severity,
+  ? xsd:string ?message
 ] :: {
   o-imf:ShaclShape(?id, ?name, ?description),
   ottr:Triple(?nodeShape, sh:property, ?id),
-  ottr:Triple(?id, sh:path, ?path)
+  ottr:Triple(?id, sh:path, ?path),
+  ottr:Triple(?id, sh:severity, ?severity),
+  ottr:Triple(?id, sh:message, ?message)
 } .
 
 #######
 
 o-imf-t-s:Type[
-  ottr:IRI ?id, 
-  owl:Class ?typeClass,
-  ? owl:Class ?targetClass,
-  #? xsd:string ?targetSPARQLSelect
+  ottr:IRI ?id,           # should be the same as ?targetClass + "Shape"
+  owl:Class ?typeClass,   # the IMF type class of this shape, e.g., BlockType
+  owl:Class ?targetClass, # must be the Class represenation of this type
   ? xsd:string ?name, 
   ? xsd:string ?description
 ] :: {
@@ -2557,93 +2559,90 @@ o-imf-t-s:Type[
   o-rdf:Type(?id, ?typeClass)
 } .
 
-#######
-
 o-imf-t-s:TypeReference[
     ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
+    ottr:IRI ?typeSource,
     ottr:IRI ?path, 
-    ottr:IRI ?node,
-    xsd:integer ?minCount = 1,
-    xsd:integer ?maxCount = 1,
+    ottr:IRI ?typeTarget,
+    xsd:integer ?minCount = 0,
+  ? xsd:integer ?maxCount,
   ? xsd:string ?name, 
-  ? xsd:string ?description
+  ? xsd:string ?description,
+  ? ottr:IRI ?severity,
+  ? xsd:string ?message
 ] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-  ottr:Triple(?id, sh:node, ?node),
+  o-imf:ShaclPropertyShape(?id, ?typeSource, ?path, ?name, ?description, ?severity, ?message),
+  ottr:Triple(?id, sh:node, ?typeTarget),
   ottr:Triple(?id, sh:minCount, ?minCount),
   ottr:Triple(?id, sh:maxCount, ?maxCount)
 } .
 
-o-imf-t-s:SimpleValue[
+o-imf-t-s:PropertyConstaint[
     ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
+    ottr:IRI ?typeSource, 
     ottr:IRI ?path, 
-    rdfs:Resource ?value,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-  ottr:Triple(?id, sh:hasValue, ?value)
-} .
-
-o-imf-t-s:SimpleValues[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
-    ottr:IRI ?path, 
-  ? List<rdfs:Resource> ?in,
-  ? owl:Class ?class,
-    xsd:integer ?minCount, 
-    xsd:integer ?maxCount,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-  ottr:Triple(?id, sh:in, ?in),
-  ottr:Triple(?id, sh:class, ?class),
-  ottr:Triple(?id, sh:minCount, ?minCount),
-  ottr:Triple(?id, sh:maxCount, ?maxCount)
-} .
-
-
-o-imf-t-s:ComplexValues[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
-    ottr:IRI ?path, 
-  #? xsd:string ?message,   ## add these to all patterns?
-  #? ottr:IRI ?severity,
-  #? rdfs:Resource ?value,
+  ? rdfs:Resource ?value,
   ? List<rdfs:Resource> ?in,
   ? owl:Class ?class,
   ? ottr:IRI ?datatype,
-    xsd:integer ?minCount = 1,
-    xsd:integer ?maxCount = 1, 
-  ? rdfs:Resource ?minInclusive,
-  ? rdfs:Resource ?minExclusive,
-  ? rdfs:Resource ?maxInclusive,
-  ? rdfs:Resource ?maxExclusive,
-  ? xsd:integer ?minLength,
-  ? xsd:integer ?maxLength,
+  ? xsd:integer ?minCount,
+  ? xsd:integer ?maxCount, 
+  ? rdfs:Literal ?minInclusive,
+  ? rdfs:Literal ?minExclusive,
+  ? rdfs:Literal ?maxInclusive,
+  ? rdfs:Literal ?maxExclusive,
   ? xsd:string ?pattern,
-  ? xsd:string ?flags,
   ? xsd:string ?name, 
-  ? xsd:string ?description
+  ? xsd:string ?description,
+  ? ottr:IRI ?severity,
+  ? xsd:string ?message
 ] :: {
-  #o-imf:ShaclPropertyShape(?typeID, ?id, ?path),
-  #o-imf-t-s:SimpleValue(?id, ?typeID, ?path, ?value, ?name, ?description),
-  o-imf-t-s:SimpleValues(?id, ?typeID, ?path, ?in, ?class, ?minCount, ?maxCount, ?name, ?description),
-  #ottr:Triple(?id, sh:message, ?message),
-  #ottr:Triple(?id, sh:severity, ?severity),
+  o-imf:ShaclPropertyShape(?id, ?typeSource, ?path, ?name, ?description, ?severity, ?message),
+  ottr:Triple(?id, sh:hasValue, ?value),
+  ottr:Triple(?id, sh:in, ?in),
+  ottr:Triple(?id, sh:class, ?class),
   ottr:Triple(?id, sh:datatype, ?datatype),
+  ottr:Triple(?id, sh:minCount, ?minCount),
+  ottr:Triple(?id, sh:maxCount, ?maxCount),
   ottr:Triple(?id, sh:minInclusive, ?minInclusive),
   ottr:Triple(?id, sh:minExclusive, ?minExclusive),
   ottr:Triple(?id, sh:maxInclusive, ?maxInclusive),
   ottr:Triple(?id, sh:maxExclusive, ?maxExclusive),
-  ottr:Triple(?id, sh:minLength, ?minLength),
-  ottr:Triple(?id, sh:maxLength, ?maxLength),
+  #ottr:Triple(?id, sh:minLength, ?minLength),
+  #ottr:Triple(?id, sh:maxLength, ?maxLength),
   ottr:Triple(?id, sh:pattern, ?pattern),
-  ottr:Triple(?id, sh:flags, ?flags)
+  #ottr:Triple(?id, sh:flags, ?flags)
 } .
+
+# o-imf-t-s:SimpleValue[
+#     ottr:IRI ?id = _:P,
+#     ottr:IRI ?typeID, 
+#     ottr:IRI ?path, 
+#     rdfs:Resource ?value,
+#   ? xsd:string ?name, 
+#   ? xsd:string ?description
+# ] :: {
+#   o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+# } .
+
+# o-imf-t-s:SimpleValues[
+#     ottr:IRI ?id = _:P,
+#     ottr:IRI ?typeID, 
+#     ottr:IRI ?path, 
+#   ? List<rdfs:Resource> ?in,
+#   ? owl:Class ?class,
+#     xsd:integer ?minCount, 
+#     xsd:integer ?maxCount,
+#   ? xsd:string ?name, 
+#   ? xsd:string ?description
+# ] :: {
+#   o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+#   ottr:Triple(?id, sh:in, ?in),
+#   ottr:Triple(?id, sh:class, ?class),
+#   ottr:Triple(?id, sh:minCount, ?minCount),
+#   ottr:Triple(?id, sh:maxCount, ?maxCount)
+# } .
+
 #+END_SRC
 
 ** Translation to OWL ontology representation
@@ -3097,7 +3096,7 @@ The types in the example is represented in the following Excel spreadsheet [[./e
 *** Type expansion: SHACL
 
 #+BEGIN_SRC sh :exports none :results raw
-java -jar bin/lutra.jar -f -L stottr -l out/ottr/shacl.stottr -I tabottr example/pumpingFunctionType.xlsx | rapper - -i turtle -o turtle -I 'http://example.com#' > example/pumpingFunctionType.xlsx.ttl
+java -jar bin/lutra.jar -f -L stottr -l out/ottr/shacl.stottr -I tabottr example/pumpingFunctionType.xlsx | rapper - -i turtle -o turtle -I 'http://example.com#' > example/TypeTemplate.xlsx.ttl
 #+END_SRC
 
 #+RESULTS:
@@ -4353,17 +4352,22 @@ def texEnv(env,s):
   else:
     return s
 
-def texItem(term, predicate, name, joiner="\n\n", dir="X", graph=ontology):
+def texItem(term, predicate, name, joiner="\n\n", dir="X", graph=ontology, env='markdown'):
   if dir == "subjects":
     values = graph.subjects(predicate, term)
   else:
     values = graph.objects(term, predicate)
-  values = sorted(map(qname, list(filter(lambda x: type(x) != BNode, list(values)))))
+
+  values = list(filter(lambda x: type(x) != BNode, list(values)))
+
   if bool(values) == False:
     return ''
   else:
-    return "\item[" + name + "] " + texEnv('markdown', joiner.join(values))
-
+    if env == 'uris':
+      values = map(lambda x: "\\texttt{" + x + "}", sorted(map(qname, values)))
+      return "\item[" + name + "] " + joiner.join(values) + "\n"
+    else:
+      return "\item[" + name + "] " + texEnv(env, joiner.join(values))
 
 output = ""
 
@@ -4372,48 +4376,51 @@ output = ""
 txtOntology = ""
 iriOntology = URIRef("http://ns.imfid.org/imf#IMFOntology")
 
-txtOntology += ontology.value(iriOntology, DCTERMS.description)
+txtOntology += ontology.value(iriOntology, DCTERMS.description) + "\n\n"
 txtOntology += ontology.value(iriOntology, SKOS.scopeNote)
 output += texEnv('markdown', txtOntology)
 
 ## Ontology summary
 
-txtEntities  = texItem(OWL.Class, RDF.type, "Classes", joiner=", ", dir="subjects")
-txtEntities += texItem(OWL.ObjectProperty, RDF.type, "Object properties", joiner=", ", dir="subjects")
-txtEntities += texItem(OWL.DatatypeProperty, RDF.type, "Data properties", joiner=", ", dir="subjects")
-txtEntities += texItem(OWL.AnnotationProperty, RDF.type, "Annotation properties", joiner=", ", dir="subjects")
-txtEntities += texItem(OWL.NamedIndividual, RDF.type, "Individuals", joiner=", ", dir="subjects")
+output += "The ontology defines the following terms, categorised by their OWL type:\n\n"
+txtEntities  = texItem(OWL.Class, RDF.type, "Classes", joiner=", ", dir="subjects", env='uris')
+txtEntities += texItem(OWL.ObjectProperty, RDF.type, "Object properties", joiner=", ", dir="subjects", env='uris')
+txtEntities += texItem(OWL.DatatypeProperty, RDF.type, "Data properties", joiner=", ", dir="subjects", env='uris')
+txtEntities += texItem(OWL.AnnotationProperty, RDF.type, "Annotation properties", joiner=", ", dir="subjects", env='uris')
+txtEntities += texItem(OWL.NamedIndividual, RDF.type, "Individuals", joiner=", ", dir="subjects", env='uris')
 output += texEnv('description', txtEntities)
 
 ## Term definitions
 
-for group in sorted(ontology.objects(None, VANN.termGroup, True), reverse=True):
+groups = sorted(ontology.objects(None, VANN.termGroup, True), reverse=True)
+
+output += "The terms are presented below, categorised in informal groups according to topic: " + texEnv('compactitem', "\n".join(map(lambda x: "\item " + x.capitalize(), groups)))
+
+output += "Each group contains an informal diagram of the group's terms. Each term is presented with a selection of metadata, its basic OWL ontology definitions and the SHACL shape constraints defined for the term. The listing does not contain all OWL axioms and SHACL shape definitions as it is difficult to represent in condenced form, please consult the OWL ontology and SHACL shape description for all details.\n\n"
+
+for group in groups:
   output += "\section{" + group.capitalize() + "}\n\n"
   output += "\\begin{figure}\centering\n"
-  output += "\includegraphics[width=.8\\textwidth]{img/ontology/imf-ontology-" + group + ".png}\n\caption{Ontology group: " + group + "}\n\label{fig:ontology-group-" + group + "}\n\end{figure}\n\n"
+  output += "\includegraphics[width=1\\textwidth]{img/ontology/imf-ontology-" + group + ".png}\n\caption{Ontology group: " + group + "}\n\label{fig:ontology-group-" + group + "}\n\end{figure}\n\n"
     
   for term in sorted(ontology.subjects(VANN.termGroup, group)):
     # metadata
     output += "\subsection{" + ontology.value(term, SKOS.prefLabel, None) + "}\n"
-    txtItems  = texItem(term, SKOS.definition, "Definition")
+    txtItems = "\item[IRI] \\texttt{" + qname(term) + "}\n"
+    txtItems += texItem(term, SKOS.definition, "Definition")
     txtItems += texItem(term, SKOS.scopeNote, "Usage note")
     txtItems += texItem(term, SKOS.example, "Example")
     txtItems += texItem(term, SKOS.note, "Note")
+    txtItems += texItem(term, RDF.type, "Type", joiner=", ", env='uris')
+    txtItems += texItem(term, RDFS.subClassOf, "Superclass", joiner=", ", env='uris')
+    txtItems += texItem(term, RDFS.subClassOf, "Subclass", joiner=", ", dir="subjects", env='uris')
+    txtItems += texItem(term, RDFS.subPropertyOf, "Superproperty", joiner=", ", env='uris')
+    txtItems += texItem(term, RDFS.subPropertyOf, "Subproperties", joiner=", ", dir="subjects", env='uris')
+    txtItems += texItem(term, RDFS.domain, "Domain", joiner=", ", env='uris')
+    txtItems += texItem(term, RDFS.range, "Range", joiner=", ", env='uris')
+    txtItems += texItem(term, RDF.type, "Instances", joiner=", ", dir="subjects", env='uris')
     txtItems += texItem(term, SKOS.editorialNote, "Editoral note")
-    output += texEnv('description', txtItems)
-
-    ## OWL
-    output += "\subsubsection*{OWL Definition}\n"
-    txtItems = "\item[IRI]" + texEnv('markdown', qname(term))
-    txtItems += texItem(term, RDF.type, "Type", joiner=", ")
-    txtItems += texItem(term, RDFS.subClassOf, "Superclass", joiner=", ")
-    txtItems += texItem(term, RDFS.subClassOf, "Subclass", joiner=", ", dir="subjects")
-    txtItems += texItem(term, RDFS.subPropertyOf, "Superproperty", joiner=", ")
-    txtItems += texItem(term, RDFS.subPropertyOf, "Subproperties", joiner=", ", dir="subjects")
-    txtItems += texItem(term, RDFS.domain, "Domain", joiner=", ")
-    txtItems += texItem(term, RDFS.range, "Range", joiner=", ")
-    txtItems += texItem(term, RDF.type, "Instances", joiner=", ", dir="subjects")
-    output += texEnv('description', txtItems)
+    output += texEnv('compactdesc', txtItems)
 
     # SHACL
     txtShacl = ""
@@ -4727,11 +4734,13 @@ skinparam class {
  - [X] Definitions
  - [X] OWL ontology for RDF data model
  - [X] SHACL shapes for RDF data model
- - [ ] OTTR templates to instantiate datamodel
  - [ ] OTTR templates to create types
+ - [ ] OTTR templates to instantiate datamodel
  - [ ] bOTTR (SHACL + OTTR) over types to
-   - [ ] Prototypes
-   - [ ] OWL class
+   - [ ] OWL class, issues:
+     - equivalent to union of
+   - [ ] Prototypes, issues:
+     - must generate multiple instances for minCount, need programming language
  - [#] Vocabulary for visualisation -> v3
  - [ ] Visualisation
    - [ ] Instance data

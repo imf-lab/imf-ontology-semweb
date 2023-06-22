@@ -43,7 +43,7 @@ out/owl/imf-ontology.owl.wottr.ttl: \
 	rapper -i turtle -o turtle $@.temp > $@
 	rm $@.temp
 
-### OWL
+### OW
 
 
 ### QA
@@ -54,4 +54,8 @@ out.QA/%.ttl: out/%.ttl
 	if [ "Conforms" == `cat $@` ] ;then ; : else $(error non-conforming RDF file $<) ; fi
 
 
+### tabOTTR
+
+%.xlsx.ttl: %.xlsx #.tangle
+	$(LUTRA) -I tabottr $< | rapper - -i turtle -o turtle -I 'http://example.com#' > $@
 

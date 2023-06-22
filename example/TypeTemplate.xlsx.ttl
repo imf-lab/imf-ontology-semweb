@@ -1,0 +1,197 @@
+@base <http://example.com#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix o-imf-t-o: <http://ns.imfid.org/templates/type/owl/> .
+@prefix p14: </P14#> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix ex: <> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+
+</example/ApplicationStandardShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/ApplicationStandard> .
+
+</example/ClientRequirementDocumentShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/ClientRequirementDocument> .
+
+</example/ElectricPowerShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/ElectricPower> .
+
+</example/FluidShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/Fluid> .
+
+</example/LiquidPumpingShape>
+    a imf:BlockType, sh:NodeShape ;
+    sh:name "Pumping, liquid velocity" ;
+    sh:property [
+        sh:minCount 1 ;
+        sh:name "T1" ;
+        sh:node </example/WaterPumpingTerminalShape> ;
+        sh:path imf:hasInputTerminal
+    ], [
+        sh:minCount 1 ;
+        sh:name "T2" ;
+        sh:node </example/MechanicalRotationInputShape> ;
+        sh:path imf:hasInputTerminal
+    ], [
+        sh:minCount 0 ;
+        sh:node </example/NoiseRequirementStandardShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:name "T3" ;
+        sh:node </example/WaterPumpingTerminalShape> ;
+        sh:path imf:hasOutputTerminal
+    ], [
+        sh:hasValue </rdl/Pumping> ;
+        sh:path imf:classifier
+    ], [
+        sh:hasValue imf:functionAspect ;
+        sh:path imf:hasAspect
+    ], [
+        sh:hasValue "“SP402”" ;
+        sh:path imf:symbol
+    ], [
+        sh:hasValue "“KR”" ;
+        sh:path skos:notation
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/FluidShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/PressureDeltaShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/SuctionPressureShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/PressureShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/PumpingPowerShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 0 ;
+        sh:node </example/ApplicationStandardShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 0 ;
+        sh:node </example/ClientRequirementDocumentShape> ;
+        sh:path imf:hasAttribute
+    ] ;
+    sh:targetClass </example/LiquidPumping> .
+
+</example/MechanicalRotationInputShape>
+    a imf:TerminalType, sh:NodeShape ;
+    sh:property [
+        sh:minCount 1 ;
+        sh:node </example/ElectricPowerShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/RotationalVelocityShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/MediaDatasheetShape> ;
+        sh:path imf:hasAttribute
+    ] ;
+    sh:targetClass </example/MechanicalRotationInput> .
+
+</example/MediaDatasheetShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/MediaDatasheet> .
+
+</example/NoiseRequirementStandardShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/NoiseRequirementStandard> .
+
+</example/PressureDeltaShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/PressureDelta> .
+
+</example/PressureShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/Pressure> .
+
+</example/PumpingPowerShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/PumpingPower> .
+
+</example/RotationalVelocityShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/RotationalVelocity> .
+
+</example/SuctionPressureShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/SuctionPressure> .
+
+</example/VolumetricFlowrateShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass </example/VolumetricFlowrate> .
+
+</example/WaterPumpingInputShape>
+    sh:property [
+        sh:minCount 1 ;
+        sh:node </example/PressureShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/VolumetricFlowrateShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/MediaDatasheetShape> ;
+        sh:path imf:hasAttribute
+    ] .
+
+</example/WaterPumpingOutputShape>
+    sh:property [
+        sh:minCount 1 ;
+        sh:node </example/PressureShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/VolumetricFlowrateShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount 1 ;
+        sh:node </example/MediaDatasheetShape> ;
+        sh:path imf:hasAttribute
+    ] .
+
+</example/WaterPumpingTerminalShape>
+    a imf:TerminalType, sh:NodeShape ;
+    sh:property [
+        sh:hasValue </rdl/RDS4233125> ;
+        sh:path imf:classifier
+    ], [
+        sh:hasValue </rdl/WaterMedia> ;
+        sh:path imf:medium
+    ] ;
+    sh:targetClass </example/WaterPumpingTerminal> .
+

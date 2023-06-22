@@ -7,7 +7,7 @@
 
 @prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
 @prefix pav:	<http://purl.org/pav/> .
-@prefix dc:	<http://purl.org/dc/terms> .
+@prefix dc:	<http://purl.org/dc/terms/> .
 @prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
 @prefix vann:   <http://purl.org/vocab/vann/> .
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
@@ -29,7 +29,7 @@
 
 
 o-imf:ShaclShape[
-  ottr:IRI ?id, 
+  ottr:IRI ?id, # this' shapes' id
   ? xsd:string ?name, 
   ? xsd:string ?description
 ] :: {
@@ -37,42 +37,39 @@ o-imf:ShaclShape[
   ottr:Triple(?id, sh:description, ?description)
 } .
 
-
 o-imf:ShaclNodeShape[
   ottr:IRI ?id, 
   ? owl:Class ?targetClass,
-  #? xsd:string ?targetSPARQLSelect
   ? xsd:string ?name, 
   ? xsd:string ?description
 ] :: {
   o-imf:ShaclShape(?id, ?name, ?description),
   o-rdf:Type(?id, sh:NodeShape),
   ottr:Triple(?id, sh:targetClass, ?targetClass)
-
-  #ottr:Triple(?id, sh:target, _:SHACLTarget),  
-  #o-rdf:Type(_:SHACLTarget, sh:SHACLTarget),
-  #ottr:Triple(_:SHACLTarget, sh:select, ?targetSPARQLSelect)
 } .
 
 o-imf:ShaclPropertyShape[
     ottr:IRI ?id,
-    ottr:IRI ?nodeShape, 
+    ottr:IRI ?nodeShape, ## the node shape to which this property belongs.
     ottr:IRI ?path,
   ? xsd:string ?name, 
-  ? xsd:string ?description
+  ? xsd:string ?description,
+  ? ottr:IRI ?severity,
+  ? xsd:string ?message
 ] :: {
   o-imf:ShaclShape(?id, ?name, ?description),
   ottr:Triple(?nodeShape, sh:property, ?id),
-  ottr:Triple(?id, sh:path, ?path)
+  ottr:Triple(?id, sh:path, ?path),
+  ottr:Triple(?id, sh:severity, ?severity),
+  ottr:Triple(?id, sh:message, ?message)
 } .
 
 #######
 
 o-imf-t-s:Type[
-  ottr:IRI ?id, 
-  owl:Class ?typeClass,
-  ? owl:Class ?targetClass,
-  #? xsd:string ?targetSPARQLSelect
+  ottr:IRI ?id,           # should be the same as ?targetClass + "Shape"
+  owl:Class ?typeClass,   # the IMF type class of this shape, e.g., BlockType
+  owl:Class ?targetClass, # must be the Class represenation of this type
   ? xsd:string ?name, 
   ? xsd:string ?description
 ] :: {
@@ -80,90 +77,86 @@ o-imf-t-s:Type[
   o-rdf:Type(?id, ?typeClass)
 } .
 
-#######
-
 o-imf-t-s:TypeReference[
     ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
+    ottr:IRI ?typeSource,
     ottr:IRI ?path, 
-    ottr:IRI ?node,
-    xsd:integer ?minCount = 1,
-    xsd:integer ?maxCount = 1,
+    ottr:IRI ?typeTarget,
+    xsd:integer ?minCount = 0,
+  ? xsd:integer ?maxCount,
   ? xsd:string ?name, 
-  ? xsd:string ?description
+  ? xsd:string ?description,
+  ? ottr:IRI ?severity,
+  ? xsd:string ?message
 ] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-  ottr:Triple(?id, sh:node, ?node),
+  o-imf:ShaclPropertyShape(?id, ?typeSource, ?path, ?name, ?description, ?severity, ?message),
+  ottr:Triple(?id, sh:node, ?typeTarget),
   ottr:Triple(?id, sh:minCount, ?minCount),
   ottr:Triple(?id, sh:maxCount, ?maxCount)
 } .
 
-o-imf-t-s:SimpleValue[
+o-imf-t-s:PropertyConstaint[
     ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
+    ottr:IRI ?typeSource, 
     ottr:IRI ?path, 
-    rdfs:Resource ?value,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-  ottr:Triple(?id, sh:hasValue, ?value)
-} .
-
-o-imf-t-s:SimpleValues[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
-    ottr:IRI ?path, 
-  ? List<rdfs:Resource> ?in,
-  ? owl:Class ?class,
-    xsd:integer ?minCount, 
-    xsd:integer ?maxCount,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-  ottr:Triple(?id, sh:in, ?in),
-  ottr:Triple(?id, sh:class, ?class),
-  ottr:Triple(?id, sh:minCount, ?minCount),
-  ottr:Triple(?id, sh:maxCount, ?maxCount)
-} .
-
-
-o-imf-t-s:ComplexValues[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeID, 
-    ottr:IRI ?path, 
-  #? xsd:string ?message,   ## add these to all patterns?
-  #? ottr:IRI ?severity,
-  #? rdfs:Resource ?value,
+  ? rdfs:Resource ?value,
   ? List<rdfs:Resource> ?in,
   ? owl:Class ?class,
   ? ottr:IRI ?datatype,
-    xsd:integer ?minCount = 1,
-    xsd:integer ?maxCount = 1, 
-  ? rdfs:Resource ?minInclusive,
-  ? rdfs:Resource ?minExclusive,
-  ? rdfs:Resource ?maxInclusive,
-  ? rdfs:Resource ?maxExclusive,
-  ? xsd:integer ?minLength,
-  ? xsd:integer ?maxLength,
+  ? xsd:integer ?minCount,
+  ? xsd:integer ?maxCount, 
+  ? rdfs:Literal ?minInclusive,
+  ? rdfs:Literal ?minExclusive,
+  ? rdfs:Literal ?maxInclusive,
+  ? rdfs:Literal ?maxExclusive,
   ? xsd:string ?pattern,
-  ? xsd:string ?flags,
   ? xsd:string ?name, 
-  ? xsd:string ?description
+  ? xsd:string ?description,
+  ? ottr:IRI ?severity,
+  ? xsd:string ?message
 ] :: {
-  #o-imf:ShaclPropertyShape(?typeID, ?id, ?path),
-  #o-imf-t-s:SimpleValue(?id, ?typeID, ?path, ?value, ?name, ?description),
-  o-imf-t-s:SimpleValues(?id, ?typeID, ?path, ?in, ?class, ?minCount, ?maxCount, ?name, ?description),
-  #ottr:Triple(?id, sh:message, ?message),
-  #ottr:Triple(?id, sh:severity, ?severity),
+  o-imf:ShaclPropertyShape(?id, ?typeSource, ?path, ?name, ?description, ?severity, ?message),
+  ottr:Triple(?id, sh:hasValue, ?value),
+  ottr:Triple(?id, sh:in, ?in),
+  ottr:Triple(?id, sh:class, ?class),
   ottr:Triple(?id, sh:datatype, ?datatype),
+  ottr:Triple(?id, sh:minCount, ?minCount),
+  ottr:Triple(?id, sh:maxCount, ?maxCount),
   ottr:Triple(?id, sh:minInclusive, ?minInclusive),
   ottr:Triple(?id, sh:minExclusive, ?minExclusive),
   ottr:Triple(?id, sh:maxInclusive, ?maxInclusive),
   ottr:Triple(?id, sh:maxExclusive, ?maxExclusive),
-  ottr:Triple(?id, sh:minLength, ?minLength),
-  ottr:Triple(?id, sh:maxLength, ?maxLength),
+  #ottr:Triple(?id, sh:minLength, ?minLength),
+  #ottr:Triple(?id, sh:maxLength, ?maxLength),
   ottr:Triple(?id, sh:pattern, ?pattern),
-  ottr:Triple(?id, sh:flags, ?flags)
+  #ottr:Triple(?id, sh:flags, ?flags)
 } .
+
+# o-imf-t-s:SimpleValue[
+#     ottr:IRI ?id = _:P,
+#     ottr:IRI ?typeID, 
+#     ottr:IRI ?path, 
+#     rdfs:Resource ?value,
+#   ? xsd:string ?name, 
+#   ? xsd:string ?description
+# ] :: {
+#   o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+# } .
+
+# o-imf-t-s:SimpleValues[
+#     ottr:IRI ?id = _:P,
+#     ottr:IRI ?typeID, 
+#     ottr:IRI ?path, 
+#   ? List<rdfs:Resource> ?in,
+#   ? owl:Class ?class,
+#     xsd:integer ?minCount, 
+#     xsd:integer ?maxCount,
+#   ? xsd:string ?name, 
+#   ? xsd:string ?description
+# ] :: {
+#   o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
+#   ottr:Triple(?id, sh:in, ?in),
+#   ottr:Triple(?id, sh:class, ?class),
+#   ottr:Triple(?id, sh:minCount, ?minCount),
+#   ottr:Triple(?id, sh:maxCount, ?maxCount)
+# } .
