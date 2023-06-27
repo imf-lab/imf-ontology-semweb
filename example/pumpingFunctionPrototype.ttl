@@ -1,0 +1,196 @@
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix ns1: <http://www.w3.org/2004/02/skos/core#> .
+@prefix x: <http://example.org/prototype#> .
+
+x:id-1 a <http://example.com/example/ApplicationStandard>,
+        imf:Attribute .
+
+x:id-2 a <http://example.com/example/ClientRequirementDocument>,
+        imf:Attribute ;
+    imf:value x:id-3 .
+
+x:id-38 a <http://example.com/example/MechanicalRotationInput>,
+        imf:Terminal ;
+    imf:hasAttribute x:id-39,
+        x:id-40,
+        x:id-41 .
+
+x:id-4 a <http://example.com/example/ElectricPower>,
+        imf:Attribute .
+
+x:id-42 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-43 a <http://example.com/example/NoiseRequirementStandard>,
+        imf:Attribute .
+
+x:id-44 a <http://example.com/example/PressureDelta>,
+        imf:Attribute .
+
+x:id-45 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-46 a <http://example.com/example/PumpingPower>,
+        imf:Attribute .
+
+x:id-47 a <http://example.com/example/RotationalVelocity>,
+        imf:Attribute .
+
+x:id-48 a <http://example.com/example/SuctionPressure>,
+        imf:Attribute .
+
+x:id-49 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-51 ;
+    imf:value x:id-50 .
+
+x:id-5 a <http://example.com/example/Fluid>,
+        imf:Attribute .
+
+x:id-52 a <http://example.com/example/WaterPumpingTerminal>,
+        imf:Terminal ;
+    imf:classifier <http://example.com/rdl/RDS4233125> ;
+    imf:hasAttribute x:id-53,
+        x:id-54,
+        x:id-57 ;
+    imf:medium <http://example.com/rdl/WaterMedia> .
+
+x:id-6 a <http://example.com/example/LiquidPumping>,
+        imf:Block ;
+    imf:classifier <http://example.com/rdl/Pumping> ;
+    imf:hasAspect imf:functionAspect ;
+    imf:hasAttribute x:id-23,
+        x:id-30,
+        x:id-31,
+        x:id-32,
+        x:id-33,
+        x:id-34,
+        x:id-35,
+        x:id-36 ;
+    imf:hasInputTerminal x:id-13,
+        x:id-19,
+        x:id-7 ;
+    imf:hasOutputTerminal x:id-24 ;
+    imf:symbol "SP402" ;
+    ns1:editorialNote """SHACL Node shape description:
+  - name: Pumping, liquid velocity
+""" ;
+    ns1:notation "KR" .
+
+x:id-12 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-13 a <http://example.com/example/WaterPumpingTerminal>,
+        imf:Terminal ;
+    imf:classifier <http://example.com/rdl/RDS4233125> ;
+    imf:hasAttribute x:id-14,
+        x:id-15,
+        x:id-18 ;
+    imf:medium <http://example.com/rdl/WaterMedia> .
+
+x:id-14 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-15 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-17 ;
+    imf:value x:id-16 .
+
+x:id-18 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-19 a <http://example.com/example/MechanicalRotationInput>,
+        imf:Terminal ;
+    imf:hasAttribute x:id-20,
+        x:id-21,
+        x:id-22 .
+
+x:id-20 a <http://example.com/example/ElectricPower>,
+        imf:Attribute .
+
+x:id-21 a <http://example.com/example/RotationalVelocity>,
+        imf:Attribute .
+
+x:id-22 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-23 a <http://example.com/example/NoiseRequirementStandard>,
+        imf:Attribute .
+
+x:id-24 a <http://example.com/example/WaterPumpingTerminal>,
+        imf:Terminal ;
+    imf:classifier <http://example.com/rdl/RDS4233125> ;
+    imf:hasAttribute x:id-25,
+        x:id-26,
+        x:id-29 ;
+    imf:medium <http://example.com/rdl/WaterMedia> .
+
+x:id-25 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-26 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-28 ;
+    imf:value x:id-27 .
+
+x:id-29 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-30 a <http://example.com/example/Fluid>,
+        imf:Attribute .
+
+x:id-31 a <http://example.com/example/PressureDelta>,
+        imf:Attribute .
+
+x:id-32 a <http://example.com/example/SuctionPressure>,
+        imf:Attribute .
+
+x:id-33 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-34 a <http://example.com/example/PumpingPower>,
+        imf:Attribute .
+
+x:id-35 a <http://example.com/example/ApplicationStandard>,
+        imf:Attribute .
+
+x:id-36 a <http://example.com/example/ClientRequirementDocument>,
+        imf:Attribute ;
+    imf:value x:id-37 .
+
+x:id-39 a <http://example.com/example/ElectricPower>,
+        imf:Attribute .
+
+x:id-40 a <http://example.com/example/RotationalVelocity>,
+        imf:Attribute .
+
+x:id-41 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-53 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-54 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-56 ;
+    imf:value x:id-55 .
+
+x:id-57 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-7 a <http://example.com/example/WaterPumpingTerminal>,
+        imf:Terminal ;
+    imf:classifier <http://example.com/rdl/RDS4233125> ;
+    imf:hasAttribute x:id-12,
+        x:id-8,
+        x:id-9 ;
+    imf:medium <http://example.com/rdl/WaterMedia> .
+
+x:id-8 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-9 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-11 ;
+    imf:value x:id-10 .
+

@@ -521,7 +521,7 @@ imf:associativeRelation a owl:ObjectProperty ;
       "0.1.0 :: Added" ;
     vann:termGroup "generic relations" ;
     rdfs:subPropertyOf skos:related ;
-    owl:propertyDisjointWith imf:hierachicalRelation ;
+    owl:propertyDisjointWith imf:hierarchicalRelation ;
     .
 #+END_SRC
 
@@ -595,18 +595,21 @@ imf:Element a owl:Class ;
 
 #+NAME: shacl-elements-annotations
 #+BEGIN_SRC ttl
-imf:ElementShape a sh:NodeShape ;
+imf:MetadataShape a sh:NodeShape ;
+  sh:deactivated true ;
   sh:targetClass imf:Element , imf:Block , imf:Terminal ;
   sh:property 
     [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no prefLabel." ] ,
     [ sh:path dc:description ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no description." ] ,
-    [ sh:path pav:version ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no version number." ] ,
-    [ sh:path pav:createdOn ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has created timestamp." ] ,
-    [ sh:path pav:createdBy ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has creator." ] ,
+    [ sh:path pav:version    ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no version number." ] ,
+    [ sh:path pav:createdOn  ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no created timestamp." ] ,
+    [ sh:path pav:createdBy  ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no creator." ] .
 
+imf:ElementShape a sh:NodeShape ;
+  sh:targetClass imf:Element , imf:Block , imf:Terminal ;
+  sh:property
     [ sh:path imf:classifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element has no classifier." ] ,
-    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:message "Elements cannot be part of multiple Elements."  ] ,
-
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:message "Element cannot be part of multiple Elements."  ] ,
     [ sh:path [ sh:inversePath imf:hasElement ] ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Element is not contained in a Model." ]
 .
 #+END_SRC
@@ -676,6 +679,7 @@ imf:hasPart a owl:ObjectProperty ;
 #+BEGIN_SRC ttl
 imf:classifier a owl:ObjectProperty ;
   skos:prefLabel "classifier" ;
+  skos:altLabel "purpose" ;
   vs:term_status "testing" ;
   skos:definition "[classifier] is an [external reference] that relates an [Element] *E* to a resource *X* in an external ontology or reference data library such that *X* classifies *E* -- or equivalently, *E* is an instance of *X*." ;
   skos:example "[classifier] is used to relate a [Block] that is stated to perform a pumping function to the external resource PUMPING <https://data.posccaesar.org/rdl/RDS9657917>. We then say that the [Block] is classified by PUMPING, or equivalently that the [Block] is an instance of PUMPING." ;
@@ -714,10 +718,11 @@ A [Block] is visualised as a rectangular box.""" ;
 #+BEGIN_SRC ttl
 imf:BlockShape a sh:NodeShape ;
   sh:targetClass imf:Block ;
-  sh:targetSubjectsOf imf:hasTerminal ;
+  sh:targetSubjectsOf imf:hasTerminal, imf:hasInputTerminal, imf:hasOutputTerminal ;
   sh:property 
     [ sh:path imf:hasTerminal ; sh:class imf:Terminal ] ,
-    [ sh:path imf:hasTerminal ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminals." ] ,     
+    [ sh:path [ sh:alternativePath ( imf:hasTerminal imf:hasInputTerminal imf:hasOutputTerminal ) ] ; 
+        sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminals." ] ,     
     [ sh:path imf:partOf ; sh:class imf:Block ; sh:message "Blocks can only be part of Blocks." ] ,
     [ sh:path imf:hasPart ; sh:class imf:Block ; sh:message "Blocks can only have Blocks as parts." ]
 .
@@ -1258,7 +1263,7 @@ This is the current list of aspects:
 
 **** Processing                                                          :QA:
 
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf/aspects.stottr :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf-ontology/aspects.stottr :mkdirp yes
 <<prefixes>>
 
 ## This creates an individual for each of the aspects in the table.
@@ -1725,69 +1730,137 @@ imf:hasAttributeQualifier a owl:ObjectProperty ;
 
 *** Attribute Qualifiers
 
+#+NAME: tbl-qualifier-classes
+| Qualifier               | PCA mapping       |
+|-------------------------+-------------------|
+| imf:ProvenanceQualifier | pca-plm:PCA_100004033 |
+| imf:RangeQualifier      | pca-plm:PCA_100004035 |
+| imf:RegularityQualifier | pca-plm:PCA_100004036 |
+| imf:ScopeQualifier      | pca-plm:PCA_100004034 |
+
+
 #+NAME: tbl-qualifiers
-| Qualifier               | Instance                |
-|-------------------------+-------------------------|
-| imf:ProvenanceQualifier | imf:calculatedQualifier |
-| imf:ProvenanceQualifier | imf:measuredQualifier   |
-| imf:ProvenanceQualifier | imf:specifiedQualifier  |
-| imf:RangeQualifier      | imf:averageQualifier    |
-| imf:RangeQualifier      | imf:maximumQualifier    |
-| imf:RangeQualifier      | imf:minimumQualifier    |
-| imf:RangeQualifier      | imf:nominalQualifier    |
-| imf:RangeQualifier      | imf:normalQualifier     |
-| imf:RegularityQualifier | imf:absoluteQualifier   |
-| imf:RegularityQualifier | imf:continuousQualifier |
-| imf:ScopeQualifier      | imf:designQualifier     |
-| imf:ScopeQualifier      | imf:operatingQualifier  |
+| Instance                | Qualifier               | PCA mapping       |
+|-------------------------+-------------------------+-------------------|
+| imf:calculatedQualifier | imf:ProvenanceQualifier | pca-plm:PCA_100004038 |
+| imf:measuredQualifier   | imf:ProvenanceQualifier | pca-plm:PCA_100004039 |
+| imf:specifiedQualifier  | imf:ProvenanceQualifier | pca-plm:PCA_100004037 |
+| imf:estimatedQualifier  | imf:ProvenanceQualifier | pca-plm:PCA_100004040 |
+| imf:setQualifier        | imf:ProvenanceQualifier | pca-plm:PCA_100004041 |
+| imf:averageQualifier    | imf:RangeQualifier      | pca-plm:PCA_100004047 |
+| imf:maximumQualifier    | imf:RangeQualifier      | pca-plm:PCA_100004048 |
+| imf:minimumQualifier    | imf:RangeQualifier      | pca-plm:PCA_100004049 |
+| imf:nominalQualifier    | imf:RangeQualifier      | pca-plm:PCA_100004045 |
+| imf:actualQualifier     | imf:RangeQualifier      | pca-plm:PCA_100004050 |
+| imf:normalQualifier     | imf:RangeQualifier      | pca-plm:PCA_100004046 |
+| imf:absoluteQualifier   | imf:RegularityQualifier | pca-plm:PCA_100004052 |
+| imf:continuousQualifier | imf:RegularityQualifier | pca-plm:PCA_100004051 |
+| imf:designQualifier     | imf:ScopeQualifier      | pca-plm:PCA_100004042 |
+| imf:operatingQualifier  | imf:ScopeQualifier      | pca-plm:PCA_100004043 |
+| imf:testQualifier       | imf:ScopeQualifier      | pca-plm:PCA_100004044 |
 
 **** Processing                                                          :QA:
 
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf/attributes.stottr :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf-ontology/attributes.stottr :mkdirp yes
 <<prefixes>>
 
-o-imf:AttributeQualifier [owl:Class ?qualifierClass, NEList<owl:NamedIndividual> ?qualifierInstances] :: {
+o-imf:AttributeQualifierClass [owl:Class ?qualifierClass, xsd:string ?label, ottr:IRI ?pcaMapping
+] :: {
   o-rdf:Type(?qualifierClass, owl:Class) ,
   o-owl-ax:SubClassOf(?qualifierClass, imf:AttributeQualifier) ,
+  ottr:Triple(?qualifierClass, skos:prefLabel, ?label),
   o-owl-ax:SubObjectMaxCardinality(imf:Attribute, "1"^^xsd:nonNegativeInteger, imf:hasAttributeQualifier, ?qualifierClass),
-  cross | o-rdf:Type(++?qualifierInstances, ?qualifierClass),
-  cross | o-rdf:Type(++?qualifierInstances, owl:NamedIndividual),
-  o-owl-ax:EquivObjectOneOf(?qualifierClass, ?qualifierInstances),
-  o-owl-ax:DifferentIndividuals(?qualifierInstances)
+  ottr:Triple(?qualifierClass, skos:exactMatch, ?pcaMapping)
+  #
+  ottr:Triple(?qualifierClass, vs:term_status, "testing")
+  ottr:Triple(?qualifierClass, skos:changeNote, "0.2.0 :: Added")
+  ottr:Triple(?qualifierClass, vann:termGroup, "attributes")
+} .
+
+
+o-imf:AttributeQualifier [owl:NamedIndividual ?qualifier, xsd:string ?label, owl:Class ?qualifierClass, ottr:IRI ?pcaMapping
+] :: {
+  o-rdf:Type(?qualifier, owl:NamedIndividual)
+  o-rdf:Type(?qualifier, ?qualifierClass),
+  ottr:Triple(?qualifier, skos:prefLabel, ?label),
+  ottr:Triple(?qualifier, skos:exactMatch, ?pcaMapping)
+  #
+  ottr:Triple(?qualifier, vs:term_status, "testing")
+  ottr:Triple(?qualifier, skos:changeNote, "0.2.0 :: Added")
+  ottr:Triple(?qualifier, vann:termGroup, "attributes")
 } .
 #+END_SRC
 
 #+NAME: py_aspect_ottr_qualifiers
-#+BEGIN_SRC python :results raw :wrap src ttl :var table=tbl-qualifiers :exports none
+#+BEGIN_SRC python :results raw :wrap src ttl :var tI=tbl-qualifiers tC=tbl-qualifier-classes :exports none
 output = ""
 instance = "[] ottr:of {} ;\n   ottr:values( {} ) . \n"
 
-qfc = '{} a owl:Class ;\n  skos:prefLabel "{}" ;\n  vs:term_status "testing" ;\n  #skos:definition "";\n  skos:changeNote\n     "0.2.0 :: Added" ;\n  vann:termGroup "attributes";\n.\n\n'
-qf = '{} a owl:NamedIndividual ;\n  skos:prefLabel "{}" ;\n  vs:term_status "testing" ;\n  #skos:definition "";\n  skos:changeNote\n     "0.2.0 :: Added" ;\n  vann:termGroup "attributes";\n.\n\n'
+for i in tI:
+  i.insert(1, "'" + i[0].replace("imf:", "").replace("Qualifier", " qualifier") + "'")
+  output += instance.format("o-imf:AttributeQualifier", " ".join(i))
 
-qualifiers = list(set(list(zip(*table[0:]))[0]))
-qualifiers.sort()
+allI = list(zip(*tI[0:]))[0]
+output += instance.format("o-owl-ax:DifferentIndividuals", "( " + " ".join(allI) + " )")
 
-for qualifier in qualifiers:
-  instances = []
-  output += qfc.format(qualifier, qualifier.replace('imf:', '').replace('Qualifier', ' Qualifier'))
-  for row in table[0:]:
-    if row[0] == qualifier :
-      instances.append(row[1])
+for i in tC:
+  i.insert(1, "'" + i[0].replace("imf:", "").replace("Qualifier", " Qualifier") + "'")
+  output += instance.format("o-imf:AttributeQualifierClass", " ".join(i))
 
-  for i in instances :
-      output += qf.format(i, i.replace('imf:', '').replace('Qualifier', ' qualifier'))
+allC = list(zip(*tC[0:]))[0]
+output += instance.format("o-owl-ax:DisjointClasses", "( " + " ".join(allC) + " )")
 
-  output += instance.format("o-imf:AttributeQualifier", qualifier + " (" + " ".join(instances) + ")")
-  output += "\n"
-
-output += "\n"
-
-##all_qualifier_instances = list(zip(*table[0:]))[1]
-output += instance.format("o-owl-ax:DisjointClasses", "( " + " ".join(qualifiers) + " )")
 
 return output
 #+END_SRC
+
+#+RESULTS: py_aspect_ottr_qualifiers
+#+BEGIN_src ttl
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:calculatedQualifier 'calculated qualifier' imf:ProvenanceQualifier plm:PCA_100004038 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:measuredQualifier 'measured qualifier' imf:ProvenanceQualifier plm:PCA_100004039 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:specifiedQualifier 'specified qualifier' imf:ProvenanceQualifier plm:PCA_100004037 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:estimatedQualifier 'estimated qualifier' imf:ProvenanceQualifier plm:PCA_100004040 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:setQualifier 'set qualifier' imf:ProvenanceQualifier plm:PCA_100004041 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:averageQualifier 'average qualifier' imf:RangeQualifier plm:PCA_100004047 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:maximumQualifier 'maximum qualifier' imf:RangeQualifier plm:PCA_100004048 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:minimumQualifier 'minimum qualifier' imf:RangeQualifier plm:PCA_100004049 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:nominalQualifier 'nominal qualifier' imf:RangeQualifier plm:PCA_100004045 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:actualQualifier 'actual qualifier' imf:RangeQualifier plm:PCA_100004050 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:normalQualifier 'normal qualifier' imf:RangeQualifier plm:PCA_100004046 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:absoluteQualifier 'absolute qualifier' imf:RegularityQualifier plm:PCA_100004052 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:continuousQualifier 'continuous qualifier' imf:RegularityQualifier plm:PCA_100004051 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:designQualifier 'design qualifier' imf:ScopeQualifier plm:PCA_100004042 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:operatingQualifier 'operating qualifier' imf:ScopeQualifier plm:PCA_100004043 ) . 
+[] ottr:of o-imf:AttributeQualifier ;
+   ottr:values( imf:testQualifier 'test qualifier' imf:ScopeQualifier plm:PCA_100004044 ) . 
+[] ottr:of o-owl-ax:DifferentIndividuals ;
+   ottr:values( ( imf:calculatedQualifier imf:measuredQualifier imf:specifiedQualifier imf:estimatedQualifier imf:setQualifier imf:averageQualifier imf:maximumQualifier imf:minimumQualifier imf:nominalQualifier imf:actualQualifier imf:normalQualifier imf:absoluteQualifier imf:continuousQualifier imf:designQualifier imf:operatingQualifier imf:testQualifier ) ) . 
+[] ottr:of o-imf:AttributeQualifierClass ;
+   ottr:values( imf:ProvenanceQualifier 'Provenance Qualifier' plm:PCA_100004038 ) . 
+[] ottr:of o-imf:AttributeQualifierClass ;
+   ottr:values( imf:RangeQualifier 'Range Qualifier' plm:PCA_100004047 ) . 
+[] ottr:of o-imf:AttributeQualifierClass ;
+   ottr:values( imf:RegularityQualifier 'Regularity Qualifier' plm:PCA_100004051 ) . 
+[] ottr:of o-imf:AttributeQualifierClass ;
+   ottr:values( imf:ScopeQualifier 'Scope Qualifier' plm:PCA_100004044 ) . 
+[] ottr:of o-owl-ax:DisjointClasses ;
+   ottr:values( ( imf:ProvenanceQualifier imf:RangeQualifier imf:RegularityQualifier imf:ScopeQualifier ) ) . 
+#+END_src
 
 ** Compile and verify
 *** RDF validate tangled file
@@ -1967,6 +2040,7 @@ imf:IMFModelGrammar a owl:Ontology ;
     dc:description "This shapes graph can be used to validate IMF Model RDF data against the grammar for IMF Models." ;
     pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
     pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    sh:entailment <http://www.w3.org/ns/entailment/RDFS> ;
     sh:shapesGraph 
       <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ,
       <http://www.w3.org/ns/shacl-shacl#> ,
@@ -1990,7 +2064,6 @@ imf:IMFModelGrammar a owl:Ontology ;
 <<shacl-attributes-value>>
 #<<shacl-attributes-group>>
 #+END_SRC
-
 
 
 ** IMF Ontology Grammar
@@ -2030,8 +2103,8 @@ _:TermMetadata a sh:NodeShape ;
     [ sh:path vann:termGroup ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "elements" "aspects" "attributes" "generic relations" "model" ) ] ,
     [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path skos:definition ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string  ] ,
-    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ] ,
-    [ sh:path skos:scopeNote ; sh:minCount 1 ; sh:severity sh:Warning ] 
+    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ]
+    #[ sh:path skos:scopeNote ; sh:minCount 1 ; sh:severity sh:Warning ] 
 .
 
 #+END_SRC
@@ -2052,6 +2125,9 @@ _:TermMetadata a sh:NodeShape ;
 	  ?this skos:note ?note .
 	  FILTER (STRSTARTS(STR(?note), 'This resource is programatically generated.'))
 	}
+        FILTER NOT EXISTS { 
+	  ?this skos:exactMatch [] .
+        }
       }
       ## ORDER BY ?this
 #+END_SRC
@@ -2346,7 +2422,7 @@ Conforms
 
 [[./out/owl/imf-aspects-overview.svg]]
 
-* TODO Types
+* Types
 
 Types are represented as patterns heavily inspired by the SHACL
 constaint languge for RDF.
@@ -2363,6 +2439,54 @@ turn be translated to different formats:
 
 OTTR templates are used to specify the patterns and their translation
 to the different formats.
+
+** TODO SHACL type shapes
+
+#+NAME: shacl-types
+#+BEGIN_SRC ttl :noweb strip-export :tangle out/shacl/imf-types.shacl.ttl :mkdirp yes
+<<prefixes>>
+
+<http://ns.imfid.org/imf-types> a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
+    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
+    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
+    skos:altLabel "IMF types ontology" ;
+    skos:scopeNote """
+
+    """;
+    .
+
+imf:ElementType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Element Type";
+  .
+
+imf:BlockType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Block Type";
+  .
+
+imf:TerminalType a owl:Class ;
+  rdfs:subClassOf imf:ElementType ;
+  skos:prefLabel "Terminal Type";
+  .
+
+imf:AttributeType a owl:Class ;
+  rdfs:subClassOf imf:Type ;
+  skos:prefLabel "Attribute Type";
+  .
+
+
+<<owl-types-type>>
+<<owl-types-instanceOf>>
+<<owl-types-typeconstraint>>
+<<owl-types-relationconstraints>>
+
+#+END_SRC
+
+
+
+#+END_SRC
 
 ** Overview type patterns
 
@@ -2498,14 +2622,14 @@ AttributeGroupType --> AttributeType : TypeReference
 
 circle element
 
-element -left-> ElementType : instanceOf
+element -left-> ElementType : type
 
 #+END_SRC
 
 #+RESULTS:
 [[file:out/img/imf-overview-type-patterns.png]]
 
-** OTTR Template Representation
+** SHACL OTTR Template Representation
 
 #+BEGIN_SRC ttl :noweb yes :tangle out/ottr/imf-types-shacl.stottr :mkdirp yes
 <<prefixes>>
@@ -2585,7 +2709,7 @@ o-imf-t-s:PropertyConstaint[
   ? List<rdfs:Resource> ?in,
   ? owl:Class ?class,
   ? ottr:IRI ?datatype,
-  ? xsd:integer ?minCount,
+  xsd:integer ?minCount = 0,
   ? xsd:integer ?maxCount, 
   ? rdfs:Literal ?minInclusive,
   ? rdfs:Literal ?minExclusive,
@@ -2610,43 +2734,13 @@ o-imf-t-s:PropertyConstaint[
   ottr:Triple(?id, sh:maxExclusive, ?maxExclusive),
   #ottr:Triple(?id, sh:minLength, ?minLength),
   #ottr:Triple(?id, sh:maxLength, ?maxLength),
-  ottr:Triple(?id, sh:pattern, ?pattern),
+  ottr:Triple(?id, sh:pattern, ?pattern)
   #ottr:Triple(?id, sh:flags, ?flags)
 } .
-
-# o-imf-t-s:SimpleValue[
-#     ottr:IRI ?id = _:P,
-#     ottr:IRI ?typeID, 
-#     ottr:IRI ?path, 
-#     rdfs:Resource ?value,
-#   ? xsd:string ?name, 
-#   ? xsd:string ?description
-# ] :: {
-#   o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-# } .
-
-# o-imf-t-s:SimpleValues[
-#     ottr:IRI ?id = _:P,
-#     ottr:IRI ?typeID, 
-#     ottr:IRI ?path, 
-#   ? List<rdfs:Resource> ?in,
-#   ? owl:Class ?class,
-#     xsd:integer ?minCount, 
-#     xsd:integer ?maxCount,
-#   ? xsd:string ?name, 
-#   ? xsd:string ?description
-# ] :: {
-#   o-imf:ShaclPropertyShape(?id, ?typeID, ?path, ?name, ?description),
-#   ottr:Triple(?id, sh:in, ?in),
-#   ottr:Triple(?id, sh:class, ?class),
-#   ottr:Triple(?id, sh:minCount, ?minCount),
-#   ottr:Triple(?id, sh:maxCount, ?maxCount)
-# } .
-
 #+END_SRC
 
-** Translation to OWL ontology representation
-*** OWL Classes
+** OWL OTTR Templates Translation                                  :noexport:
+*** Types -> OWL Classes
 
 #+NAME: sparql_shaclClass
 #+BEGIN_SRC ttl
@@ -2669,12 +2763,14 @@ WHERE {
 }
 #+END_SRC
 
-#+BEGIN_SRC ttl
+#+BEGIN_SRC ttl :noweb strip-export :XXXtangle out/ottr/imf-type-owl1.stottr :mkdirp yes
+<<prefixes>>
+
 o-imf-t-o:TypeClass[
   owl:Class ?id, 
   ? owl:Class ?imfClass,
-  ? xsd:string ?name, 
-  ? xsd:string ?description
+  !? xsd:string ?name, 
+  !? xsd:string ?description,
   ? xsd:string ?severity, 
   ? xsd:string ?message
 ] :: {
@@ -2683,82 +2779,337 @@ o-imf-t-o:TypeClass[
 } .
 #+END_SRC
 
-*** OWL Class restrictions
+*** Property Constraints -> OWL Class Restrictions
 
-SPARQL query
-
-#+NAME: sparql_shaclClassRestriction 
+#+NAME: sparql_shaclObjectPropertyConstraint
 #+BEGIN_SRC ttl
 SELECT 
   ?class 
   ?path 
-  ##?name
-  ##?description
+  ?name
+  ?description
   ?minCount
   ?maxCount
   ?nodeTargetClass
   ?hasValue
   ?in
-  ?datatype
-  ?minExclusive
-  ?minInclusive
-  ?maxExclusive
-  ?maxInclusive
-  ?minLength
-  ?maxLength
-  ?pattern
-  ?flags
+  #?datatype
+  #?minExclusive
+  #?minInclusive
+  #?maxExclusive
+  #?maxInclusive
+  #?minLength
+  #?maxLength
+  #?pattern
+  #?flags
 WHERE {
   ?n sh:targetClass ?class .
   ?n sh:property ?p .
   ?p sh:path ?path .
-  ##OPTIONAL { ?p sh:name ?name }
-  ##OPTIONAL { ?p sh:description ?description }
+  OPTIONAL { ?p sh:name ?name }
+  OPTIONAL { ?p sh:description ?description }
   OPTIONAL { ?p sh:minCount ?minCount }
   OPTIONAL { ?p sh:maxCount ?maxCount }
   OPTIONAL { ?p sh:node [ sh:targetClass ?nodeTargetClass ] }
   OPTIONAL { ?p sh:class ?class }
-  OPTIONAL { ?p sh:hasValue ?hasValue }
+  OPTIONAL { ?p sh:hasValue ?hasValue 
+    FILTER (!isLiteral(?hasValue))
+  }
   OPTIONAL { ?p sh:in ?in }
-  OPTIONAL { ?p sh:datatype ?datatype }
-  OPTIONAL { ?p sh:minExclusive ?minExclusive }
-  OPTIONAL { ?p sh:minInclusive ?minInclusive }
-  OPTIONAL { ?p sh:maxExclusive ?maxExclusive }
-  OPTIONAL { ?p sh:maxInclusive ?maxInclusive }
-  OPTIONAL { ?p sh:minLength ?minLength }
-  OPTIONAL { ?p sh:maxLength ?maxLength }
-  OPTIONAL { ?p sh:pattern ?pattern }
-  OPTIONAL { ?p sh:flags ?flags }
+  #OPTIONAL { ?p sh:datatype ?datatype }
+  #OPTIONAL { ?p sh:minExclusive ?minExclusive }
+  #OPTIONAL { ?p sh:minInclusive ?minInclusive }
+  #OPTIONAL { ?p sh:maxExclusive ?maxExclusive }
+  #OPTIONAL { ?p sh:maxInclusive ?maxInclusive }
+  #OPTIONAL { ?p sh:minLength ?minLength }
+  #OPTIONAL { ?p sh:maxLength ?maxLength }
+  #OPTIONAL { ?p sh:pattern ?pattern }
+  #OPTIONAL { ?p sh:flags ?flags }
+  FILTER ( ?path IN ( 
+imf:classifier,
+imf:hasAspect,
+imf:hasAttribute,
+imf:hasAttributeQualifier,
+imf:hasInputTerminal,
+imf:hasOutputTerminal,
+imf:hasTerminal,
+imf:hasTerminalQualifier,
+imf:medium,
+imf:predicate,
+#imf:symbol,
+imf:uom
+#imf:value,
+#skos:notation,
+) )
 }
 #+END_SRC
 
+#+NAME: sparql_shaclDatatypePropertyConstraint
+#+BEGIN_SRC ttl
+SELECT 
+  ?class 
+  ?path 
+  ?name
+  ?description
+  ?minCount
+  ?maxCount
+  #?nodeTargetClass
+  ?hasValue
+  ?in
+  ?datatype
+  #?minExclusive
+  #?minInclusive
+  #?maxExclusive
+  #?maxInclusive
+  #?minLength
+  #?maxLength
+  #?pattern
+  #?flags
+WHERE {
+  ?n sh:targetClass ?class .
+  ?n sh:property ?p .
+  ?p sh:path ?path .
+  OPTIONAL { ?p sh:name ?name }
+  OPTIONAL { ?p sh:description ?description }
+  OPTIONAL { ?p sh:minCount ?minCount }
+  OPTIONAL { ?p sh:maxCount ?maxCount }
+  #OPTIONAL { ?p sh:node [ sh:targetClass ?nodeTargetClass ] }
+  #OPTIONAL { ?p sh:class ?class }
+  OPTIONAL { ?p sh:hasValue ?hasValue 
+    FILTER (isLiteral(?hasValue))
+  }
+  OPTIONAL { ?p sh:in ?in }
+  OPTIONAL { ?p sh:datatype ?datatype }
+  #OPTIONAL { ?p sh:minExclusive ?minExclusive }
+  #OPTIONAL { ?p sh:minInclusive ?minInclusive }
+  #OPTIONAL { ?p sh:maxExclusive ?maxExclusive }
+  #OPTIONAL { ?p sh:maxInclusive ?maxInclusive }
+  #OPTIONAL { ?p sh:minLength ?minLength }
+  #OPTIONAL { ?p sh:maxLength ?maxLength }
+  #OPTIONAL { ?p sh:pattern ?pattern }
+  #OPTIONAL { ?p sh:flags ?flags }
+  FILTER ( ?path IN ( 
+#imf:classifier
+#imf:hasAspect
+#imf:hasAttribute
+#imf:hasAttributeQualifier
+#imf:hasInputTerminal
+#imf:hasOutputTerminal
+#imf:hasTerminal
+#imf:hasTerminalQualifier
+#imf:medium
+#imf:predicate
+imf:symbol,
+#imf:uom
+imf:value,
+skos:notation
+) )
+}
+#+END_SRC
 
-#+BEGIN_SRC ttl :noweb strip-export :XXXtangle out/ottr/imf-type-owl.stottr :mkdirp yes
+*** _SPARQL queries
+#+XXXCALL: py_run_sparql(query=sparql_shaclClass, data="example/pumpingFunctionType.xlsx.ttl")
+
+#+RESULTS:
+| ~class~                         | ~imfClass~      | ~name~                     | ~description~ | ~severity~ | ~message~ |
+|---------------------------------+-----------------+----------------------------+---------------+------------+-----------|
+| ~ns1:ApplicationStandard~       | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:ClientRequirementDocument~ | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:ElectricPower~             | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:Fluid~                     | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:LiquidPumping~             | ~imf:Block~     | ~Pumping, liquid velocity~ |               |            |           |
+| ~ns1:MechanicalRotationInput~   | ~imf:Terminal~  |                            |               |            |           |
+| ~ns1:MediaDatasheet~            | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:NoiseRequirementStandard~  | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:PressureDelta~             | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:Pressure~                  | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:PumpingPower~              | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:RotationalVelocity~        | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:SuctionPressure~           | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:VolumetricFlowrate~        | ~imf:Attribute~ |                            |               |            |           |
+| ~ns1:WaterPumpingTerminal~      | ~imf:Terminal~  |                            |               |            |           |
+
+#+XXXCALL: py_run_sparql(query=sparql_shaclObjectPropertyConstraint, data="example/pumpingFunctionType.xlsx.ttl")
+
+#+RESULTS:
+| ~class~                       | ~path~                  | ~name~ | ~description~ | ~minCount~ | ~maxCount~ | ~nodeTargetClass~               | ~hasValue~           | ~in~ |
+|-------------------------------+-------------------------+--------+---------------+------------+------------+---------------------------------+----------------------+------|
+| ~ns1:LiquidPumping~           | ~imf:hasInputTerminal~  | ~T1~   |               | ~2~        |            | ~ns1:WaterPumpingTerminal~      |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:hasInputTerminal~  | ~T2~   |               | ~1~        |            | ~ns1:MechanicalRotationInput~   |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:hasAttribute~      |        |               | ~0~        |            | ~ns1:NoiseRequirementStandard~  |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:classifier~        |        |               |            |            |                                 | ~ns2:Pumping~        |      |
+| ~ns1:LiquidPumping~           | ~imf:hasAspect~         |        |               |            |            |                                 | ~imf:functionAspect~ |      |
+| ~ns1:LiquidPumping~           | ~imf:hasOutputTerminal~ | ~T3~   |               | ~1~        |            | ~ns1:WaterPumpingTerminal~      |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:Fluid~                     |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:PressureDelta~             |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:SuctionPressure~           |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:Pressure~                  |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:PumpingPower~              |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:hasAttribute~      |        |               | ~0~        |            | ~ns1:ApplicationStandard~       |                      |      |
+| ~ns1:LiquidPumping~           | ~imf:hasAttribute~      |        |               | ~0~        |            | ~ns1:ClientRequirementDocument~ |                      |      |
+| ~ns1:MechanicalRotationInput~ | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:ElectricPower~             |                      |      |
+| ~ns1:MechanicalRotationInput~ | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:RotationalVelocity~        |                      |      |
+| ~ns1:MechanicalRotationInput~ | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:MediaDatasheet~            |                      |      |
+| ~ns1:VolumetricFlowrate~      | ~imf:uom~               |        |               |            |            |                                 |                      |      |
+| ~ns1:WaterPumpingTerminal~    | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:Pressure~                  |                      |      |
+| ~ns1:WaterPumpingTerminal~    | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:VolumetricFlowrate~        |                      |      |
+| ~ns1:WaterPumpingTerminal~    | ~imf:hasAttribute~      |        |               | ~1~        |            | ~ns1:MediaDatasheet~            |                      |      |
+| ~ns1:WaterPumpingTerminal~    | ~imf:classifier~        |        |               |            |            |                                 | ~ns2:RDS4233125~     |      |
+| ~ns1:WaterPumpingTerminal~    | ~imf:medium~            |        |               |            |            |                                 | ~ns2:WaterMedia~     |      |
+
+#+XXXCALL: py_run_sparql(query=sparql_shaclDataPropertyConstraint, data="example/pumpingFunctionType.xlsx.ttl")
+
+#+RESULTS:
+| ~class~                         | ~path~          | ~name~ | ~description~ | ~minCount~ | ~maxCount~ | ~hasValue~ | ~in~                                    | ~datatype~ | ~minExclusive~ | ~minInclusive~ | ~maxExclusive~ | ~maxInclusive~ | ~pattern~ |
+|---------------------------------+-----------------+--------+---------------+------------+------------+------------+-----------------------------------------+------------+----------------+----------------+----------------+----------------+-----------|
+| ~ns1:ClientRequirementDocument~ | ~imf:value~     |        |               |            |            |            | ~_:na5f020712cff4aa9a19acd79447e9a7db2~ |            |                |                |                |                |           |
+| ~ns1:LiquidPumping~             | ~imf:symbol~    |        |               |            |            | ~SP402~    |                                         |            |                |                |                |                |           |
+| ~ns1:LiquidPumping~             | ~skos:notation~ |        |               |            |            | ~KR~       |                                         |            |                |                |                |                |           |
+| ~ns1:VolumetricFlowrate~        | ~imf:value~     |        |               |            |            |            |                                         |            |                | ~10~           |                | ~1000~         |           |
+
+
+#+BEGIN_SRC ttl :noweb strip-export :XXXtangle out/ottr/imf-type-owl2.stottr :mkdirp yes
 <<prefixes>>
 
-o-imf-t-o:TypeClassRestriction[
+o-imf-t-o:PropertyConstraint[
+  ottr:IRI ?constraint, 
   owl:Class ?class, 
   ottr:IRI ?path,
-  ? xsd:integer ?minCount,
-  ? xsd:integer ?maxCount,
-  ? ?hasValue
+  ? xsd:string ?name,
+  ? xsd:string ?description,
+  xsd:nonNegativeInteger ?minCount="0"^^xsd:nonNegativeInteger,
+  ? xsd:nonNegativeInteger ?maxCount,
+  ? rdfs:Resource ?hasValue
 ] :: {
-  o-owl-ax:SubMaxCardinality(?class, ?maxCount, ?path),
-  o-owl-ax:SubMinCardinality(?class, ?minCount, ?path),
-  o-owl-ax:SubAllValuesFrom(?class, ?path, ?nodeTargetClass),
-  o-owl-ax:SubHasValue(?class, ?path, ?hasValue)
+  o-rdfs:SubClassOf(?class, ?constraint),
+
+  o-rdfs:TypedResourceDescription(?constraint, owl:Restriction, ?name, ?description, none, none),
+  ottr:Triple(?constraint, owl:onProperty, ?path),
+
+  ottr:Triple(?constraint, owl:minQualifiedCardinality, ?minCount),
+  ottr:Triple(?constraint, owl:maxQualifiedCardinality, ?maxCount),
+
+  ottr:Triple(?constraint, owl:hasValue, ?hasValue)
+} .
+
+o-imf-t-o:ObjectPropertyConstraint[
+  owl:Class ?class, 
+  owl:ObjectProperty ?path,
+  ? xsd:string ?name,
+  ? xsd:string ?description,
+  ? xsd:nonNegativeInteger ?minCount,
+  ? xsd:nonNegativeInteger ?maxCount,
+  owl:Class ?nodeTargetClass = owl:Thing,
+  ? owl:NamedIndividual ?hasValue,
+  ? NEList<owl:NamedIndividual> ?in
+] :: {
+  o-imf-t-o:PropertyConstraint(_:C, ?class, ?path, ?name, ?description, ?minCount, ?maxCount, ?hasValue),
+  ottr:Triple(_:C, owl:onClass, ?nodeTargetClass),
+  o-rdf:Type(?path, owl:ObjectProperty), # can drop this if we import
+
+  o-imf-t-o:ObjectAllValuesFromOneOf(_:C, ?in)
+  
+
+} .
+
+o-imf-t-o:ObjectAllValuesFromOneOf[
+  ottr:IRI ?constraint,
+  NEList<owl:NamedIndividual> ?in
+] :: {
+  ottr:Triple(?constraint, owl:allValuesFrom, _:oneOfClass),
+  o-owl-rstr:ObjectOneOf(_:oneOfClass, ?in)
+} .
+
+o-imf-t-o:DatatypePropertyConstraint[
+  owl:Class ?class, 
+  owl:DatatypeProperty ?path,
+  ? xsd:string ?name,
+  ? xsd:string ?description,
+  ? xsd:nonNegativeInteger ?minCount,
+  ? xsd:nonNegativeInteger ?maxCount,
+  #? owl:Class ?nodeTargetClass,
+  ? rdfs:Literal ?hasValue,
+  ? List<rdfs:Literal> ?in,
+  rdfs:Datatype ?targetDatatype = rdfs:Literal
+  #? ?minExclusive,
+  #? ?minInclusive,
+  #? ?maxExclusive,
+  #? ?maxInclusive,
+  #? xsd:integer ?minLength,
+  #? xsd:integer ?maxLength,
+  #? xsd:string ?pattern
+  #? xsd:string ?flags
+] :: {
+  o-imf-t-o:PropertyConstraint(_:C, ?class, ?path, ?name, ?description, ?minCount, ?maxCount, ?hasValue),
+  ottr:Triple(_:C, owl:onDataRange, ?targetDatatype),
+  o-rdf:Type(?path, owl:DatatypeProperty), # can drop this if we import
+
+  #zipMin | o-imf-t-o:onRestrictedDataRange(_:C, ?targetDatatype, 
+  #  ++(owl:minExclusive, owl:minInclusive, owl:maxExclusive, owl:maxInclusive, owl:pattern),
+  #  ++(?minExclusive, ?minInclusive, ?maxExclusive, ?maxInclusive, ?pattern)
+  #)
+}
+.
+
+o-imf-t-o:onRestrictedDataRange[
+  ottr:IRI ?constraint,
+  rdfs:Datatype ?datatype,
+  ! ottr:IRI ?facet,
+  ?value
+] :: {
+  ottr:Triple(?constraint, owl:onDataRange, _:range)
+  o-rdf:Type(_:range, rdfs:Datatype),
+  ottr:Triple(_:range, owl:onDatatype, ?datatype),
+  ottr:Triple(_:range, owl:withRestrictions, (_:facet)),
+  ottr:Triple(_:facet, ?facet, ?value)
 } .
 
 
-o-imf-t-o:TypeClassDataRestriction[
+
+#+END_SRC
+
+#+BEGIN_SRC ttl
+
+o-imf-t-o:_Constraint[
+  ottr:IRI ?constraint, 
+  ottr:IRI ?property,
+  ? xsd:string ?name,
+  ? xsd:description ?description
+] :: {
+} .
+
+o-imf-t-o:_CardinalityConstraint[
+  ottr:IRI ?constraint = _:C,
+  xsd:nonNegativeInteger ?min="0"^^xsd:nonNegativeInteger,
+  ? xsd:nonNegativeInteger ?max,
+  ? owl:Class ?targetClass,
+  ? rdfs:Datatype ?targetDatatype
+] :: {
+  ottr:Triple(?constraint, owl:minQualifiedCardinality, ?min),
+  ottr:Triple(?constraint, owl:maxQualifiedCardinality, ?max),
+  ottr:Triple(?constraint, owl:onClass, ?targetClass),
+  ottr:Triple(?constraint, owl:onDataRange, ?targetDatatype)
+}
+
+o-imf-t-o:_ValueConstraint[
+  ottr:IRI ?constraint = _:C,
+  ottr:IRI ?property,
+  ?value
+] :: {
+
+}
+
+
+o-imf-t-o:DataPropertyConstraint[
   owl:Class ?class, 
-  ottr:IRI ?path,
-  ? xsd:integer ?minCount,
-  ? xsd:integer ?maxCount,
-  # ? owl:Class ?nodeTargetClass,
-  ? ?hasValue,
-  ? List<rdfs:Resource> ?in,
-  ? ottr:IRI ?datatype,
+  owl:DatatypeProperty ?path,
+  ? xsd:string ?name,
+  ? xsd:description ?description,
+  ? xsd:nonNegativeInteger ?minCount,
+  ? xsd:nonNegativeInteger ?maxCount,
+  ? rdfs:Literal ?hasValue,
+  ? List<rdfs:Literal> ?in,
+  ? rdfs:Datatype ?datatype,
   ? ?minExclusive,
   ? ?minInclusive,
   ? ?maxExclusive,
@@ -2768,398 +3119,1686 @@ o-imf-t-o:TypeClassDataRestriction[
   ? xsd:string ?pattern,
   ? xsd:string ?flags
 ] :: {
-  o-imf-t-o:TypeClassRestriction(?class, ?path, ?minCount, ?maxCount, ?hasValue),
-  #o-owl-ax:SubObjectOneOf(?class, ?path, ?in)
+  o-imf-t-o:PropertyConstraint(?class, ?path, ?name, ?description),
+  o-owl-ax:SubDataHasValue(?class, ?path, ?hasValue),
   zipMin | o-imf-t-o:SubDataAllValuesFromDatatypeFacet(?class, ?path, ?datatype, 
     ++(owl:minExclusive, owl:minInclusive, owl:maxExclusive, owl:maxInclusive, owl:minLength, owl:maxLength, owl:pattern),
     ++(?minExclusive, ?minInclusive, ?maxExclusive, ?maxInclusive, ?minLength, ?maxLength, ?pattern)
   )
 } .
 
-o-imf-t-o:TypeClassObjectRestriction[
-  owl:Class ?class, 
-  owl:ObjectProperty ?path,
-  ? xsd:integer ?minCount,
-  ? xsd:integer ?maxCount,
-  ? owl:Class ?nodeTargetClass,
-  ? ?hasValue,
-  ? List<rdfs:Resource> ?in
-] :: {
-  o-imf-t-o:TypeClassRestriction(?class, ?path, ?minCount, ?maxCount, ?hasValue),
-  o-owl-ax:SubObjectAllValuesFrom(?class, ?path, ?nodeTargetClass),
-  o-owl-ax:SubObjectHasValue(?class, ?path, ?hasValue),
-  o-owl-ax:SubObjectAllValuesFrom(?class, ?path, _:inClass),
-  o-owl-ax:SubObjectOneOf(_:inClass, ?in)
-} .
-
-
 o-imf-t-o:SubDataAllValuesFromDatatypeFacet[
-  ottr:Class ?class,
-  ottr:DatatypeProperty ?prop,
+  owl:Class ?class,
+  owl:DatatypeProperty ?prop,
   rdfs:Datatype ?datatype,
-  ottr:IRI ?facet,
+  ! ottr:IRI ?facet,
   ?value
 ] :: {
   o-owl-ax:SubDataAllValuesFrom(?class, ?prop, _:restriction),
   o-imf-t-o:DatatypeRestriction(_:restriction, ?datatype, ?facet, ?value)
 } .
 
-o-imf-t-o:DatatypeRestriction[
-  ottr:IRI ?x,
-  ottr:IRI ?datatype,
-  ! ottr:IRI ?facet,
-  ?value
-] :: {
-  o-rdf:Type(?x, rdfs:Datatype),
-  ottr:Triple(?x, owl:onDatatype, ?datatype),
-  ottr:Triple(?x, owl:withRestrictions, (_:facet)),
-  ottr:Triple(_:facet, ?facet, ?value)
-} .
 
 #+END_SRC
 
 https://stackoverflow.com/questions/36008786/proper-way-to-describe-string-literal-in-owl
 
-* OLD types                                                        :noexport:
-** Types
+*** bOTTR map
 
-#+NAME: owl-types-type
-#+BEGIN_SRC ttl
-imf:Type a owl:Class ;
-  skos:prefLabel "Type";
-  .
-
-imf:ElementType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Element Type";
-  .
-
-imf:BlockType a owl:Class ;
-  rdfs:subClassOf imf:ElementType ;
-  skos:prefLabel "Block Type";
-  .
-
-imf:TerminalType a owl:Class ;
-  rdfs:subClassOf imf:ElementType ;
-  skos:prefLabel "Terminal Type";
-  .
-
-imf:AttributeType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Attribute Type";
-  .
-
-imf:AttributeGroupType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Attribute Group Type";
-  .
-
-imf:hasTerminalType a owl:ObjectProperty ;
-  rdfs:domain imf:BlockType ;
-  rdfs:range imf:TerminalType ;
-  .
-#+END_SRC
-
-** Type constraint
-
-#+NAME: owl-types-typeconstraint
-#+BEGIN_SRC ttl
-imf:TypeConstraint a owl:Class .
-
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
-
-#+END_SRC
-
-** Relation constraints
-
-#+NAME: owl-types-relationconstraints
-#+BEGIN_SRC ttl
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
-
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
-#+END_SRC
-
-** instanceOf
-
-#+NAME: owl-types-instanceOf
-#+BEGIN_SRC ttl
-
-imf:instanceOf a owl:ObjectProperty ;
-  skos:prefLabel "instance of" ;
-  rdfs:range imf:Type .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Attribute imf:instanceOf imf:AttributeType ) .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
-#+END_SRC
-
-
-
-** Processing and QA                                                     :QA:
-*** RDF validate tangled file
-
-#+CALL: sh_jena_validate_rdf(files="out/owl/imf-types.owl.wottr.ttl")
-
-#+RESULTS:
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.wottr.ttl : 0.19 sec : 139 Triples : 747.31 per second
-
-*** Expand OTTR instances
-
-#+CALL: lutra-expand(in="out/owl/imf-types.owl.wottr.ttl", out="out/owl/imf-types.owl.ttl")
-
-*** RDF validate final file
-
-#+CALL: sh_jena_validate_rdf(files="out/owl/imf-types.owl.ttl")
-
-#+RESULTS:
-: file:///home/martige/repo/imf-lab/imf-ontology/out/owl/imf-types.owl.ttl : 0.20 sec : 96 Triples : 477.61 per second
-
-#+CALL: sh_jena_shacl_std_validate(data="out/owl/imf-types.owl.ttl")
-
-#+RESULTS:
-#+BEGIN_src ttl
-@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh:   <http://www.w3.org/ns/shacl#> .
-@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
-
-[ rdf:type     sh:ValidationReport ;
-  sh:conforms  true
-] .
-#+END_src
-
-*** Diagram
-
-#+CALL: rdfvizler(rules="out/rdfvizler/ontology-overview.rule", data="out/owl/imf-types.owl.ttl", output="out/owl/imf-types-overview.svg")
-
-#+RESULTS:
-
-[[./out/owl/imf-types-overview.svg]]
-
-** OWL Ontology
-
-#+NAME: owl-types-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/imf-types.owl.wottr.ttl :mkdirp yes
+#+BEGIN_SRC ttl :noweb yes :XXXtangle out/bottr/types.bottr :mkdirp yes
 <<prefixes>>
 
-<http://ns.imfid.org/imf-types> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
-    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
-    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
-    skos:altLabel "IMF types ontology" ;
-    skos:scopeNote """
+_:data a ottr:RDFFileSource ; 
+  ottr:sourceURL "../../example/pumpingFunctionType.xlsx.ttl" .
 
-    """;
-    .
+### For testing
+[] a ottr:XXXInstanceMap ;
+  ottr:source _:data ;
+  ottr:query """
+    SELECT ?s ?p ?o
+    WHERE { ?s ?p ?o }
+    LIMIT 1
+  """;
+  ottr:template ottr:Triple .
 
-<<owl-types-type>>
-<<owl-types-instanceOf>>
-<<owl-types-typeconstraint>>
-<<owl-types-relationconstraints>>
+[] a ottr:InstanceMap ;
+  ottr:template o-imf-t-o:TypeClass ;
+  ottr:source _:data ;
+  ottr:query """
+<<sparql_shaclClass>>
+""" 
+.
+
+[] a ottr:InstanceMap ;
+  ottr:template o-imf-t-o:ObjectPropertyConstraint ;
+  ottr:source _:data ;
+  ottr:query """
+<<sparql_shaclObjectPropertyConstraint>>
+"""
+.
+
+[] a ottr:InstanceMap ;
+  ottr:template o-imf-t-o:DatatypePropertyConstraint ;
+  ottr:source _:data ;
+  ottr:query """
+<<sparql_shaclDatatypePropertyConstraint>>
+"""
+.
 
 #+END_SRC
 
-#+RESULTS: owl-types-ontology
-#+begin_example
-@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
-@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
-@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
-@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-@prefix ex:	<http://example.com#> .
-@prefix imf:	<http://ns.imfid.org/imf#> .
+** RDF prototype: imftype-shacl2rdf.py
 
-@prefix p14:    <http://example.com/P14#> .
-@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
-@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
-@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
-@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
-@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+The following python script translates IMF types in SHACL format to an
+prototypical RDF instance.
 
-<http://ns.imfid.org/imf-types> a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/20230331/imf-types> ;
-    ## owl:imports <http://ns.imfid.org/20230331/imf-top> ;
-    skos:prefLabel "Information Modelling Framework Ontology: Types " ;
-    skos:altLabel "IMF types ontology" ;
-    skos:scopeNote """
+#+NAME: py_prototype_from_shacl
+#+BEGIN_SRC python :tangle out/py/imftype-shacl2rdf.py :mkdirp yes
+import sys, getopt
+import rdflib
+from rdflib import Graph, URIRef, BNode, Literal
+from rdflib.namespace import NamespaceManager, SH, RDFS, RDF, SKOS, OWL
+from rdflib.collection import Collection
 
-    """;
-    .
+# input graph containing SHACL IMF types
+iG = rdflib.Graph()
 
-imf:Type a owl:Class ;
-  skos:prefLabel "Type";
-  .
+# output graph to contain RDF IMF model prototype
+oG = rdflib.Graph()
 
-imf:ElementType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Element Type";
-  .
+nsPrototype = "http://example.org/prototype#"
+nsIMF = "http://ns.imfid.org/imf#"
+oG.bind("x", nsPrototype)
+oG.bind("imf", nsIMF)
 
-imf:BlockType a owl:Class ;
-  rdfs:subClassOf imf:ElementType ;
-  skos:prefLabel "Block Type";
-  .
+# list and function for storing constraint data as an editorialNote
+shPs = [
+  'name', 
+  'description', 
+  'class',
+  'datatype',
+  'minCount',
+  'maxCount',
+  'minExclusive',
+  'minInclusive',
+  'maxExclusive',
+  'maxInclusive',
+  'minLength',
+  'maxLength',
+  'pattern', 
+  'flags'
+]
 
-imf:TerminalType a owl:Class ;
-  rdfs:subClassOf imf:ElementType ;
-  skos:prefLabel "Terminal Type";
-  .
+# list of IMF classes that have associated Types
+types = ['Block', 'Terminal', 'Attribute']
 
-imf:AttributeType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Attribute Type";
-  .
+idN = 0
 
-imf:AttributeGroupType a owl:Class ;
-  rdfs:subClassOf imf:Type ;
-  skos:prefLabel "Attribute Group Type";
-  .
+# function to generate new resources
+def newId():
+#return BNode()
+  global idN
+  idN += 1
+  return URIRef(nsPrototype + "id-" + str(idN))
 
-imf:hasTerminalType a owl:ObjectProperty ;
-  rdfs:domain imf:BlockType ;
-  rdfs:range imf:TerminalType ;
-  .
 
-imf:instanceOf a owl:ObjectProperty ;
-  skos:prefLabel "instance of" ;
-  rdfs:range imf:Type .
+def copyConstaintAsNote(shapeId, protoId, noteHeading):
+  note = "" 
+  # single value properties
+  for p in shPs:
+    for o in iG.objects(shapeId, SH[p], None):
+      note += "  - " + p + ": " + o + "\n"
 
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Element imf:instanceOf imf:ElementType ) .
+  # list value property
+  for o in iG.objects(shapeId, SH['in'], None):
+    note += "  - in (values): " + ", ".join(Collection(iG, o)) + "\n"
 
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Block imf:instanceOf imf:BlockType ) .
+  if note != "":
+    oG.add((protoId, SKOS.editorialNote, Literal(noteHeading + ":\n" + note)))
 
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Terminal imf:instanceOf imf:TerminalType ) .
 
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:Attribute imf:instanceOf imf:AttributeType ) .
+def nodeShape(nodeId, protoId):
 
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values ( imf:AttributeGroup imf:instanceOf imf:AttributeGroupType ) .
-imf:TypeConstraint a owl:Class .
+  for t in types:
+    if (nodeId, RDF.type, URIRef(nsIMF + t + "Type")) in iG: # get the type class
+      oG.add((protoId, RDF.type, URIRef(nsIMF + t))) # add the class
 
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:minCount xsd:integer ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:TypeConstraint "1"^^xsd:nonNegativeInteger imf:maxCount xsd:integer ) .
+  for o in iG.objects(nodeId, SH.targetClass, None):
+    oG.add((protoId, RDF.type, o))
 
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:hasAspect imf:Aspect ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger skos:notation rdfs:Literal ) .
-[] ottr:of o-owl-ax:SubDataMaxCardinality ;
-   ottr:values ( imf:ElementType "1"^^xsd:nonNegativeInteger imf:symbol rdfs:Literal ) .
+  copyConstaintAsNote(nodeId, protoId, "SHACL Node shape description")
 
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasDirection imf:Direction ) .
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values ( imf:TerminalType "1"^^xsd:nonNegativeInteger imf:hasMedium owl:Thing ) .
-#+end_example
+  for o in iG.objects(nodeId, SH.property, None):
+    propShape(protoId, o)
+
+def propShape(protoId, propId):
+
+  path = iG.value(propId, SH.path, None)
+
+  # if property shape has hasValue then add the value ...
+  if (propId, SH.hasValue, None) in iG:
+    for o in iG.objects(propId, SH.hasValue, None): 
+      oG.add((protoId, path, o))
+
+  # ... otherwise, for each minCount > 1, create a placeholder resource annotated with constraint info
+  else:
+    for n in range(max(1, int(iG.value(propId, SH.minCount, None, default=1)))):
+      new = newId()
+      oG.add((protoId, path, new))
+      #copyConstaintAsNote(propId, new, "SHACL Property shape specification")
+      if (propId, SH.node, None) in iG:
+        nodeShape(iG.value(propId, SH.node, None), new)
+
+def main(argv):
+  inputfile = ''
+  shapeIRI = ''
+  outputfile = ''
+  opts, args = getopt.getopt(argv,"hi:o:n:",["ifile=","ofile=","nodeShapeIRI="])
+
+  for opt, arg in opts:
+    if opt == '-h':
+      print (sys.argv[0] + " -i <inputfile> -o <outputfile>")
+      sys.exit()
+    elif opt in ("-i", "--ifile"):
+      inputfile = arg
+    elif opt in ("-o", "--ofile"):
+      outputfile = arg
+    elif opt in ("-n", "--nodeShapeIRI"):
+      shapeIRI = arg
+
+  if inputfile == '' or outputfile == '':
+    print("Error: missing options!")
+    print("Usage: " + sys.argv[0] + " -i <inputfile> [-n <nodeShapeIRI>] -o <outputfile>")
+    sys.exit()
+
+  # Read input
+  iG.parse(inputfile, format="ttl")
+
+  if shapeIRI == '':
+    for s in iG.subjects(RDF.type, SH.NodeShape):
+      nodeShape(s, newId())
+  else: 
+    nodeShape(URIRef(shapeIRI), newId())
+
+  oG.serialize(destination=outputfile)
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
+#+END_SRC
+
+
+** OWL class representation: imftype-shacl2owl.py
+
+The following python script translates IMF types in SHACL format to an
+OWL Class representation.
+
+#+BEGIN_SRC python :tangle out/py/imftype-shacl2owl.py :mkdirp yes
+import sys, getopt
+import rdflib
+from rdflib import Graph, URIRef, BNode, Literal
+from rdflib.namespace import NamespaceManager, XSD, SH, RDFS, RDF, SKOS, OWL
+from rdflib.collection import Collection
+
+def newId():
+  return BNode()
+
+# input graph containing SHACL IMF types
+iG = rdflib.Graph()
+
+
+nsIMF = "http://ns.imfid.org/imf#"
+
+# IMF vocabulary
+ontIMF = rdflib.Graph()
+iriIMF = "https://imf-lab.gitlab.io/imf-ontology/out/owl/imf-ontology.owl.ttl"
+ontIMF.parse(iriIMF, format="ttl")
+ontIMF.bind("imf", nsIMF)
+
+# output graph
+oG = rdflib.Graph()
+oG.bind("imf", nsIMF)
+
+# list of IMF classes that have associated Types
+types = ['Block', 'Terminal', 'Attribute']
+
+# map of type classes to IMF classes
+mapC = { URIRef(nsIMF + t + "Type"): URIRef(nsIMF + t) for t in types }
+
+# map SHACL to OWL
+map = {
+  SH.name: RDFS.label,
+  SH.description: RDFS.comment,
+  SH.path: OWL.onProperty,
+  SH.hasValue: OWL.hasValue,
+  SH.minCount: OWL.minQualifiedCardinality,
+  SH.maxCount: OWL.maxQualifiedCardinality,
+  SH.datatype: OWL.onDataRange,
+  SH.minExclusive: XSD.minExclusive,
+  SH.minInclusive: XSD.minInclusive,
+  SH.maxExclusive: XSD.maxExclusive,
+  SH.maxInclusive: XSD.maxInclusive,
+  SH.minLength: XSD.minLength,
+  SH.maxLength: XSD.maxLength ,
+  SH.pattern: XSD.pattern
+  #SH.flags:
+}
+
+# selection of properties
+mapP = [
+  SH.name,
+  SH.description,
+  SH.path,
+  SH.hasValue,
+  SH.minCount,
+  SH.maxCount
+]
+
+# selection of facets
+mapF = [
+  SH.minExclusive,
+  SH.minInclusive,
+  SH.maxExclusive,
+  SH.maxInclusive,
+  SH.minLength,
+  SH.maxLength,
+  SH.pattern
+  #SH.flags
+]
+
+def copyObjects(sourceS, sourceP, targetS, targetP, defaultO=None):
+  if (sourceS, sourceP, None) in iG:
+    for o in iG.objects(sourceS, sourceP, None):
+      oG.add((targetS, targetP, o))
+  elif defaultO != None:
+    oG.add((targetS, targetP, defaultO))
+
+# add a list to output graph as RDF list
+def addCollection(targetS, targetP, collection):
+  size = len(collection)
+  head = newId()
+  oG.add((targetS, targetP, head))
+  for i in range(size):
+    newHead = newId()
+    oG.add((head, RDF.first, collection[i]))
+    if (i == size-1):
+      oG.add((head, RDF.rest, RDF.nil))
+    else:
+      oG.add((head, RDF.rest, newHead))
+      head = newHead
+
+### Create a class of the node shape, adding propertyShapes as class restrictions.
+def nodeShape(nShape):
+
+  # get IRI
+  classId = iG.value(nShape, SH.targetClass, None)
+  oG.add((classId, RDF.type, OWL.Class))
+
+  # translate classification
+  superclasses = []
+  for key in mapC:
+    if (nShape, RDF.type, key) in iG:
+      oG.add((classId, RDFS.subClassOf, mapC[key]))
+      superclasses.append(mapC[key])
+
+  # translate SH properties to OWL
+  for key in mapP:
+    copyObjects(nShape, key, classId, map[key])
+
+  # collect class restriction resources for each SH property shape:
+  restrictions = []
+
+  for pShape in iG.objects(nShape, SH.property, None):
+    rstr = newId()
+    oG.add((classId, RDFS.subClassOf, rstr))
+    if propShape(rstr, pShape): # collect only non-vacuous restrictions
+      restrictions.append(rstr)
+
+  if len(restrictions) > 1:
+    restrictions.extend(superclasses)
+    _equivs = newId()
+    oG.add((_equivs, RDFS.subClassOf, classId))
+    oG.add((_equivs, RDF.type, OWL.Class))
+    addCollection(_equivs, OWL.intersectionOf, restrictions)
+
+### Create class restrictions of property shape.
+def propShape(rstr, pShape):
+
+  oG.add((rstr, RDF.type, OWL.Restriction))
+
+  # translate SH properties to OWL
+  for key in mapP:
+    copyObjects(pShape, key, rstr, map[key])
+
+  # add target class/datatype if not a hasValue
+  if (rstr, OWL.hasValue, None) not in oG:
+
+    # add default min card if not set
+    if (rstr, OWL.minQualifiedCardinality, None) not in oG:
+      oG.add((rstr, OWL.minQualifiedCardinality, Literal(0, datatype=XSD.nonNegativeInteger)))
+
+    # is path a data property or object property; let's ask the IMF ontology.
+    property = iG.value(pShape, SH.path, None)
+    if (property, RDF.type, OWL.ObjectProperty) in ontIMF:
+      targetProperty = OWL.onClass
+      targetClassifier = OWL.Class
+    else:
+      targetProperty = OWL.onDataRange
+      targetClassifier = RDFS.Datatype
+
+    # SH.in, copy list
+    for o in iG.objects(pShape, SH['in']):
+      _oneOf = newId()
+      oG.add((rstr, targetProperty, _oneOf))
+      oG.add((_oneOf, RDF.type, targetClassifier))
+      addCollection(_oneOf, OWL.oneOf, Collection(iG, o))
+
+
+    if targetProperty == OWL.onClass: # ObjectProperty
+
+      # add SH.node -> SH.targetClasses as OWL.onClass
+      for nShape in iG.objects(pShape, SH.node):
+        for targetClass in iG.objects(nShape, SH.targetClass):
+          oG.add((rstr, OWL.onClass, targetClass))
+
+      if (rstr, OWL.onClass, None) not in oG:
+        oG.add((rstr, OWL.onClass, OWL.Thing))
+
+    else: # not ObjectProperty
+
+      # get datatype, defaulting to RDFS.Literal
+      datatype = iG.value(pShape, SH.datatype, None, RDFS.Literal)
+
+      # collect any facets
+      facetTriples = []
+      for key in mapF:
+        if (pShape, key, None) in iG:
+          facetTriples.append((newId(), map[key], iG.value(pShape, key, None)))
+      
+      # create a wrapping datatype for the facets
+      if len(facetTriples) > 0:
+        _datatype = newId()
+        facetS = [t[0] for t in facetTriples]
+        oG.add((rstr, OWL.onDataRange, _datatype))
+        oG.add((_datatype, RDF.type, RDFS.Datatype))
+        oG.add((_datatype, OWL.onDatatype, datatype))
+        for t in facetTriples:
+          oG.add(t)
+        addCollection(_datatype, OWL.withRestrictions, facetS)
+     
+      # if no facets, add datatype 
+      else:
+        oG.add((rstr, map[SH.datatype], datatype))
+
+  # return True if include in intersectionOf axioms on class, avoiding vacuous statements
+  return (rstr, OWL.hasValue, None) in oG or oG.value(rstr, OWL.minQualifiedCardinality, None, Literal(0)) > Literal(0)
+
+def main(argv):
+  inputfile = ''
+  outputfile = ''
+  opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+
+  for opt, arg in opts:
+    if opt == '-h':
+      print (sys.argv[0] + " -i <inputfile> -o <outputfile>")
+      sys.exit()
+    elif opt in ("-i", "--ifile"):
+      inputfile = arg
+    elif opt in ("-o", "--ofile"):
+      outputfile = arg
+
+  if inputfile == '' or outputfile == '':
+    print("Error: missing options!")
+    print("Usage: " + sys.argv[0] + " -i <inputfile> -o <outputfile>")
+    sys.exit()
+
+  # Read input
+  iG.parse(inputfile, format="ttl")
+
+  # Translate all node shapes
+  for x in iG.subjects(RDF.type, SH.NodeShape):
+    nodeShape(x)
+
+  # Add ontology import
+  _ont = newId()
+  oG.add((_ont, RDF.type, OWL.Ontology))
+  oG.add((_ont, OWL.imports, URIRef(iriIMF)))
+  oG.serialize(destination=outputfile)
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
+#+END_SRC
+
+#+RESULTS: py_types_owl_from_shacl
+[[file:None]]
+
 
 * Example
 
+The example demonstrates:
+
+ 1. Defining a IMF type -- using a spreadsheet with OTTR processing instructions
+
+ 2. Translating (expanding) the spreadsheet to SHACL format -- using the OTTR framework
+
+ 3. Extracting a prototype IMF element instance from the IMF type in
+    SHACL format -- using a python script
+
+ 4. IMF data/instance validation ...
+    1. ... against the IMF terms
+    2. ... against the IMF grammar
+    3. ... against its IMF type
+
+ 5. Translating the IMF type in SHACL format to OWL -- using a python
+    script
+
+ 6. OWL reasoning
+
+** Example data
+
+The example data is taken from an example from the IMF manual:
+
 [[./example/pumpingFunctionType.png]]
 
-** Type
+** Defining an IMF type
 
-The types in the example is represented in the following Excel spreadsheet [[./example/pumpingFunctionType.xlsx]]
+The example is represented in the following Excel spreadsheet
+[[./example/pumpingFunctionType.xlsx]]
 
-*** Type expansion: SHACL
+The spreadsheet uses the basic OTTR template defined for Type,
+TypeReference and PropertyConstraint.
 
-#+BEGIN_SRC sh :exports none :results raw
-java -jar bin/lutra.jar -f -L stottr -l out/ottr/shacl.stottr -I tabottr example/pumpingFunctionType.xlsx | rapper - -i turtle -o turtle -I 'http://example.com#' > example/TypeTemplate.xlsx.ttl
+** IMF type as SHACL
+
+The spreadsheet can be translated (called expanded) to SHACL shape
+expressions using the OTTR framework and the OTTR template
+definitions.
+
+#+BEGIN_SRC sh :exports none :results raw :wrap src ttl
+java -jar bin/lutra.jar -l out/ottr -L stottr -f -p out/.std-prefixes.ttl -I tabottr example/pumpingFunctionType.xlsx | rapper - -i turtle -o turtle -I 'http://base.com#' > example/pumpingFunctionType.xlsx.ttl
+cat example/pumpingFunctionType.xlsx.ttl
 #+END_SRC
 
 #+RESULTS:
-rapper: Parsing file <stdin> with parser turtle and base URI http://example.com#
-rapper: Serializing with serializer turtle and base URI http://example.com#
-rapper: Parsing returned 167 triples
+#+BEGIN_src ttl
+rapper: Parsing file <stdin> with parser turtle and base URI http://base.com#
+rapper: Serializing with serializer turtle and base URI http://base.com#
+rapper: Parsing returned 152 triples
+@base <http://base.com#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix o-owl-rstr: <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-rdfs: <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix o-imf-t-o: <http://ns.imfid.org/templates/type/owl/> .
+@prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix o-imf: <http://ns.imfid.org/templates/> .
+@prefix ottr: <http://ns.ottr.xyz/0.4/> .
+@prefix o-owl-ma: <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
+@prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix pca-plm: <http://rds.posccaesar.org/ontology/plm/rdl/> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix ex: <http://example.com#> .
+@prefix o-owl-dec: <http://tpl.ottr.xyz/owl/declaration/0.1/> .
+@prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
 
-#+INCLUDE: "example/pumpingFunctionType.xlsx.ttl" src ttl
+<http://example.com/example/ApplicationStandardShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/ApplicationStandard> .
 
-*** Type translation: OWL
+<http://example.com/example/ClientRequirementDocumentShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:property [
+        sh:in ("A"
+            "B"
+            "C"
+        ) ;
+        sh:path imf:value
+    ] ;
+    sh:targetClass <http://example.com/example/ClientRequirementDocument> .
 
-#+CALL: py_run_sparql(query=sparql_shaclClass, data="example/pumpingFunctionType.xlsx.ttl")
+<http://example.com/example/ElectricPowerShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/ElectricPower> .
+
+<http://example.com/example/FluidShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/Fluid> .
+
+<http://example.com/example/LiquidPumpingShape>
+    a imf:BlockType, sh:NodeShape ;
+    sh:name "Pumping, liquid velocity" ;
+    sh:property [
+        sh:minCount "2"^^xsd:nonNegativeInteger ;
+        sh:name "T1" ;
+        sh:node <http://example.com/example/WaterPumpingTerminalShape> ;
+        sh:path imf:hasInputTerminal
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:name "T2" ;
+        sh:node <http://example.com/example/MechanicalRotationInputShape> ;
+        sh:path imf:hasInputTerminal
+    ], [
+        sh:minCount "0"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/NoiseRequirementStandardShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:hasValue <http://example.com/rdl/Pumping> ;
+        sh:path imf:classifier
+    ], [
+        sh:hasValue imf:functionAspect ;
+        sh:path imf:hasAspect
+    ], [
+        sh:hasValue "SP402" ;
+        sh:path imf:symbol
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:name "T3" ;
+        sh:node <http://example.com/example/WaterPumpingTerminalShape> ;
+        sh:path imf:hasOutputTerminal
+    ], [
+        sh:hasValue "KR" ;
+        sh:path skos:notation
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/FluidShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/PressureDeltaShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/SuctionPressureShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/PressureShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/PumpingPowerShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "0"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/ApplicationStandardShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "0"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/ClientRequirementDocumentShape> ;
+        sh:path imf:hasAttribute
+    ] ;
+    sh:targetClass <http://example.com/example/LiquidPumping> .
+
+<http://example.com/example/MechanicalRotationInputShape>
+    a imf:TerminalType, sh:NodeShape ;
+    sh:property [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/ElectricPowerShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/RotationalVelocityShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/MediaDatasheetShape> ;
+        sh:path imf:hasAttribute
+    ] ;
+    sh:targetClass <http://example.com/example/MechanicalRotationInput> .
+
+<http://example.com/example/MediaDatasheetShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/MediaDatasheet> .
+
+<http://example.com/example/NoiseRequirementStandardShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/NoiseRequirementStandard> .
+
+<http://example.com/example/PressureDeltaShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/PressureDelta> .
+
+<http://example.com/example/PressureShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/Pressure> .
+
+<http://example.com/example/PumpingPowerShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/PumpingPower> .
+
+<http://example.com/example/RotationalVelocityShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/RotationalVelocity> .
+
+<http://example.com/example/SuctionPressureShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:targetClass <http://example.com/example/SuctionPressure> .
+
+<http://example.com/example/VolumetricFlowrateShape>
+    a imf:AttributeType, sh:NodeShape ;
+    sh:property [
+        sh:datatype xsd:integer ;
+        sh:maxInclusive 1000 ;
+        sh:minInclusive 10 ;
+        sh:path imf:value
+    ], [
+        sh:class <http://example.com/rdl/FlowrateUoM> ;
+        sh:path imf:uom
+    ] ;
+    sh:targetClass <http://example.com/example/VolumetricFlowrate> .
+
+<http://example.com/example/WaterPumpingTerminalShape>
+    a imf:TerminalType, sh:NodeShape ;
+    sh:property [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/PressureShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/VolumetricFlowrateShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:minCount "1"^^xsd:nonNegativeInteger ;
+        sh:node <http://example.com/example/MediaDatasheetShape> ;
+        sh:path imf:hasAttribute
+    ], [
+        sh:hasValue <http://example.com/rdl/RDS4233125> ;
+        sh:path imf:classifier
+    ], [
+        sh:hasValue <http://example.com/rdl/WaterMedia> ;
+        sh:path imf:medium
+    ] ;
+    sh:targetClass <http://example.com/example/WaterPumpingTerminal> .
+
+#+END_src
+
+
+** IMF type prototype instance
+
+#+BEGIN_SRC sh :results raw :wrap src ttl
+python3 out/py/imftype-shacl2rdf.py -i example/pumpingFunctionType.xlsx.ttl -o example/pumpingFunctionPrototype.ttl
+cat example/pumpingFunctionPrototype.ttl
+#+END_SRC
 
 #+RESULTS:
-| ~class~         | ~imfClass~           | ~name~                             | ~description~ | ~severity~ | ~message~ |
-|-----------------+----------------------+------------------------------------+---------------+------------+-----------|
-| ~ex:sB-001~     | ~imf:Block~          | ~Pumping, liquid velocity~         |               |            |           |
-| ~ex:sBAg-001~   | ~imf:AttributeGroup~ | ~Pumping purpose attributes~       |               |            |           |
-| ~ex:sBAg-002~   | ~imf:AttributeGroup~ | ~Pumping supplementary attributes~ |               |            |           |
-| ~ex:sBAttr-001~ | ~imf:Attribute~      | ~Fluid~                            |               |            |           |
-| ~ex:sBAttr-002~ | ~imf:Attribute~      | ~Flowrate~                         |               |            |           |
-| ~ex:sBAttr-003~ | ~imf:Attribute~      | ~Pressure delta~                   |               |            |           |
-| ~ex:sBAttr-004~ | ~imf:Attribute~      | ~Suction pressure~                 |               |            |           |
-| ~ex:sBAttr-005~ | ~imf:Attribute~      | ~Pressure delta~                   |               |            |           |
-| ~ex:sBAttr-006~ | ~imf:Attribute~      | ~Pumping power~                    |               |            |           |
-| ~ex:sBAttr-007~ | ~imf:Attribute~      | ~App standard~                     |               |            |           |
-| ~ex:sBAttr-008~ | ~imf:Attribute~      | ~Client reqs~                      |               |            |           |
-| ~ex:sBAttr-009~ | ~imf:Attribute~      | ~Noise regs~                       |               |            |           |
-| ~ex:sT-001~     | ~imf:Terminal~       |                                    |               |            |           |
-| ~ex:sT-002~     | ~imf:Terminal~       |                                    |               |            |           |
-| ~ex:sT-003~     | ~imf:Terminal~       |                                    |               |            |           |
+#+BEGIN_src ttl
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix ns1: <http://www.w3.org/2004/02/skos/core#> .
+@prefix x: <http://example.org/prototype#> .
 
-#+CALL: py_run_sparql(query=sparql_shaclClassRestriction, data="example/pumpingFunctionType.xlsx.ttl")
+x:id-1 a <http://example.com/example/ApplicationStandard>,
+        imf:Attribute .
+
+x:id-2 a <http://example.com/example/ClientRequirementDocument>,
+        imf:Attribute ;
+    imf:value x:id-3 .
+
+x:id-38 a <http://example.com/example/MechanicalRotationInput>,
+        imf:Terminal ;
+    imf:hasAttribute x:id-39,
+        x:id-40,
+        x:id-41 .
+
+x:id-4 a <http://example.com/example/ElectricPower>,
+        imf:Attribute .
+
+x:id-42 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-43 a <http://example.com/example/NoiseRequirementStandard>,
+        imf:Attribute .
+
+x:id-44 a <http://example.com/example/PressureDelta>,
+        imf:Attribute .
+
+x:id-45 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-46 a <http://example.com/example/PumpingPower>,
+        imf:Attribute .
+
+x:id-47 a <http://example.com/example/RotationalVelocity>,
+        imf:Attribute .
+
+x:id-48 a <http://example.com/example/SuctionPressure>,
+        imf:Attribute .
+
+x:id-49 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-51 ;
+    imf:value x:id-50 .
+
+x:id-5 a <http://example.com/example/Fluid>,
+        imf:Attribute .
+
+x:id-52 a <http://example.com/example/WaterPumpingTerminal>,
+        imf:Terminal ;
+    imf:classifier <http://example.com/rdl/RDS4233125> ;
+    imf:hasAttribute x:id-53,
+        x:id-54,
+        x:id-57 ;
+    imf:medium <http://example.com/rdl/WaterMedia> .
+
+x:id-6 a <http://example.com/example/LiquidPumping>,
+        imf:Block ;
+    imf:classifier <http://example.com/rdl/Pumping> ;
+    imf:hasAspect imf:functionAspect ;
+    imf:hasAttribute x:id-23,
+        x:id-30,
+        x:id-31,
+        x:id-32,
+        x:id-33,
+        x:id-34,
+        x:id-35,
+        x:id-36 ;
+    imf:hasInputTerminal x:id-13,
+        x:id-19,
+        x:id-7 ;
+    imf:hasOutputTerminal x:id-24 ;
+    imf:symbol "SP402" ;
+    ns1:editorialNote """SHACL Node shape description:
+  - name: Pumping, liquid velocity
+""" ;
+    ns1:notation "KR" .
+
+x:id-12 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-13 a <http://example.com/example/WaterPumpingTerminal>,
+        imf:Terminal ;
+    imf:classifier <http://example.com/rdl/RDS4233125> ;
+    imf:hasAttribute x:id-14,
+        x:id-15,
+        x:id-18 ;
+    imf:medium <http://example.com/rdl/WaterMedia> .
+
+x:id-14 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-15 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-17 ;
+    imf:value x:id-16 .
+
+x:id-18 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-19 a <http://example.com/example/MechanicalRotationInput>,
+        imf:Terminal ;
+    imf:hasAttribute x:id-20,
+        x:id-21,
+        x:id-22 .
+
+x:id-20 a <http://example.com/example/ElectricPower>,
+        imf:Attribute .
+
+x:id-21 a <http://example.com/example/RotationalVelocity>,
+        imf:Attribute .
+
+x:id-22 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-23 a <http://example.com/example/NoiseRequirementStandard>,
+        imf:Attribute .
+
+x:id-24 a <http://example.com/example/WaterPumpingTerminal>,
+        imf:Terminal ;
+    imf:classifier <http://example.com/rdl/RDS4233125> ;
+    imf:hasAttribute x:id-25,
+        x:id-26,
+        x:id-29 ;
+    imf:medium <http://example.com/rdl/WaterMedia> .
+
+x:id-25 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-26 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-28 ;
+    imf:value x:id-27 .
+
+x:id-29 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-30 a <http://example.com/example/Fluid>,
+        imf:Attribute .
+
+x:id-31 a <http://example.com/example/PressureDelta>,
+        imf:Attribute .
+
+x:id-32 a <http://example.com/example/SuctionPressure>,
+        imf:Attribute .
+
+x:id-33 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-34 a <http://example.com/example/PumpingPower>,
+        imf:Attribute .
+
+x:id-35 a <http://example.com/example/ApplicationStandard>,
+        imf:Attribute .
+
+x:id-36 a <http://example.com/example/ClientRequirementDocument>,
+        imf:Attribute ;
+    imf:value x:id-37 .
+
+x:id-39 a <http://example.com/example/ElectricPower>,
+        imf:Attribute .
+
+x:id-40 a <http://example.com/example/RotationalVelocity>,
+        imf:Attribute .
+
+x:id-41 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-53 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-54 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-56 ;
+    imf:value x:id-55 .
+
+x:id-57 a <http://example.com/example/MediaDatasheet>,
+        imf:Attribute .
+
+x:id-7 a <http://example.com/example/WaterPumpingTerminal>,
+        imf:Terminal ;
+    imf:classifier <http://example.com/rdl/RDS4233125> ;
+    imf:hasAttribute x:id-12,
+        x:id-8,
+        x:id-9 ;
+    imf:medium <http://example.com/rdl/WaterMedia> .
+
+x:id-8 a <http://example.com/example/Pressure>,
+        imf:Attribute .
+
+x:id-9 a <http://example.com/example/VolumetricFlowrate>,
+        imf:Attribute ;
+    imf:uom x:id-11 ;
+    imf:value x:id-10 .
+
+#+END_src
+
+** SHACL validation of IMF data against ...
+*** ... the IMF terms grammar
+
+#+CALL: sh_jena_shacl_validate(data="example/pumpingFunctionPrototype.ttl", shapes="out/shacl/imf-terms-grammar.shacl.ttl")
 
 #+RESULTS:
-| ~class~         | ~path~                  | ~minCount~ | ~maxCount~ | ~nodeTargetClass~ | ~hasValue~                 | ~in~ | ~datatype~    | ~minExclusive~ | ~minInclusive~ | ~maxExclusive~ | ~maxInclusive~ | ~minLength~ | ~maxLength~ | ~pattern~ | ~flags~ |
-|-----------------+-------------------------+------------+------------+-------------------+----------------------------+------+---------------+----------------+----------------+----------------+----------------+-------------+-------------+-----------+---------|
-| ~ex:sB-001~     | ~imf:hasTerminal~       | ~1~        | ~1~        | ~ex:sT-001~       |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sB-001~     | ~imf:hasTerminal~       | ~1~        | ~1~        | ~ex:sT-002~       |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sB-001~     | ~imf:hasAttributeGroup~ | ~1~        | ~1~        | ~ex:sBAg-002~     |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sB-001~     | ~imf:aspect~            |            |            |                   | ~imf:functionAspect~       |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sB-001~     | ~imf:symbol~            |            |            |                   | ~SP402~                    |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sB-001~     | ~imf:classifier~        |            |            |                   | ~ns1:Pumping~              |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sB-001~     | ~imf:hasTerminal~       | ~1~        | ~3~        | ~ex:sT-003~       |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sB-001~     | ~imf:hasAttributeGroup~ | ~1~        | ~1~        | ~ex:sBAg-001~     |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-001~   |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-002~   |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-003~   |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-004~   |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-005~   |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAg-001~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-006~   |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAg-002~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-007~   |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAg-002~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-008~   |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAg-002~   | ~imf:hasAttribute~      | ~1~        | ~1~        | ~ex:sBAttr-009~   |                            |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sBAttr-001~ | ~imf:value~             | ~1~        | ~1~        |                   |                            |      | ~xsd:integer~ |                | ~0~            |                | ~10000~        |             |             |           |         |
-| ~ex:sT-001~     | ~imf:classifier~        |            |            |                   | ~ns1:RDS4233125~           |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sT-001~     | ~imf:direction~         |            |            |                   | ~imf:input~                |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sT-001~     | ~imf:media~             |            |            |                   | ~ns1:WaterMedium~          |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sT-001~     | ~imf:classifier~        |            |            |                   | ~ns1:RDS4233127~           |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sT-001~     | ~imf:direction~         |            |            |                   | ~imf:output~               |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sT-001~     | ~imf:media~             |            |            |                   | ~ns1:WaterMedium~          |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sT-002~     | ~imf:direction~         |            |            |                   | ~imf:input~                |      |               |                |                |                |                |             |             |           |         |
-| ~ex:sT-002~     | ~imf:media~             |            |            |                   | ~ns1:MechanicalRotatation~ |      |               |                |                |                |                |             |             |           |         |
+#+BEGIN_src ttl
+Result of validating RDF data <example/pumpingFunctionPrototype.ttl> against SHACL shape <out/shacl/imf-terms-grammar.shacl.ttl>:
+2023-06-27
+Conforms
+#+END_src
+
+*** ... the IMF model grammar
+
+#+CALL: sh_jena_shacl_validate(data="example/pumpingFunctionPrototype.ttl", shapes="out/shacl/imf-model-grammar.shacl.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+Result of validating RDF data <example/pumpingFunctionPrototype.ttl> against SHACL shape <out/shacl/imf-model-grammar.shacl.ttl>:
+2023-06-27
+Node=<http://example.org/prototype#id-52>
+  Path=<http://ns.imfid.org/imf#connectedTo>
+  Message: The Terminal has no connection (to a different Terminal).
+Node=<http://example.org/prototype#id-7>
+  Path=<http://ns.imfid.org/imf#connectedTo>
+  Message: The Terminal has no connection (to a different Terminal).
+Node=<http://example.org/prototype#id-24>
+  Path=<http://ns.imfid.org/imf#connectedTo>
+  Message: The Terminal has no connection (to a different Terminal).
+Node=<http://example.org/prototype#id-13>
+  Path=<http://ns.imfid.org/imf#connectedTo>
+  Message: The Terminal has no connection (to a different Terminal).
+Node=<http://example.org/prototype#id-38>
+  Path=<http://ns.imfid.org/imf#connectedTo>
+  Message: The Terminal has no connection (to a different Terminal).
+Node=<http://example.org/prototype#id-38>
+  Path=<http://ns.imfid.org/imf#medium>
+  Message: The Terminal has no medium.
+Node=<http://example.org/prototype#id-19>
+  Path=<http://ns.imfid.org/imf#connectedTo>
+  Message: The Terminal has no connection (to a different Terminal).
+Node=<http://example.org/prototype#id-19>
+  Path=<http://ns.imfid.org/imf#medium>
+  Message: The Terminal has no medium.
+Node=<http://example.org/prototype#id-6>
+  Path=^<http://ns.imfid.org/imf#hasElement>
+  Message: Element is not contained in a Model.
+Node=<http://example.org/prototype#id-52>
+  Path=^<http://ns.imfid.org/imf#hasElement>
+  Message: Element is not contained in a Model.
+Node=<http://example.org/prototype#id-7>
+  Path=^<http://ns.imfid.org/imf#hasElement>
+  Message: Element is not contained in a Model.
+Node=<http://example.org/prototype#id-24>
+  Path=^<http://ns.imfid.org/imf#hasElement>
+  Message: Element is not contained in a Model.
+Node=<http://example.org/prototype#id-13>
+  Path=^<http://ns.imfid.org/imf#hasElement>
+  Message: Element is not contained in a Model.
+Node=<http://example.org/prototype#id-38>
+  Path=^<http://ns.imfid.org/imf#hasElement>
+  Message: Element is not contained in a Model.
+Node=<http://example.org/prototype#id-38>
+  Path=<http://ns.imfid.org/imf#classifier>
+  Message: Element has no classifier.
+Node=<http://example.org/prototype#id-19>
+  Path=^<http://ns.imfid.org/imf#hasElement>
+  Message: Element is not contained in a Model.
+Node=<http://example.org/prototype#id-19>
+  Path=<http://ns.imfid.org/imf#classifier>
+  Message: Element has no classifier.
+Node=<http://example.org/prototype#id-6>
+  Path=<http://ns.imfid.org/imf#hasAspect>
+  Value: <http://ns.imfid.org/imf#functionAspect>
+  Message: ClassConstraint[<http://ns.imfid.org/imf#Aspect>]: Expected class :<http://ns.imfid.org/imf#Aspect> for <http://ns.imfid.org/imf#functionAspect>
+Node=<http://example.org/prototype#id-1>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-1>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-1>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-5>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-5>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-5>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-57>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-57>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-57>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-35>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-35>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-35>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-23>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-23>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-23>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-9>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-9>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-45>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-45>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-45>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-15>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-15>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-47>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-47>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-47>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-25>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-25>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-25>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-39>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-39>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-39>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-49>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-49>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-29>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-29>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-29>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-31>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-31>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-31>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-53>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-53>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-53>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-41>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-41>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-41>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-33>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-33>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-33>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-21>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-21>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-21>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-43>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-43>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-43>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-2>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-2>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-4>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-4>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-4>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-8>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-8>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-8>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-46>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-46>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-46>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-12>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-12>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-12>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-34>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-34>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-34>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-26>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-26>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-48>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-48>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-48>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-14>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-14>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-14>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-36>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-36>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-18>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-18>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-18>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-40>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-40>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-40>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-42>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-42>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-42>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-20>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-20>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-20>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-30>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-30>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-30>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-22>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-22>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-22>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-44>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-44>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-44>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-32>
+  Path=<http://ns.imfid.org/imf#value>
+  Message: Attribute has no value.
+Node=<http://example.org/prototype#id-32>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-32>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+Node=<http://example.org/prototype#id-54>
+  Path=<http://ns.imfid.org/imf#predicate>
+  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
+Node=<http://example.org/prototype#id-54>
+  Path=<http://ns.imfid.org/imf#hasAttributeQualifier>
+  Message: Attribute has no qualifier.
+#+END_src
+
+*** ... its IMF type
+
+#+CALL: sh_jena_shacl_validate(data="example/pumpingFunctionPrototype.ttl", shapes="example/pumpingFunctionType.xlsx.ttl")
+
+#+RESULTS:
+#+BEGIN_src ttl
+Result of validating RDF data <example/pumpingFunctionPrototype.ttl> against SHACL shape <example/pumpingFunctionType.xlsx.ttl>:
+2023-06-27
+Node=<http://example.org/prototype#id-52>
+  Path=<http://ns.imfid.org/imf#hasAttribute>
+  Value: <http://example.org/prototype#id-54>
+  Message: Node[<http://example.com/example/VolumetricFlowrateShape>] at focusNode <http://example.org/prototype#id-54>
+Node=<http://example.org/prototype#id-7>
+  Path=<http://ns.imfid.org/imf#hasAttribute>
+  Value: <http://example.org/prototype#id-9>
+  Message: Node[<http://example.com/example/VolumetricFlowrateShape>] at focusNode <http://example.org/prototype#id-9>
+Node=<http://example.org/prototype#id-24>
+  Path=<http://ns.imfid.org/imf#hasAttribute>
+  Value: <http://example.org/prototype#id-26>
+  Message: Node[<http://example.com/example/VolumetricFlowrateShape>] at focusNode <http://example.org/prototype#id-26>
+Node=<http://example.org/prototype#id-13>
+  Path=<http://ns.imfid.org/imf#hasAttribute>
+  Value: <http://example.org/prototype#id-15>
+  Message: Node[<http://example.com/example/VolumetricFlowrateShape>] at focusNode <http://example.org/prototype#id-15>
+Node=<http://example.org/prototype#id-2>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-3>
+  Message: InConstraint["A", "B", "C"] : RDF term <http://example.org/prototype#id-3> not in expected values
+Node=<http://example.org/prototype#id-36>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-37>
+  Message: InConstraint["A", "B", "C"] : RDF term <http://example.org/prototype#id-37> not in expected values
+Node=<http://example.org/prototype#id-54>
+  Path=<http://ns.imfid.org/imf#uom>
+  Value: <http://example.org/prototype#id-56>
+  Message: ClassConstraint[<http://example.com/rdl/FlowrateUoM>]: Expected class :<http://example.com/rdl/FlowrateUoM> for <http://example.org/prototype#id-56>
+Node=<http://example.org/prototype#id-54>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-55>
+  Message: minInclusive[10] can't compare to http://example.org/prototype#id-55
+Node=<http://example.org/prototype#id-54>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-55>
+  Message: maxInclusive[1000] can't compare to http://example.org/prototype#id-55
+Node=<http://example.org/prototype#id-54>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-55>
+  Message: DatatypeConstraint[xsd:integer] : Not a literal
+Node=<http://example.org/prototype#id-9>
+  Path=<http://ns.imfid.org/imf#uom>
+  Value: <http://example.org/prototype#id-11>
+  Message: ClassConstraint[<http://example.com/rdl/FlowrateUoM>]: Expected class :<http://example.com/rdl/FlowrateUoM> for <http://example.org/prototype#id-11>
+Node=<http://example.org/prototype#id-9>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-10>
+  Message: minInclusive[10] can't compare to http://example.org/prototype#id-10
+Node=<http://example.org/prototype#id-9>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-10>
+  Message: maxInclusive[1000] can't compare to http://example.org/prototype#id-10
+Node=<http://example.org/prototype#id-9>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-10>
+  Message: DatatypeConstraint[xsd:integer] : Not a literal
+Node=<http://example.org/prototype#id-26>
+  Path=<http://ns.imfid.org/imf#uom>
+  Value: <http://example.org/prototype#id-28>
+  Message: ClassConstraint[<http://example.com/rdl/FlowrateUoM>]: Expected class :<http://example.com/rdl/FlowrateUoM> for <http://example.org/prototype#id-28>
+Node=<http://example.org/prototype#id-26>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-27>
+  Message: minInclusive[10] can't compare to http://example.org/prototype#id-27
+Node=<http://example.org/prototype#id-26>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-27>
+  Message: maxInclusive[1000] can't compare to http://example.org/prototype#id-27
+Node=<http://example.org/prototype#id-26>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-27>
+  Message: DatatypeConstraint[xsd:integer] : Not a literal
+Node=<http://example.org/prototype#id-15>
+  Path=<http://ns.imfid.org/imf#uom>
+  Value: <http://example.org/prototype#id-17>
+  Message: ClassConstraint[<http://example.com/rdl/FlowrateUoM>]: Expected class :<http://example.com/rdl/FlowrateUoM> for <http://example.org/prototype#id-17>
+Node=<http://example.org/prototype#id-15>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-16>
+  Message: minInclusive[10] can't compare to http://example.org/prototype#id-16
+Node=<http://example.org/prototype#id-15>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-16>
+  Message: maxInclusive[1000] can't compare to http://example.org/prototype#id-16
+Node=<http://example.org/prototype#id-15>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-16>
+  Message: DatatypeConstraint[xsd:integer] : Not a literal
+Node=<http://example.org/prototype#id-49>
+  Path=<http://ns.imfid.org/imf#uom>
+  Value: <http://example.org/prototype#id-51>
+  Message: ClassConstraint[<http://example.com/rdl/FlowrateUoM>]: Expected class :<http://example.com/rdl/FlowrateUoM> for <http://example.org/prototype#id-51>
+Node=<http://example.org/prototype#id-49>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-50>
+  Message: minInclusive[10] can't compare to http://example.org/prototype#id-50
+Node=<http://example.org/prototype#id-49>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-50>
+  Message: maxInclusive[1000] can't compare to http://example.org/prototype#id-50
+Node=<http://example.org/prototype#id-49>
+  Path=<http://ns.imfid.org/imf#value>
+  Value: <http://example.org/prototype#id-50>
+  Message: DatatypeConstraint[xsd:integer] : Not a literal
+Node=<http://example.org/prototype#id-6>
+  Path=<http://ns.imfid.org/imf#hasInputTerminal>
+  Value: <http://example.org/prototype#id-7>
+  Message: Node[<http://example.com/example/WaterPumpingTerminalShape>] at focusNode <http://example.org/prototype#id-7>
+Node=<http://example.org/prototype#id-6>
+  Path=<http://ns.imfid.org/imf#hasInputTerminal>
+  Value: <http://example.org/prototype#id-13>
+  Message: Node[<http://example.com/example/WaterPumpingTerminalShape>] at focusNode <http://example.org/prototype#id-13>
+Node=<http://example.org/prototype#id-6>
+  Path=<http://ns.imfid.org/imf#hasInputTerminal>
+  Value: <http://example.org/prototype#id-19>
+  Message: Node[<http://example.com/example/WaterPumpingTerminalShape>] at focusNode <http://example.org/prototype#id-19>
+Node=<http://example.org/prototype#id-6>
+  Path=<http://ns.imfid.org/imf#hasAttribute>
+  Value: <http://example.org/prototype#id-36>
+  Message: Node[<http://example.com/example/ClientRequirementDocumentShape>] at focusNode <http://example.org/prototype#id-36>
+Node=<http://example.org/prototype#id-6>
+  Path=<http://ns.imfid.org/imf#hasOutputTerminal>
+  Value: <http://example.org/prototype#id-24>
+  Message: Node[<http://example.com/example/WaterPumpingTerminalShape>] at focusNode <http://example.org/prototype#id-24>
+#+END_src
+
+** IMF type as OWL class
+
+#+BEGIN_SRC sh :results raw :wrap src ttl
+python3 out/py/imftype-shacl2owl.py -i example/pumpingFunctionType.xlsx.ttl -o example/pumpingFunctionType.owl.ttl
+cat example/pumpingFunctionType.owl.ttl
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_src ttl
+@prefix imf: <http://ns.imfid.org/imf#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/example/ApplicationStandard> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/ClientRequirementDocument> a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onDataRange [ a rdfs:Datatype ;
+                    owl:oneOf ( "A" "B" "C" ) ],
+                rdfs:Literal ;
+            owl:onProperty imf:value ],
+        imf:Attribute .
+
+<http://example.com/example/ElectricPower> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/Fluid> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/LiquidPumping> a owl:Class ;
+    rdfs:label "Pumping, liquid velocity" ;
+    rdfs:subClassOf _:N0c068d12b5e54b36b0a635af5702e8ec,
+        _:N1c3888e7aa36405799647f2ac218a880,
+        _:N1ee7576f709d4155aeac0937cc7d398a,
+        _:N275b5ce938084023b474f1f81b55048c,
+        _:N2ccadd76a6764771a225d45eaed4c910,
+        _:N30dbf93830084a2bb455e05c472f4c21,
+        _:N5e9680824f1546a3873a482786260c95,
+        [ a owl:Restriction ;
+            owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onClass <http://example.com/example/ApplicationStandard> ;
+            owl:onProperty imf:hasAttribute ],
+        _:N85ccf5efaa584fdf9fb01e702e9a2830,
+        _:N97fb561a24894010b441ca33716377f5,
+        _:N9d84178492bf44ab91168fd54bd57f4b,
+        _:Naab4e7ce6b2c4e388b9d9326b97ba3a6,
+        _:Nb2176cf192b74a00bd515b97f5697a84,
+        [ a owl:Restriction ;
+            owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onClass <http://example.com/example/NoiseRequirementStandard> ;
+            owl:onProperty imf:hasAttribute ],
+        [ a owl:Restriction ;
+            owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onClass <http://example.com/example/ClientRequirementDocument> ;
+            owl:onProperty imf:hasAttribute ],
+        imf:Block .
+
+<http://example.com/example/NoiseRequirementStandard> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/PressureDelta> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/PumpingPower> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/RotationalVelocity> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/SuctionPressure> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/VolumetricFlowrate> a owl:Class ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onDataRange [ a rdfs:Datatype ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions ( [ xsd:minInclusive 10 ] [ xsd:maxInclusive 1000 ] ) ] ;
+            owl:onProperty imf:value ],
+        [ a owl:Restriction ;
+            owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onClass owl:Thing ;
+            owl:onProperty imf:uom ],
+        imf:Attribute .
+
+<http://example.com/example/MechanicalRotationInput> a owl:Class ;
+    rdfs:subClassOf _:N46b707eaa5a9464695847ae6d0d3b5b1,
+        _:N7c2c75059a104debbc2644e1a6b0c538,
+        _:Ne5892405f05243a8849f7541cc8c1b51,
+        imf:Terminal .
+
+<http://example.com/example/MediaDatasheet> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/Pressure> a owl:Class ;
+    rdfs:subClassOf imf:Attribute .
+
+<http://example.com/example/WaterPumpingTerminal> a owl:Class ;
+    rdfs:subClassOf _:N395c29e3cb934f328c525d4e299f5d79,
+        _:N4146f5264c82407eaed62302e1116625,
+        _:N45f56fd2a0b14d39a9e297cc16b312e0,
+        _:Nbb65720e915e477c95c230dbdbdd75d2,
+        _:Nf0d6415219eb461489bd21e813f2a782,
+        imf:Terminal .
+
+[] a owl:Class ;
+    rdfs:subClassOf <http://example.com/example/LiquidPumping> ;
+    owl:intersectionOf ( _:Naab4e7ce6b2c4e388b9d9326b97ba3a6 _:N0c068d12b5e54b36b0a635af5702e8ec _:N30dbf93830084a2bb455e05c472f4c21 _:N2ccadd76a6764771a225d45eaed4c910 _:N275b5ce938084023b474f1f81b55048c _:N1c3888e7aa36405799647f2ac218a880 _:N5e9680824f1546a3873a482786260c95 _:N9d84178492bf44ab91168fd54bd57f4b _:N85ccf5efaa584fdf9fb01e702e9a2830 _:N97fb561a24894010b441ca33716377f5 _:Nb2176cf192b74a00bd515b97f5697a84 _:N1ee7576f709d4155aeac0937cc7d398a imf:Block ) .
+
+[] a owl:Ontology ;
+    owl:imports <https://imf-lab.gitlab.io/imf-ontology/out/owl/imf-ontology.owl.ttl> .
+
+[] a owl:Class ;
+    rdfs:subClassOf <http://example.com/example/MechanicalRotationInput> ;
+    owl:intersectionOf ( _:N46b707eaa5a9464695847ae6d0d3b5b1 _:Ne5892405f05243a8849f7541cc8c1b51 _:N7c2c75059a104debbc2644e1a6b0c538 imf:Terminal ) .
+
+[] a owl:Class ;
+    rdfs:subClassOf <http://example.com/example/WaterPumpingTerminal> ;
+    owl:intersectionOf ( _:Nbb65720e915e477c95c230dbdbdd75d2 _:N395c29e3cb934f328c525d4e299f5d79 _:Nf0d6415219eb461489bd21e813f2a782 _:N4146f5264c82407eaed62302e1116625 _:N45f56fd2a0b14d39a9e297cc16b312e0 imf:Terminal ) .
+
+_:N0c068d12b5e54b36b0a635af5702e8ec a owl:Restriction ;
+    rdfs:label "T2" ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/MechanicalRotationInput> ;
+    owl:onProperty imf:hasInputTerminal .
+
+_:N1c3888e7aa36405799647f2ac218a880 a owl:Restriction ;
+    rdfs:label "T3" ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/WaterPumpingTerminal> ;
+    owl:onProperty imf:hasOutputTerminal .
+
+_:N1ee7576f709d4155aeac0937cc7d398a a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/PumpingPower> ;
+    owl:onProperty imf:hasAttribute .
+
+_:N275b5ce938084023b474f1f81b55048c a owl:Restriction ;
+    owl:hasValue "SP402" ;
+    owl:onProperty imf:symbol .
+
+_:N2ccadd76a6764771a225d45eaed4c910 a owl:Restriction ;
+    owl:hasValue imf:functionAspect ;
+    owl:onProperty imf:hasAspect .
+
+_:N30dbf93830084a2bb455e05c472f4c21 a owl:Restriction ;
+    owl:hasValue <http://example.com/rdl/Pumping> ;
+    owl:onProperty imf:classifier .
+
+_:N395c29e3cb934f328c525d4e299f5d79 a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/VolumetricFlowrate> ;
+    owl:onProperty imf:hasAttribute .
+
+_:N4146f5264c82407eaed62302e1116625 a owl:Restriction ;
+    owl:hasValue <http://example.com/rdl/RDS4233125> ;
+    owl:onProperty imf:classifier .
+
+_:N45f56fd2a0b14d39a9e297cc16b312e0 a owl:Restriction ;
+    owl:hasValue <http://example.com/rdl/WaterMedia> ;
+    owl:onProperty imf:medium .
+
+_:N46b707eaa5a9464695847ae6d0d3b5b1 a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/ElectricPower> ;
+    owl:onProperty imf:hasAttribute .
+
+_:N5e9680824f1546a3873a482786260c95 a owl:Restriction ;
+    owl:hasValue "KR" ;
+    owl:onProperty <http://www.w3.org/2004/02/skos/core#notation> .
+
+_:N7c2c75059a104debbc2644e1a6b0c538 a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/MediaDatasheet> ;
+    owl:onProperty imf:hasAttribute .
+
+_:N85ccf5efaa584fdf9fb01e702e9a2830 a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/PressureDelta> ;
+    owl:onProperty imf:hasAttribute .
+
+_:N97fb561a24894010b441ca33716377f5 a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/SuctionPressure> ;
+    owl:onProperty imf:hasAttribute .
+
+_:N9d84178492bf44ab91168fd54bd57f4b a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/Fluid> ;
+    owl:onProperty imf:hasAttribute .
+
+_:Naab4e7ce6b2c4e388b9d9326b97ba3a6 a owl:Restriction ;
+    rdfs:label "T1" ;
+    owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/WaterPumpingTerminal> ;
+    owl:onProperty imf:hasInputTerminal .
+
+_:Nb2176cf192b74a00bd515b97f5697a84 a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/Pressure> ;
+    owl:onProperty imf:hasAttribute .
+
+_:Nbb65720e915e477c95c230dbdbdd75d2 a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/Pressure> ;
+    owl:onProperty imf:hasAttribute .
+
+_:Ne5892405f05243a8849f7541cc8c1b51 a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/RotationalVelocity> ;
+    owl:onProperty imf:hasAttribute .
+
+_:Nf0d6415219eb461489bd21e813f2a782 a owl:Restriction ;
+    owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onClass <http://example.com/example/MediaDatasheet> ;
+    owl:onProperty imf:hasAttribute .
+
+#+END_src
+** OWL 
+*** ... the IMF ontology
+
+Check that the IMF instance data is not inconsistent using an OWL reasoner.
+
+#+BEGIN_SRC sh :results output
+java -jar bin/HermiT.jar -l -k -U example/pumpingFunctionPrototype.ttl
+#+END_SRC
+
+#+RESULTS:
+: http://www.w3.org/2002/07/owl#Thing is satisfiable.
+: Classes equivalent to 'owl:Nothing':
+: 	owl:Nothing
+
+
+
 
 * Appendix
 ** Prefixes
@@ -3179,7 +4818,7 @@ This section contains the prefixes used throughout this document.
 
 @prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
 @prefix pav:	<http://purl.org/pav/> .
-@prefix dc:	<http://purl.org/dc/terms/> .
+@prefix dc:	<http://purl.org/dc/elements/1.1/> .
 @prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
 @prefix vann:   <http://purl.org/vocab/vann/> .
 @prefix foaf:   <http://xmlns.com/foaf/0.1/> .
@@ -3211,8 +4850,7 @@ This section contains the prefixes used throughout this document.
 
 #+NAME: prefixes-imf
 #+BEGIN_SRC ttl
-
-@prefix p14:    <http://example.com/P14#> .
+@prefix pca-plm:    <http://rds.posccaesar.org/ontology/plm/rdl/> .
 #+END_SRC
 
 *** OTTR template prefixes
@@ -3225,6 +4863,7 @@ This section contains the prefixes used throughout this document.
 @prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
 @prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
 @prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+@prefix o-owl-dec:  <http://tpl.ottr.xyz/owl/declaration/0.1/> .
 
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 @prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
@@ -4462,6 +6101,9 @@ iris.sort()
 return ', '.join(iris)
 #+END_SRC
 
+#+RESULTS: py_list_iris
+<http://ns.imfid.org/imf#>, <http://ns.imfid.org/imf#Aspect>, <http://ns.imfid.org/imf#AspectElement>, <http://ns.imfid.org/imf#Attribute>, <http://ns.imfid.org/imf#AttributeQualifier>, <http://ns.imfid.org/imf#Block>, <http://ns.imfid.org/imf#BreakdownPoint>, <http://ns.imfid.org/imf#ConnectionPoint>, <http://ns.imfid.org/imf#Element>, <http://ns.imfid.org/imf#FunctionBlock>, <http://ns.imfid.org/imf#FunctionElement>, <http://ns.imfid.org/imf#FunctionTerminal>, <http://ns.imfid.org/imf#IMFOntology>, <http://ns.imfid.org/imf#InputTerminal>, <http://ns.imfid.org/imf#InstalledBlock>, <http://ns.imfid.org/imf#InstalledElement>, <http://ns.imfid.org/imf#InstalledTerminal>, <http://ns.imfid.org/imf#LocationBlock>, <http://ns.imfid.org/imf#LocationElement>, <http://ns.imfid.org/imf#LocationTerminal>, <http://ns.imfid.org/imf#Model>, <http://ns.imfid.org/imf#OutputTerminal>, <http://ns.imfid.org/imf#ProductBlock>, <http://ns.imfid.org/imf#ProductElement>, <http://ns.imfid.org/imf#ProductTerminal>, <http://ns.imfid.org/imf#ProvenanceQualifier>, <http://ns.imfid.org/imf#RangeQualifier>, <http://ns.imfid.org/imf#RegularityQualifier>, <http://ns.imfid.org/imf#ScopeQualifier>, <http://ns.imfid.org/imf#Terminal>, <http://ns.imfid.org/imf#TerminalQualifier>, <http://ns.imfid.org/imf#absoluteQualifier>, <http://ns.imfid.org/imf#asFunction>, <http://ns.imfid.org/imf#asInstalled>, <http://ns.imfid.org/imf#asLocation>, <http://ns.imfid.org/imf#asProduct>, <http://ns.imfid.org/imf#associativeRelation>, <http://ns.imfid.org/imf#averageQualifier>, <http://ns.imfid.org/imf#calculatedQualifier>, <http://ns.imfid.org/imf#classifier>, <http://ns.imfid.org/imf#color>, <http://ns.imfid.org/imf#connectedTo>, <http://ns.imfid.org/imf#continuousQualifier>, <http://ns.imfid.org/imf#designQualifier>, <http://ns.imfid.org/imf#externalReference>, <http://ns.imfid.org/imf#functionAspect>, <http://ns.imfid.org/imf#hasAspect>, <http://ns.imfid.org/imf#hasAttribute>, <http://ns.imfid.org/imf#hasAttributeQualifier>, <http://ns.imfid.org/imf#hasElement>, <http://ns.imfid.org/imf#hasInputTerminal>, <http://ns.imfid.org/imf#hasOutputTerminal>, <http://ns.imfid.org/imf#hasPart>, <http://ns.imfid.org/imf#hasTerminal>, <http://ns.imfid.org/imf#hasTerminalQualifier>, <http://ns.imfid.org/imf#hierachicalRelation>, <http://ns.imfid.org/imf#hierarchicalRelation>, <http://ns.imfid.org/imf#inputFlow>, <http://ns.imfid.org/imf#installedAspect>, <http://ns.imfid.org/imf#interAspectRelation>, <http://ns.imfid.org/imf#intraAspectRelation>, <http://ns.imfid.org/imf#locationAspect>, <http://ns.imfid.org/imf#maximumQualifier>, <http://ns.imfid.org/imf#measuredQualifier>, <http://ns.imfid.org/imf#medium>, <http://ns.imfid.org/imf#minimumQualifier>, <http://ns.imfid.org/imf#nominalQualifier>, <http://ns.imfid.org/imf#normalQualifier>, <http://ns.imfid.org/imf#operatingQualifier>, <http://ns.imfid.org/imf#outputFlow>, <http://ns.imfid.org/imf#partOf>, <http://ns.imfid.org/imf#predicate>, <http://ns.imfid.org/imf#prefix>, <http://ns.imfid.org/imf#productAspect>, <http://ns.imfid.org/imf#specifiedQualifier>, <http://ns.imfid.org/imf#symbol>, <http://ns.imfid.org/imf#theConnected>, <http://ns.imfid.org/imf#theInput>, <http://ns.imfid.org/imf#theOutput>, <http://ns.imfid.org/imf#thePart>, <http://ns.imfid.org/imf#theWhole>, <http://ns.imfid.org/imf#uom>, <http://ns.imfid.org/imf#value>
+
 *** py_iri_rdf_diff
 
 Simple diff of 2 RDF files, output list of changed IRIs.
@@ -4654,7 +6296,7 @@ skinparam class {
 
 #+END_SRC
 
-* TODOs [23/57]
+* TODOs [29/68]
 
  - [ ] use markdown
    - [ ] / / -> **
@@ -4664,9 +6306,9 @@ skinparam class {
    - [ ] IRIs as code
  - [ ] add imnages of r block and termianl to the ontologiy as oaf
    defipiction.
- - [ ] put OWL definition in a table?
+ - [X] +put OWL definition in a table?+
  - [ ] explanation of OWL and SHACL definition.
- - [ ] Should we make a condenced version of chapter 4?
+ - [X] +Should we make a condenced version of chapter 4?+
  - [ ] add more intro text, both to main heading and sub headings
  - [ ] make all comments more "readable".
  - [ ] make examples, also using code, `ex:myBlockA imf:hasPart ex:myBlockB` expresses that ...
@@ -4675,6 +6317,15 @@ skinparam class {
  - [ ] sort SHACL paths. user SPARQL? https://rdflib.readthedocs.io/en/stable/intro_to_sparql.html
  - [ ] fix width of SHACL table
  - [ ] link to sections and their figures in the start.
+ - [X] move Element metadata to separate SHACL file
+ - [ ] add RDFS reasoning to SHACL validation
+ - [ ] create a SHACL shape for types, e.g., hasValue xor class xor in xor datatype
+ - [ ] https://github.com/aidhog/blabel
+ - [X] Add exactmatch to https://rds.posccaesar.org/ontology/plm/rdl/PCA_100004033/
+ - [ ] ontology of types
+   - connect classes and shapes, generate link
+ - [ ] add imports to python scrtips
+ - [ ] add imports bewtween SHACL shape files?
 
  Questions:
  - [X] Are BreakdownPoints and ConnectionPoints also Elements? Perhaps
@@ -4734,13 +6385,18 @@ skinparam class {
  - [X] Definitions
  - [X] OWL ontology for RDF data model
  - [X] SHACL shapes for RDF data model
- - [ ] OTTR templates to create types
+ - [X] OTTR templates to create types
  - [ ] OTTR templates to instantiate datamodel
- - [ ] bOTTR (SHACL + OTTR) over types to
-   - [ ] OWL class, issues:
+ - [ ] Simpler OTTR templates to create types?
+ - [X] bOTTR (SHACL + OTTR) over types to
+   - [X] OWL class, issues:
      - equivalent to union of
-   - [ ] Prototypes, issues:
+   - [X] Prototypes, issues:
      - must generate multiple instances for minCount, need programming language
+ - [ ] Ontology + SHACL shapes of types?
+ - [ ] SHACL for attributes?
+   - Min < Max
+   - Operating ~ Specified?
  - [#] Vocabulary for visualisation -> v3
  - [ ] Visualisation
    - [ ] Instance data

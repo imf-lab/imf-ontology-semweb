@@ -7,7 +7,6 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix o-imf-t-o: <http://ns.imfid.org/templates/type/owl/> .
-@prefix p14: <http://example.com/P14#> .
 @prefix o-imf-t-s: <http://ns.imfid.org/templates/type/shacl/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix o-imf: <http://ns.imfid.org/templates/> .
@@ -16,12 +15,14 @@
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix shsh: <http://www.w3.org/ns/shacl-shacl#> .
-@prefix pav: <http://purl.org/pav/> .
 @prefix o-rdf: <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix pca-plm: <http://rds.posccaesar.org/ontology/plm/rdl/> .
+@prefix pav: <http://purl.org/pav/> .
 @prefix ex: <http://example.com#> .
-@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix o-owl-dec: <http://tpl.ottr.xyz/owl/declaration/0.1/> .
 @prefix o-owl-ax: <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix dc: <http://purl.org/dc/terms/> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
 
 imf:IMFOntologyGrammar
     dc:description "This shapes graph can be used to validate the IMF Ontology." ;
@@ -33,17 +34,17 @@ imf:IMFOntologyGrammar
     owl:versionIRI <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl> ;
     skos:editorialNote """Result of validation against specified sh:shapesGraph:
 Result of validating RDF data <out/shacl/imf-ontology-grammar.shacl.ttl> against SHACL shape <http://www.w3.org/ns/shacl-shacl#>:
-2023-06-22
+2023-06-27
 Conforms
 
 
 Result of validating RDF data <out/shacl/imf-ontology-grammar.shacl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
-2023-06-22
+2023-06-27
 Conforms
 
 
 Result of validating RDF data <out/shacl/imf-ontology-grammar.shacl.ttl> against SHACL shape <out/shacl/imf-terms-grammar.shacl.ttl>:
-2023-06-22
+2023-06-27
 Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
   Value: <http://ns.imfid.org/imf#IMFOntologyGrammar>
   Message: Unrecognised IMF vocabulary element. Check spelling.
@@ -55,30 +56,6 @@ Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
 []
     a sh:NodeShape ;
     sh:property [
-        sh:datatype xsd:string ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path skos:definition
-    ], [
-        sh:minCount 1 ;
-        sh:path skos:scopeNote ;
-        sh:severity sh:Warning
-    ], [
-        sh:in ("elements"
-            "aspects"
-            "attributes"
-            "generic relations"
-            "model"
-        ) ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path vann:termGroup
-    ], [
-        sh:datatype xsd:string ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:path skos:prefLabel
-    ], [
         sh:in ("unstable"
             "testing"
             "stable"
@@ -91,6 +68,26 @@ Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
         sh:minCount 1 ;
         sh:path skos:changeNote ;
         sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]"
+    ], [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path skos:definition
+    ], [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path skos:prefLabel
+    ], [
+        sh:in ("elements"
+            "aspects"
+            "attributes"
+            "generic relations"
+            "model"
+        ) ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:path vann:termGroup
     ] ;
     sh:target [
         a sh:SPARQLTarget ;
@@ -107,6 +104,9 @@ Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
 	  ?this skos:note ?note .
 	  FILTER (STRSTARTS(STR(?note), 'This resource is programatically generated.'))
 	}
+        FILTER NOT EXISTS { 
+	  ?this skos:exactMatch [] .
+        }
       }
       ## ORDER BY ?this
       """
