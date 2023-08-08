@@ -11,6 +11,7 @@ code: \
 	out/shacl/imf-terms-grammar.shacl.ttl \
 	out/shacl/imf-model-grammar.shacl.ttl \
 	out/shacl/imf-ontology-grammar.shacl.ttl \
+	out/shacl/imf-types-grammar.shacl.ttl \
 	out/owl/imf-ontology.owl.ttl
 
 all: 	code index.html
@@ -27,35 +28,36 @@ index.html: imf-language-v21.org .tangle
 
 ### Tangled files
 
+
+
 out/.std-prefixes.ttl \
-out/shacl/imf-terms-grammar.shacl.wottr.ttl \
-out/shacl/imf-model-grammar.shacl.wottr.ttl \
-out/shacl/imf-ontology-grammar.shacl.wottr.ttl \
-out/owl/imf-ontology.owl.wottr.ttl: \
+out/ottr/imf-ontology/aspects.stottr \
+out/ottr/imf-ontology/attributes.stottr \
+out/ottr/imf-types-shacl.stottr \
+out/owl/imf-ontology.owl.wottr.ttl \
+out/py/imftype-shacl2owl.py \
+out/py/imftype-shacl2rdf.py \
+out/shacl/imf-model-grammar.shacl.ttl \
+out/shacl/imf-ontology-grammar.shacl.ttl \
+out/shacl/imf-terms-grammar.shacl.ttl \
+out/shacl/imf-types-grammar.shacl.ttl : \
 .tangle
 
 
 ### Lutra
 
-%.ttl: %.wottr.ttl .tangle
+out/owl/imf-ontology.owl.ttl: out/owl/imf-ontology.owl.wottr.ttl
 	$(LUTRA) -I wottr -o $@.temp $<
 	cat out/.std-prefixes.ttl >> $@.temp
 	rapper -i turtle -o turtle $@.temp > $@
 	rm $@.temp
 
-### OW
-
-
-### QA
-
-out.QA/%.ttl: out/%.ttl
-	mkdir -p $(@D)
-	$(SHACL) --data $< > $@
-	if [ "Conforms" == `cat $@` ] ;then ; : else $(error non-conforming RDF file $<) ; fi
-
-
 ### tabOTTR
 
 %.xlsx.ttl: %.xlsx #.tangle
-	$(LUTRA) -I tabottr $< | rapper - -i turtle -o turtle -I 'http://example.com#' > $@
+	$(LUTRA) -I tabottr $< | rapper - -i turtle -o turtle -I 'http://base.com#' > $@
 
+# for IMF manual
+
+imf-ontology.tex: ../py-imf-tools/ont2latex.py out/owl/imf-ontology.owl.ttl out/shacl/imf-model-grammar.shacl.ttl
+	python3 $^ $@

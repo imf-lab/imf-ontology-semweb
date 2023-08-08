@@ -1,0 +1,86 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix sh:	<http://www.w3.org/ns/shacl#> .
+
+@prefix dc:	<http://purl.org/dc/elements/1.1/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+
+@prefix ex:	<http://example.com#> .
+
+@prefix imf:	   <http://ns.imfid.org/imf#> .
+@prefix pca-plm:   <http://rds.posccaesar.org/ontology/plm/rdl/> .
+
+imf:IMFTypesGrammar a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230630/imf-types-grammar.shacl.ttl> ;
+    owl:versionInfo "0.2.0" ;
+    skos:prefLabel "IMF Types Grammar -- SHACL" ;
+    dc:description """
+These SHACL Shapes specify requirements for creating IMF Types SHACL Shapes. This SHACL Shape file extends the W3C SHACL Shapes specification.
+
+Use them to validate IMF Type SHACL Shapes.
+""" ;
+    pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    owl:imports
+      <http://www.w3.org/ns/shacl-shacl#> ,
+      <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
+    sh:shapesGraph
+      <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ,
+      <http://www.w3.org/ns/shacl-shacl#> ;
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+Result of validating RDF data <out/shacl/imf-types-grammar.shacl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
+2023-08-08
+Conforms
+
+
+
+Result of validating RDF data <out/shacl/imf-types-grammar.shacl.ttl> against SHACL shape <http://www.w3.org/ns/shacl-shacl#>:
+2023-08-08
+Conforms
+
+
+    """
+.
+
+imf:TypeShape a sh:NodeShape ;
+  sh:targetClass imf:BlockType , imf:TerminalType , imf:AttributeType ;
+  sh:property
+    [ sh:path sh:targetClass ; sh:minCount 1 ; sh:message "The Type has no sh:targetClass." ] ,
+    #[ sh:path sh:name ;        sh:minCount 1 ; sh:severity sh:Warning ; sh:message "A Type should specify a sh:name." ] ,
+    #[ sh:path sh:description ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "A Type should specify a sh:description." ] ,
+
+    [ sh:path sh:property ;
+      sh:severity sh:Warning ;
+      sh:node [ sh:property [ sh:path [ sh:alternativePath ( sh:hasValue sh:in sh:node sh:datatype sh:class ) ] ; sh:minCount 1 ; sh:maxCount 1 ] ] ;
+      sh:name "sh:property target" ;
+      sh:message "A property constraint should specify exactly one of the following: sh:hasValue, sh:in, sh:node, sh:class or sh:datatype in order to set a target for the path." ]  ,
+
+    [ sh:path sh:property;
+      sh:node [ sh:property [ sh:path [ sh:alternativePath ( sh:hasValue sh:minCount ) ] ; sh:minCount 1 ; sh:maxCount 1 ] ] ;
+      sh:message "A property constraint must specify exactly one of the following: sh:hasValue, sh:minCount (which can be set to 0)." ] ,
+
+    [ sh:path sh:property;
+      sh:node [ sh:or ( # A -> B  =  not A or B
+	  [ sh:not [ sh:path [ sh:alternativePath ( sh:minExclusive sh:maxExclusive sh:minInclusive sh:maxInclusive sh:pattern ) ] ; sh:minCount 1 ] ]
+	  [ sh:path sh:datatype ; sh:minCount 1 ] ) ] ;
+      sh:message "A property constraint must only specify one or more of the following: sh:minExclusive, sh:maxExclusive, sh:minInclusive, sh:maxInclusive, sh:pattern, and only if also sh:datatype is specified." ] ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    "0.2.1 :: Changed: Set severity for 'sh:property target' to sh:Warning."
+.
+imf:AttributeShape a sh:NodeShape ;
+  # sh:deactivated true ;
+  sh:targetClass imf:AttributeType ;
+  sh:property
+    [ sh:path ( sh:property sh:path ) ; sh:hasValue imf:predicate ; sh:minCount 1 ; sh:maxCount 1 ;
+      sh:severity sh:Warning ; sh:message "The AttributeType does not specify a imf:predicate." ] ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    "0.2.1 :: Changed: activate shape (by removing 'sh:deactivated true')."
+.
