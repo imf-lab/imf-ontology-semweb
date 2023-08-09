@@ -94,5 +94,5 @@ o-imf-d:Attribute[
   ottr:Triple(?id, imf:predicate, ?predicate)
   ottr:Triple(?id, imf:value, ?value)
   ottr:Triple(?id, imf:uom, ?uom)
-  cross | ottr:Triple(?id, imf:qualifier, ++(?qualifier1, ?qualifier2, ?qualifier3, ?qualifier4))
+  cross | ottr:Triple(?id, imf:hasAttributeQualifier, ++(?qualifier1, ?qualifier2, ?qualifier3, ?qualifier4))
 } .

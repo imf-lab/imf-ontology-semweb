@@ -57,30 +57,36 @@ imf:ModelShape a sh:NodeShape ;
   sh:targetClass imf:Model ;
   sh:targetSubjectsOf imf:hasElement ;
   sh:property
-    [ sh:path imf:hasElement ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Model contains no Elements." ] .
+    [ sh:path imf:hasElement ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Model contains no Elements." ] ;
+  skos:changeNote
+    "0.2.0 :: Added",
+    "O.2.1 :: Changed: Set nodeKind"
+.
 _:MetadataShape a sh:NodeShape ;
   sh:name "Metadata" ;
   sh:description "Suggested list of metadata properties for central classes." ;
   sh:deactivated true ;
   sh:targetClass imf:Element , imf:Block , imf:Terminal ;
   sh:property
-    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Missing prefLabel." ] ,
-    [ sh:path dc:description ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Missing description." ] ,
-    [ sh:path pav:version    ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Missing version number." ] ,
-    [ sh:path pav:createdOn  ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Missing created timestamp." ] ,
-    [ sh:path pav:createdBy  ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "Missing creator." ] ;
+    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing prefLabel." ] ,
+    [ sh:path dc:description ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing description." ] ,
+    [ sh:path pav:version    ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing version number." ] ,
+    [ sh:path pav:createdOn  ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing created timestamp." ] ,
+    [ sh:path pav:createdBy  ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing creator." ] ;
   skos:changeNote
-    "0.2.0 :: Added"
+    "0.2.0 :: Added" ,
+    "0.2.1 :: Changed: set nodeKind"
 .
 
 imf:ElementShape a sh:NodeShape ;
   sh:targetClass imf:Element , imf:Block , imf:Terminal ;
   sh:property
-    [ sh:path imf:purpose ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Element has no purpose." ] ,
+    [ sh:path imf:purpose ; sh:minCount 1 ; sh:nodeKind sh:IRI ; sh:severity sh:Warning ; sh:message "The Element has no purpose." ] ,
     [ sh:path imf:partOf ; sh:maxCount 1 ; sh:message "The Element has more than one parent."  ] ,
     [ sh:deactivated true ; sh:path [ sh:inversePath imf:hasElement ] ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Element is not contained in a Model." ] ;
   skos:changeNote
-    "0.2.0 :: Added"
+    "0.2.0 :: Added" ,
+    "0.2.1 :: Changed: set nodeKind"
 .
 imf:BlockShape a sh:NodeShape ;
   sh:targetClass imf:Block ;
@@ -103,10 +109,11 @@ imf:TerminalShape a sh:NodeShape ;
     [ sh:path imf:connectedTo ; sh:maxCount 1 ; sh:class imf:Terminal ; sh:message "The Terminal is connected to more than one Terminal." ] ,
     [ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no connection (to a different Terminal)." ] ,
     #[ sh:path imf:hasTerminalQualifier ; sh:maxCount 1 ; sh:in ( imf:inputFlow imf:outputFlow ) ] ,
-    [ sh:path imf:medium ; sh:maxCount 1 ; sh:message "The Terminal has more than one medium." ]  ,
+    [ sh:path imf:medium ; sh:maxCount 1 ; sh:nodeKind sh:IRI ; sh:message "The Terminal has more than one medium." ]  ,
     [ sh:path imf:medium ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no medium." ] ;
   skos:changeNote
-    "0.2.0 :: Added"
+    "0.2.0 :: Added" ,
+    "0.2.1 :: Changed: set nodeKind"
 .
 imf:BreakdownPointShape a sh:NodeShape ;
   sh:targetClass imf:BreakdownPoint ;
@@ -140,16 +147,19 @@ imf:AttributeShape a sh:NodeShape ;
   sh:targetObjectsOf imf:hasAttribute ;
   sh:targetSubjectsOf imf:predicate, imf:uom, imf:hasAttributeQualifier ;
   sh:property
-    [ sh:path imf:predicate ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "The Attribute must have exactly one predicate." ] ,
+    [ sh:path imf:predicate ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ; sh:message "The Attribute must have exactly one predicate." ] ,
     [ sh:path imf:value ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Attribute has no value." ] ,
     [ sh:path imf:uom ; sh:maxCount 1 ] ,
-    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RegularityQualifier ; sh:message "The Attribute has more than one regularity qualifier." ] ,
-    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:RangeQualifier ; sh:message "The Attribute has more than one range qualifier." ] ,
-    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ProvenanceQualifier ; sh:message "The Attribute has more than one provenance qualifier." ] ,
-    [ sh:path imf:hasAttributeQualifier ; sh:maxCount 1 ; sh:class imf:ScopeQualifier ; sh:message "The Attribute has more than one scope qualifier." ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:qualifiedMaxCount 1 ; sh:qualifiedValueShape [ sh:class imf:RegularityQualifier ] ; sh:message "The Attribute has more than one regularity qualifier." ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:qualifiedMaxCount 1 ; sh:qualifiedValueShape [ sh:class imf:RangeQualifier ] ;      sh:message "The Attribute has more than one range qualifier." ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:qualifiedMaxCount 1 ; sh:qualifiedValueShape [ sh:class imf:ProvenanceQualifier ] ; sh:message "The Attribute has more than one provenance qualifier." ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:qualifiedMaxCount 1 ; sh:qualifiedValueShape [ sh:class imf:ScopeQualifier ] ;      sh:message "The Attribute has more than one scope qualifier." ] ,
     [ sh:path imf:hasAttributeQualifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Attribute has no qualifier." ] ;
   skos:changeNote
-    "0.2.0 :: Added"
+    "0.2.0 :: Added" ,
+    """0.2.1 :: Changed: 
+- fix bug: for each attribute qualifier, change maxCount to qualifiedMaxCount and qualifiedValueShape.
+- add nodeKinds to fit type of the path's property."""
 .
 #imf:AttributeGroupShape a sh:NodeShape ;
 #  sh:targetClass imf:AttributeGroup ;
