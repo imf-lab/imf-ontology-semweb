@@ -1,200 +1,44 @@
 {
-  "@context": {
-    "@version": 1.1,
+    "@context":
+    [        
+      	"http://jsonld-context.dyreriket.xyz/rdfs.json",
+        "http://jsonld-context.dyreriket.xyz/sh.json",
+        "http://jsonld-context.dyreriket.xyz/pav.json",
+      	"http://jsonld-context.dyreriket.xyz/skos.json",
+        "https://imf-lab.gitlab.io/imf-ontology/out/json/imf-context.json",
+	{
+	    "@version": 1.1,
 
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "sh": "http://www.w3.org/ns/shacl#",
-  
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "pav": "http://purl.org/pav/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "vann": "http://purl.org/vocab/vann/",
-    "vs": "http://www.w3.org/2003/06/sw-vocab-status/ns#",
-    "foaf": "http://xmlns.com/foaf/0.1/",
+	    "dc": "http://purl.org/dc/elements/1.1/",
+	    "ex": "http://example.com/example/",
+	    "foaf": "http://xmlns.com/foaf/0.1/",
+	    "imf": "http://ns.imfid.org/imf#",
+	    "owl": "http://www.w3.org/2002/07/owl#",
+	    "pav": "http://purl.org/pav/",
+	    "pca-plm": "http://rds.posccaesar.org/ontology/plm/rdl/",
+	    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+	    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+	    "sh": "http://www.w3.org/ns/shacl#",
+	    "skos": "http://www.w3.org/2004/02/skos/core#",
+	    "vann": "http://purl.org/vocab/vann/",
+	    "vs": "http://www.w3.org/2003/06/sw-vocab-status/ns#",
+	    "xsd": "http://www.w3.org/2001/XMLSchema#"
+	}
+    ],
 
-    "ex": "http://example.com#",
-    "pca-plm": "http://rds.posccaesar.org/ontology/plm/rdl/",
-    "imf": "http://ns.imfid.org/imf#",
-
-    "sh:target" : {
-      "@type" : "@id"
+    "@type": "sh:NodeShape",
+    "sh:property": {
+	"@omitDefault": true,
+	"sh:node": {
+	    "@embed": "@never"
+	}
     },
-    "sh:targetClass" : {
-      "@type" : "@id"
+    "rdfs:subClassOf": {
+	"@omitDefault": true,
+	"@embed": "@never"
     },
-    "sh:targetObjectsOf" : {
-      "@type" : "@id"
-    },
-    "sh:targetSubjectsOf" : {
-      "@type" : "@id"
-    },
-    "sh:severity" : {
-      "@type" : "@id"
-    },
-    "sh:result" : {
-      "@type" : "@id"
-    },
-    "sh:detail" : {
-      "@type" : "@id"
-    },
-    "sh:resultPath" : {
-      "@type" : "@id"
-    },
-    "sh:resultSeverity" : {
-      "@type" : "@id"
-    },
-    "sh:sourceShape" : {
-      "@type" : "@id"
-    },
-    "sh:sourceConstraintComponent" : {
-      "@type" : "@id"
-    },
-    "sh:prefixes" : {
-      "@type" : "@id"
-    },
-    "sh:declare" : {
-      "@type" : "@id"
-    },
-    "sh:namespace" : {
-      "@type" : "xsd:anyURI"
-    },
-    "sh:shapesGraph" : {
-      "@type" : "@id"
-    },
-    "sh:path" : {
-      "@type" : "@id"
-    },
-    "sh:inversePath" : {
-      "@type" : "@id"
-    },
-    "sh:alternativePath" : {
-      "@type" : "@id",
-      "@container" : "@list"
-    },
-    "sh:zeroOrMorePath" : {
-      "@type" : "@id"
-    },
-    "sh:oneOrMorePath" : {
-      "@type" : "@id"
-    },
-    "sh:zeroOrOnePath" : {
-      "@type" : "@id"
-    },
-    "sh:parameter" : {
-      "@type" : "@id"
-    },
-    "sh:validator" : {
-      "@type" : "@id"
-    },
-    "sh:nodeValidator" : {
-      "@type" : "@id"
-    },
-    "sh:propertyValidator" : {
-      "@type" : "@id"
-    },
-    "sh:and" : {
-      "@type" : "@id",
-      "@container" : "@list"
-    },
-    "sh:class" : {
-      "@type" : "@id"
-    },
-    "sh:ignoredProperties" :  {
-      "@type" : "@id",
-      "@container" : "@list"
-    },
-    "sh:datatype" : {
-      "@type" : "@id"
-    },
-    "sh:disjoint" : {
-      "@type" : "@id"
-    },
-    "sh:equals" : {
-      "@type" : "@id"
-    },
-    "sh:in" : {
-      "@container" : "@list"
-    },
-    "sh:languageIn" : {
-      "@container" : "@list"
-    },
-    "sh:lessThan" : {
-      "@type" : "@id"
-    },
-    "sh:lessThanOrEquals" : {
-      "@type" : "@id"
-    },
-    "sh:node" : {
-      "@type" : "@id"
-    },
-    "sh:nodeKind" : {
-      "@type" : "@id"
-    },
-    "sh:not" : {
-      "@type" : "@id"
-    },
-    "sh:or" : {
-      "@type" : "@id",
-      "@container" : "@list"
-    },
-    "sh:property" : {
-      "@type" : "@id"
-    },
-    "sh:qualifiedValueShape" : {
-      "@type" : "@id"
-    },
-    "sh:xone" : {
-      "@type" : "@id",
-      "@container" : "@list"
-    },
-    "sh:sparql" : {
-      "@type" : "@id"
-    },
-    "sh:derivedValues" : {
-      "@type" : "@id"
-    },
-    "sh:group" : {
-      "@type" : "@id"
-    },
-    "sh:returnType" : {
-      "@type" : "@id"
-    },
-    "sh:resultAnnotation" : {
-      "@type" : "@id"
-    },
-    "sh:annotationProperty" : {
-      "@type" : "@id"
-    },
-    "sh:maxCount" : {
-      "@type" : "xsd:integer"
-    },
-    "sh:maxLength" : {
-      "@type" : "xsd:integer"
-    },
-    "sh:minCount" : {
-      "@type" : "xsd:integer"
-    },
-    "sh:minLength" : {
-      "@type" : "xsd:integer"
-    },
-    "sh:qualifiedMaxCount" : {
-      "@type" : "xsd:integer"
-    },
-    "sh:qualifiedMinCount" : {
-      "@type" : "xsd:integer"
+    "sh:targetClass": {
+	"@omitDefault": true,
+	"@embed": "@never"
     }
-
-    , 
-    "rdfs:subClassOf": { "@type": "@id" }
-
-  },
-
-  "@type": "sh:NodeShape",
-  "sh:property":     { "@omitDefault": true, "sh:node": { "@embed": "@never" } },
-  "rdfs:subClassOf": { "@omitDefault": true, "@embed": "@never" },
-  "sh:targetClass":  { "@omitDefault": true, "@embed": "@never" }
-
 }
