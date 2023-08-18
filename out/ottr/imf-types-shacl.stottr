@@ -32,9 +32,7 @@
 
 o-imf:ShaclNodeShape[
   ottr:IRI ?id,
-  ? owl:Class ?targetClass,
-  ? xsd:string ?name,
-  ? xsd:string ?description
+  ? owl:Class ?targetClass
 ] :: {
   o-rdf:Type(?id, sh:NodeShape),
   ottr:Triple(?id, sh:targetClass, ?targetClass)
@@ -65,7 +63,7 @@ o-imf-t-s:Type[
   ? xsd:string ?name,
   ? xsd:string ?description
 ] :: {
-  o-imf:ShaclNodeShape(?id, ?id, none, none),
+  o-imf:ShaclNodeShape(?id, none),
   ottr:Triple(?id, skos:prefLabel, ?name),
   ottr:Triple(?id, dc:description, ?description),
   o-rdf:Type(?id, rdfs:Class),
