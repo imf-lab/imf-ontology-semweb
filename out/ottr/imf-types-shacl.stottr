@@ -30,22 +30,12 @@
 @prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
 @prefix o-imf-d:     <http://ns.imfid.org/templates/data/> .
 
-o-imf:ShaclShape[
-  ottr:IRI ?id, # this' shapes' id
-  ? xsd:string ?name,
-  ? xsd:string ?description
-] :: {
-  ottr:Triple(?id, sh:name, ?name),
-  ottr:Triple(?id, sh:description, ?description)
-} .
-
 o-imf:ShaclNodeShape[
   ottr:IRI ?id,
   ? owl:Class ?targetClass,
   ? xsd:string ?name,
   ? xsd:string ?description
 ] :: {
-  o-imf:ShaclShape(?id, ?name, ?description),
   o-rdf:Type(?id, sh:NodeShape),
   ottr:Triple(?id, sh:targetClass, ?targetClass)
 } .
@@ -59,7 +49,8 @@ o-imf:ShaclPropertyShape[
   ? ottr:IRI ?severity,
   ? xsd:string ?message
 ] :: {
-  o-imf:ShaclShape(?id, ?name, ?description),
+  ottr:Triple(?id, sh:name, ?name),
+  ottr:Triple(?id, sh:description, ?description)
   ottr:Triple(?nodeShape, sh:property, ?id),
   ottr:Triple(?id, sh:path, ?path),
   ottr:Triple(?id, sh:severity, ?severity),
@@ -74,7 +65,9 @@ o-imf-t-s:Type[
   ? xsd:string ?name,
   ? xsd:string ?description
 ] :: {
-  o-imf:ShaclNodeShape(?id, ?id, ?name, ?description),
+  o-imf:ShaclNodeShape(?id, ?id, none, none),
+  ottr:Triple(?id, skos:prefLabel, ?name),
+  ottr:Triple(?id, dc:description, ?description),
   o-rdf:Type(?id, rdfs:Class),
   o-rdfs:SubClassOf(?id, ?IMFClass)
   o-rdf:Type(?id, ?typeClass)

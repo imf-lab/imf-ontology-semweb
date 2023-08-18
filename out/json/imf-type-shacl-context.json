@@ -4,6 +4,7 @@
       	"http://jsonld-context.dyreriket.xyz/rdfs.json",
         "http://jsonld-context.dyreriket.xyz/sh.json",
         "http://jsonld-context.dyreriket.xyz/pav.json",
+        "http://jsonld-context.dyreriket.xyz/dc.json",
       	"http://jsonld-context.dyreriket.xyz/skos.json",
         "https://imf-lab.gitlab.io/imf-ontology/out/json/imf-context.json",
 	{

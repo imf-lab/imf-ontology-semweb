@@ -15,6 +15,7 @@
 
 @prefix imf:	   <http://ns.imfid.org/imf#> .
 @prefix pca-plm:   <http://rds.posccaesar.org/ontology/plm/rdl/> .
+
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
 
 @prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
@@ -27,6 +28,7 @@
 @prefix o-imf:	     <http://ns.imfid.org/templates/> .
 @prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
 @prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
+@prefix o-imf-d:     <http://ns.imfid.org/templates/data/> .
 
 o-imf:AttributeQualifierClass [owl:Class ?qualifierClass, xsd:string ?label, ottr:IRI ?pcaMapping
 ] :: {
