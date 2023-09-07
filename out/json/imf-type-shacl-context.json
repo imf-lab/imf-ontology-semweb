@@ -28,17 +28,14 @@
     ],
 
     "@type": "sh:NodeShape",
-    "sh:property": {
-	"@omitDefault": true,
-	"sh:node": {
-	    "@embed": "@never"
+    "sh:property" : {
+	"sh:path": {},
+	"sh:node" : {
+	    "@embed": "@never",
+            "@omitDefault": true
 	}
     },
     "rdfs:subClassOf": {
-	"@omitDefault": true,
-	"@embed": "@never"
-    },
-    "sh:targetClass": {
 	"@omitDefault": true,
 	"@embed": "@never"
     }
