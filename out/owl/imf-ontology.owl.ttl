@@ -69,18 +69,6 @@ imf:Attribute
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:ProvenanceQualifier ;
-        owl:onProperty imf:hasAttributeQualifier
-    ], [
-        a owl:Restriction ;
-        owl:onProperty [
-            a owl:ObjectProperty ;
-            owl:inverseOf imf:hasAttribute
-        ] ;
-        owl:someValuesFrom imf:Element
-    ], [
-        a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
         owl:onClass imf:RangeQualifier ;
         owl:onProperty imf:hasAttributeQualifier
     ], [
@@ -90,7 +78,7 @@ imf:Attribute
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:RegularityQualifier ;
+        owl:onClass imf:ScopeQualifier ;
         owl:onProperty imf:hasAttributeQualifier
     ], [
         a owl:Restriction ;
@@ -99,8 +87,20 @@ imf:Attribute
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:ScopeQualifier ;
+        owl:onClass imf:RegularityQualifier ;
         owl:onProperty imf:hasAttributeQualifier
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:ProvenanceQualifier ;
+        owl:onProperty imf:hasAttributeQualifier
+    ], [
+        a owl:Restriction ;
+        owl:onProperty [
+            a owl:ObjectProperty ;
+            owl:inverseOf imf:hasAttribute
+        ] ;
+        owl:someValuesFrom imf:Element
     ] ;
     vs:term_status "testing" ;
     skos:changeNote "0.2.0 :: Added", "0.2.1 :: Changed: add axioms that specify that an [Attribute] has a [value] and a [predicate] and is the [Attribute], via [has attibute], for some [Element]." ;
@@ -156,11 +156,11 @@ imf:BreakdownPoint
     a owl:Class ;
     rdfs:subClassOf imf:Element, [
         a owl:Restriction ;
-        owl:onProperty imf:theWhole ;
+        owl:onProperty imf:thePart ;
         owl:someValuesFrom imf:Element
     ], [
         a owl:Restriction ;
-        owl:onProperty imf:thePart ;
+        owl:onProperty imf:theWhole ;
         owl:someValuesFrom imf:Element
     ] ;
     vs:term_status "unstable" ;
@@ -175,14 +175,14 @@ imf:ConnectionPoint
     a owl:Class ;
     rdfs:subClassOf imf:Element, [
         a owl:Restriction ;
-        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-        owl:onClass imf:Element ;
-        owl:onProperty imf:theOutput
-    ], [
-        a owl:Restriction ;
         owl:onClass imf:Element ;
         owl:onProperty imf:theConnected ;
         owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
+    ], [
+        a owl:Restriction ;
+        owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+        owl:onClass imf:Element ;
+        owl:onProperty imf:theOutput
     ], [
         a owl:Restriction ;
         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
@@ -286,10 +286,10 @@ The ontology is designed to meet the following functional requirements:
     """ ;
     pav:contributedBy [
         foaf:name "Erlend Fjøsna"
-    ], _:b82, [
+    ], _:b81, [
         foaf:name "Arild Waaler"
     ] ;
-    pav:createdBy _:b82 ;
+    pav:createdBy _:b81 ;
     pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
     vann:preferredNamespacePrefix "imf" ;
     vann:preferredNamespaceUri <http://ns.imfid.org/imf#> ;
@@ -316,14 +316,12 @@ Generated diff of IRIs in the IMF namespace between this and the previous versio
 
 """ ;
     skos:editorialNote """Result of validation against specified sh:shapesGraph:
-Result of validating RDF data <out/owl/imf-ontology.owl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
-2023-08-09
+Validating RDF data <out/owl/imf-ontology.owl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
 Conforms
 
 
 
-Result of validating RDF data <out/owl/imf-ontology.owl.ttl> against SHACL shape <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl>:
-2023-08-09
+Validating RDF data <out/owl/imf-ontology.owl.ttl> against SHACL shape <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl>:
 Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
   Value: <http://ns.imfid.org/imf#TerminalType>
   Message: Unrecognised IMF vocabulary element. Check spelling.
@@ -342,8 +340,7 @@ Node=<http://shipshape.dyreriket.xyz#ANY_NODE>
 
 
 
-Result of validating RDF data <out/owl/imf-ontology.owl.ttl> against SHACL shape <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl>:
-2023-08-09
+Validating RDF data <out/owl/imf-ontology.owl.ttl> against SHACL shape <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl>:
 Node=<http://ns.imfid.org/imf#BreakdownPoint>
   Path=<http://www.w3.org/2004/02/skos/core#definition>
   Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0
@@ -1259,12 +1256,6 @@ skos:notation
 
 []
     a owl:AllDifferent ;
-    owl:members (imf:inputFlow
-        imf:outputFlow
-    ) .
-
-[]
-    a owl:AllDifferent ;
     owl:members (imf:functionAspect
         imf:locationAspect
         imf:productAspect
@@ -1295,6 +1286,12 @@ skos:notation
         imf:ScopeQualifier
     ) .
 
-_:b82
+[]
+    a owl:AllDifferent ;
+    owl:members (imf:inputFlow
+        imf:outputFlow
+    ) .
+
+_:b81
     foaf:name "Martin G. Skjæveland" .
 

@@ -156,12 +156,10 @@ o-imf-t-s:ElementType[
   ? xsd:string ?description,
   ? List<owl:Class> ?superclass,
   ? ottr:IRI ?aspect,
-  ? ottr:IRI ?purpose,
   ? List<ottr:IRI> ?classifiers
 ] :: {
   o-imf-t-s:Type(?id, ?IMFClass, ?typeClass, ?superclass, ?name, ?description),
   o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:hasAspect, ?aspect),
-  o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:purpose, ?purpose),
   cross | o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:classifier, ++?classifiers)
 } .
 
@@ -175,7 +173,8 @@ o-imf-t-s:BlockType[
   ? List<ottr:IRI> ?classifiers,
   ? ottr:IRI ?symbol
 ] :: {
-  o-imf-t-s:ElementType(?id, imf:Block, imf:BlockType, ?name, ?description, ?superclass, ?aspect, ?purpose, ?classifiers),
+  o-imf-t-s:ElementType(?id, imf:Block, imf:BlockType, ?name, ?description, ?superclass, ?aspect, ?classifiers),
+  o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:purpose, ?purpose),
   o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:symbol, ?symbol)
 } .
 
@@ -185,11 +184,10 @@ o-imf-t-s:TerminalType[
   ? xsd:string ?description,
   ? List<owl:Class> ?superclass,
   ? ottr:IRI ?aspect,
-  ? ottr:IRI ?purpose,
   ? List<ottr:IRI> ?classifiers,
   ? ottr:IRI ?medium
 ] :: {
-  o-imf-t-s:ElementType(?id, imf:Terminal, imf:TerminalType, ?name, ?description, ?superclass, ?aspect, ?purpose, ?classifiers),
+  o-imf-t-s:ElementType(?id, imf:Terminal, imf:TerminalType, ?name, ?description, ?superclass, ?aspect, ?classifiers),
   o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:medium, ?medium)
 } .
 

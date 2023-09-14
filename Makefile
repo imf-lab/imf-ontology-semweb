@@ -19,11 +19,11 @@ all: 	code index.html
 
 ## ORG
 
-.tangle: imf-language-v21.org
+.tangle: imf-specification.org
 	emacs --batch --quick -l org -l ${HOME}/.emacs --eval "(org-babel-tangle-file \"$<\")"
 	touch $@
 
-index.html: imf-language-v21.org .tangle
+index.html: imf-specification.org .tangle
 	emacs --batch --quick -l ${HOME}/.emacs --visit $< -f org-html-export-to-html --kill
 
 ### Tangled files
