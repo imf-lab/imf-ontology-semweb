@@ -3722,7 +3722,7 @@ All diagrams combined.
 
 <<plantuml-model>>
 
-<<plantuml-aspect-element>>
+<<plantuml-aspect-elements>>
 
 '<<plantuml-elements>>
 <<plantuml-elements-w-reified>>
