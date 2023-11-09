@@ -76,11 +76,12 @@ imf:AttributeShape a sh:NodeShape ;
   # sh:deactivated true ;
   sh:targetClass imf:AttributeType ;
   sh:property
-    [ sh:path ( sh:property sh:path ) ; sh:hasValue imf:predicate ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ;
+    [ sh:path ( sh:property sh:path ) ; sh:hasValue imf:predicate ; sh:minCount 1 ; sh:nodeKind sh:IRI ;
       sh:severity sh:Warning ; sh:message "The AttributeType does not specify a imf:predicate." ] ;
   skos:changeNote
     "0.2.0 :: Added" ,
     """0.2.1 :: Changed: 
 - activate shape (by removing 'sh:deactivated true').
-- set nodeKind"""
+- set nodeKind
+- bug fix: remove maxCount"""
 .
