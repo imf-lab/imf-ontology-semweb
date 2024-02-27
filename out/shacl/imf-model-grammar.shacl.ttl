@@ -1,0 +1,175 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix sh:	<http://www.w3.org/ns/shacl#> .
+
+@prefix dc:	<http://purl.org/dc/elements/1.1/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+
+@prefix ex:	<http://example.com#> .
+
+@prefix imf:	   <http://ns.imfid.org/imf#> .
+@prefix pca-plm:   <http://rds.posccaesar.org/ontology/plm/rdl/> .
+
+imf:IMFModelGrammar a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230630/imf-model-grammar.shacl.ttl> ;
+    owl:versionInfo "0.2.0" ;
+    owl:priorVersion <https://ns.imfid.org/20221118/imf-grammar.shacl.ttl> ;
+    skos:prefLabel "IMF Model Grammar -- SHACL" ;
+    dc:description "This shapes graph can be used to validate IMF Model RDF data against the grammar for IMF Models." ;
+    pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    owl:imports
+      <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ,
+      <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
+    sh:entailment <http://www.w3.org/ns/entailment/RDFS> ;
+    sh:shapesGraph
+      <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ,
+      <http://www.w3.org/ns/shacl-shacl#> ,
+      <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
+    skos:editorialNote """Result of validation against specified sh:shapesGraph:
+Validating RDF data <out/shacl/imf-model-grammar.shacl.ttl> against SHACL shape <http://www.w3.org/ns/shacl-shacl#>:
+Conforms
+
+
+
+Validating RDF data <out/shacl/imf-model-grammar.shacl.ttl> against SHACL shape <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>:
+Conforms
+
+
+
+Validating RDF data <out/shacl/imf-model-grammar.shacl.ttl> against SHACL shape <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl>:
+Conforms
+
+
+    """
+.
+
+imf:ModelShape a sh:NodeShape ;
+  sh:targetClass imf:Model ;
+  sh:targetSubjectsOf imf:hasElement ;
+  sh:property
+    [ sh:path imf:hasElement ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Model contains no Elements." ] ;
+  skos:changeNote
+    "0.2.0 :: Added",
+    "O.2.1 :: Changed: Set nodeKind"
+.
+_:MetadataShape a sh:NodeShape ;
+  sh:name "Metadata" ;
+  sh:description "Suggested list of metadata properties for central classes." ;
+  sh:deactivated true ;
+  sh:targetClass imf:Element , imf:Type ;
+  sh:property
+    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing prefLabel." ] ,
+    [ sh:path dc:description ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing description." ] ,
+    [ sh:path pav:version    ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing version number." ] ,
+    [ sh:path pav:createdOn  ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing created timestamp." ] ,
+    [ sh:path pav:createdBy  ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:severity sh:Warning ; sh:message "Missing creator." ] ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    "0.2.1 :: Changed: set nodeKind"
+.
+
+imf:ElementShape a sh:NodeShape ;
+  sh:targetClass imf:Element ;
+  sh:property
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:message "The Element has more than one parent."  ] ,
+    [ sh:deactivated true ; sh:path [ sh:inversePath imf:hasElement ] ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Element is not contained in a Model." ] ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    "0.2.1 :: Changed: set nodeKind; moved requirement on imf:purpose to Block."
+.
+imf:BlockShape a sh:NodeShape ;
+  sh:targetClass imf:Block ;
+  sh:targetSubjectsOf imf:hasTerminal, imf:hasInputTerminal, imf:hasOutputTerminal ;
+  sh:property
+    [ sh:path imf:hasTerminal ; sh:class imf:Terminal ; sh:message "The Block has a Terminal which is not a Terminal." ] ,
+    [ sh:path [ sh:alternativePath ( imf:hasTerminal imf:hasInputTerminal imf:hasOutputTerminal ) ] ;
+	sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminals." ] ,
+    [ sh:path imf:purpose ; sh:minCount 1 ; sh:nodeKind sh:IRI ; sh:severity sh:Warning ; sh:message "The Block has no purpose." ] ,
+    [ sh:path imf:partOf  ; sh:class imf:Block ; sh:message "The Block has a part which is not a Block." ] ,
+    [ sh:path imf:hasPart ; sh:class imf:Block ; sh:message "The Block is part of a non-Block." ] ,
+    [ sh:path rdf:type ; sh:minCount 1 ; sh:class imf:BlockType; sh:severity sh:Warning ; sh:message "The Block has no BlockType." ] ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+  """0.2.1 :: Changed: 
+ - Moved requirement on imf:purpose from Element to Block
+ - Adding warning on missing BlockType"""
+.
+imf:TerminalShape a sh:NodeShape ;
+  sh:targetClass imf:Terminal ;
+  sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:hasTerminalQualifier ;
+  sh:targetObjectsOf imf:hasTerminal, imf:connectedTo ;
+  sh:property
+    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class imf:Terminal ; sh:message "The Terminal has more than one parent." ] ,
+    [ sh:path imf:connectedTo ; sh:maxCount 1 ; sh:class imf:Terminal ; sh:message "The Terminal is connected to more than one Terminal." ] ,
+    [ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no connection (to a different Terminal)." ] ,
+    #[ sh:path imf:hasTerminalQualifier ; sh:maxCount 1 ; sh:in ( imf:inputFlow imf:outputFlow ) ] ,
+    [ sh:path imf:medium ; sh:maxCount 1 ; sh:nodeKind sh:IRI ; sh:message "The Terminal has more than one medium." ]  ,
+    [ sh:path imf:medium ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no medium." ] ,
+    [ sh:path rdf:type ; sh:minCount 1 ; sh:class imf:TerminalType; sh:severity sh:Warning ; sh:message "The Terminal has no TerminalType." ] ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+  """0.2.1 :: Changed: 
+- Set nodeKind
+- Add warning on missing TerminalType"""
+.
+imf:BreakdownPointShape a sh:NodeShape ;
+  sh:targetClass imf:BreakdownPoint ;
+  sh:targetSubjectsOf imf:thePart , imf:theWhole ;
+  sh:property
+    [ sh:path imf:thePart  ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Element ; sh:message "The Breakdown Point must have exactly one part." ] ,
+    [ sh:path imf:theWhole ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Element ; sh:message "The Breakdown Point must have exactly one whole." ] ;
+  skos:changeNote
+    "0.2.0 :: Added"
+.
+imf:ConnectionPointShape a sh:NodeShape ;
+  sh:targetClass imf:ConnectionPoint ;
+  sh:targetSubjectsOf imf:theConnected , imf:theInput , imf:theOutput ;
+  sh:property
+    [ sh:path imf:theInput  ; sh:maxCount 1 ; sh:class imf:Element ; sh:message "The Connection Point has more than one input." ] ,
+    [ sh:path imf:theOutput ; sh:maxCount 1 ; sh:class imf:Element ; sh:message "The Connection Point has more than one output." ] ,
+    [ sh:path imf:theConnected ; sh:maxCount 2 ; sh:class imf:Element ; sh:message "The Connection Point has more than two connected." ] ;
+  skos:changeNote
+    "0.2.0 :: Added"
+.
+imf:AspectElementShape a sh:NodeShape ;
+  sh:targetClass imf:AspectElement ;
+  sh:targetSubjectsOf imf:hasAspect ;
+  sh:property
+    [ sh:path imf:hasAspect ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Aspect ; sh:message "The AspectElement must have exactly one Aspect." ]  ;
+  skos:changeNote
+    "0.2.0 :: Added"
+.
+imf:AttributeShape a sh:NodeShape ;
+  sh:targetClass imf:Attribute ;
+  sh:targetObjectsOf imf:hasAttribute ;
+  sh:targetSubjectsOf imf:predicate, imf:uom, imf:hasAttributeQualifier ;
+  sh:property
+    [ sh:path imf:predicate ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ; sh:message "The Attribute must have exactly one predicate." ] ,
+    [ sh:path imf:value ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Attribute has no value." ] ,
+    [ sh:path imf:uom ; sh:maxCount 1 ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:qualifiedMaxCount 1 ; sh:qualifiedValueShape [ sh:class imf:RegularityQualifier ] ; sh:message "The Attribute has more than one regularity qualifier." ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:qualifiedMaxCount 1 ; sh:qualifiedValueShape [ sh:class imf:RangeQualifier ] ;      sh:message "The Attribute has more than one range qualifier." ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:qualifiedMaxCount 1 ; sh:qualifiedValueShape [ sh:class imf:ProvenanceQualifier ] ; sh:message "The Attribute has more than one provenance qualifier." ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:qualifiedMaxCount 1 ; sh:qualifiedValueShape [ sh:class imf:ScopeQualifier ] ;      sh:message "The Attribute has more than one scope qualifier." ] ,
+    [ sh:path imf:hasAttributeQualifier ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Attribute has no qualifier." ] ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    """0.2.1 :: Changed: 
+- fix bug: for each attribute qualifier, change maxCount to qualifiedMaxCount and qualifiedValueShape.
+- add nodeKinds to fit type of the path's property."""
+.
+#imf:AttributeGroupShape a sh:NodeShape ;
+#  sh:targetClass imf:AttributeGroup ;
+#  sh:targetObjectsOf imf:hasAttributeGroup ;
+#  sh:property
+#    [ sh:path imf:hasAttribute ; sh:minCount 1 ; sh:message "AttributeGroup has no Attributes." ] ;
+#  skos:changeNote
+#    "0.2.0 :: Added"
+#.

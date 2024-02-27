@@ -1,0 +1,143 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix sh: 	<http://www.w3.org/ns/shacl#> . 
+@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
+
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+
+@prefix imf:	<http://ns.imfid.org/imf#> .
+@prefix ex:	<http://example.com#> .
+
+@prefix p14:    <http://example.com/P14#> .
+@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
+@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
+@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
+@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
+@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
+@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
+
+@prefix o-imf:	     <http://ns.imfid.org/templates/> .
+@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
+@prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
+
+@prefix rvz:  <http://rdfvizler.dyreriket.xyz/vocabulary/core#> .
+@prefix rvz-a: <http://rdfvizler.dyreriket.xyz/vocabulary/attribute#> .
+@prefix rvz-n: <http://rdfvizler.dyreriket.xyz/vocabulary/attribute-default-node#> .
+@prefix rvz-e: <http://rdfvizler.dyreriket.xyz/vocabulary/attribute-default-edge#> .
+@prefix :      <urn:temp#>
+
+    [init-graph:
+        ->
+        (:graph rdf:type rvz:RootGraph)
+        (:graph rdf:type rvz:DiGraph)
+        (:graph rvz-a:rankdir "BT")
+        (:graph rvz-a:center "true")
+        // node defaults
+	(:graph rvz-n:shape "box")
+        (:graph rvz-n:fontname "Arial")
+        (:graph rvz-n:fontsize "8px")
+        // edge defaults
+        (:graph rvz-e:fontname "Arial")
+        (:graph rvz-e:fontsize "8px")
+        ]
+
+    [class:
+        (?s rdf:type owl:Class)
+	notBNode(?s)
+        ->
+        (:graph rvz:hasNode ?s)
+        ]
+
+    [individual:
+        (:graph rvz:hasNode ?s)
+        (?i rdf:type ?s)
+        makeSkolem(?edge, ?i, rdf:type, ?s)
+        ->
+        (:graph rvz:hasNode ?i)
+        (:graph rvz:hasEdge ?edge)
+        (?edge :predicate rdf:type)
+        (?edge rvz-a:style "dotted")
+        (?edge rvz:hasSource ?i)
+        (?edge rvz:hasTarget ?s)
+        ]
+
+    [label-node:
+        (:graph rvz:hasNode ?node)
+        shortvalue(?node ?label)
+        ->
+	(?node rvz-a:label ?label)
+        ]
+
+    [subclass:
+        (?s rdfs:subClassOf ?o)
+        makeSkolem(?edge, ?s, rdfs:subClassOf, ?o)
+        ->
+        (:graph rvz:hasEdge ?edge)
+        (?edge :predicate ?p)
+        (?edge rvz-a:arrowhead "empty")
+        (?edge rvz-a:dir "forward")
+        (:graph rvz:hasNode ?s)
+        (:graph rvz:hasNode ?o)
+        (?edge rvz:hasSource ?s)
+        (?edge rvz:hasTarget ?o)
+        ]
+
+    [property:
+        (?p rdfs:domain ?domain)
+        (?p rdfs:range ?range)
+        shortvalue(?p ?label)
+        makeSkolem(?edge, ?domain, ?p, ?range)
+        ->
+        (:graph rvz:hasEdge ?edge)
+        (:graph rvz:hasNode ?domain)
+        (:graph rvz:hasNode ?range)
+        (?edge :predicate ?p)
+	(?edge rvz-a:label ?label)
+        (?edge rvz:hasSource ?domain)
+        (?edge rvz:hasTarget ?range)
+        ]
+
+    [SubObjectExactCardinality:
+        (?i ottr:of o-owl-ax:SubObjectExactCardinality)
+        (?i ottr:values ?arg1)
+	(?arg1 rdf:first ?domain)
+	(?arg1 rdf:rest ?arg2)
+	(?arg2 rdf:first ?card)
+	(?arg2 rdf:rest ?arg3)
+	(?arg3 rdf:first ?property)
+	(?arg3 rdf:rest ?arg4)
+	(?arg4 rdf:first ?range)
+	shortvalue(?property ?plabel)
+	strConcat(?plabel, " ", ?card, ?label)
+        makeSkolem(?edge, ?domain, ?card, ?property, ?range)
+	->
+        (:graph rvz:hasEdge ?edge)
+        (:graph rvz:hasNode ?domain)
+        (:graph rvz:hasNode ?range)
+        (?edge :predicate ?property)
+	(?edge rvz-a:label ?label)
+        (?edge rvz-a:constraint "false")
+        (?edge rvz-a:dir "forward")
+        (?edge rvz-a:arrowhead "teetee")
+        (?edge rvz:hasSource ?domain)
+        (?edge rvz:hasTarget ?range)
+        ]
+
+    [Blanks:
+	(:graph rvz:hasNode ?node)
+	isBNode(?node)
+	typedvalue(?node, ?label)
+	->
+	(?node rvz-a:label ?label)
+	(?node rvz-a:shape "box")
+	(?node rvz-a:style "filled,dashed")
+	(?node rvz-a:fillcolor "gray90")
+	(?node rvz-a:height ".3")
+	(?node rvz-a:width ".3")
+	]

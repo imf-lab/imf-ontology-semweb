@@ -1,0 +1,11 @@
+
+bin/
+
+catalog-v001.xml
+
+*.temp
+*.wottr.ttl
+
+.tangle
+
+out/.std-prefixes.ttl
