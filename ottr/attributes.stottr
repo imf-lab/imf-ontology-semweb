@@ -15,7 +15,6 @@
 
 @prefix imf:	   <http://ns.imfid.org/imf#> .
 @prefix pca-plm:   <http://rds.posccaesar.org/ontology/plm/rdl/> .
-
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
 
 @prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
@@ -35,7 +34,7 @@ o-imf:AttributeQualifierClass [owl:Class ?qualifierClass, xsd:string ?label, ott
   o-rdf:Type(?qualifierClass, owl:Class) ,
   o-owl-ax:SubClassOf(?qualifierClass, imf:AttributeQualifier) ,
   ottr:Triple(?qualifierClass, skos:prefLabel, ?label),
-  o-owl-ax:SubObjectMaxCardinality(imf:Attribute, "1"^^xsd:nonNegativeInteger, imf:hasAttributeQualifier, ?qualifierClass),
+  o-owl-ax:SubObjectMaxCardinality(imf:Attribute, "1"^^xsd:nonNegativeInteger, imf:classifier, ?qualifierClass),
   ottr:Triple(?qualifierClass, skos:exactMatch, ?pcaMapping)
   #
   ottr:Triple(?qualifierClass, vs:term_status, "testing")
