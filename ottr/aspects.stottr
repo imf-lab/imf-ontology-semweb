@@ -15,7 +15,6 @@
 
 @prefix imf:	   <http://ns.imfid.org/imf#> .
 @prefix pca-plm:   <http://rds.posccaesar.org/ontology/plm/rdl/> .
-
 @prefix ottr:        <http://ns.ottr.xyz/0.4/> .
 
 @prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
@@ -30,26 +29,50 @@
 @prefix o-imf-t-o:   <http://ns.imfid.org/templates/type/owl/> .
 @prefix o-imf-d:     <http://ns.imfid.org/templates/data/> .
 
-## This creates an individual for each of the aspects in the table.
-o-imf:Aspect [owl:NamedIndividual ?aspect, xsd:string ?label, xsd:string ?symbol, xsd:string ?color, xsd:string ?definition] :: {
+
+o-imf:Aspect [ owl:NamedIndividual ?aspect,
+            xsd:string ?label,
+            owl:NamedIndividual ?perspective,
+            ? owl:NamedIndividual ?interest,
+            owl:NamedIndividual ?modality,
+            ? xsd:string ?symbol,
+            ? xsd:string ?colour
+        ] :: {
   o-rdf:Type(?aspect, imf:Aspect) ,
   o-rdf:Type(?aspect, owl:NamedIndividual) ,
+  ottr:Triple(?aspect, imf:hasCharacteristic, ?perspective),
+  ottr:Triple(?aspect, imf:hasCharacteristic, ?interest),
+  ottr:Triple(?aspect, imf:hasCharacteristic, ?modality),
   ottr:Triple(?aspect, imf:prefix, ?symbol),
-  ottr:Triple(?aspect, imf:color, ?color),
+  ottr:Triple(?aspect, imf:colour, ?colour),
   ottr:Triple(?aspect, skos:prefLabel, ?label),
-  ottr:Triple(?aspect, skos:definition, ?definition),
-  ottr:Triple(?aspect, vs:term_status, "testing"),
-  ottr:Triple(?aspect, skos:changeNote, "0.1.0 :: Added"),
-  ottr:Triple(?aspect, skos:changeNote, "0.2.0 :: Changed: use lowerCamelCase for localname of IRI.")
   ottr:Triple(?aspect, vann:termGroup, "aspects")
+  ottr:Triple(?aspect, vs:term_status, "testing")
 } .
+
+
+o-imf:InterAspectRelation [owl:ObjectProperty ?property, xsd:string ?label, owl:Class ?aspectClass] :: {
+  o-rdf:Type(?property, owl:ObjectProperty),
+  ottr:Triple(?property, skos:prefLabel, ?label),
+  o-owl-ax:SubPropertyOf(?property, imf:interAspectRelation),
+  o-rdfs:Range(?property, ?aspectClass),
+  ottr:Triple(?property, skos:changeNote, "0.2.0 :: Added")
+  ottr:Triple(?property, skos:changeNote, "0.2.2 :: Deprecated: use instead imf:proxy, if the subject resource is an imf:AspectElement, or imf:projectionOf, if the subject element is a imf:NonAspectElement.")
+  ottr:Triple(?property, owl:deprecated, true)
+  #ottr:Triple(?resource, vs:term_status, "testing"),
+  ottr:Triple(?property, vann:termGroup, "aspects")
+} .
+
 
 o-imf:AspectClass [owl:Class ?class, xsd:string ?label, owl:NamedIndividual ?aspect] :: {
   o-owl-ax:SubClassOf(?class, imf:AspectElement),
   ottr:Triple(?class, skos:prefLabel, ?label),
   o-owl-ax:EquivObjectHasValue(?class, imf:hasAspect, ?aspect),
   o-owl-ax:SubObjectAllValuesFrom(?class, imf:intraAspectRelation, ?class),
-  o-imf:GeneratedNote(?class)
+  ottr:Triple(?class, owl:deprecated, true),
+  ottr:Triple(?class, vann:termGroup, "aspects")
+  ottr:Triple(?class, skos:changeNote, "0.1.0 :: Added")
+  ottr:Triple(?class, skos:changeNote, "0.2.2 :: Deprecated: use instead imf:hasAspect.")
 } .
 
 o-imf:AspectElementClass [owl:Class ?class, xsd:string ?label, owl:Class ?aspectClass, owl:Class ?elementClass] :: {
@@ -57,19 +80,9 @@ o-imf:AspectElementClass [owl:Class ?class, xsd:string ?label, owl:Class ?aspect
   ottr:Triple(?class, skos:prefLabel, ?label),
   o-owl-ax:SubClassOf(?class, ?aspectClass),
   o-owl-ax:SubClassOf(?class, ?elementClass),
-  o-imf:GeneratedNote(?class)
+  ottr:Triple(?class, owl:deprecated, true),
+  ottr:Triple(?class, vann:termGroup, "aspects")
+  ottr:Triple(?class, skos:changeNote, "0.1.0 :: Added")
+  ottr:Triple(?class, skos:changeNote, "0.2.2 :: Deprecated: use instead imf:hasAspect.")
 } .
 
-o-imf:InterAspectRelation [owl:ObjectProperty ?property, xsd:string ?label, owl:Class ?aspectClass] :: {
-  o-rdf:Type(?property, owl:ObjectProperty),
-  ottr:Triple(?property, skos:prefLabel, ?label),
-  o-owl-ax:SubPropertyOf(?property, imf:interAspectRelation),
-  o-rdfs:Range(?property, ?aspectClass),
-  o-imf:GeneratedNote(?property)
-} .
-
-o-imf:GeneratedNote [ottr:IRI ?resource] :: {
-  ottr:Triple(?resource, skos:note, "This resource is programatically generated. Please consult its defining resources for textual descriptions."),
-  ottr:Triple(?resource, vs:term_status, "testing"),
-  ottr:Triple(?resource, vann:termGroup, "aspects")
-} .

@@ -1,36 +1,93 @@
-#+TITLE: IMF Language Specification
-#+DATE: Editor: Martin G. Skjæveland
-#+AUTHOR:
-#+EMAIL:
 
-#+OPTIONS: ':nil *:t -:t ::t <:t H:4 \n:nil ^:t arch:headline
-#+OPTIONS: author:t broken-links:nil c:nil creator:nil
-#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
-#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
-#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
-#+LANGUAGE: en
-#+SELECT_TAGS: export
-#+EXCLUDE_TAGS: noexport QA update old
-#+EXPORT_FILE_NAME: index.html
+* TODOs [2024-03-21 to.]
 
-#+LATEX_CLASS: article
-#+LATEX_CLASS_OPTIONS: [12pt]
-#+LATEX_HEADER: \usepackage{fullpage,parskip,times}
-#+LATEX_HEADER: \usepackage{xcolor}
-#+LATEX_HEADER: \usepackage[zerostyle=d]{newtxtt} %% Various versions of zeros available. See documentation for details
+ - [ ] update image imports
+ - [ ] add notes on visualisation
+ - [ ] add references to other specifications
+ - [ ] fix py sparql run, prioblems with missing sparql prefixes, look in other repos?
 
 * IMF Ontology (OWL)
-** Ontology header
+** Ontology tangled                                                :noexport:
 
-#+NAME: owl-imf-ontology
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/owl/imf-ontology.owl.wottr.ttl :mkdirp yes
+#+NAME: owl-imf-ontology-all
+#+BEGIN_SRC ttl :noweb strip-export :xxxtangle out/owl/imf-ontology.owl.wottr.ttl :mkdirp yes
 <<prefixes-imf>>
 <<prefixes-ottr>>
 
+<<owl-ontology-header>>
+
+<<owl-structural-relations>>
+
+<<owl-generic-relations>>
+
+<<owl-elements-element>>
+
+<<owl-elements-annotations>>
+
+<<owl-classifiers>>
+
+<<owl-elements-block>>
+
+<<owl-elements-connector>>
+
+<<owl-elements-terminal>>
+
+<<owl-elements-direction>>
+
+<<owl-elements-inputoutputTerminal>>
+
+<<owl-relations-connectedTo>>
+
+<<owl-relations-adjacentTo>>
+
+<<owl-relations-hasTerminal+hasConnector>>
+
+<<owl-relations-connectedThrough>>
+
+<<owl-relations-containedIn>>
+
+<<owl-relations-partof>>
+
+<<owl-media-medium>>
+
+<<owl-media-transfersTo>>
+
+<<owl-aspects-perspective>>
+<<owl-aspects-interest>>
+<<owl-aspects-modality>>
+<<owl-aspects-aspect>>
+
+<<owl-aspects-aspectelement>>
+
+<<owl-aspect-relation-projection>>
+
+<<owl-aspect-relation-proxy>>
+
+<<owl-aspect-relation-fulfilledBy>>
+
+<<owl-attributes-attribute>>
+
+<<owl-attributes-group>>
+
+<<py_aspect_ottr_instances_aspects()>>
+
+<<owl-aspects-relations>>
+
+<<owl-attributes-qualifier>>
+
+<<py_aspect_ottr_qualifiers()>>
+
+<<owl-model-model>>
+#+END_SRC
+
+** Ontology header
+
+#+NAME: owl-ontology-header
+#+BEGIN_SRC ttl :noweb yes
 imf:IMFOntology a owl:Ontology ;
-    owl:versionIRI <http://ns.imfid.org/20230630/imf-ontology.owl.ttl> ;
-    owl:versionInfo "0.2.1--SNAPSHOT" ;
-    owl:priorVersion <https://ns.imfid.org/20221118/imf-vocabulary.owl.ttl> ;
+    owl:versionIRI <http://ns.imfid.org/20230405/imf-ontology.owl.ttl> ;
+    owl:versionInfo "0.2.2--SNAPSHOT" ;
+    owl:priorVersion <http://ns.imfid.org/20230630/imf-ontology.owl.ttl> ;
     skos:prefLabel "IMF Ontology -- OWL" ;
     vann:preferredNamespacePrefix "imf" ;
     vann:preferredNamespaceUri imf: ;
@@ -40,7 +97,8 @@ imf:IMFOntology a owl:Ontology ;
     foaf:depiction <http://ns.imfid.org/20230630/img/imf-ontology.png> ;
     dc:description """
 The IMF Ontology defines the vocabulary for creating IMF models, and contains classes such as [Block], [Terminal], [Aspect] and [Attribute]; and properties such as [part of] and [connected to].
-
+""" ;
+    skos:scopeNote """
 The ontology is designed to meet the following functional requirements:
 
  - The users of IMF should be subject matter experts (SME). This means that the IMF language and ontology must be easy to learn and simple to use, hence it must contain a limited set of vocabulary terms and grammar rules.
@@ -58,7 +116,8 @@ The ontology is designed to meet the following functional requirements:
  - Added metadata descriptions, including definitions and statuses.
 
 Generated list of all change notes for this version's entities:
-<<py_run_sparql(query="SELECT DISTINCT ?element (STRAFTER(?changeNote, ?versionNo) AS ?note) { ?ont a owl:Ontology ; owl:versionInfo ?versionNo . ?element a ?elementType ; skos:changeNote ?changeNote . FILTER (?elementType != owl:Ontology) FILTER(STRSTARTS(?changeNote, ?versionNo))} ORDER BY ?element", formatting="list1")>>
+
+#<<py_run_sparql(query="SELECT DISTINCT ?element (STRAFTER(?changeNote, ?versionNo) AS ?note) { ?ont a owl:Ontology ; owl:versionInfo ?versionNo . ?element a ?elementType ; skos:changeNote ?changeNote . FILTER (?elementType != owl:Ontology) FILTER(STRSTARTS(?changeNote, ?versionNo))} ORDER BY ?element", formatting="list1")>>
 
 Generated diff of IRIs in the IMF namespace between this and the previous version of the ontology:
 
@@ -67,9 +126,8 @@ Generated diff of IRIs in the IMF namespace between this and the previous versio
 
 """ ;
     # cc:licence
-    # skos:scopeNote ## add description of ontology
 
-    skos:scopeNote
+    skos:editorialNote
       """
 The use of this ontology may be validated against the following SHACL shape specifications:
 
@@ -124,114 +182,6 @@ Versions of this ontology and other semantic web resources for IMF are published
 _:mgs foaf:name "Martin G. Skjæveland" .
 _:aw  foaf:name "Arild Waaler" .
 _:ef  foaf:name "Erlend Fjøsna" .
-
-<<owl-imf-ontology-all-includes>>
-#+END_SRC
-
-*** _includes                                                      :noexport:
-#+NAME: owl-imf-ontology-all-includes
-#+BEGIN_SRC ttl :noweb yes
-
-<<owl-model-model>>
-
-<<owl-main-genericrelations>>
-
-<<owl-elements-element>>
-
-<<owl-elements-block>>
-
-<<owl-elements-terminal>>
-
-<<owl-elements-direction>>
-
-<<owl-elements-inputoutputTerminal>>
-
-<<owl-elements-annotations>>
-
-<<owl-elements-relations-partof>>
-
-<<owl-elements-relations-connectedTo>>
-
-<<owl-elements-relations-classifier>>
-
-<<owl-elements-relations-hasmedium>>
-
-<<owl-elements-reifieds-breakdownpoint>>
-
-<<owl-elements-reifieds-connectionpoint>>
-
-<<owl-aspects-aspectelement>>
-
-<<owl-aspects-aspect>>
-
-<<py_aspect_ottr_instances_aspects()>>
-
-<<owl-aspects-relations>>
-
-<<owl-attributes-value>>
-
-#<<owl-attributes-group>>
-
-<<owl-attributes-qualifier>>
-
-<<py_aspect_ottr_qualifiers()>>
-
-<<owl-types-type>>
-
-#+END_SRC
-
-** Model
-
-#+NAME: plantuml-model
-#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-ontology-model.png
-<<plantuml-style>>
-
-class Model
-abstract class Element
-
-Model o--> "*" Element
-#+END_SRC
-
-#+NAME: owl-model-model
-#+BEGIN_SRC ttl
-imf:Model a owl:Class ;
-  skos:prefLabel "Model (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:definition "A [Model] is a collection of [Element]s. " ;
-  skos:scopeNote """A [Model] is a construct for organising [Element]s into an identified collection which is useful for, e.g., provenance, exchange and integration.
-
-The set of [Element]s of a [Model] is expressed using the property [has Element]. A [Model] can contain any number of [Element]s.
-
-[Model] has the status 'unstable'; more detailed use cases and experience is required to work out its details.""" ;
-  skos:editorialNote "TODOs: Can an [Element] belong to multiple [Model]s, if so, should it have one 'owner'?" ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "model" ;
-  foaf:depiction <http://ns.imfid.org/20230630/img/imf-ontology-model.png> ;
-.
-
-imf:hasElement a owl:ObjectProperty ;
-  skos:prefLabel "has element (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:definition "[has element] is a relation from a [Model] *M* to an [Element] *E* to specify that *M* contains *E*." ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "model" ;
-  rdfs:domain imf:Model ;
-  rdfs:range imf:Element .
-#+END_SRC
-
-#+NAME: shacl-model-model
-#+BEGIN_SRC ttl
-imf:ModelShape a sh:NodeShape ;
-  sh:targetClass imf:Model ;
-  sh:targetSubjectsOf imf:hasElement ;
-  sh:property
-    [ sh:path imf:hasElement ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Model contains no Elements." ] ;
-  skos:changeNote
-    "0.2.0 :: Added",
-    "O.2.1 :: Changed: Set nodeKind"
-.
 #+END_SRC
 
 ** Structural relations
@@ -239,12 +189,11 @@ imf:ModelShape a sh:NodeShape ;
 The following scope note is put on all following top-level relations:
 #+NAME: owl-genericrelation-scope-note
 #+BEGIN_SRC ttl
-    skos:scopeNote "This is a generic property that is not intended to be used directly, rather use one of its subproperties. Generic properties like this are introduced to add structure to the properties of the ontology, and to be able to express generic class constraints." ;
+    skos:scopeNote "This is a generic property that is not intended to be used directly, rather use one of its subproperties. Generic properties like this are introduced to add structure to the ontology's propertie, and for expressing generic class constraints." ;
 #+END_SRC
 
-#+NAME: owl-main-genericrelations
+#+NAME: owl-structural-relations
 #+BEGIN_SRC ttl :noweb yes
-
 imf:externalReference a owl:ObjectProperty ;
     skos:prefLabel "external reference" ;
     vs:term_status "testing" ;
@@ -264,7 +213,7 @@ imf:hierarchicalRelation a owl:ObjectProperty ;
     skos:changeNote
       "0.1.0 :: Added" ;
     vann:termGroup "generic relations" ;
-    a owl:IrreflexiveProperty ;
+    # a owl:IrreflexiveProperty ; ## outside OWL 2 DL
     rdfs:subPropertyOf skos:semanticRelation ;
     .
 
@@ -277,8 +226,43 @@ imf:associativeRelation a owl:ObjectProperty ;
       "0.1.0 :: Added" ;
     vann:termGroup "generic relations" ;
     rdfs:subPropertyOf skos:related ;
-    owl:propertyDisjointWith imf:hierarchicalRelation ;
+    # owl:propertyDisjointWith imf:hierarchicalRelation ; ## outside OWL 2 DL
     .
+#+END_SRC
+
+** Generic relations
+
+#+NAME: owl-generic-relations
+#+BEGIN_SRC ttl
+imf:specializationOf a owl:ObjectProperty ;
+  a owl:ReflexiveProperty ;
+  a owl:TransitiveProperty ;
+  skos:prefLabel "specialization of" ;
+  vs:term_status "testing" ;
+  #skos:definition "[specialization of] is a generic relation that relates a resource *X* to a resource in an external ontology or reference data library to describe *X*." ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "generic relations" ;
+.
+
+
+imf:memberOf a owl:ObjectProperty ;
+  #skos:prefLabel "" ;
+  vs:term_status "testing" ;
+  #skos:definition "" ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "generic relations" ;
+  rdfs:subPropertyOf imf:hierarchicalRelation, skos:broader ;
+.
+
+imf:hasMember a owl:ObjectProperty ;
+  skos:prefLabel "has member" ;
+  vs:term_status "testing" ;
+  owl:inverseOf imf:memberOf ;
+  rdfs:subPropertyOf imf:hierarchicalRelation, skos:narrower ;
+.
 #+END_SRC
 
 ** Elements
@@ -329,8 +313,8 @@ Terminal "1" --> "1" Terminal : connectedTo
 imf:Element a owl:Class ;
   skos:prefLabel "Element" ;
   vs:term_status "testing" ;
-  skos:definition "An [Element] is a generic entity for modelling systems and system elements. An [Element] is described by its relations to other [Element]s, e.g., [part of] and [connected to], and by its [Attribute]s (through the property [has attribute])." ;
-  skos:scopeNote "[Element] is a very generic concept and direct instantiation of [Element] is probably a mistake. A better option is to use a subclass of [Element] that specifies whether the [Element] is either a [Block] or [Terminal], and its [Aspect], e.g., [Function Block]." ;
+  skos:definition "An [Element} represents the specification of an asset. All assets specifications are represented by an [Element]. An [Element] is described by its relations to other [Element]s, e.g., [part of] and [connected to], and by its [Attribute]s (through the property [has attribute])." ;
+  skos:scopeNote "[Element] is a very generic concept and direct instantiation of [Element] is probably a mistake. A better option is to use a subclass of [Element] that specifies whether the [Element] is either a [Block], [Connector] or [Terminal]." ;
   skos:note """An [Element] should be expressed with the following metadata:
 
  - a preferred label (using `skos:prefLabel`);
@@ -343,10 +327,15 @@ imf:Element a owl:Class ;
  - optionally contributors to its creation (using `pav:contributedBy`);
  - optionally the time of latest update (using `pav:lastUpdateOn`).""" ;
   skos:changeNote
-    "0.2.0 :: Added" ;
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Changed: updated definition and scopeNote." ;
   vann:termGroup "elements" ;
   foaf:depiction <http://ns.imfid.org/20230630/img/imf-ontology-elements.png> ;
 .
+
+[] ottr:of o-owl-ax:DisjointClasses ;
+   ottr:values( ( imf:Block imf:Connector imf:Terminal ) ) .
+
 #+END_SRC
 
 #+NAME: shacl-elements-annotations
@@ -396,78 +385,6 @@ imf:symbol a owl:ObjectProperty ;
   .
 #+END_SRC
 
-*** ~partOf~ / ~hasPart~
-
-#+NAME: owl-elements-relations-partof
-#+BEGIN_SRC ttl
-imf:partOf a owl:ObjectProperty;
-  skos:prefLabel "part of" ;
-  skos:altLabel "has parent" ;
-  vs:term_status "testing" ;
-  skos:definition "[part of] is a [hierarchical relation] and an [intra-aspect relation] that relates an [Element] *E1* and an [Element] *E2* to specify that *E1* is part of *E2*, or equivalently that *E2* has *E1* as a part. [part of] is used to specify a breakdown hierarchy of [Element]s." ;
-  skos:scopeNote """[part of]/[has part] is used for describing an [Element] *E* by splitting *E* into parts *Es*, which again can be broken down into parts, to form a tree-shaped breakdown structure.
-
-Formally this is expressed by specifying [part of] as a functional and irreflexive property. This means that any [Element] may only be part of one other [Element], that is: an [Element] may not be part of multiple [Element]s and it may not be part of itself.
-
-[part of] is visualised with an arrow pointing from the child (the part) to the parent (the whole).""" ;
-  foaf:depiction <http://ns.imfid.org/20230630/img/visualisation-partOf.jpg> ;
-  skos:changeNote
-    "0.1.0 :: Added" ,
-    "0.2.0 :: Changed: IRI from imf:isPartOf to imf:partOf." ;
-  vann:termGroup "elements" ;
-  a owl:FunctionalProperty ;
-  a owl:IrreflexiveProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:broader ;
-  rdfs:domain imf:Element ;
-  rdfs:range imf:Element ;
-  .
-
-imf:hasPart a owl:ObjectProperty ;
-  skos:prefLabel "has part";
-  skos:altLabel "has child";
-  vs:term_status "testing" ;
-  skos:definition "[has part] is a [hierarchical relation] and an [intra-aspect relation] that is the inverse relation of [part of]. See also [part of]." ;
-  skos:scopeNote "Use [has part] when you want to specify the [Element]s that are part of an [Element] *E* \"on *E*\", rather than using the inverse property [part of] to state that the [part of] relationship to *E* for every [Element] that is part of *E*." ;
-  skos:changeNote
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation, skos:narrower ;
-  owl:inverseOf imf:partOf ;
-  .
-#+END_SRC
-
-*** ~classifier~, ~purpose~
-
-#+NAME: owl-elements-relations-classifier
-#+BEGIN_SRC ttl
-imf:classifier a owl:ObjectProperty ;
-  skos:prefLabel "classifier" ;
-  vs:term_status "testing" ;
-  skos:definition "[classifier] is an [external reference] that relates an [Element] *E* to a resource *X* in an external ontology or reference data library such that *X* classifies *E* -- or equivalently, *E* is an instance of *X*." ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:externalReference ;
-  .
-
-imf:purpose a owl:ObjectProperty ;
-  skos:prefLabel "purpose" ;
-  vs:term_status "testing" ;
-  skos:definition "[purpose] is a [classifier] that relates an [Element] *E* to a resource *X* in an external ontology or reference data library such that *E* has the purpose *X*." ;
-  skos:scopeNote "[purpose] should be used to state the main purpose of an [Element]. Any additional purposes can be stated using [classifier]." ;
-  skos:example """Use [purpose] to state that the main activity of a [Function Block] is to perform pumping, by relating the [Function Block] to, e.g., the external resource PUMPING <https://data.posccaesar.org/rdl/RDS9657917>:
-
-    ex:myFunctionBlock imf:purpose <https://data.posccaesar.org/rdl/RDS9657917> .
-
-We then say that the [Function Block] has the purpose PUMPING.
-In the case that the [Block] also performs, e.g,. a mixing activity, this can be stated by relating the [Block] to an external resource that represents this activity using the property [classifier].""" ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:classifier ;
-  .
-#+END_SRC
-
 *** ~Block~
 
 #+NAME: owl-elements-block
@@ -475,21 +392,19 @@ In the case that the [Block] also performs, e.g,. a mixing activity, this can be
 imf:Block a owl:Class ;
   skos:prefLabel "Block" ;
   vs:term_status "testing" ;
-  skos:definition "A [Block] represents an abstraction over a system or a system element as per ISO/IEC/IEEE 15288." ;
+  skos:definition "A [Block] represents an abstraction of any entity at any abstraction level. A [Block] also represents a boundary that separates what is internal and external to the [Block]. [Element]s that are part of the [Block] are internal to the [Block] and are not directly accessible to [Element]s outside (the boundary of) the [Block]. It can be natural to consider a [Block] as a processing black box that transforms input to output, where the transformation process is detailed by the internals of the [Block]." ;
   skos:scopeNote """A [Block] is a basic building block of the IMF language. A [Block] can represent anything which is of interest and which is deemed convenient to treat as a system or system element. A [Block] sets the boundaries of what it abstracts over---at any granularity level. This could be a whole industry plant, a pump system, a measuring function, or a location of interest.
 
-A [Block] interfaces with other [Block]s via its [Terminal]s (expressed with the property [has terminal]). A [Block] can have any number of [Terminal]s.
+A [Block] interfaces with other [Block]s via its [Terminal]s (expressed with the property [has terminal]), and through [Connector]s. A [Block] can have any number of [Terminal]s.
 
 A [Block] is visualised as a rectangular box.""" ;
   foaf:depiction <http://ns.imfid.org/20230630/img/visualisation-block.png> ;
   skos:changeNote
-    "0.1.0 :: Added" ;
+    "0.1.0 :: Added" ,
+    "0.2.2 :: Changed: Update definition and scopeNote" ;
   vann:termGroup "elements" ;
   rdfs:subClassOf imf:Element ;
   .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values (imf:Block imf:partOf imf:Block) .
 #+END_SRC
 
 #+NAME: shacl-elements-block
@@ -498,18 +413,53 @@ imf:BlockShape a sh:NodeShape ;
   sh:targetClass imf:Block ;
   sh:targetSubjectsOf imf:hasTerminal, imf:hasInputTerminal, imf:hasOutputTerminal ;
   sh:property
-    [ sh:path imf:hasTerminal ; sh:class imf:Terminal ; sh:message "The Block has a Terminal which is not a Terminal." ] ,
     [ sh:path [ sh:alternativePath ( imf:hasTerminal imf:hasInputTerminal imf:hasOutputTerminal ) ] ;
 	sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Block has no Terminals." ] ,
     [ sh:path imf:purpose ; sh:minCount 1 ; sh:nodeKind sh:IRI ; sh:severity sh:Warning ; sh:message "The Block has no purpose." ] ,
-    [ sh:path imf:partOf  ; sh:class imf:Block ; sh:message "The Block has a part which is not a Block." ] ,
-    [ sh:path imf:hasPart ; sh:class imf:Block ; sh:message "The Block is part of a non-Block." ] ,
+    #[ sh:path imf:partOf  ; sh:class imf:Block ; sh:message "The Block has a part which is not a Block." ] ,
+    #[ sh:path imf:hasPart ; sh:class imf:Block ; sh:message "The Block is part of a non-Block." ] ,
     [ sh:path rdf:type ; sh:minCount 1 ; sh:class imf:BlockType; sh:severity sh:Warning ; sh:message "The Block has no BlockType." ] ;
   skos:changeNote
     "0.2.0 :: Added" ,
   """0.2.1 :: Changed: 
  - Moved requirement on imf:purpose from Element to Block
- - Adding warning on missing BlockType"""
+ - Adding warning on missing BlockType""",
+  """0.2.2 :: Changed: 
+ - Remove constraints on partOf and hasPart.
+ - Remove constraint on hasTerminal.
+"""
+
+.
+#+END_SRC
+
+*** ~Connector~
+
+#+NAME: owl-elements-connector
+#+BEGIN_SRC ttl
+imf:Connector a owl:Class ;
+  skos:prefLabel "Connector" ;
+  vs:term_status "testing" ;
+  skos:definition """A [Connector] represents a topological connection between two [Block]s, and it will specify conditions on this connection, such as the media that is transferred between the [Block]s.
+
+A [Connector] can be considered as a [Block] with infinitely small boundary, i.e., a [Block] where there is no transformation of the input to the output at the current abstraction level of the [Connector]. A [Connector] may be further described by its parts.
+""" ;
+  #skos:scopeNote "A [Block] is visualised as a rectangular box." ;
+  #foaf:depiction <http://ns.imfid.org/20230630/img/visualisation-block.png> ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "elements" ;
+  rdfs:subClassOf imf:Element ;
+  .
+#+END_SRC
+
+#+NAME: shacl-elements-connector
+#+BEGIN_SRC ttl
+imf:ConnectorShape a sh:NodeShape ;
+  sh:targetClass imf:Connector ;
+  #sh:targetSubjectsOf imf:hasTerminal, imf:hasInputTerminal, imf:hasOutputTerminal ;
+  #sh:property
+  skos:changeNote
+    "0.2.2 :: Added" ;
 .
 #+END_SRC
 
@@ -521,46 +471,27 @@ imf:Terminal a owl:Class ;
   skos:prefLabel "Terminal" ;
   skos:altLabel "Port", "Channel", "Input/Output" ;
   vs:term_status "testing" ;
-  skos:definition """A [Terminal] is an [Element] that represents a point of interaction or communication for exactly one [Block] (through the relation [has terminal]), and hence specifies an input and/or output that the [Block] produces and/or receives. A [Terminal] may be qualified by [Terminal Qualifier]s.
+  skos:definition """A [Terminal] is an [Element] that represents a point of interaction or communication for exactly one [Block] (through the relation [has terminal]), and hence specifies an input and/or output that the [Block] produces and/or receives. A [Terminal] may be qualified by [classifier]s.
 
-A [Terminal] is visualised as a square with rounded corners containing a plus sign, attached to its [Block]. An [Input Terminal] is placed to the left of its [Block], while an [Output Terminal] is placed to the right of its [Block].""" ;
+A [Terminal] is visualised as a square with rounded corners, attached to its [Block]. An [Input Terminal] is placed to the left of its [Block], while an [Output Terminal] is placed to the right of its [Block].""" ;
   foaf:depiction <http://ns.imfid.org/20230630/img/visualisation-terminal.jpg> ;
   skos:changeNote
-    "0.1.0 :: Added" ;
+    "0.1.0 :: Added" ,
+    "0.2.2 :: Changed: updated definition." ;
   vann:termGroup "elements" ;
   rdfs:subClassOf imf:Element ;
   .
-
-[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-   ottr:values (imf:Terminal imf:partOf imf:Terminal) .
-
-imf:hasTerminal a owl:ObjectProperty ;
-  skos:prefLabel "has terminal" ;
-  vs:term_status "testing" ;
-  skos:definition "[has terminal] is an [associative relation] and an [intra-aspect relation] that relates a [Block] *B* to a [Terminal] *T* to specify that *T* is a terminal of, or belongs to, *B*. [has terminal] is an inverse functional property which means that a [Terminal] may only belong to one [Block]." ;
-  skos:changeNote
-    "0.1.0 :: Added" ;
-  vann:termGroup "elements" ;
-  a owl:InverseFunctionalProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
-  rdfs:domain imf:Block ;
-  rdfs:range imf:Terminal ;
-  .
-
-[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
-   ottr:values (imf:Terminal [ owl:inverseOf imf:hasTerminal ] imf:Block ) .
 #+END_SRC
 
 #+NAME: shacl-elements-terminal
 #+BEGIN_SRC ttl
 imf:TerminalShape a sh:NodeShape ;
   sh:targetClass imf:Terminal ;
-  sh:targetSubjectsOf imf:connectedTo , imf:medium , imf:hasTerminalQualifier ;
-  sh:targetObjectsOf imf:hasTerminal, imf:connectedTo ;
+  sh:targetObjectsOf imf:hasTerminal ;
   sh:property
-    [ sh:path imf:partOf ; sh:maxCount 1 ; sh:class imf:Terminal ; sh:message "The Terminal has more than one parent." ] ,
-    [ sh:path imf:connectedTo ; sh:maxCount 1 ; sh:class imf:Terminal ; sh:message "The Terminal is connected to more than one Terminal." ] ,
-    [ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no connection (to a different Terminal)." ] ,
+    #[ sh:path imf:partOf ; sh:maxCount 1 ; sh:class imf:Terminal ; sh:message "The Terminal has more than one parent." ] ,
+    #[ sh:path imf:connectedTo ; sh:maxCount 1 ; sh:class imf:Terminal ; sh:message "The Terminal is connected to more than one Terminal." ] ,
+    #[ sh:path imf:connectedTo ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no connection (to a different Terminal)." ] ,
     #[ sh:path imf:hasTerminalQualifier ; sh:maxCount 1 ; sh:in ( imf:inputFlow imf:outputFlow ) ] ,
     [ sh:path imf:medium ; sh:maxCount 1 ; sh:nodeKind sh:IRI ; sh:message "The Terminal has more than one medium." ]  ,
     [ sh:path imf:medium ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Terminal has no medium." ] ,
@@ -569,102 +500,70 @@ imf:TerminalShape a sh:NodeShape ;
     "0.2.0 :: Added" ,
   """0.2.1 :: Changed: 
 - Set nodeKind
-- Add warning on missing TerminalType"""
+- Add warning on missing TerminalType""" ,
+  """0.2.2 :: Changed: 
+- Remove constraints on connectedTo
+- Remove constraints on partOf
+"""
 .
 #+END_SRC
 
-*** ~medium~
-
-#+NAME: owl-elements-relations-hasmedium
-#+BEGIN_SRC ttl
-imf:medium a owl:ObjectProperty  ;
-  skos:prefLabel "medium" ;
-  vs:term_status "testing" ;
-  skos:definition "[medium] is an [external reference] that relates a [Terminal] *T* to a resource *X* to specify that *X* is the medium that flows through *T*." ;
-  skos:example """[medium] is typically used to relate a [Terminal] to a resource that specifies one of the following:
-
-  - Material (Fluid, Solids),
-  - Energy (Mechanical, Electrical, Thermal),
-  - Force (Mechanical),
-  - Information(Electrical, Optical, Wireless)
-""" ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:externalReference ;
-  rdfs:domain imf:Terminal ;
-  .
-#+END_SRC
-
-*** ~connectedTo~
-
-#+NAME: owl-elements-relations-connectedTo
-#+BEGIN_SRC ttl
-imf:connectedTo a owl:ObjectProperty ;
-  skos:prefLabel "connected to" ;
-  vs:term_status "testing" ;
-  skos:definition "[connected to] is an [associative relation] and an [intra-aspect relation] that relates a [Terminal] *T1* to a [Terminal] *T2* to specify that *T1* is connected to *T2*. [connected to] specifies a topology of [Block]s by relating the [Terminal]s of [Block]s.";
-  skos:scopeNote """[connected to] is used for describing how [Block]s are interconnected and indicates how they interact, i.e., how the [medium] of the connected [Terminal] flows between [Block]s.
-
-[connected to] is a 1-1 relationship: a [Terminal] may only be [connected to] one other [Terminal], that is, a [Terminal] may not be [connected to] multiple [Terminal]s and it may not be [connected to] itself.
-
-[connected to] is visualised with a line between the [Terminal]s.
-""" ;
-  foaf:depiction <http://ns.imfid.org/20230630/img/visualisation-connectedTo.jpg> ;
-  skos:changeNote
-    "0.1.0 :: Added" ,
-    "0.2.0 :: Changed IRI from imf:isConnectedTo to imf:connectedTo." ;
-  skos:editorialNote "Should connectedTo be symmetric?" ;
-  vann:termGroup "elements" ;
-  a owl:FunctionalProperty ;
-  a owl:InverseFunctionalProperty ;
-  a owl:IrreflexiveProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
-  rdfs:domain imf:Terminal ;
-  rdfs:range imf:Terminal ;
-  .
-#+END_SRC
-
-*** TerminalQualifier
+*** ~direction~
 
 #+NAME: owl-elements-direction
 #+BEGIN_SRC ttl
-imf:TerminalQualifier a owl:Class ;
-  skos:prefLabel "Terminal Qualifier" ;
+imf:direction a owl:ObjectProperty ;
+  a owl:FunctionalProperty ;
+  skos:prefLabel "direction" ;
   vs:term_status "testing" ;
-  skos:definition "[Terminal Qualifier] is a feature or characteristic of a [Terminal]." ;
+  skos:definition "[direction] relates a [Terminal] *T* to a direction *d* to specify that *T* has the direction *d*." ;
   skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  .
-
-imf:inputFlow a owl:NamedIndividual, imf:TerminalQualifier ;
-  skos:prefLabel "input flow" ;
-  vs:term_status "testing" ;
-  skos:definition "[input flow] is a [Terminal Qualifier] that indicates that the flow is incoming to the [Terminal] it qualifies." ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
+    "0.2.2 :: Added" ;
   vann:termGroup "elements" ;
 .
 
-imf:outputFlow a owl:NamedIndividual, imf:TerminalQualifier ;
-  skos:prefLabel "output flow" ;
+imf:input a owl:NamedIndividual ;
+  skos:prefLabel "input" ;
   vs:term_status "testing" ;
-  skos:definition "[output flow] is a [Terminal Qualifier] that indicates that the flow is outgoing from the [Terminal] it qualifies." ;
+  skos:definition "[input] is a valid [direction] for a [Terminal]. It specifies that the [Terminal] is an [InputTerminal]." ;
   skos:changeNote
-    "0.2.0 :: Added" ;
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Changed: IRI changed to imf:input and metadata updated accordingly." ;
+  vann:termGroup "elements" ;
+.
+
+imf:output a owl:NamedIndividual ;
+  skos:prefLabel "output" ;
+  vs:term_status "testing" ;
+  skos:definition "[output] is a valid [direction] for a [Terminal]. It specifies that the [Terminal] is an [OutputTerminal]." ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Changed: IRI changed to imf:output and metadata updated accordingly." ;
+  vann:termGroup "elements" ;
+.
+
+[] ottr:of o-owl-ax:DifferentIndividuals ;
+   ottr:values ( ( imf:input imf:output ) ) .
+
+imf:TerminalQualifier a owl:Class ;
+  skos:prefLabel "Terminal Qualifier (deprecated)" ;
+  vs:term_status "testing" ;
+  skos:definition "[Terminal Qualifier] is a feature or characteristic of a [Terminal]." ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Deprecated: use imf:direction instead." ;
+  owl:deprecated true ;
   vann:termGroup "elements" ;
   .
 
-[] ottr:of o-owl-ax:DifferentIndividuals ;
-   ottr:values ( ( imf:inputFlow imf:outputFlow ) ) .
-
 imf:hasTerminalQualifier a owl:ObjectProperty ;
-  skos:prefLabel "has terminal qualifier" ;
+  skos:prefLabel "has terminal qualifier (deprecated)" ;
   vs:term_status "testing" ;
   skos:definition "[has terminal qualifier] relates a [Terminal] *T* to a [Terminal Qualifier] *Q* to specify that *T* has the qualifier *Q*." ;
   skos:changeNote
-    "0.2.0 :: Added" ;
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Deprecated: use imf:direction instead." ;
+  owl:deprecated true ;
   vann:termGroup "elements" ;
   rdfs:domain imf:Terminal ;
   rdfs:range imf:TerminalQualifier .
@@ -678,7 +577,7 @@ imf:InputTerminal a owl:Class ;
   skos:prefLabel "Input Terminal" ;
   skos:altLabel "Input" ;
   vs:term_status "testing" ;
-  skos:definition "An [Input Terminal] is a [Terminal] that accepts input (and not output)." ;
+  skos:definition "An [Input Terminal] is a [Terminal] that accepts only input (and not output)." ;
   skos:scopeNote "An [Input Terminal] is equivalent to a [Terminal] that has the [Terminal Qualifier] [input flow].";
   skos:changeNote
     "0.1.0 :: Added" ;
@@ -687,13 +586,13 @@ imf:InputTerminal a owl:Class ;
   .
 
 [] ottr:of o-owl-ax:EquivHasValue ;
-   ottr:values ( imf:InputTerminal imf:hasTerminalQualifier imf:inputFlow ) .
+   ottr:values ( imf:InputTerminal imf:direction imf:input ) .
 
 imf:OutputTerminal a owl:Class ;
   skos:prefLabel "Output Terminal" ;
   skos:altLabel "Output" ;
   vs:term_status "testing" ;
-  skos:definition "An [Output Terminal] is a [Terminal] that accepts output (and not input)." ;
+  skos:definition "An [Output Terminal] is a [Terminal] that accepts only output (and not input)." ;
   skos:scopeNote "An [Output Terminal] is equivalent to a [Terminal] that has the [Terminal Qualifier] [output flow].";
   skos:changeNote
     "0.1.0 :: Added" ;
@@ -702,7 +601,7 @@ imf:OutputTerminal a owl:Class ;
   .
 
 [] ottr:of o-owl-ax:EquivHasValue ;
-   ottr:values ( imf:OutputTerminal imf:hasTerminalQualifier imf:outputFlow ) .
+   ottr:values ( imf:OutputTerminal imf:direction imf:output ) .
 
 imf:hasInputTerminal a owl:ObjectProperty ;
   skos:prefLabel "has input terminal" ;
@@ -725,167 +624,373 @@ imf:hasOutputTerminal a owl:ObjectProperty ;
   rdfs:subPropertyOf imf:hasTerminal ;
   rdfs:range imf:OutputTerminal ;
   .
-#+END_SRC
 
-*** Association Points
-**** Overview
-
-#+NAME: plantuml-elements-w-reified
-#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-ontology-elements-w-reified.png
-<<plantuml-elements>>
-
-' reified relations
-class BreakdownPoint
-(Element, Element) .. BreakdownPoint
-Element "1" <-- "1" BreakdownPoint : thePart
-Element "1" <-- "1" BreakdownPoint : theWhole
-
-class ConnectionPoint
-(Terminal, Terminal) .. ConnectionPoint
-Terminal "1" <-- "1" ConnectionPoint : theInput
-Terminal "1" <-- "1" ConnectionPoint : theOutput
-#+END_SRC
-
-**** ~BreakdownPoint~
-
-#+NAME: owl-elements-reifieds-breakdownpoint
-#+BEGIN_SRC ttl
-
-imf:BreakdownPoint a owl:Class ;
-  skos:prefLabel "Breakdown Point (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:scopeNote """A [Breakdown Point] represents a reified [has part]/[part of] property instance, using the properties [the whole] and [the part] to relate to the [Element]s that are related by the [has part]/[part of] property.
-
-[Breakdown Point] has the status 'unstable'; its details are yet to be worked out.""" ;
+imf:BiTerminal a owl:Class ;
+  skos:prefLabel "Bi Terminal" ;
+  vs:term_status "testing" ;
+  skos:definition "A [Bi Terminal] is a [Terminal] that accepts both input and output." ;
   skos:changeNote
-    "0.2.0 :: Added" ;
+    "0.2.2 :: Added" ;
   vann:termGroup "elements" ;
-  rdfs:subClassOf imf:Element ;
+  rdfs:subClassOf imf:Terminal ;
   .
 
-imf:thePart a owl:ObjectProperty ;
-  skos:prefLabel "the part (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:scopeNote "See [Breakdown Point]." ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  a owl:FunctionalProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:associativeRelation ;
-  skos:editorialNote "Is [thePart] and [theWhole] associative, hierarchical or none?" ;
-  rdfs:domain imf:BreakdownPoint ;
-  rdfs:range imf:Element .
+[] ottr:of o-owl-ax:DisjointClasses ;
+   ottr:values( ( imf:InputTerminal imf:OutputTerminal imf:BiTerminal ) ) .
 
-imf:theWhole a owl:ObjectProperty ;
-  skos:prefLabel "the whole (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:scopeNote "See [Breakdown Point]." ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  a owl:FunctionalProperty ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:associativeRelation ;
-  rdfs:domain imf:BreakdownPoint ;
-  rdfs:range imf:Element .
-
-[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
-   ottr:values ( imf:BreakdownPoint imf:thePart imf:Element ) .
-[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
-   ottr:values ( imf:BreakdownPoint imf:theWhole imf:Element ) .
-
-### Problem: gives non-simple property
-#imf:partOf a owl:ObjectProperty ;
-#  owl:propertyChainAxiom ( [ owl:inverseOf imf:thePart ] imf:theWhole ) .
 #+END_SRC
 
-#+NAME: shacl-elements-breakdownpoint
+** Classifiers
+
+#+NAME: owl-classifiers
 #+BEGIN_SRC ttl
-imf:BreakdownPointShape a sh:NodeShape ;
-  sh:targetClass imf:BreakdownPoint ;
-  sh:targetSubjectsOf imf:thePart , imf:theWhole ;
-  sh:property
-    [ sh:path imf:thePart  ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Element ; sh:message "The Breakdown Point must have exactly one part." ] ,
-    [ sh:path imf:theWhole ; sh:minCount 1 ; sh:maxCount 1 ; sh:class imf:Element ; sh:message "The Breakdown Point must have exactly one whole." ] ;
+imf:classifier a owl:ObjectProperty ;
+  skos:prefLabel "classifier" ;
+  vs:term_status "testing" ;
+  #skos:definition "" ;
   skos:changeNote
-    "0.2.0 :: Added"
-.
-#+END_SRC
-
-**** ~ConnectionPoint~
-
-#+NAME: owl-elements-reifieds-connectionpoint
-#+BEGIN_SRC ttl
-
-imf:ConnectionPoint a owl:Class ;
-  skos:prefLabel "Connection Point (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:scopeNote """A [Connection Point] represents a reified [connected to] property instance, using the property [the connected] or subproperties [the input]/[the output] to relate to the [Terminal]s that are related by the [connected to] property.
-
-[Connection Point] has the status 'unstable'; its details are yet to be worked out.""" ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subClassOf imf:Element ;
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Changed: moved to generic relations." ;
+  vann:termGroup "generic relations" ;
+  rdfs:subPropertyOf imf:externalReference ;
   .
 
-imf:theConnected a owl:ObjectProperty ;
-  skos:prefLabel "the connected (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:scopeNote "See [Connection Point]." ;
-  rdfs:subPropertyOf imf:intraAspectRelation, imf:associativeRelation ;
+
+imf:purpose a owl:ObjectProperty ;
+  skos:prefLabel "purpose (deprecated)" ;
+  skos:definition "[purpose] is a [classifier] that relates an [Element] *E* to a resource *X* in an external ontology or reference data library such that *E* has the purpose *X*." ;
+  skos:scopeNote "[purpose] should be used to state the main purpose of an [Element]. Any additional purposes can be stated using [classifier]." ;
+  skos:example """Use [purpose] to state that the main activity of a [Function Block] is to perform pumping, by relating the [Function Block] to, e.g., the external resource PUMPING <https://data.posccaesar.org/rdl/RDS9657917>:
+
+    ex:myFunctionBlock imf:purpose <https://data.posccaesar.org/rdl/RDS9657917> .
+
+We then say that the [Function Block] has the purpose PUMPING.
+In the case that the [Block] also performs, e.g,. a mixing activity, this can be stated by relating the [Block] to an external resource that represents this activity using the property [classifier].""" ;
   skos:changeNote
-    "0.2.0 :: Added" ;
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Deprecated: use imf:classifer or one of its subproperties instead." ;
+  owl:deprecated true ;
+  rdfs:subPropertyOf imf:classifier ;
+  .
+
+imf:primaryClassifier a owl:ObjectProperty ;
+  skos:prefLabel "primary classifier" ;
+  vs:term_status "testing" ;
+  #skos:definition "" ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "classifiers" ;
+  rdfs:subPropertyOf imf:classifier ;
+  .
+
+imf:auxClassifier a owl:ObjectProperty ;
+  skos:prefLabel "auxiliary classifier" ;
+  vs:term_status "testing" ;
+  #skos:definition "" ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "classifiers" ;
+  rdfs:subPropertyOf imf:classifier ;
+  .
+
+#+END_SRC
+
+** Relations
+*** Topology
+**** ~connectedTo~
+
+#+NAME: owl-relations-connectedTo
+#+BEGIN_SRC ttl
+imf:connectedTo a owl:ObjectProperty ;
+  skos:prefLabel "connected to" ;
+  vs:term_status "testing" ;
+  skos:definition "[connected to] is an [associative relation] and an [intra-aspect relation] that relates an [Element] *E1* to a [Element] *E2* to specify that *E1* is connected to *E2*. [connected to] specifies a topology of [Element]s.";
+  foaf:depiction <http://ns.imfid.org/20230630/img/visualisation-connectedTo.jpg> ;
+  skos:changeNote
+    "0.1.0 :: Added" ,
+    "0.2.0 :: Changed IRI from imf:isConnectedTo to imf:connectedTo." ,
+    """0.2.2 :: Changed: 
+- domain and range from Terminal to Element.
+- removed functional axiom.
+- added symmetric axiom.
+""" ;
   vann:termGroup "elements" ;
-  rdfs:domain imf:ConnectionPoint ;
-  rdfs:range imf:Terminal .
+  a owl:SymmetricProperty  ;
+  # a owl:IrreflexiveProperty ; ## outside OWL 2 DL
+  rdfs:subPropertyOf imf:intraAspectRelation , imf:associativeRelation ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  .
+#+END_SRC
+
+**** ~adjacentTo~
+
+#+NAME: owl-relations-adjacentTo
+#+BEGIN_SRC ttl
+imf:adjacentTo a owl:ObjectProperty ;
+  skos:prefLabel "adjacent to" ;
+  vs:term_status "testing" ;
+  skos:definition "[adjacent to] is an [associative relation] and an [intra-aspect relation] that relates an [Element] *E1* to a [Element] *E2* to specify that *E1* is adjacent to (and hence immediately connected to) *E2*.";
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "elements" ;
+  rdfs:subPropertyOf imf:connectedTo ;
+  a owl:SymmetricProperty ;
+  a owl:IrreflexiveProperty 
+  .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Block imf:adjacentTo imf:Terminal) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Connector imf:adjacentTo imf:Terminal) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Terminal imf:adjacentTo _:unionOfBlockAndConnector) .
+[] ottr:of o-owl-rstr:ObjectUnionOf ;
+   ottr:values (_:unionOfBlockAndConnector ( imf:Block imf:Connector )) .
+
+[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
+   ottr:values (imf:Terminal imf:adjacentTo imf:Block) .
 
 [] ottr:of o-owl-ax:SubObjectExactCardinality ;
-   ottr:values( imf:ConnectionPoint "2"^^xsd:nonNegativeInteger imf:theConnected imf:Element ) .
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values( imf:ConnectionPoint "1"^^xsd:nonNegativeInteger imf:theInput imf:Element ) .
-[] ottr:of o-owl-ax:SubObjectMaxCardinality ;
-   ottr:values( imf:ConnectionPoint "1"^^xsd:nonNegativeInteger imf:theOutput imf:Element ) .
-
-imf:theInput a owl:ObjectProperty ;
-  skos:prefLabel "the input (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:scopeNote "See [Connection Point]." ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:theConnected ;
-  rdfs:range imf:OutputTerminal .
-
-imf:theOutput a owl:ObjectProperty ;
-  skos:prefLabel "the output (unstable)" ;
-  vs:term_status "unstable" ;
-  skos:scopeNote "See [Connection Point]." ;
-  skos:changeNote
-    "0.2.0 :: Added" ;
-  vann:termGroup "elements" ;
-  rdfs:subPropertyOf imf:theConnected ;
-  rdfs:range imf:InputTerminal .
-
-### Problem: gives non-simple property
-#imf:connectedTo a owl:ObjectProperty ;
-#  owl:propertyChainAxiom ( imf:theOutput [ owl:inverseOf imf:theInput ] ) .
+   ottr:values ( imf:Connector "2"^^xsd:nonNegativeInteger imf:adjacentTo imf:Terminal ) .
 #+END_SRC
 
-#+NAME: shacl-elements-connectionpoint
+**** ~hasTerminal~/~hasConnector~
+
+#+NAME: owl-relations-hasTerminal+hasConnector
 #+BEGIN_SRC ttl
-imf:ConnectionPointShape a sh:NodeShape ;
-  sh:targetClass imf:ConnectionPoint ;
-  sh:targetSubjectsOf imf:theConnected , imf:theInput , imf:theOutput ;
-  sh:property
-    [ sh:path imf:theInput  ; sh:maxCount 1 ; sh:class imf:Element ; sh:message "The Connection Point has more than one input." ] ,
-    [ sh:path imf:theOutput ; sh:maxCount 1 ; sh:class imf:Element ; sh:message "The Connection Point has more than one output." ] ,
-    [ sh:path imf:theConnected ; sh:maxCount 2 ; sh:class imf:Element ; sh:message "The Connection Point has more than two connected." ] ;
+imf:hasTerminal a owl:ObjectProperty ;
+  skos:prefLabel "has terminal" ;
+  vs:term_status "testing" ;
+  skos:definition "[has terminal] is a subproperty of [adjacent to] that relates a [Block] *B* to a [Terminal] *T* to specify that *T* is a terminal of, or belongs to, *B*." ;
   skos:changeNote
-    "0.2.0 :: Added"
-.
+    "0.1.0 :: Added" ,
+    """0.2.2 :: Changed: 
+ - remove inverse functional type.
+ - change super property to imf:adjacentTo.
+""" ;
+  vann:termGroup "elements" ;
+  rdfs:subPropertyOf imf:adjacentTo ;
+  rdfs:domain imf:Block ;
+  rdfs:range imf:Terminal ;
+  .
+
+[] ottr:of o-owl-ax:SubObjectSomeValuesFrom ;
+   ottr:values (imf:Terminal [ owl:inverseOf imf:hasTerminal ] imf:Block ) .
+
+imf:hasConnector a owl:ObjectProperty ;
+  skos:prefLabel "has connector" ;
+  vs:term_status "testing" ;
+  skos:definition "[has connector] is a subproperty of [adjacent to] that relates a [terminal] *T* to a [Connector] *C* to specify that *T* is directly connected to *C*." ;
+  skos:changeNote
+    "0.1.0 :: Added" ,
+    """0.2.2 :: Changed: 
+ - remove inverse functional type.
+ - change super property to imf:adjacentTo.
+""" ;
+  vann:termGroup "elements" ;
+  rdfs:subPropertyOf imf:adjacentTo ;
+  rdfs:domain imf:Terminal ;
+  rdfs:range imf:Connector ;
+  .
 #+END_SRC
 
-** Aspects
+**** ~connectedThrough~
+
+#+NAME: owl-relations-connectedThrough
+#+BEGIN_SRC ttl
+imf:connectedThrough a owl:ObjectProperty ;
+  skos:prefLabel "connected through" ;
+  vs:term_status "testing" ;
+  skos:definition "[connected through] is a subproperty of [connected to] that relates a [Block] *B* to a [Connector] *C* to specify that *T* is connected to and through *C*." ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  rdfs:subPropertyOf imf:connectedTo ;
+  # rdfs:domain imf:Block ;
+  # rdfs:range imf:Connector ;
+  .
+[] ottr:of o-owl-ax:SubObjectPropertyOfChain ;
+   ottr:values ( imf:connectedThrough ( imf:hasTerminal imf:hasConnector ) ) .
+#+END_SRC
+*** Partonomy
+**** ~containedIn~ / ~contains~
+
+#+NAME: owl-relations-containedIn
+#+BEGIN_SRC ttl
+imf:containedIn a owl:ObjectProperty;
+  skos:prefLabel "contained in" ;
+  vs:term_status "testing" ;
+  skos:definition "[contained in] is a [hierarchical relation] and an [intra-aspect relation] that relates an [Element] *E1* and an [Element] *E2* to specify that *E1* is contained in *E2*. [contained in] is used to specify a breakdown hierarchy of [Element]s." ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  a owl:TransitiveProperty ;
+  # a owl:IrreflexiveProperty ; ## outside OWL 2 DL
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation ;
+  rdfs:subPropertyOf skos:broader ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  .
+
+imf:contains a owl:ObjectProperty;
+  skos:prefLabel "contains" ;
+  vs:term_status "testing" ;
+  skos:definition "[contains] is the inverse relation of [contained in]." ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  a owl:TransitiveProperty ;
+  rdfs:subPropertyOf imf:intraAspectRelation, imf:hierarchicalRelation ;
+  rdfs:subPropertyOf skos:narrower ;
+  .
+#+END_SRC
+
+**** ~partOf~ / ~hasPart~
+
+#+NAME: owl-relations-partof
+#+BEGIN_SRC ttl
+imf:partOf a owl:ObjectProperty;
+  skos:prefLabel "part of" ;
+  skos:altLabel "has parent" ;
+  vs:term_status "testing" ;
+  skos:definition "[part of] is a subproperty of [contained in] relates an [Element] *E1* and an [Element] *E2* to specify that *E1* is a direct part of *E2*, or equivalently that *E2* has *E1* as a part." ;
+  skos:scopeNote """[part of]/[has part] is used for describing an [Element] *E* by splitting *E* into parts *Es*, which again can be broken down into parts, to form a tree-shaped breakdown structure.
+
+[part of] is visualised with an arrow pointing from the child (the part) to the parent (the whole).""" ;
+  foaf:depiction <http://ns.imfid.org/20230630/img/visualisation-partOf.jpg> ;
+  skos:changeNote
+    "0.1.0 :: Added" ,
+    "0.2.0 :: Changed: IRI from imf:isPartOf to imf:partOf." ,
+    "0.2.2 :: Changed: subproperty of new containedIn" ;
+  vann:termGroup "elements" ;
+  a owl:FunctionalProperty ;
+  a owl:IrreflexiveProperty ;
+  rdfs:subPropertyOf imf:containedIn ;
+  .
+
+imf:hasPart a owl:ObjectProperty ;
+  skos:prefLabel "has part";
+  skos:altLabel "has child";
+  vs:term_status "testing" ;
+  skos:definition "[has part] is the inverse relation of [part of]." ;
+  skos:changeNote
+    "0.1.0 :: Added" ;
+  vann:termGroup "elements" ;
+  owl:inverseOf imf:partOf ;
+  rdfs:subPropertyOf imf:contains ;
+  .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Terminal imf:partOf imf:Terminal) .
+#+END_SRC
+
+** Aspect element relations
+*** ~projection~
+
+#+NAME: owl-aspect-relation-projection
+#+BEGIN_SRC ttl
+imf:projectionOf a owl:ObjectProperty;
+  skos:prefLabel "projection of" ;
+  vs:term_status "testing" ;
+  skos:definition "[projection of] is a hierarchical relation from Element *A* to Element *B* to  express that *B* is intended as a solution to the requirements posited by *A*." ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  rdfs:subPropertyOf imf:hierarchicalRelation, skos:narrower ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  .
+#+END_SRC
+
+
+*** ~proxy~
+
+#+NAME: owl-aspect-relation-proxy
+#+BEGIN_SRC ttl
+imf:proxy a owl:ObjectProperty;
+  skos:prefLabel "proxy" ;
+  vs:term_status "testing" ;
+  skos:definition "[proxy] is an [inter-aspect relation] between two different AspectElements that are projections of the same NoAspectElement." ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  a owl:TransitiveProperty ;
+  a owl:SymmetricProperty ;
+  rdfs:subPropertyOf imf:interAspectRelation , imf:associativeRelation ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  .
+#+END_SRC
+
+
+*** ~fulfilledBy~
+
+#+NAME: owl-aspect-relation-fulfilledBy
+#+BEGIN_SRC ttl
+imf:fulfilledBy a owl:ObjectProperty;
+  skos:prefLabel "fullfilled by" ;
+  vs:term_status "testing" ;
+  skos:definition "[fulfilled by] is a hierarchical relation from Element *A* to Element *B* to  express that *B* is intended as a solution to the requirements posited by *A*." ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  rdfs:subPropertyOf imf:hierarchicalRelation, skos:narrower ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  .
+#+END_SRC
+
+** Media Transfer
+*** ~medium~
+
+#+NAME: owl-media-medium
+#+BEGIN_SRC ttl
+imf:medium a owl:ObjectProperty  ;
+  skos:prefLabel "medium" ;
+  vs:term_status "testing" ;
+  skos:definition "[medium] is a [classifier] that relates a [Terminal] or [Connector] *E* to a resource *X* to specify that *E* handles the medium *X*" ;
+  skos:example """[medium] typically specifies one (or a specialization) of the following:
+ - Material (Fluid, Solids),
+ - Energy (Mechanical, Electrical, Thermal),
+ - Force (Mechanical),
+ - Information (Electrical, Optical, Wireless)
+""" ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Removed Terminal as domain." ;
+  # vann:termGroup "elements" ;
+  rdfs:subPropertyOf imf:classifier
+  .
+#+END_SRC
+
+*** ~transfersTo~
+
+#+NAME: owl-media-transfersTo
+#+BEGIN_SRC ttl
+imf:transfersTo a owl:ObjectProperty;
+  skos:prefLabel "transfers to" ;
+  vs:term_status "testing" ;
+  skos:definition "[transfers to] is a subproperty of [connected to] that relates a [Block] *E1* to a [Block] *E2*, or a [Terminal] *E1* to a [Terminal] *E2*, to specify that *E1* transfers medium to *E2*" ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  rdfs:subPropertyOf imf:connectedTo ;
+  .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Block imf:transfersTo imf:Block) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:Terminal imf:transfersTo imf:Terminal) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:OutputTerminal imf:transfersTo imf:InputTerminal) .
+
+[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+   ottr:values (imf:InputTerminal imf:transfersTo owl:Nothing) .
+
+#[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+#   ottr:values (imf:Connector imf:transfersTo owl:Nothing) .
+#+END_SRC
+
+
+** TODO Aspects
 
 #+NAME: plantuml-aspect-elements
 #+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-ontology-aspects.png
@@ -912,6 +1017,152 @@ Element --> Element : interAspectRelation
 #+ATTR_LATEX: :width 6cm
 #+RESULTS: plantuml-aspect-elements
 [[file:out/owl/imf-ontology-aspects.png]]
+
+*** ~Perspective~
+
+#+NAME: owl-aspects-perspective
+#+BEGIN_SRC ttl
+imf:Perspective a owl:Class ;
+  skos:prefLabel "Perspective" ;
+  vs:term_status "testing" ;
+  skos:definition "[Perspective] refers to what is captured in a view. A perspective can be thought of as a filter on information." ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "aspects" ;
+  .
+#+END_SRC
+
+*** ~Interest~
+
+#+NAME: owl-aspects-interest
+#+BEGIN_SRC ttl
+imf:Interest a owl:Class ;
+  skos:prefLabel "Interest" ;
+  vs:term_status "testing" ;
+  skos:definition "[Interest] refers to the modelling purpose and the intended usage of the information, and hence the users of the information, their preferences and working habits." ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "aspects" ;
+  .
+#+END_SRC
+
+*** ~Modality~
+
+#+NAME: owl-aspects-modality
+#+BEGIN_SRC ttl
+imf:Modality a owl:Class ;
+  skos:prefLabel "Modality" ;
+  vs:term_status "testing" ;
+  skos:definition "[Modality] refers to the mode of existence of what is modelled." ;
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "aspects" ;
+  .
+#+END_SRC
+#+NAME: owl-aspects-perspective
+#+BEGIN_SRC ttl
+
+*** ~Aspect~
+
+#+NAME: owl-aspects-aspect
+#+BEGIN_SRC ttl
+imf:Aspect a owl:Class ;
+  skos:prefLabel "Aspect" ;
+  vs:term_status "testing" ;
+  skos:definition "An [Aspect] sets a context for interpreting and the modelling of [Element]s. An [Aspect] is specified by a [Perspective] (What is the modelling perspective?), an [Interest] (What is the modelling interest?), and a [Modality] (What is the mode of existence of what is modelled?)." ;
+  skos:note "Aspect is a core concept of ISO/IEC 81346 and the IMF ontology includes aspects that are found in ISO/IEC 81346: function, location and product." ;
+  skos:example "For examples, see the instances of [Aspect] defined in this ontology, e.g., [function aspect]." ;
+  skos:changeNote
+    "0.1.0 :: Added" ,
+    "0.2.2 :: Changed: updated definition to reflect introduced classes Perspective, Interest and Modality." ;
+  vann:termGroup "aspects" ;
+  .
+
+imf:hasPerspective a owl:ObjectProperty ;
+  skos:prefLabel "has perspective" ;
+  skos:definition "[has perspective] is a relation from an [Aspect] *A* to a [Perspective] *P* to specify that *A* is specified by *P*.";
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "aspects" ;
+  rdfs:domain imf:Aspect ;
+  rdfs:range imf:Perspective ;
+.
+
+imf:hasInterest a owl:ObjectProperty ;
+  skos:prefLabel "has perspective" ;
+  skos:definition "[has interes] is a relation from an [Aspect] *A* to a [Interest] *I* to specify that *A* is specified by *I*.";
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "aspects" ;
+  rdfs:domain imf:Aspect ;
+  rdfs:range imf:Interest ;
+.
+
+imf:hasModality a owl:ObjectProperty ;
+  skos:prefLabel "has modality" ;
+  skos:definition "[has modality] is a relation from an [Aspect] *A* to a [Modality] *M* to specify that *A* is specified by *M*.";
+  skos:changeNote
+    "0.2.2 :: Added" ;
+  vann:termGroup "aspects" ;
+  rdfs:domain imf:Aspect ;
+  rdfs:range imf:Modality ;
+.
+  
+imf:prefix a owl:AnnotationProperty ;
+  skos:prefLabel "prefix" ;
+  vs:term_status "testing" ;
+  skos:definition "[prefix] is a relation from an [Aspect] *A* to a string *s* to specify that *s* is the prefix associated with *A*. Such prefix strings are typically used for identifying the aspect when constructing reference designation system (RDS) identifiers." ;
+  skos:example "For examples, see the instances of [Aspect] defined in this ontology, e.g., [function aspect]." ;
+  skos:changeNote
+    "0.1.0 :: Added" ;
+  vann:termGroup "aspects" ;
+  rdfs:domain imf:Aspect ;
+  rdfs:range xsd:string ;
+  .
+
+imf:color a owl:AnnotationProperty ;
+  skos:prefLabel "color" ;
+  vs:term_status "testing" ;
+  skos:definition "[color] is a relation from a resource *X* to a string identifying a hexadecimal color *c* to specify that the *c* is a color that is associated with *A*.";
+  skos:example "For examples, see the instances of [Aspect] defined in this ontology, e.g., [function aspect]." ;
+  skos:changeNote
+    "0.1.0 :: Added" ;
+  vann:termGroup "aspects" ;
+  rdfs:range xsd:string
+  .
+
+#+END_SRC
+
+#+NAME: owl-aspects-relations
+#+BEGIN_SRC ttl
+imf:intraAspectRelation a owl:ObjectProperty ;
+  skos:prefLabel "intra-aspect relation" ;
+  skos:definition "[intra-aspect relation] a generic relation between [Element]s *E1* and *E2* such that *E1* and *E2* share at least one [Aspect]." ;
+  skos:scopeNote "[intra-aspect relations] is not used directly, rather use one of its subproperties. An [intra-aspect relation] is used to relate [Element]s that represent different (but related) systems/system elements within the same [Aspect]." ;
+  vs:term_status "testing" ;
+  skos:changeNote
+    "0.1.0 :: Added" ;
+  vann:termGroup "aspects" ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  .
+
+#[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
+#   ottr:values ( imf:AspectElement imf:intraAspectRelation imf:AspectElement ) .
+
+imf:interAspectRelation a owl:ObjectProperty ;
+  skos:prefLabel "inter-aspect relation" ;
+  skos:definition "[inter-aspect relation] a generic relation between [Element]s *E1* and *E2* such that *E1* and *E2* do not share any [Aspect]s." ;
+  skos:scopeNote "[inter-aspect relations] is not used directly, rather use one of its subproperties. An [inter-aspect relation] is used to relate [Element]s that represent the same system/system element, but in different [Aspect]s." ;
+  vs:term_status "testing" ;
+  skos:changeNote
+    "0.1.0 :: Added" ;
+  vann:termGroup "aspects" ;
+  rdfs:domain imf:Element ;
+  rdfs:range imf:Element ;
+  owl:propertyDisjointWith imf:intraAspectRelation ;
+  .
+#+END_SRC
 
 *** ~AspectElement~
 
@@ -966,83 +1217,6 @@ imf:AspectElementShape a sh:NodeShape ;
 .
 #+END_SRC
 
-*** ~Aspect~
-
-#+NAME: owl-aspects-aspect
-#+BEGIN_SRC ttl
-imf:Aspect a owl:Class ;
-  skos:prefLabel "Aspect" ;
-  vs:term_status "testing" ;
-  skos:definition """An [Aspect] describes a context for interpreting [Element]s. An [Aspect] specifies a *perspective*, an *interest*, and a *modality*.
-
- - *Perspective* refers to from which viewpoint the [Element] is interpreted.
- - *Interest* refers to the scope for which the information is intended used.
- - *Modality* refers to the form in which information is recorded.
-""" ;
- skos:note "Aspect is a core concept of ISO/IEC 81346 and the IMF ontology includes aspects that are found in ISO/IEC 81346: function, location and product. We anticipate that more aspects will be added to support future modelling needs." ;
-  skos:example "For examples, see the instances of [Aspect] defined in this ontology, e.g., [function aspect]." ;
-  skos:changeNote
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  .
-
-imf:prefix a owl:AnnotationProperty ;
-  skos:prefLabel "prefix" ;
-  vs:term_status "testing" ;
-  skos:definition "[prefix] is a relation from an [Aspect] *A* to a string *s* to specify that *s* is the prefix associated with *A*. Such prefix strings are typically used for identifying the aspect when constructing reference designation system (RDS) identifiers." ;
-  skos:example "For examples, see the instances of [Aspect] defined in this ontology, e.g., [function aspect]." ;
-  skos:changeNote
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  rdfs:domain imf:Aspect ;
-  rdfs:range xsd:string ;
-  .
-
-imf:color a owl:AnnotationProperty ;
-  skos:prefLabel "color" ;
-  vs:term_status "testing" ;
-  skos:definition "[color] is a relation from a resource *X* to a string identifying a hexadecimal color *c* to specify that the *c* is a color that is associated with *A*.";
-  skos:scopeNote "[Aspect]s are often associated with a distinct color, which is used in graphical presentations of IMF data." ;
-  skos:example "For examples, see the instances of [Aspect] defined in this ontology, e.g., [function aspect]." ;
-  skos:changeNote
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  rdfs:range xsd:string
-  .
-
-#+END_SRC
-
-#+NAME: owl-aspects-relations
-#+BEGIN_SRC ttl
-imf:intraAspectRelation a owl:ObjectProperty ;
-  skos:prefLabel "intra-aspect relation" ;
-  skos:definition "[intra-aspect relation] a generic relation between [Element]s *E1* and *E2* such that *E1* and *E2* share at least one [Aspect]." ;
-  skos:scopeNote "[intra-aspect relations] is not used directly, rather use one of its subproperties. An [intra-aspect relation] is used to relate [Element]s that represent different (but related) systems/system elements within the same [Aspect]." ;
-  vs:term_status "testing" ;
-  skos:changeNote
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  rdfs:domain imf:Element ;
-  rdfs:range imf:Element ;
-  .
-
-#[] ottr:of o-owl-ax:SubObjectAllValuesFrom ;
-#   ottr:values ( imf:AspectElement imf:intraAspectRelation imf:AspectElement ) .
-
-imf:interAspectRelation a owl:ObjectProperty ;
-  skos:prefLabel "inter-aspect relation" ;
-  skos:definition "[inter-aspect relation] a generic relation between [Element]s *E1* and *E2* such that *E1* and *E2* do not share any [Aspect]s." ;
-  skos:scopeNote "[inter-aspect relations] is not used directly, rather use one of its subproperties. An [inter-aspect relation] is used to relate [Element]s that represent the same system/system element, but in different [Aspect]s." ;
-  vs:term_status "testing" ;
-  skos:changeNote
-    "0.1.0 :: Added" ;
-  vann:termGroup "aspects" ;
-  rdfs:domain imf:Element ;
-  rdfs:range imf:Element ;
-  owl:propertyDisjointWith imf:intraAspectRelation ;
-  .
-#+END_SRC
-
 *** Aspects
 
 This is the current list of aspects:
@@ -1057,7 +1231,7 @@ This is the current list of aspects:
 
 **** Processing                                                          :QA:
 
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf-ontology/aspects.stottr :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :xxxtangle out/ottr/imf-ontology/aspects.stottr :mkdirp yes
 <<prefixes>>
 
 ## This creates an individual for each of the aspects in the table.
@@ -1388,12 +1562,12 @@ enum Scope {
 
 *** ~Attribute~
 
-#+NAME: owl-attributes-value
+#+NAME: owl-attributes-attribute
 #+BEGIN_SRC ttl
 imf:Attribute a owl:Class ;
   skos:prefLabel "Attribute" ;
   vs:term_status "testing" ;
-  skos:definition "An [Attribute] describes a quality, property or characteristic of a resource by setting a [predicate], a [value], and optionally a [unit of measure]. An [Attribute] may be qualified by [Attribute Qualifier]s." ;
+  skos:definition "An [Attribute] describes a quality, property or characteristic of a resource by setting a [predicate], a [value], and optionally a [unit of measure]. An [Attribute] may be qualified by classifiers." ;
   skos:example "Specified color: red." , "Measured weight: 1250 kg." , "Maximum ambient operating temperature: 120 K." ;
   foaf:depiction <http://ns.imfid.org/20230630/img/imf-ontology-attributes.png> ;
   skos:changeNote
@@ -1415,20 +1589,23 @@ imf:hasAttribute a owl:ObjectProperty ;
   vs:term_status "testing" ;
   skos:definition "[has attribute] is a relation between an [Element] *E* and an [Attribute] *A* that specifies that *E* has the attribute *A*." ;
   skos:changeNote
-    "0.2.0 :: Added" ;
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Changed: added AttributeGroup to range." ;
   vann:termGroup "attributes" ;
   rdfs:domain imf:Element ;
-  rdfs:range  imf:Attribute .
+  # rdfs:range  imf:Attribute 
+.
 
 imf:predicate a owl:ObjectProperty ;
   skos:prefLabel "predicate" ;
   vs:term_status "testing" ;
-  skos:definition "[predicate] is an [external reference] that relates an [Attribute] *A* to a resource *X* to specify that *A* has the predicate *X*." ;
+  skos:definition "[predicate] is a [primary classifier] that relates an [Attribute] *A* to a resource *X* to specify that *A* has the predicate *X*." ;
   skos:example "The [predicate] of an [Attribute] \"Weight: 1250 kg\" could be expressed as WEIGHT <http://data.posccaesar.org/rdl/RDS356894>." ;
   skos:changeNote
-    "0.2.0 :: Added" ;
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Changed set super property to classifier." ;
   vann:termGroup "attributes" ;
-  rdfs:subPropertyOf imf:externalReference ;
+  rdfs:subPropertyOf imf:primaryClassifier ;
   rdfs:domain imf:Attribute .
 
 imf:uom a owl:ObjectProperty ;
@@ -1493,12 +1670,14 @@ imf:AttributeGroup a owl:Class ;
   .
 
 imf:hasAttributeGroup a owl:ObjectProperty ;
-  skos:prefLabel "has attribute group" ;
+  skos:prefLabel "has attribute group (deprecated)" ;
   vs:term_status "testing" ;
   skos:definition "[has attribute group] is a relation between a resource *X* and an [Attribute Group] *A* that specifies that *X* has the attribute group *A*." ;
   skos:editorialNote "See comment on [Attribute Group], does [has attribute group] represent a \"long-hand property\" meaning that attaching the Attributes of the Attribute Group directly is equivalent? Perhaps the functionality of [Attribute Group]s is best realised as aspect-less-types?" ;
   skos:changeNote
-    "0.2.0 :: Added" ;
+    "0.2.0 :: Added" ,
+    "0.2.2 :: Deprecated: use instead imf:hasAttribute" ;
+  owl:deprecated true ;
   rdfs:range imf:AttributeGroup .
 #+END_SRC
 
@@ -1573,7 +1752,7 @@ imf:hasAttributeQualifier a owl:ObjectProperty ;
 
 **** Processing                                                          :QA:
 
-#+BEGIN_SRC ttl :noweb strip-export :tangle out/ottr/imf-ontology/attributes.stottr :mkdirp yes
+#+BEGIN_SRC ttl :noweb strip-export :xxxtangle out/ottr/imf-ontology/attributes.stottr :mkdirp yes
 <<prefixes>>
 
 o-imf:AttributeQualifierClass [owl:Class ?qualifierClass, xsd:string ?label, ottr:IRI ?pcaMapping
@@ -1674,7 +1853,52 @@ return output
    ottr:values( ( imf:ProvenanceQualifier imf:RangeQualifier imf:RegularityQualifier imf:ScopeQualifier ) ) .
 #+END_src
 
-** Types
+** Model
+
+#+NAME: plantuml-model
+#+BEGIN_SRC plantuml :noweb yes :file out/owl/imf-ontology-model.png
+<<plantuml-style>>
+
+class Model
+abstract class Element
+
+Model o--> "*" Element
+#+END_SRC
+
+#+NAME: owl-model-model
+#+BEGIN_SRC ttl
+imf:Model a owl:Class ;
+  skos:prefLabel "Model (unstable)" ;
+  vs:term_status "unstable" ;
+  skos:definition "A [Model] is a collection of [Element]s and related entities." ;
+  skos:scopeNote """A [Model] is a construct for organising [Element]s into an identified collection which is useful for, e.g., provenance, exchange and integration.
+
+The set of [Element]s of a [Model] is expressed using the property [has Member]. A [Model] can contain any number of [Element]s.
+
+[Model] has the status 'unstable'; more detailed use cases and experience is required to work out its details.""" ;
+  skos:editorialNote "TODOs: Can an [Element] belong to multiple [Model]s, if so, should it have one 'owner'?" ;
+  skos:changeNote
+    "0.2.0 :: Added" ;
+    "0.2.2 :: Changed: replace hasElement with hasMember." ;
+  vann:termGroup "model" ;
+  foaf:depiction <http://ns.imfid.org/20230630/img/imf-ontology-model.png> ;
+.
+#+END_SRC
+
+#+NAME: shacl-model-model
+#+BEGIN_SRC ttl
+imf:ModelShape a sh:NodeShape ;
+  sh:targetClass imf:Model ;
+  sh:property
+    [ sh:path imf:hasMember ; sh:minCount 1 ; sh:severity sh:Warning ; sh:message "The Model contains no members." ] ;
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    "O.2.1 :: Changed: Set nodeKind." ,
+    "O.2.2 :: Changed: replace hasElement with hasMember."
+.
+#+END_SRC
+
+** +Types+                                                         :noexport:
 *** Overview
 
 #+NAME: plantuml-types
@@ -1863,8 +2087,7 @@ imf:IMFOntologyGrammar a owl:Ontology ;
     owl:versionIRI <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl> ;
     owl:versionInfo "0.2.1" ;
     skos:prefLabel "IMF Ontology Grammar -- SHACL" ;
-    dc:description """
-These SHACL Shapes specify requirements on the definition of terms in the IMF ontology and is therefore useful only for the development of the IMF ontology.""" ;
+    dc:description "These SHACL Shapes specify requirements on the definition of terms in the IMF OWL ontology." ;
     pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
     pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
     owl:imports
@@ -1896,11 +2119,11 @@ _:TermMetadata a sh:NodeShape ;
     [ sh:path vann:termGroup ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "elements" "aspects" "attributes" "generic relations" "model" "type" ) ] ,
     [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path skos:definition ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string  ] ,
-    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ] ;
+    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:|Deprecated:]" ] ;
     #[ sh:path skos:scopeNote ; sh:minCount 1 ; sh:severity sh:Warning ]
   skos:changeNote
     "0.2.0 :: Added" ,
-    "0.2.1 :: Changed: add termGroup for type"
+    "0.2.1 :: Changed: add termGroup 'type'."
 .
 
 #+END_SRC
@@ -2066,385 +2289,17 @@ imf:AttributeShape a sh:NodeShape ;
     }
 }
 #+END_SRC
-* Modelling patterns (OTTR)
-** IMF Types templates
-*** TODO Overview
-
-The diagram displays the type patterns.
-
-Some terms are prefixed with ~sh.~ to indicate that they refer to
-terms that are defined in the SHACL standard:
-https://www.w3.org/TR/shacl. This also indicates how the type pattern
-instances are translated into SHACL.
-
-#+NAME: plantuml-patterns-types
-#+BEGIN_SRC plantuml :noweb yes :file out/img/imf-patterns-types.png
-<<plantuml-style>>
-
-metaclass SHACL.Shape {
-  id: 1 iri
-}
-
-metaclass SHACL.NodeShape {
-  sh.targetClass: 0..1 iri
-}
-
-metaclass SHACL.PropertyShape {
-  sh.name: 0..1 string
-  sh.description: 0..1 string
-  sh.path: 1 iri
-  sh.severity: 0..1 iri
-  sh.message: 0..1 string
-}
-
-metaclass Type {
-  typeClass: 1 iri
-}
-
-metaclass TypeReference {
-  sh.minCount: 0..1 integer
-  sh.maxCount: 0..1 integer
-}
-
-metaclass PropertyConstraint {
-.. Values ..
-  sh.hasValue: 0..1
-  sh.in: 0..*
-  sh.class: 0..1 iri
-  sh.datatype: 0..1 iri
-.. Cardinality ..
-  sh.minCount: 0..1 integer
-  sh.maxCount: 0..1 integer
-.. Numeric constraints ..
-  sh.minExclusive: 0..1
-  sh.minInclusive: 0..1
-  sh.maxExclusive: 0..1
-  sh.maxInclusive: 0..1
-.. String constraints ..
-  sh.pattern: 0..1 string
-  sh.flags: 0..1 string
-}
-
-SHACL.Shape <|-- SHACL.NodeShape
-SHACL.Shape <|-- SHACL.PropertyShape
-
-SHACL.NodeShape <|-- Type
-
-SHACL.PropertyShape <|-- PropertyConstraint
-SHACL.PropertyShape <|-- TypeReference
-
-SHACL.NodeShape "1" -right-> SHACL.PropertyShape : sh.property
-TypeReference --> "1" SHACL.NodeShape : node
-
-#+END_SRC
-
-*** Basic SHACL templates
-
-#+NAME: ottr_types_shacl
-#+BEGIN_SRC ttl
-o-imf:ShaclNodeShape[
-  ottr:IRI ?id,
-  ? owl:Class ?targetClass
-] :: {
-  o-rdf:Type(?id, sh:NodeShape),
-  ottr:Triple(?id, sh:targetClass, ?targetClass)
-} .
-
-o-imf:ShaclPropertyShape[
-    ottr:IRI ?id,
-    ottr:IRI ?nodeShape, ## the node shape to which this property belongs.
-    ottr:IRI ?path,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? ottr:IRI ?severity,
-  ? xsd:string ?message
-] :: {
-  ottr:Triple(?id, sh:name, ?name),
-  ottr:Triple(?id, sh:description, ?description)
-  ottr:Triple(?nodeShape, sh:property, ?id),
-  ottr:Triple(?id, sh:path, ?path),
-  ottr:Triple(?id, sh:severity, ?severity),
-  ottr:Triple(?id, sh:message, ?message)
-} .
-#+END_SRC
-
-*** Low-level type templates
-
-#+NAME: ottr_types_basic_types
-#+BEGIN_SRC ttl
-o-imf-t-s:Type[
-  owl:Class ?id,        # id of the type
-  owl:Class ?IMFClass,  # the IMF superclass of this type, e.g., imf:Block
-  owl:Class ?typeClass, # the IMF type class, e.g., imf:BlockType
-  ? List<owl:Class> ?superclass,
-  ? xsd:string ?name,
-  ? xsd:string ?description
-] :: {
-  o-imf:ShaclNodeShape(?id, none),
-  ottr:Triple(?id, skos:prefLabel, ?name),
-  ottr:Triple(?id, dc:description, ?description),
-  o-rdf:Type(?id, rdfs:Class),
-  o-rdfs:SubClassOf(?id, ?IMFClass)
-  o-rdf:Type(?id, ?typeClass)
-  cross | o-rdfs:SubClassOf(?id, ++?superclass)
-} .
-
-o-imf-t-s:TypeReference[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeSource,
-    ottr:IRI ?path,
-    ottr:IRI ?typeTarget,
-    xsd:integer ?minCount = 0,
-  ? xsd:integer ?maxCount,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? ottr:IRI ?severity,
-  ? xsd:string ?message
-] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeSource, ?path, ?name, ?description, ?severity, ?message),
-  ottr:Triple(?id, sh:node, ?typeTarget),
-  ottr:Triple(?id, sh:minCount, ?minCount),
-  ottr:Triple(?id, sh:maxCount, ?maxCount)
-} .
-
-o-imf-t-s:PropertyConstraint[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeSource,
-    ottr:IRI ?path,
-  ? rdfs:Resource ?value,
-  ? List<rdfs:Resource> ?in,
-  ? owl:Class ?class,
-  ? ottr:IRI ?datatype,
-  ? xsd:integer ?minCount,
-  ? xsd:integer ?maxCount,
-  ? rdfs:Literal ?minInclusive,
-  ? rdfs:Literal ?minExclusive,
-  ? rdfs:Literal ?maxInclusive,
-  ? rdfs:Literal ?maxExclusive,
-  ? xsd:string ?pattern,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? ottr:IRI ?severity,
-  ? xsd:string ?message
-] :: {
-  o-imf:ShaclPropertyShape(?id, ?typeSource, ?path, ?name, ?description, ?severity, ?message),
-  ottr:Triple(?id, sh:hasValue, ?value),
-  ottr:Triple(?id, sh:in, ?in),
-  ottr:Triple(?id, sh:class, ?class),
-  ottr:Triple(?id, sh:datatype, ?datatype),
-  ottr:Triple(?id, sh:minCount, ?minCount),
-  ottr:Triple(?id, sh:maxCount, ?maxCount),
-  ottr:Triple(?id, sh:minInclusive, ?minInclusive),
-  ottr:Triple(?id, sh:minExclusive, ?minExclusive),
-  ottr:Triple(?id, sh:maxInclusive, ?maxInclusive),
-  ottr:Triple(?id, sh:maxExclusive, ?maxExclusive),
-  #ottr:Triple(?id, sh:minLength, ?minLength),
-  #ottr:Triple(?id, sh:maxLength, ?maxLength),
-  ottr:Triple(?id, sh:pattern, ?pattern)
-  #ottr:Triple(?id, sh:flags, ?flags)
-} .
-#+END_SRC
-
-*** Low-level utility templates
-
-#+NAME: ottr_types_utility
-#+BEGIN_SRC ttl
-o-imf-t-s:PropertyConstraintSingleValue[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeSource,
-    ottr:IRI ?path,
-    rdfs:Resource ?value
-] :: {
-o-imf-t-s:PropertyConstraint(?id, ?typeSource, ?path, ?value,
-  none, none, none, none, none, none, none, none, none, none, none, none, none, none)
-} .
-
-o-imf-t-s:PropertyConstraintCardinality[
-    ottr:IRI ?id = _:P,
-    ottr:IRI ?typeSource,
-    ottr:IRI ?path,
-    xsd:integer ?minCount,
-  ? xsd:integer ?maxCount
-] :: {
-o-imf-t-s:PropertyConstraint(?id, ?typeSource, ?path, none,
-  none, none, none, ?minCount, ?maxCount, none, none, none, none, none, none, none, none, none)
-} .
-#+END_SRC
-
-*** User-facing templates
-
-#+NAME: ottr_types_user
-#+BEGIN_SRC ttl
-o-imf-t-s:ElementType[
-  owl:Class ?id,
-  owl:Class ?IMFClass,
-  owl:Class ?typeClass,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? List<owl:Class> ?superclass,
-  ? ottr:IRI ?aspect,
-  ? List<ottr:IRI> ?classifiers
-] :: {
-  o-imf-t-s:Type(?id, ?IMFClass, ?typeClass, ?superclass, ?name, ?description),
-  o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:hasAspect, ?aspect),
-  cross | o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:classifier, ++?classifiers)
-} .
-
-o-imf-t-s:BlockType[
-  owl:Class ?id,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? List<owl:Class> ?superclass,
-  ? ottr:IRI ?aspect,
-  ? ottr:IRI ?purpose,
-  ? List<ottr:IRI> ?classifiers,
-  ? ottr:IRI ?symbol
-] :: {
-  o-imf-t-s:ElementType(?id, imf:Block, imf:BlockType, ?name, ?description, ?superclass, ?aspect, ?classifiers),
-  o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:purpose, ?purpose),
-  o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:symbol, ?symbol)
-} .
-
-o-imf-t-s:TerminalType[
-  owl:Class ?id,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? List<owl:Class> ?superclass,
-  ? ottr:IRI ?aspect,
-  ? List<ottr:IRI> ?classifiers,
-  ? ottr:IRI ?medium
-] :: {
-  o-imf-t-s:ElementType(?id, imf:Terminal, imf:TerminalType, ?name, ?description, ?superclass, ?aspect, ?classifiers),
-  o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:medium, ?medium)
-} .
-
-o-imf-t-s:AttributeType[
-  owl:Class ?id,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? List<owl:Class> ?superclass,
-  ottr:IRI ?predicate,
-  ? xsd:integer ?minCountUoM, # does the attribute have a uom or not?
-  ? xsd:integer ?maxCountUoM
-  #? rdfs:Datatype ?datatype,
-  #? rdfs:Literal ?minInclusive, # lower range of attribute value
-  #? rdfs:Literal ?maxInclusive # upper range of attribute value
-] :: {
-  o-imf-t-s:Type(?id, imf:Attribute, imf:AttributeType, ?superclass, ?name, ?description)
-  o-imf-t-s:PropertyConstraintSingleValue(none, ?id, imf:predicate, ?predicate)
-  o-imf-t-s:PropertyConstraintCardinality(none, ?id, imf:uom, ?minCountUoM, ?maxCountUoM)
-  # o-imf-t-s:PropertyConstraint(none, ?id, imf:value,
-  # none, #?value
-  # none, #?in
-  # none, #?class
-  # ?datatype,
-  # none, #?minCount,
-  # none, #?maxCount,
-  # ?minInclusive,
-  # none, #?minExclusive,
-  # ?maxInclusive,
-  # none, #?maxExclusive,
-  # none, #?pattern,
-  # none,
-  # none,
-  # none, #?severity,
-  # none #?message
-  # )
-} .
-#+END_SRC
-
-*** _all                                                           :noexport:
-
-#+BEGIN_SRC ttl :noweb yes :tangle out/ottr/imf-types-shacl.stottr :mkdirp yes
-<<prefixes>>
-
-<<ottr_types_shacl>>
-
-<<ottr_types_basic_types>>
-
-<<ottr_types_utility>>
-
-<<ottr_types_user>>
-#+END_SRC
-** IMF Model templates
-
-#+BEGIN_SRC ttl :noweb yes :tangle out/ottr/imf-model-rdf.stottr :mkdirp yes
-<<prefixes>>
-
-o-imf-d:Element[
-  owl:NamedIndividual ?id,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? List<owl:Class> ?types,
-  ? owl:NamedIndividual ?parent,
-  ? owl:NamedIndividual ?aspect
-] :: {
-  ottr:Triple(?id, skos:prefLabel, ?name),
-  ottr:Triple(?id, rdfs:comment, ?description),
-  cross | o-rdf:Type(?id, ++?types),
-  ottr:Triple(?id, imf:partOf, ?parent),
-  ottr:Triple(?id, imf:hasAspect, ?aspect)
-} .
-
-o-imf-d:Block[
-  owl:NamedIndividual ?id,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? List<owl:Class> ?types,
-  ? owl:NamedIndividual ?aspect,
-  ? ottr:IRI ?purpose,
-  ? owl:NamedIndividual ?parent
-] :: {
-  o-imf-d:Element(?id, ?name, ?description, ?types, ?parent, ?aspect)
-  ottr:Triple(?id, imf:purpose, ?purpose)
-} .
-
-o-imf-d:Terminal[
-  owl:NamedIndividual ?id = _:T,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? List<owl:Class> ?types,
-  ! owl:ObjectProperty ?terminalDir = imf:hasTerminal,
-  owl:NamedIndividual ?block,
-  ? ottr:IRI ?medium,
-  ? owl:NamedIndividual ?parent
-] :: {
-  o-imf-d:Element(?id, ?name, ?description, ?types, ?parent, none),
-  ottr:Triple(?id, imf:medium, ?medium),
-  ottr:Triple(?block, ?terminalDir, ?id)
-} .
-
-o-imf-d:Attribute[
-  owl:NamedIndividual ?id = _:A,
-  ? xsd:string ?name,
-  ? xsd:string ?description,
-  ? List<owl:Class> ?types,
-  owl:NamedIndividual ?element,
-  ? ottr:IRI ?predicate,
-  ?value,
-  ?? ottr:IRI ?uom,
-  ? owl:NamedIndividual ?qualifier1,
-  ? owl:NamedIndividual ?qualifier2,
-  ? owl:NamedIndividual ?qualifier3,
-  ? owl:NamedIndividual ?qualifier4
-] :: {
-  ottr:Triple(?id, skos:prefLabel, ?name),
-  ottr:Triple(?id, rdfs:comment, ?description),
-  cross | o-rdf:Type(?id, ++?types),
-  ottr:Triple(?element, imf:hasAttribute, ?id)
-  ottr:Triple(?id, imf:predicate, ?predicate)
-  ottr:Triple(?id, imf:value, ?value)
-  ottr:Triple(?id, imf:uom, ?uom)
-  cross | ottr:Triple(?id, imf:hasAttributeQualifier, ++(?qualifier1, ?qualifier2, ?qualifier3, ?qualifier4))
-} .
-#+END_SRC
-
 * Validation
 ** OTTR processing
 
 Expand IMF ontology:
 
 #+CALL: lutra-expand(in="out/owl/imf-ontology.owl.wottr.ttl", out="out/owl/imf-ontology.owl.ttl")
+
+#+RESULTS:
+: rapper: Parsing URI file:///home/martige/repo/imf-lab/spec/imf-ontology/out/owl/imf-ontology.owl.wottr.ttl.temp with parser turtle
+: rapper: Serializing with serializer turtle
+: rapper: Parsing returned 258 triples
 
 ** RDF validate tangled file
 
@@ -2986,25 +2841,6 @@ This section contains the prefixes used throughout this document.
 @prefix ex:	<http://example.com#> .
 #+END_SRC
 
-#+RESULTS: prefixes-std
-#+begin_example
-@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
-@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix sh:	<http://www.w3.org/ns/shacl#> .
-@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
-@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
-@prefix vann:   <http://purl.org/vocab/vann/> .
-@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
-
-@prefix imf:	<http://ns.imfid.org/imf#> .
-@prefix ex:	<http://example.com#> .
-#+end_example
-
 *** IMF prefixes
 
 #+NAME: prefixes-imf
@@ -3015,7 +2851,7 @@ This section contains the prefixes used throughout this document.
 @prefix pca-plm:   <http://rds.posccaesar.org/ontology/plm/rdl/> .
 #+END_SRC
 
-*** OTTR template prefixes
+*** OTTR prefxes
 
 #+NAME: prefixes-ottr
 #+BEGIN_SRC ttl
@@ -3034,75 +2870,14 @@ This section contains the prefixes used throughout this document.
 @prefix o-imf-d:     <http://ns.imfid.org/templates/data/> .
 #+END_SRC
 
-*** All prefixes combined                                          :noexport:
+
+*** All prefixes
 
 #+NAME: prefixes
 #+BEGIN_SRC ttl :noweb yes
 <<prefixes-imf>>
-
 <<prefixes-ottr>>
 #+END_SRC
-
-#+RESULTS: prefixes
-#+begin_example
-@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
-@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:    <http://www.w3.org/2002/07/owl#> .
-@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
-@prefix pav:	<http://purl.org/pav/> .
-@prefix sh:	<http://www.w3.org/ns/shacl#> .
-@prefix shsh:   <http://www.w3.org/ns/shacl-shacl#> .
-@prefix ex:	<http://example.com#> .
-@prefix imf:	<http://ns.imfid.org/imf#> .
-
-@prefix p14:    <http://example.com/P14#> .
-@prefix ottr:        <http://ns.ottr.xyz/0.4/> .
-@prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/> .
-@prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/> .
-@prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/> .
-@prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/> .
-@prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/> .
-
-@prefix o-imf:	     <http://ns.imfid.org/templates/> .
-@prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/> .
-#+end_example
-
-#+NAME: py_prefixes_sparql
-#+BEGIN_SRC python :var prefixes=prefixes
-output = ""
-
-for p in prefixes.split("\n"):
-  output += p.replace("@","").strip().strip(".") + "\n"
-
-return output
-#+END_SRC
-
-#+RESULTS: py_prefixes_sparql
-#+begin_example
-prefix xsd:	<http://www.w3.org/2001/XMLSchema#>
-prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#>
-prefix owl:    <http://www.w3.org/2002/07/owl#>
-prefix skos:	<http://www.w3.org/2004/02/skos/core#>
-prefix pav:	<http://purl.org/pav/>
-prefix sh:	<http://www.w3.org/ns/shacl#>
-prefix shsh:   <http://www.w3.org/ns/shacl-shacl#>
-prefix ex:	<http://example.com#>
-prefix imf:	<http://ns.imfid.org/imf#>
-
-prefix p14:    <http://example.com/P14#>
-prefix ottr:        <http://ns.ottr.xyz/0.4/>
-prefix o-rdf:       <http://tpl.ottr.xyz/rdf/0.1/>
-prefix o-rdfs:       <http://tpl.ottr.xyz/rdfs/0.2/>
-prefix o-owl-ax:    <http://tpl.ottr.xyz/owl/axiom/0.1/>
-prefix o-owl-ma:    <http://tpl.ottr.xyz/owl/macro/0.1/>
-prefix o-owl-rstr:  <http://tpl.ottr.xyz/owl/restriction/0.1/>
-
-prefix o-imf:	     <http://ns.imfid.org/templates/>
-prefix o-imf-t-s:   <http://ns.imfid.org/templates/type/shacl/>
-#+end_example
-
 
 
 
@@ -4202,7 +3977,7 @@ return output
 Run SPARQL queries on RDF data files. Output a table.
 
 #+NAME: py_run_sparql
-#+BEGIN_SRC python :var query="SELECT ?s ?p ?o {?s ?p ?o} LIMIT 10" :var prefixes=py_prefixes_sparql() :var data="out/owl/imf-ontology.owl.ttl" :var formatting="table" :results raw
+#+XXBEGIN_SRC python :var query="SELECT ?s ?p ?o {?s ?p ?o} LIMIT 10" :var prefixes=py_prefixes_sparql() :var data="out/owl/imf-ontology.owl.ttl" :var formatting="table" :results raw
 
 # input: 'query': SPARQL query string
 # input: 'prefixes': a string of prefixes for conveniently appending to the query
@@ -4347,7 +4122,7 @@ ORDER BY ?element
 *** py_imf_ontology_latex_export
 
 #+NAME: py_make_latex_ontology_report
-#+BEGIN_SRC python :var prefixes=py_prefixes_sparql() :results file
+#+XXBEGIN_SRC python :var prefixes=py_prefixes_sparql() :results file
 import rdflib
 from rdflib import URIRef, BNode
 from rdflib.namespace import NamespaceManager, OWL, SH, RDFS, RDF, DC, SKOS, VANN
@@ -4478,7 +4253,7 @@ f.close()
 *** py_list_iris
 
 #+NAME: py_list_iris
-#+BEGIN_SRC python :noweb yes :var datafile="out/owl/imf-ontology.owl.ttl" :results raw
+#+BEGIN_SRC python :noweb yes :var datafile="owl/imf-ontology.owl.ttl" :results raw
 <<py_common_functions>>
 
 iris = list(filter(lambda x: x.startswith("http://ns.imfid.org/imf#"), getAllIRIs(datafile)))
@@ -4489,7 +4264,8 @@ return ', '.join(iris)
 #+END_SRC
 
 #+RESULTS: py_list_iris
-<http://ns.imfid.org/imf#>, <http://ns.imfid.org/imf#Aspect>, <http://ns.imfid.org/imf#AspectElement>, <http://ns.imfid.org/imf#Attribute>, <http://ns.imfid.org/imf#AttributeQualifier>, <http://ns.imfid.org/imf#Block>, <http://ns.imfid.org/imf#BreakdownPoint>, <http://ns.imfid.org/imf#ConnectionPoint>, <http://ns.imfid.org/imf#Element>, <http://ns.imfid.org/imf#FunctionBlock>, <http://ns.imfid.org/imf#FunctionElement>, <http://ns.imfid.org/imf#FunctionTerminal>, <http://ns.imfid.org/imf#IMFOntology>, <http://ns.imfid.org/imf#InputTerminal>, <http://ns.imfid.org/imf#InstalledBlock>, <http://ns.imfid.org/imf#InstalledElement>, <http://ns.imfid.org/imf#InstalledTerminal>, <http://ns.imfid.org/imf#LocationBlock>, <http://ns.imfid.org/imf#LocationElement>, <http://ns.imfid.org/imf#LocationTerminal>, <http://ns.imfid.org/imf#Model>, <http://ns.imfid.org/imf#OutputTerminal>, <http://ns.imfid.org/imf#ProductBlock>, <http://ns.imfid.org/imf#ProductElement>, <http://ns.imfid.org/imf#ProductTerminal>, <http://ns.imfid.org/imf#ProvenanceQualifier>, <http://ns.imfid.org/imf#RangeQualifier>, <http://ns.imfid.org/imf#RegularityQualifier>, <http://ns.imfid.org/imf#ScopeQualifier>, <http://ns.imfid.org/imf#Terminal>, <http://ns.imfid.org/imf#TerminalQualifier>, <http://ns.imfid.org/imf#absoluteQualifier>, <http://ns.imfid.org/imf#asFunction>, <http://ns.imfid.org/imf#asInstalled>, <http://ns.imfid.org/imf#asLocation>, <http://ns.imfid.org/imf#asProduct>, <http://ns.imfid.org/imf#associativeRelation>, <http://ns.imfid.org/imf#averageQualifier>, <http://ns.imfid.org/imf#calculatedQualifier>, <http://ns.imfid.org/imf#classifier>, <http://ns.imfid.org/imf#color>, <http://ns.imfid.org/imf#connectedTo>, <http://ns.imfid.org/imf#continuousQualifier>, <http://ns.imfid.org/imf#designQualifier>, <http://ns.imfid.org/imf#externalReference>, <http://ns.imfid.org/imf#functionAspect>, <http://ns.imfid.org/imf#hasAspect>, <http://ns.imfid.org/imf#hasAttribute>, <http://ns.imfid.org/imf#hasAttributeQualifier>, <http://ns.imfid.org/imf#hasElement>, <http://ns.imfid.org/imf#hasInputTerminal>, <http://ns.imfid.org/imf#hasOutputTerminal>, <http://ns.imfid.org/imf#hasPart>, <http://ns.imfid.org/imf#hasTerminal>, <http://ns.imfid.org/imf#hasTerminalQualifier>, <http://ns.imfid.org/imf#hierachicalRelation>, <http://ns.imfid.org/imf#hierarchicalRelation>, <http://ns.imfid.org/imf#inputFlow>, <http://ns.imfid.org/imf#installedAspect>, <http://ns.imfid.org/imf#interAspectRelation>, <http://ns.imfid.org/imf#intraAspectRelation>, <http://ns.imfid.org/imf#locationAspect>, <http://ns.imfid.org/imf#maximumQualifier>, <http://ns.imfid.org/imf#measuredQualifier>, <http://ns.imfid.org/imf#medium>, <http://ns.imfid.org/imf#minimumQualifier>, <http://ns.imfid.org/imf#nominalQualifier>, <http://ns.imfid.org/imf#normalQualifier>, <http://ns.imfid.org/imf#operatingQualifier>, <http://ns.imfid.org/imf#outputFlow>, <http://ns.imfid.org/imf#partOf>, <http://ns.imfid.org/imf#predicate>, <http://ns.imfid.org/imf#prefix>, <http://ns.imfid.org/imf#productAspect>, <http://ns.imfid.org/imf#specifiedQualifier>, <http://ns.imfid.org/imf#symbol>, <http://ns.imfid.org/imf#theConnected>, <http://ns.imfid.org/imf#theInput>, <http://ns.imfid.org/imf#theOutput>, <http://ns.imfid.org/imf#thePart>, <http://ns.imfid.org/imf#theWhole>, <http://ns.imfid.org/imf#uom>, <http://ns.imfid.org/imf#value>
+<http://ns.imfid.org/imf#>, <http://ns.imfid.org/imf#Aspect>, <http://ns.imfid.org/imf#AspectElement>, <http://ns.imfid.org/imf#Attribute>, <http://ns.imfid.org/imf#AttributeGroup>, <http://ns.imfid.org/imf#AttributeQualifier>, <http://ns.imfid.org/imf#BiTerminal>, <http://ns.imfid.org/imf#Block>, <http://ns.imfid.org/imf#Connector>, <http://ns.imfid.org/imf#Element>, <http://ns.imfid.org/imf#FunctionBlock>, <http://ns.imfid.org/imf#FunctionElement>, <http://ns.imfid.org/imf#FunctionTerminal>, <http://ns.imfid.org/imf#IMFOntology>, <http://ns.imfid.org/imf#InputTerminal>, <http://ns.imfid.org/imf#InstalledBlock>, <http://ns.imfid.org/imf#InstalledElement>, <http://ns.imfid.org/imf#InstalledTerminal>, <http://ns.imfid.org/imf#Interest>, <http://ns.imfid.org/imf#LocationBlock>, <http://ns.imfid.org/imf#LocationElement>, <http://ns.imfid.org/imf#LocationTerminal>, <http://ns.imfid.org/imf#Modality>, <http://ns.imfid.org/imf#Model>, <http://ns.imfid.org/imf#NoAspectElement>, <http://ns.imfid.org/imf#OutputTerminal>, <http://ns.imfid.org/imf#Perspective>, <http://ns.imfid.org/imf#ProductBlock>, <http://ns.imfid.org/imf#ProductElement>, <http://ns.imfid.org/imf#ProductTerminal>, <http://ns.imfid.org/imf#ProvenanceQualifier>, <http://ns.imfid.org/imf#RangeQualifier>, <http://ns.imfid.org/imf#RegularityQualifier>, <http://ns.imfid.org/imf#ScopeQualifier>, <http://ns.imfid.org/imf#Terminal>, <http://ns.imfid.org/imf#TerminalQualifier>, <http://ns.imfid.org/imf#absoluteQualifier>, <http://ns.imfid.org/imf#activityPerspective>, <http://ns.imfid.org/imf#actualImplementation>, <http://ns.imfid.org/imf#actualModality>, <http://ns.imfid.org/imf#adjacentTo>, <http://ns.imfid.org/imf#asFunction>, <http://ns.imfid.org/imf#asInstalled>, <http://ns.imfid.org/imf#asLocation>, <http://ns.imfid.org/imf#asProduct>, <http://ns.imfid.org/imf#associativeRelation>, <http://ns.imfid.org/imf#auxClassifier>, <http://ns.imfid.org/imf#averageQualifier>, <http://ns.imfid.org/imf#calculatedQualifier>, <http://ns.imfid.org/imf#classifier>, <http://ns.imfid.org/imf#color>, <http://ns.imfid.org/imf#connectedThrough>, <http://ns.imfid.org/imf#connectedTo>, <http://ns.imfid.org/imf#containedIn>, <http://ns.imfid.org/imf#contains>, <http://ns.imfid.org/imf#continuousQualifier>, <http://ns.imfid.org/imf#designQualifier>, <http://ns.imfid.org/imf#direction>, <http://ns.imfid.org/imf#externalReference>, <http://ns.imfid.org/imf#fulfilledBy>, <http://ns.imfid.org/imf#functionAspect>, <http://ns.imfid.org/imf#hasAspect>, <http://ns.imfid.org/imf#hasAttribute>, <http://ns.imfid.org/imf#hasAttributeGroup>, <http://ns.imfid.org/imf#hasAttributeQualifier>, <http://ns.imfid.org/imf#hasConnector>, <http://ns.imfid.org/imf#hasInputTerminal>, <http://ns.imfid.org/imf#hasInterest>, <http://ns.imfid.org/imf#hasMember>, <http://ns.imfid.org/imf#hasModality>, <http://ns.imfid.org/imf#hasOutputTerminal>, <http://ns.imfid.org/imf#hasPart>, <http://ns.imfid.org/imf#hasPerspective>, <http://ns.imfid.org/imf#hasTerminal>, <http://ns.imfid.org/imf#hasTerminalQualifier>, <http://ns.imfid.org/imf#hierarchicalRelation>, <http://ns.imfid.org/imf#implementationPerspective>, <http://ns.imfid.org/imf#inputDirection>, <http://ns.imfid.org/imf#installedAspect>, <http://ns.imfid.org/imf#intendedActivity>, <http://ns.imfid.org/imf#intendedImplementation>, <http://ns.imfid.org/imf#intendedModality>, <http://ns.imfid.org/imf#intendedProductActivity>, <http://ns.imfid.org/imf#intendedProductImplementation>, <http://ns.imfid.org/imf#intendedProductSpace>, <http://ns.imfid.org/imf#intendedProjectActivity>, <http://ns.imfid.org/imf#intendedProjectImplementation>, <http://ns.imfid.org/imf#intendedProjectSpace>, <http://ns.imfid.org/imf#intendedSpace>, <http://ns.imfid.org/imf#interAspectRelation>, <http://ns.imfid.org/imf#intraAspectRelation>, <http://ns.imfid.org/imf#locationAspect>, <http://ns.imfid.org/imf#maximumQualifier>, <http://ns.imfid.org/imf#measuredQualifier>, <http://ns.imfid.org/imf#medium>, <http://ns.imfid.org/imf#memberOf>, <http://ns.imfid.org/imf#minimumQualifier>, <http://ns.imfid.org/imf#nominalQualifier>, <http://ns.imfid.org/imf#normalQualifier>, <http://ns.imfid.org/imf#operatingQualifier>, <http://ns.imfid.org/imf#outputDirection>, <http://ns.imfid.org/imf#partOf>, <http://ns.imfid.org/imf#predicate>, <http://ns.imfid.org/imf#prefix>, <http://ns.imfid.org/imf#primaryClassifier>, <http://ns.imfid.org/imf#productAspect>, <http://ns.imfid.org/imf#productLifecycleInterest>, <http://ns.imfid.org/imf#projectLifecycleInterest>, <http://ns.imfid.org/imf#projectionOf>, <http://ns.imfid.org/imf#proxy>, <http://ns.imfid.org/imf#purpose>, <http://ns.imfid.org/imf#spacePerspective>, <http://ns.imfid.org/imf#specializationOf>, <http://ns.imfid.org/imf#specifiedQualifier>, <http://ns.imfid.org/imf#symbol>, <http://ns.imfid.org/imf#transfersTo>, <http://ns.imfid.org/imf#uom>, <http://ns.imfid.org/imf#value>
+
 
 *** py_iri_rdf_diff
 
@@ -7485,16 +7261,4 @@ digraph {
 #+RESULTS:
 [[file:out/img/plantuml-specifications.png]]
 
-*** TODO W3C technology
 
-[Explain and motivate the use of semantic technologies?]
-
-**** RDF
-
-RDF is an abstract data model defined as an open standard by the W3C.
-
-RDF may be serialised in different serialisation formats such as
-RDF/XML (based on XML), JSON-LD (based on JSON), Turtle (a favourite
-amongst many familiar with RDF due to its ease of reading and
-writing), or N-Triples (a very simple format only appropriate for
-software).

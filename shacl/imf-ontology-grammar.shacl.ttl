@@ -1,0 +1,71 @@
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix sh:	<http://www.w3.org/ns/shacl#> .
+
+@prefix dc:	<http://purl.org/dc/elements/1.1/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix pav:	<http://purl.org/pav/> .
+@prefix skos:	<http://www.w3.org/2004/02/skos/core#> .
+@prefix vann:   <http://purl.org/vocab/vann/> .
+@prefix vs:     <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+
+@prefix ex:	<http://example.com#> .
+
+@prefix imf:	   <http://ns.imfid.org/imf#> .
+@prefix pca-plm:   <http://rds.posccaesar.org/ontology/plm/rdl/> .
+
+imf:IMFOntologyGrammar a owl:Ontology ;
+    owl:versionIRI <http://ns.imfid.org/20230630/imf-ontology-grammar.shacl.ttl> ;
+    owl:versionInfo "0.2.1" ;
+    skos:prefLabel "IMF Ontology Grammar -- SHACL" ;
+    dc:description "These SHACL Shapes specify requirements on the definition of terms in the IMF OWL ontology." ;
+    pav:createdBy [ foaf:name "Martin G. Skjæveland" ] ;
+    pav:createdOn "2023-06-30T00:00:00"^^xsd:dateTime ;
+    owl:imports
+      <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl>,
+      <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
+    sh:shapesGraph
+      <http://shipshape.dyreriket.xyz/std-vocabulary-elements.ttl> ,
+      <http://www.w3.org/ns/shacl-shacl#> ,
+      <http://ns.imfid.org/20230630/imf-terms-grammar.shacl.ttl> ;
+    .
+
+
+_:TermMetadata a sh:NodeShape ;
+  sh:target [ a sh:SPARQLTarget ;
+    sh:select """
+      PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+      PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+      SELECT ?this {
+	?this a ?type
+	FILTER (STRSTARTS(STR(?this), 'http://ns.imfid.org'))
+	FILTER (isIRI(?this))
+	#FILTER (?type IN ( owl:Class, owl:NamedIndividual, owl:ObjectProperty, owl:DatatypeProperty, owl:AnnotationProperty ))
+	FILTER (?type != owl:Ontology)
+	FILTER NOT EXISTS { ?this owl:deprecated true }
+	FILTER NOT EXISTS { ?this owl:sameAs ?else .
+	       FILTER (STRSTARTS(STR(?else), 'http://ns.imfid.org'))
+        }	
+	#FILTER NOT EXISTS {
+	#  ?this skos:note ?note .
+	#  FILTER (STRSTARTS(STR(?note), 'This resource is programatically generated.'))
+	#}
+	FILTER NOT EXISTS { ?this skos:exactMatch [] }
+      }
+      ## ORDER BY ?this
+      """
+  ] ;
+  sh:property
+    [ sh:path vs:term_status ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "unstable" "testing" "stable" "archaic" ) ] ,
+    [ sh:path vann:termGroup ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "elements" "aspects" "attributes" "generic relations" "logic relations" "classifiers" "topology" "partonomy" "media transfer" "model" ) ] ,
+    [ sh:path skos:prefLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path skos:definition ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string  ] ,
+    [ sh:path skos:changeNote ; sh:minCount 1 ; sh:pattern "^[0-9].[0-9].[0-9] :: [Added|Changed:]" ] ;
+    #[ sh:path skos:scopeNote ; sh:minCount 1 ; sh:severity sh:Warning ]
+  skos:changeNote
+    "0.2.0 :: Added" ,
+    "0.2.1 :: Changed: add termGroup 'type'." ,
+    "0.2.2 :: Changed: add 'Deprecated:' to changeNode restriction."
+.
